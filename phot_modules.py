@@ -577,7 +577,7 @@ def get_lum_all(kappa, tag, BC_fac, IMF='Chabrier_300',
     print(f"Getting luminosities for tag {tag} with kappa={kappa}")
 
     if inp == 'FLARES':
-        df = pd.read_csv('weight_files/weights_grid.txt')
+        df = pd.read_csv('../weight_files/weights_grid.txt')
         weights = np.array(df['weights'])
 
         sims = np.arange(0, len(weights))
@@ -637,7 +637,7 @@ def get_flux_all(kappa, tag, BC_fac, IMF='Chabrier_300', inp='FLARES',
 
     if inp == 'FLARES':
 
-        df = pd.read_csv('weight_files/weights_grid.txt')
+        df = pd.read_csv('../weight_files/weights_grid.txt')
         weights = np.array(df['weights'])
 
         sims = np.arange(0, len(weights))
