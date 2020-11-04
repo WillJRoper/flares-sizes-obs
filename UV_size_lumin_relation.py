@@ -16,7 +16,7 @@ import seaborn as sns
 from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
-import my_phot_modules as phot
+import phot_modules as phot
 import utilities as util
 
 
