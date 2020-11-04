@@ -163,7 +163,7 @@ for tag in snaps:
                                                              app_radii, res, 
                                                              csoft))
                 hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
-                                                            this_lumin))
+                                                                 this_lumin))
                 
                 lumin_dict[tag][f].append(tot_l)
 
