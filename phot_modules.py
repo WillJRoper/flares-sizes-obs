@@ -159,9 +159,13 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         if orientation == "sim":
 
             starCoords = S_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
+            gasCoords = G_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
             S_coords[:, begin[jj]: end[jj]] = starCoords.T
 
-            MetSurfaceDensities = S_los[begin[jj]:end[jj]]
+            MetSurfaceDensities = util.get_Z_LOS(starCoords, gasCoords,
+                                                 gasMasses, gasMetallicities,
+                                                 gasSML, (0, 1, 2),
+                                                 lkernel, kbins)
 
         elif orientation == "face-on":
 
@@ -554,18 +558,14 @@ def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
             bins=np.arange(-24, -16, 0.5), inp='FLARES', LF=True,
             filters=('FAKE.TH.FUV'), Type='Total', log10t_BC=7.,
             extinction='default', orientation="sim"):
-    # try:
-    #     Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
-    #                filters=filters, Type=Type, log10t_BC=log10t_BC,
-    #                extinction=extinction, orientation=orientation)
-    #
-    # except Exception as e:
-    #     Lums = np.ones(len(filters)) * np.nan
-    #     print(e)
+    try:
+        Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
+                   filters=filters, Type=Type, log10t_BC=log10t_BC,
+                   extinction=extinction, orientation=orientation)
 
-    Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
-               filters=filters, Type=Type, log10t_BC=log10t_BC,
-               extinction=extinction, orientation=orientation)
+    except Exception as e:
+        Lums = np.ones(len(filters)) * np.nan
+        print(e)
 
     if LF:
         tmp, edges = np.histogram(lum_to_M(Lums), bins=bins)
