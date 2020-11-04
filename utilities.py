@@ -366,6 +366,9 @@ def calc_light_mass_rad(rs, ls):
     rs = rs[sinds]
     ls = ls[sinds]
 
+    if ls.size < 100:
+        return 0.0
+
     # Get the cumalative sum of masses
     l_profile = np.cumsum(ls)
 
