@@ -124,7 +124,7 @@ for tag in snaps:
                                    LF=False, filters=filters, Type='Total',
                                    log10t_BC=7., extinction='default',
                                    orientation="sim")
-
+    print(lumin_dicts)
     for reg_dict in lumin_dicts:
 
         poss = reg_dict["coords"]
