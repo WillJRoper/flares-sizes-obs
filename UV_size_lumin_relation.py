@@ -112,9 +112,9 @@ app_radii *= csoft
 
 for tag in snaps:
 
-    hlr_dict.setdefault(tag, [])
-    hlr_app_dict.setdefault(tag, [])
-    lumin_dict.setdefault(tag, [])
+    hlr_dict.setdefault(tag, {})
+    hlr_app_dict.setdefault(tag, {})
+    lumin_dict.setdefault(tag, {})
 
     print("Computing luminosities for", tag)
 
@@ -162,7 +162,7 @@ for tag in snaps:
                                                              tot_l, 
                                                              app_radii, res, 
                                                              csoft))
-                hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii, 
+                hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
                                                             this_lumin))
                 
                 lumin_dict[tag][f].append(tot_l)
