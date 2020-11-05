@@ -110,22 +110,25 @@ app_radii = np.linspace(0.001, res / 4, 100)
 apertures = [CircularAperture(positions, r=r) for r in app_radii]
 app_radii *= csoft
 
+# Set orientation
+orientation = "sim"
+
 for tag in snaps:
 
     hlr_dict.setdefault(tag, {})
     hlr_app_dict.setdefault(tag, {})
     lumin_dict.setdefault(tag, {})
 
-    print("Computing luminosities for", tag)
-
     lumin_dicts = phot.get_lum_all(kappa=0.0063, tag=tag, BC_fac=1.25,
                                    IMF='Chabrier_300',
                                    bins=np.arange(-24, -16, 0.5), inp='FLARES',
                                    LF=False, filters=filters, Type='Total',
                                    log10t_BC=7., extinction='default',
-                                   orientation="sim")
+                                   orientation=orientation, numThreads=28)
 
-    for reg_dict in lumin_dicts:
+    for num, reg_dict in enumerate(lumin_dicts):
+
+        print("Processing galaxies in results", num)
 
         poss = reg_dict["coords"]
         smls = reg_dict["smls"]
@@ -268,7 +271,7 @@ for f in filters:
     ax9.tick_params(axis='y', left=False, right=False, 
                     labelleft=False, labelright=False)
 
-    fig.savefig('plots/HalfLightRadius_' + f + '_soft.png', 
+    fig.savefig('plots/HalfLightRadius_' + f + '_soft_' + orientation + '.png', 
                 bbox_inches='tight')
 
     plt.close(fig)
@@ -368,7 +371,7 @@ for f in filters:
     ax9.tick_params(axis='y', left=False, right=False, 
                     labelleft=False, labelright=False)
 
-    fig.savefig('plots/HalfLightRadius_' + f + '.png', bbox_inches='tight')
+    fig.savefig('plots/HalfLightRadius_' + f + '_' + orientation + '.png', bbox_inches='tight')
 
     plt.close(fig)
 
@@ -420,7 +423,7 @@ for f in filters:
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-        fig.savefig('plots/HalfLightRadius_' + f + '_' + str(z) + '.png', 
+        fig.savefig('plots/HalfLightRadius_' + f + '_' + str(z) + '_' + orientation + '.png', 
                     bbox_inches='tight')
 
         plt.close(fig)
@@ -522,7 +525,7 @@ for f in filters:
     ax9.tick_params(axis='y', left=False, right=False, 
                     labelleft=False, labelright=False)
 
-    fig.savefig('plots/HalfLightRadiusAperture_' + f + '_soft.png', 
+    fig.savefig('plots/HalfLightRadiusAperture_' + f + '_soft_' + orientation + '.png', 
                 bbox_inches='tight')
 
     plt.close(fig)
@@ -623,7 +626,7 @@ for f in filters:
                     labelleft=False, labelright=False)
 
     fig.savefig('plots/HalfLightRadiusAperture_' 
-                + f + '.png', bbox_inches='tight')
+                + f + '_' + orientation + '.png', bbox_inches='tight')
 
     plt.close(fig)
 
@@ -676,7 +679,7 @@ for f in filters:
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
         fig.savefig('plots/HalfLightRadiusAperture_' 
-                    + f + '_' + str(z) + '.png', 
+                    + f + '_' + str(z) + '_' + orientation + '.png', 
                     bbox_inches='tight')
 
         plt.close(fig)

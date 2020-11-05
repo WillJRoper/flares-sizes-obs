@@ -578,7 +578,7 @@ def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
 def get_lum_all(kappa, tag, BC_fac, IMF='Chabrier_300',
                 bins=np.arange(-24, -16, 0.5), inp='FLARES', LF=True,
                 filters=('FAKE.TH.FUV'), Type='Total', log10t_BC=7.,
-                extinction='default', orientation="sim"):
+                extinction='default', orientation="sim", numThreads=8):
 
     print(f"Getting luminosities for tag {tag} with kappa={kappa}")
 
@@ -593,7 +593,7 @@ def get_lum_all(kappa, tag, BC_fac, IMF='Chabrier_300',
                        log10t_BC=log10t_BC, extinction=extinction,
                        orientation=orientation)
 
-        pool = schwimmbad.MultiPool(processes=8)
+        pool = schwimmbad.MultiPool(processes=numThreads)
         dat = np.array(list(pool.map(calc, sims)))
         pool.close()
 
@@ -637,7 +637,7 @@ def get_flux(sim, kappa, tag, BC_fac, IMF='Chabrier_300', inp='FLARES',
 
 def get_flux_all(kappa, tag, BC_fac, IMF='Chabrier_300', inp='FLARES',
                  filters=FLARE.filters.NIRCam, Type='Total', log10t_BC=7.,
-                 extinction='default', orientation="sim"):
+                 extinction='default', orientation="sim", numThreads=8):
 
     print(f"Getting fluxes for tag {tag} with kappa={kappa}")
 
@@ -653,7 +653,7 @@ def get_flux_all(kappa, tag, BC_fac, IMF='Chabrier_300', inp='FLARES',
                        log10t_BC=log10t_BC, extinction=extinction,
                        orientation=orientation)
 
-        pool = schwimmbad.MultiPool(processes=8)
+        pool = schwimmbad.MultiPool(processes=numThreads)
         out = np.array(list(pool.map(calc, sims)))
         pool.close()
 
