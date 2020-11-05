@@ -111,7 +111,7 @@ apertures = [CircularAperture(positions, r=r) for r in app_radii]
 app_radii *= csoft
 
 # Set orientation
-orientation = "face-on"
+orientation = "side-on"
 
 for tag in snaps:
 
