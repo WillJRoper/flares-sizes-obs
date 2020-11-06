@@ -215,6 +215,7 @@ for f in filters:
                                                lumins < 10**50))
         lumins = lumins[okinds]
         hlrs = hlrs[okinds]
+        print(hlrs, lumins)
         try:
             cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)), gridsize=100, 
                              mincnt=1, xscale='log', yscale='log',
@@ -318,7 +319,6 @@ for f in filters:
                                                lumins < 10**50))
         lumins = lumins[okinds]
         hlrs = hlrs[okinds] * 1000
-        print(hlrs, lumins)
         try:
             cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1, 
                              xscale='log', yscale='log',
