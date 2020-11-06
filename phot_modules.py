@@ -158,6 +158,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
         if masslim != None:
             if np.sum(Masses) < masslim:
+                for f in filters:
+                    Lums[f][begin[jj]: end[jj]] = np.nan
                 continue
 
         if orientation == "sim":

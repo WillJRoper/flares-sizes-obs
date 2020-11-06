@@ -153,6 +153,9 @@ for tag in snaps:
                 this_lumin = reg_dict[f][b: e]
                 this_smls = reg_dict[f][b: e]
                 
+                if np.nansum(this_lumin) == 0:
+                    continue
+                
                 tot_l = np.sum(this_lumin)
 
                 # Centre positions on luminosity weighted centre
