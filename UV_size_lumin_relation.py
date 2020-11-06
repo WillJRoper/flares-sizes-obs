@@ -152,7 +152,7 @@ for tag in snaps:
                 this_pos = poss[:, b: e].T
                 this_lumin = reg_dict[f][b: e]
                 this_smls = reg_dict[f][b: e]
-                
+
                 if np.nansum(this_lumin) == 0:
                     continue
                 
@@ -318,6 +318,7 @@ for f in filters:
                                                lumins < 10**50))
         lumins = lumins[okinds]
         hlrs = hlrs[okinds] * 1000
+        print(hlrs, lumins)
         try:
             cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1, 
                              xscale='log', yscale='log',
