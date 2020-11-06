@@ -127,7 +127,7 @@ for tag in snaps:
                                    bins=np.arange(-24, -16, 0.5), inp='FLARES',
                                    LF=False, filters=filters, Type='Total',
                                    log10t_BC=7., extinction='default',
-                                   orientation=orientation, numThreads=28,
+                                   orientation=orientation, numThreads=8,
                                    masslim=masslim)
 
     for num, reg_dict in enumerate(lumin_dicts):
