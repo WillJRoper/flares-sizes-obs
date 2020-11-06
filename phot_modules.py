@@ -101,7 +101,7 @@ def get_data(ii, tag, inp='FLARES'):
 
 def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         filters=('FAKE.TH.FUV',), Type='Total', log10t_BC=7.,
-        extinction='default', orientation="sim"):
+        extinction='default', orientation="sim", masslim=None):
     
     kinp = np.load('/cosma/home/dp004/dc-rope1/cosma7/FLARES/'
                    'flares/los_extinction/kernel_sph-anarchy.npz',
@@ -155,6 +155,10 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         gasMetallicities = G_Z[begin[jj]: end[jj]]
         gasSML = G_sml[begin[jj]: end[jj]]
         gasMasses = G_mass[begin[jj]: end[jj]]
+
+        if masslim != None:
+            if np.sum(Masses) < masslim:
+                continue
 
         if orientation == "sim":
 
@@ -557,11 +561,12 @@ def get_lines(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300',
 def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
             bins=np.arange(-24, -16, 0.5), inp='FLARES', LF=True,
             filters=('FAKE.TH.FUV'), Type='Total', log10t_BC=7.,
-            extinction='default', orientation="sim"):
+            extinction='default', orientation="sim", masslim=None):
     try:
         Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
                    filters=filters, Type=Type, log10t_BC=log10t_BC,
-                   extinction=extinction, orientation=orientation)
+                   extinction=extinction, orientation=orientation,
+                   masslim=masslim)
 
     except Exception as e:
         Lums = np.ones(len(filters)) * np.nan
@@ -578,7 +583,8 @@ def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
 def get_lum_all(kappa, tag, BC_fac, IMF='Chabrier_300',
                 bins=np.arange(-24, -16, 0.5), inp='FLARES', LF=True,
                 filters=('FAKE.TH.FUV'), Type='Total', log10t_BC=7.,
-                extinction='default', orientation="sim", numThreads=8):
+                extinction='default', orientation="sim", numThreads=8,
+                masslim=None):
 
     print(f"Getting luminosities for tag {tag} with kappa={kappa}")
 
@@ -591,7 +597,7 @@ def get_lum_all(kappa, tag, BC_fac, IMF='Chabrier_300',
         calc = partial(get_lum, kappa=kappa, tag=tag, BC_fac=BC_fac, IMF=IMF,
                        bins=bins, inp=inp, LF=LF, filters=filters, Type=Type,
                        log10t_BC=log10t_BC, extinction=extinction,
-                       orientation=orientation)
+                       orientation=orientation, masslim=masslim)
 
         pool = schwimmbad.MultiPool(processes=numThreads)
         dat = np.array(list(pool.map(calc, sims)))
@@ -614,7 +620,7 @@ def get_lum_all(kappa, tag, BC_fac, IMF='Chabrier_300',
         out = get_lum(00, kappa=kappa, tag=tag, BC_fac=BC_fac, IMF=IMF,
                       bins=bins, inp=inp, LF=LF, filters=filters, Type=Type,
                       log10t_BC=log10t_BC, extinction=extinction,
-                      orientation=orientation)
+                      orientation=orientation, masslim=masslim)
 
         return out
 
