@@ -349,6 +349,9 @@ def calc_3drad(poss):
 
 def lumin_weighted_centre(poss, ls):
 
+    print(poss.shape)
+    print(ls)
+
     cent = np.average(poss, axis=0, weights=ls)
 
     return cent
