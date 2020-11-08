@@ -52,6 +52,9 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
     else:
         bin = bins
 
+    print(xs)
+    print(ys)
+
     # Compute binned statistics
     y_stat, binedges, bin_ind = binned_statistic(xs, ys, statistic='median', 
                                                  bins=bin)
