@@ -52,9 +52,6 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
     else:
         bin = bins
 
-    print(xs)
-    print(ys)
-
     # Compute binned statistics
     y_stat, binedges, bin_ind = binned_statistic(xs, ys, statistic='median', 
                                                  bins=bin)
@@ -223,8 +220,9 @@ for f in filters:
             cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)), gridsize=100, 
                              mincnt=1, xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            plot_meidan_stat(lumins, hlrs / (csoft / (1 + z)), ax, lab='REF', 
-                             color='r')
+            if lumins.size > 10:
+                plot_meidan_stat(lumins, hlrs / (csoft / (1 + z)), ax, lab='REF',
+                                 color='r')
         except ValueError:
             continue
 
@@ -323,10 +321,10 @@ for f in filters:
         lumins = lumins[okinds]
         hlrs = hlrs[okinds] * 1000
         try:
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1, 
+            cbar = ax.hexbin(lumins, hlrs * 10**3, gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            # plot_meidan_stat(lumins, hlrs, ax, lab='REF', color='r')
+            # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
         except ValueError:
             continue
 
@@ -405,10 +403,10 @@ for f in filters:
         fig = plt.figure()
         ax = fig.add_subplot(111)
         try:
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1, 
+            cbar = ax.hexbin(lumins, hlrs * 10**3, gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            # plot_meidan_stat(lumins, hlrs, ax, lab='REF', color='r')
+            # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
         except ValueError:
             continue
 
@@ -480,8 +478,9 @@ for f in filters:
             cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)), gridsize=100, 
                              mincnt=1, xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            plot_meidan_stat(lumins, hlrs / (csoft / (1 + z)), ax, lab='REF', 
-                             color='r')
+            if lumins.size > 10:
+                plot_meidan_stat(lumins, hlrs / (csoft / (1 + z)), ax, lab='REF',
+                                 color='r')
         except ValueError:
             continue
 
@@ -580,10 +579,10 @@ for f in filters:
         lumins = lumins[okinds]
         hlrs = hlrs[okinds] * 1000
         try:
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1, 
+            cbar = ax.hexbin(lumins, hlrs * 10**3, gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            # plot_meidan_stat(lumins, hlrs, ax, lab='REF', color='r')
+            # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
         except ValueError:
             continue
 
@@ -663,10 +662,10 @@ for f in filters:
         fig = plt.figure()
         ax = fig.add_subplot(111)
         try:
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1, 
+            cbar = ax.hexbin(lumins, hlrs * 10**3, gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            # plot_meidan_stat(lumins, hlrs, ax, lab='REF', color='r')
+            # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
         except ValueError:
             continue
 
