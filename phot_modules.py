@@ -59,7 +59,7 @@ def get_data(ii, tag, inp='FLARES'):
         cops = np.array(hf[tag + '/Galaxy'].get("COP"),
                         dtype=np.float64)
         S_mass = np.array(hf[tag + '/Particle'].get('S_MassInitial'),
-                          dtype=np.float64)
+                          dtype=np.float64) * 10**10
         S_Z = np.array(hf[tag + '/Particle'].get('S_Z_smooth'),
                        dtype=np.float64)
         S_age = np.array(hf[tag + '/Particle'].get('S_Age'),
@@ -73,11 +73,11 @@ def get_data(ii, tag, inp='FLARES'):
         G_sml = np.array(hf[tag + '/Particle'].get('G_sml'),
                          dtype=np.float64)
         G_mass = np.array(hf[tag + '/Particle'].get('G_Mass'),
-                          dtype=np.float64)
+                          dtype=np.float64) * 10**10
         S_coords = np.array(hf[tag + '/Particle'].get('S_Coordinates'),
-                           dtype=np.float64)
+                           dtype=np.float64) * 10**3
         G_coords = np.array(hf[tag + '/Particle'].get('G_Coordinates'),
-                           dtype=np.float64)
+                           dtype=np.float64) * 10**3
         S_vels = np.array(hf[tag + '/Particle'].get('S_Vel'),
                           dtype=np.float64)
         G_vels = np.array(hf[tag + '/Particle'].get('G_Vel'),
@@ -157,7 +157,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         gasMasses = G_mass[begin[jj]: end[jj]]
 
         if masslim != None:
-            if np.sum(Masses) < (masslim / 10**10):
+            if np.sum(Masses) < masslim:
                 for f in filters:
                     Lums[f][begin[jj]: end[jj]] = np.nan
                 continue

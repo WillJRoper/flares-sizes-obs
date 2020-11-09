@@ -307,6 +307,7 @@ def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth):
 
 @nb.jit(nogil=True, parallel=True)
 def get_img_hlr(img, apertures, tot_l, app_rs, res, csoft):
+
     # Apply the apertures
     phot_table = aperture_photometry(img, apertures, method='subpixel',
                                      subpixels=5)
