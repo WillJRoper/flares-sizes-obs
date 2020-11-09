@@ -86,7 +86,7 @@ hlr_app_dict = {}
 lumin_dict = {}
 
 # Define comoving softening length in kpc
-csoft = 0.001802390 / 0.6777
+csoft = 0.001802390 / 0.6777 * 10**3
 
 # Define width
 ini_width = 0.07
