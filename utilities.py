@@ -15,6 +15,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 
+
 def calc_ages(z, a_born):
 
     # Convert scale factor into redshift
@@ -359,7 +360,7 @@ def lumin_weighted_centre(poss, ls):
 def calc_light_mass_rad(rs, ls):
 
     # Sort the radii and masses
-    okinds = rs <= 0.03
+    okinds = rs <= 30
     rs = rs[okinds]
     ls = ls[okinds]
     sinds = np.argsort(rs)

@@ -139,6 +139,8 @@ for tag in snaps:
         begin = reg_dict["begin"]
         end = reg_dict["end"]
 
+        print(poss.shape)
+
         for f in filters:
 
             hlr_dict[tag].setdefault(f, [])
