@@ -89,7 +89,7 @@ lumin_dict = {}
 csoft = 0.001802390 / 0.6777 * 10**3
 
 # Define width
-ini_width = 70
+ini_width = 100
 
 # Compute the resolution
 ini_res = ini_width / csoft
