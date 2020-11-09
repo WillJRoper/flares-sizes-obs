@@ -658,7 +658,7 @@ for f in filters:
                                 np.logical_and(lumins > 10 ** 28,
                                                lumins < 10 ** 50))
         lumins = lumins[okinds]
-        hlrs = hlrs[okinds] * 1000
+        hlrs = hlrs[okinds]
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
