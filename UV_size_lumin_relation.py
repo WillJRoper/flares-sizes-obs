@@ -85,28 +85,6 @@ lumin_dict = {}
 # Define comoving softening length in kpc
 csoft = 0.001802390 / 0.6777 * 10**3
 
-# Define width
-ini_width = 100
-
-# Compute the resolution
-ini_res = ini_width / csoft
-res = int(np.ceil(ini_res))
-
-# Compute the new width
-width = csoft * res
-
-print(width, res)
-
-# Define range and extent for the images
-imgrange = ((-width / 2, width / 2), (-width / 2, width / 2))
-imgextent = [-width / 2, width / 2, -width / 2, width / 2]
-
-# Set up aperture objects
-positions = [(res / 2, res / 2)]
-app_radii = np.linspace(0.001, res / 4, 100)
-apertures = [CircularAperture(positions, r=r) for r in app_radii]
-app_radii *= csoft
-
 # Set orientation
 orientation = "sim"
 
@@ -114,6 +92,9 @@ orientation = "sim"
 masslim = 10 ** 9.5
 
 for tag in snaps:
+
+    z_str = tag.split('z')[1].split('p')
+    z = float(z_str[0] + '.' + z_str[1])
 
     hlr_dict.setdefault(tag, {})
     hlr_app_dict.setdefault(tag, {})
@@ -126,6 +107,33 @@ for tag in snaps:
                                    log10t_BC=7., extinction='default',
                                    orientation=orientation, numThreads=8,
                                    masslim=masslim)
+
+    if z <= 2.8:
+        csoft = 0.000474390 / 0.6777 * 1e3
+    else:
+        csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
+
+    # Define width
+    ini_width = 100 / (1 + z)
+
+    # Compute the resolution
+    ini_res = ini_width / csoft
+    res = int(np.ceil(ini_res))
+
+    # Compute the new width
+    width = csoft * res
+
+    print(width, res)
+
+    # Define range and extent for the images
+    imgrange = ((-width / 2, width / 2), (-width / 2, width / 2))
+    imgextent = [-width / 2, width / 2, -width / 2, width / 2]
+
+    # Set up aperture objects
+    positions = [(res / 2, res / 2)]
+    app_radii = np.linspace(0.001, res / 4, 100)
+    apertures = [CircularAperture(positions, r=r) for r in app_radii]
+    app_radii *= csoft
 
     for num, reg_dict in enumerate(lumin_dicts):
 
@@ -146,7 +154,7 @@ for tag in snaps:
 
                 b, e = begin[ind], end[ind]
 
-                this_pos = poss[:, b: e].T * 10**3
+                this_pos = poss[:, b: e].T * 10**3 / (1+ z)
                 this_lumin = reg_dict[f][b: e]
                 this_smls = smls[b: e] * 10**3
 
@@ -162,21 +170,27 @@ for tag in snaps:
 
                 this_radii = util.calc_rad(this_pos, i=0, j=1)
 
-                img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
-                                         this_lumin, this_smls)
+                if orientation == "sim" or orientation == "face-on":
+                    img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
+                                             this_lumin,
+                                             np.full_like(this_smls, csoft))
+                else:
+                    img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
+                                             this_lumin,
+                                             np.full_like(this_smls, csoft))
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
                 ax.imshow(img)
                 ax.grid(False)
-                fig.savefig("plots/gal_img_%.2f.png" % np.log10(np.sum(this_lumin)))
+                fig.savefig("plots/gal_img_%.1f.png" % np.log10(np.sum(this_lumin)))
                 plt.close(fig)
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
                 ax.imshow(np.log10(img))
                 ax.grid(False)
-                fig.savefig("plots/gal_img_log_%.2f.png" % np.log10(np.sum(this_lumin)))
+                fig.savefig("plots/gal_img_log_%.1f.png" % np.log10(np.sum(this_lumin)))
                 plt.close(fig)
 
                 hlr_app_dict[tag][f].append(util.get_img_hlr(img,
