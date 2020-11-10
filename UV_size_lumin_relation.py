@@ -167,7 +167,7 @@ for tag in snaps:
                     lumin_cent = util.lumin_weighted_centre(this_pos,
                                                             this_lumin,
                                                             i=0, j=1)
-                    this_pos -= lumin_cent
+                    this_pos[:, (0, 1)] -= lumin_cent
 
                     this_radii = util.calc_rad(this_pos, i=0, j=1)
 
@@ -181,7 +181,7 @@ for tag in snaps:
                     lumin_cent = util.lumin_weighted_centre(this_pos,
                                                             this_lumin,
                                                             i=2, j=0)
-                    this_pos -= lumin_cent
+                    this_pos[:, (2, 0)] -= lumin_cent
 
                     this_radii = util.calc_rad(this_pos, i=2, j=0)
 
