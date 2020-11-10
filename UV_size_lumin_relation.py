@@ -162,23 +162,21 @@ for tag in snaps:
 
                 this_radii = util.calc_rad(this_pos, i=0, j=1)
 
-                print(imgrange)
-                print(this_lumin)
-                print(this_smls)
-
                 img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
                                          this_lumin, this_smls)
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
                 ax.imshow(img)
-                fig.savefig("plots/gal_img.png")
+                ax.grid(False)
+                fig.savefig("plots/gal_img_%.2f.png" % np.sum(this_lumin))
                 plt.close(fig)
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
                 ax.imshow(np.log10(img))
-                fig.savefig("plots/gal_img_log.png")
+                ax.grid(False)
+                fig.savefig("plots/gal_img_log_%.2f.png" % np.sum(this_lumin))
                 plt.close(fig)
 
                 hlr_app_dict[tag][f].append(util.get_img_hlr(img,
