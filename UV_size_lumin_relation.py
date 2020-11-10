@@ -90,7 +90,7 @@ for tag in snaps:
     hlr_app_dict.setdefault(tag, {})
     lumin_dict.setdefault(tag, {})
 
-    lumin_dicts = phot.get_lum_all(kappa=0.0063, tag=tag, BC_fac=1.25,
+    lumin_dicts = phot.get_lum_all(kappa=0.0063, tag=tag, BC_fac=1.,
                                    IMF='Chabrier_300',
                                    bins=np.arange(-24, -16, 0.5), inp='FLARES',
                                    LF=False, filters=filters, Type='Total',
@@ -182,13 +182,13 @@ for tag in snaps:
                                              this_lumin,
                                              this_smls)
 
-                fig = plt.figure()
-                ax = fig.add_subplot(111)
-                ax.imshow(np.log10(img))
-                ax.grid(False)
-                fig.savefig("plots/gal_img_log_%.1f.png"
-                            % np.log10(np.sum(this_lumin)))
-                plt.close(fig)
+                # fig = plt.figure()
+                # ax = fig.add_subplot(111)
+                # ax.imshow(np.log10(img))
+                # ax.grid(False)
+                # fig.savefig("plots/gal_img_log_%.1f.png"
+                #             % np.log10(np.sum(this_lumin)))
+                # plt.close(fig)
 
                 hlr_app_dict[tag][f].append(util.get_img_hlr(img,
                                                              apertures,
