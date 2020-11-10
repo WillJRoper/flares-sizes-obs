@@ -257,6 +257,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             
     Lums["coords"] = S_coords
     Lums["smls"] = S_sml
+    print(Lums["smls"])
     Lums["begin"] = begin
     Lums["end"] = end
 
