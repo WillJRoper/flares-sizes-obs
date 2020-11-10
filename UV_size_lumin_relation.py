@@ -114,7 +114,7 @@ for tag in snaps:
         csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
 
     # Define width
-    ini_width = 150
+    ini_width = 70
 
     # Compute the resolution
     ini_res = ini_width / csoft
@@ -154,7 +154,7 @@ for tag in snaps:
 
                 b, e = begin[ind], end[ind]
 
-                this_pos = poss[:, b: e].T * 10**3 / (1+ z)
+                this_pos = poss[:, b: e].T * 10**3 / (1 + z)
                 this_lumin = reg_dict[f][b: e]
                 this_smls = smls[b: e] * 10**3
 
