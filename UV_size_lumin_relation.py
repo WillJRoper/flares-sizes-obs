@@ -86,7 +86,7 @@ lumin_dict = {}
 csoft = 0.001802390 / 0.6777 * 10**3
 
 # Define width
-ini_width = 100
+ini_width = 70
 
 # Compute the resolution
 ini_res = ini_width / csoft
@@ -98,8 +98,8 @@ width = csoft * res
 print(width, res)
 
 # Define range and extent for the images
-imgrange = ((-width / 2, width / 2), (-width / 2, width / 2))
-imgextent = [-width / 2, width / 2, -width / 2, width / 2]
+imgrange = ((-width, width), (-width, width))
+imgextent = [-width, width, -width, width]
 
 # Set up aperture objects
 positions = [(res / 2, res / 2)]
@@ -135,8 +135,6 @@ for tag in snaps:
         smls = reg_dict["smls"]
         begin = reg_dict["begin"]
         end = reg_dict["end"]
-
-        print(poss.shape)
 
         for f in filters:
 
