@@ -98,8 +98,8 @@ width = csoft * res
 print(width, res)
 
 # Define range and extent for the images
-imgrange = ((-width, width), (-width, width))
-imgextent = [-width, width, -width, width]
+imgrange = ((-width / 2, width / 2), (-width / 2, width / 2))
+imgextent = [-width / 2, width / 2, -width / 2, width / 2]
 
 # Set up aperture objects
 positions = [(res / 2, res / 2)]
@@ -162,12 +162,18 @@ for tag in snaps:
 
                 this_radii = util.calc_rad(this_pos, i=0, j=1)
 
+                print(imgrange)
+                print(this_lumin)
+                print(this_smls)
+
                 img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
                                          this_lumin, this_smls)
 
-                plt.imshow(np.log10(img))
-                plt.savefig("plots/gal_img.png")
-                plt.close()
+                fig = plt.figure()
+                ax = fig.add_subplot(111)
+                ax.imshow(np.log10(img))
+                fig.savefig("plots/gal_img.png")
+                plt.close(fig)
 
                 hlr_app_dict[tag][f].append(util.get_img_hlr(img,
                                                              apertures,
