@@ -114,7 +114,7 @@ for tag in snaps:
         csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
 
     # Define width
-    ini_width = 100
+    ini_width = 150
 
     # Compute the resolution
     ini_res = ini_width / csoft
@@ -178,13 +178,6 @@ for tag in snaps:
                     img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
                                              this_lumin,
                                              np.full_like(this_smls, csoft))
-
-                fig = plt.figure()
-                ax = fig.add_subplot(111)
-                ax.imshow(img)
-                ax.grid(False)
-                fig.savefig("plots/gal_img_%.1f.png" % np.log10(np.sum(this_lumin)))
-                plt.close(fig)
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
