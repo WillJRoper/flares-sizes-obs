@@ -82,9 +82,6 @@ hlr_dict = {}
 hlr_app_dict = {}
 lumin_dict = {}
 
-# Define comoving softening length in kpc
-csoft = 0.001802390 / 0.6777 * 10**3
-
 # Set orientation
 orientation = "sim"
 
@@ -156,28 +153,41 @@ for tag in snaps:
 
                 this_pos = poss[:, b: e].T * 10**3 / (1 + z)
                 this_lumin = reg_dict[f][b: e]
-                this_smls = smls[b: e] * 10**3
+                this_smls = smls[b: e] * 10**3 / (1 + z)
 
                 if np.nansum(this_lumin) == 0:
                     continue
 
                 tot_l = np.sum(this_lumin)
 
-                # Centre positions on luminosity weighted centre
-                # NOTE: This is done in 3D not in projection!
-                lumin_cent = util.lumin_weighted_centre(this_pos, this_lumin)
-                this_pos -= lumin_cent
-
-                this_radii = util.calc_rad(this_pos, i=0, j=1)
-
                 if orientation == "sim" or orientation == "face-on":
+
+                    # Centre positions on luminosity weighted centre
+                    # NOTE: This is done in 3D not in projection!
+                    lumin_cent = util.lumin_weighted_centre(this_pos,
+                                                            this_lumin,
+                                                            i=0, j=1)
+                    this_pos -= lumin_cent
+
+                    this_radii = util.calc_rad(this_pos, i=0, j=1)
+
                     img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
                                              this_lumin,
-                                             np.full_like(this_smls, csoft))
+                                             this_smls)
                 else:
+
+                    # Centre positions on luminosity weighted centre
+                    # NOTE: This is done in 3D not in projection!
+                    lumin_cent = util.lumin_weighted_centre(this_pos,
+                                                            this_lumin,
+                                                            i=2, j=0)
+                    this_pos -= lumin_cent
+
+                    this_radii = util.calc_rad(this_pos, i=2, j=0)
+
                     img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
                                              this_lumin,
-                                             np.full_like(this_smls, csoft))
+                                             this_smls)
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
