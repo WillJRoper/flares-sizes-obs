@@ -167,7 +167,7 @@ for tag in snaps:
                 img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
                                          this_lumin, this_smls)
 
-                plt.imshow(img)
+                plt.imshow(np.log10(img))
                 plt.savefig("plots/gal_img.png")
                 plt.close()
 
@@ -175,7 +175,7 @@ for tag in snaps:
                                                              apertures,
                                                              app_radii, res,
                                                              csoft))
-                print(hlr_app_dict)
+
                 hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
                                                                  this_lumin))
 
