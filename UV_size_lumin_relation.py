@@ -111,7 +111,7 @@ for tag in snaps:
         csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
 
     # Define width
-    ini_width = 70 / (1 + z)
+    ini_width = 150 / (1 + z)
 
     # Compute the resolution
     ini_res = ini_width / csoft
