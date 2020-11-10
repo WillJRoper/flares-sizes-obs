@@ -184,7 +184,7 @@ for tag in snaps:
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
-                ax.imshow(np.log10(img))
+                ax.imshow(img)
                 ax.grid(False)
                 fig.savefig("plots/gal_img_log_%.1f.png" % np.log10(np.sum(this_lumin)))
                 plt.close(fig)
