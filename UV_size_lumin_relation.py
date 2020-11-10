@@ -171,8 +171,14 @@ for tag in snaps:
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
-                ax.imshow(np.log10(img))
+                ax.imshow(img)
                 fig.savefig("plots/gal_img.png")
+                plt.close(fig)
+
+                fig = plt.figure()
+                ax = fig.add_subplot(111)
+                ax.imshow(np.log10(img))
+                fig.savefig("plots/gal_img_log.png")
                 plt.close(fig)
 
                 hlr_app_dict[tag][f].append(util.get_img_hlr(img,
