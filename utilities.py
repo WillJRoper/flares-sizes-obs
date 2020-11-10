@@ -307,7 +307,7 @@ def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth):
 
 
 @nb.jit(nogil=True, parallel=True)
-def get_img_hlr(img, apertures, tot_l, app_rs, res, csoft):
+def get_img_hlr(img, apertures, app_rs, res, csoft):
 
     # Apply the apertures
     phot_table = aperture_photometry(img, apertures, method='subpixel',
@@ -319,7 +319,7 @@ def get_img_hlr(img, apertures, tot_l, app_rs, res, csoft):
     lumins = row[3:]
 
     # Get half the total luminosity
-    half_l = tot_l / 2
+    half_l = np.sum(img) / 2
 
     # Interpolate to increase resolution
     func = interp1d(app_rs, lumins, kind="linear")
