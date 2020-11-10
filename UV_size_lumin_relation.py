@@ -153,7 +153,7 @@ for tag in snaps:
 
                 this_pos = poss[:, b: e].T * 10**3 / (1 + z)
                 this_lumin = reg_dict[f][b: e]
-                this_smls = smls[b: e] * 10**3 / (1 + z)
+                this_smls = smls[b: e] * 10**3
 
                 if np.nansum(this_lumin) == 0:
                     continue
