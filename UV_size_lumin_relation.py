@@ -68,7 +68,7 @@ snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
          '009_z006p000', '010_z005p000', '011_z004p770']
 
 # Define filter
-filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
+filters = ('FAKE.TH.FUV')
 
 # Define dictionaries for results
 hlr_dict = {}
@@ -79,7 +79,7 @@ lumin_dict = {}
 orientation = "sim"
 
 # Set mass limit
-masslim = 10 ** 9.5
+masslim = 10 ** 10
 
 for tag in snaps:
 
@@ -90,7 +90,7 @@ for tag in snaps:
     hlr_app_dict.setdefault(tag, {})
     lumin_dict.setdefault(tag, {})
 
-    lumin_dicts = phot.get_lum_all(kappa=0.0063, tag=tag, BC_fac=1.,
+    lumin_dicts = phot.get_lum_all(kappa=0.0795, tag=tag, BC_fac=1.,
                                    IMF='Chabrier_300',
                                    bins=np.arange(-24, -16, 0.5), inp='FLARES',
                                    LF=False, filters=filters, Type='Total',
@@ -129,8 +129,8 @@ for tag in snaps:
 
         print("Processing galaxies in results", num)
 
-        poss = reg_dict["coords"]
-        smls = reg_dict["smls"]
+        poss = reg_dict["coords"] * 10**3 / (1 + z)
+        smls = reg_dict["smls"] * 10**3
         begin = reg_dict["begin"]
         end = reg_dict["end"]
 
@@ -144,9 +144,9 @@ for tag in snaps:
 
                 b, e = begin[ind], end[ind]
 
-                this_pos = poss[:, b: e].T * 10**3 / (1 + z)
+                this_pos = poss[:, b: e].T
                 this_lumin = reg_dict[f][b: e]
-                this_smls = smls[b: e] * 10**3
+                this_smls = smls[b: e]
 
                 if np.nansum(this_lumin) == 0:
                     continue
@@ -182,13 +182,13 @@ for tag in snaps:
                                              this_lumin,
                                              this_smls)
 
-                # fig = plt.figure()
-                # ax = fig.add_subplot(111)
-                # ax.imshow(np.log10(img))
-                # ax.grid(False)
-                # fig.savefig("plots/gal_img_log_%.1f.png"
-                #             % np.log10(np.sum(this_lumin)))
-                # plt.close(fig)
+                fig = plt.figure()
+                ax = fig.add_subplot(111)
+                ax.imshow(np.log10(img))
+                ax.grid(False)
+                fig.savefig("plots/gal_img_log_%.1f.png"
+                            % np.log10(np.sum(this_lumin)))
+                plt.close(fig)
 
                 hlr_app_dict[tag][f].append(util.get_img_hlr(img,
                                                              apertures,
