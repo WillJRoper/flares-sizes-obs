@@ -146,8 +146,8 @@ for tag in snaps:
 
                 this_pos = poss[:, b: e].T
                 this_lumin = reg_dict[f][b: e]
-                # this_smls = smls[b: e]
-                this_smls = np.full_like(this_lumin, csoft / 2.355)
+                this_smls = smls[b: e]
+                # this_smls = np.full_like(this_lumin, csoft / 2.355)
 
                 if np.nansum(this_lumin) == 0:
                     continue
