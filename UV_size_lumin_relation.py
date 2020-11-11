@@ -184,8 +184,11 @@ for tag in snaps:
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
-                ax.imshow(np.log10(img))
+                ax.imshow(np.log10(img), extent=imgextent)
                 ax.grid(False)
+
+                circle1 = plt.Circle((0, 0), 30, color='r')
+                ax.add_artist(circle1)
                 fig.savefig("plots/gal_img_log_%.1f.png"
                             % np.log10(np.sum(this_lumin)))
                 plt.close(fig)

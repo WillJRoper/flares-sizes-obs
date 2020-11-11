@@ -303,7 +303,7 @@ def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth):
 
     gsmooth_img, xedges, yedges = np.histogram2d(pos[:, i], pos[:, j],
                                          bins=Ndim,
-                                         range=imgrange, 
+                                         range=imgrange,
                                          weights=ls)
 
     return gsmooth_img
