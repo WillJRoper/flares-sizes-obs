@@ -166,7 +166,7 @@ for tag in snaps:
 
                     img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
                                              this_lumin,
-                                             this_smls)
+                                             this_smls / 2.355)
                 else:
 
                     # Centre positions on luminosity weighted centre
