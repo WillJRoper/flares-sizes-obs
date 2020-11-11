@@ -281,30 +281,30 @@ def calc_eigenvec(coods):
 
 @nb.jit(nogil=True, parallel=True)
 def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth):
-    # # Define x and y positions for the gaussians
-    # Gx, Gy = np.meshgrid(np.linspace(imgrange[0][0], imgrange[0][1], Ndim),
-    #                      np.linspace(imgrange[1][0], imgrange[1][1], Ndim))
-    #
-    # # Initialise the image array
-    # gsmooth_img = np.zeros((Ndim, Ndim))
-    #
-    # # Loop over each star computing the smoothed gaussian distribution for this particle
-    # for x, y, l, sml in zip(pos[:, i], pos[:, j], ls, smooth):
-    #
-    #     # Compute the image
-    #     g = np.exp(-(((Gx - x) ** 2 + (Gy - y) ** 2) / (2.0 * sml ** 2)))
-    #
-    #     # Get the sum of the gaussian
-    #     gsum = np.sum(g)
-    #
-    #     # If there are stars within the image in this gaussian add it to the image array
-    #     if gsum > 0:
-    #         gsmooth_img += g * l / gsum
+    # Define x and y positions for the gaussians
+    Gx, Gy = np.meshgrid(np.linspace(imgrange[0][0], imgrange[0][1], Ndim),
+                         np.linspace(imgrange[1][0], imgrange[1][1], Ndim))
 
-    gsmooth_img, xedges, yedges = np.histogram2d(pos[:, i], pos[:, j],
-                                         bins=Ndim,
-                                         range=imgrange,
-                                         weights=ls)
+    # Initialise the image array
+    gsmooth_img = np.zeros((Ndim, Ndim))
+
+    # Loop over each star computing the smoothed gaussian distribution for this particle
+    for x, y, l, sml in zip(pos[:, i], pos[:, j], ls, smooth):
+
+        # Compute the image
+        g = np.exp(-(((Gx - x) ** 2 + (Gy - y) ** 2) / (2.0 * sml ** 2)))
+
+        # Get the sum of the gaussian
+        gsum = np.sum(g)
+
+        # If there are stars within the image in this gaussian add it to the image array
+        if gsum > 0:
+            gsmooth_img += g * l / gsum
+
+    # gsmooth_img, xedges, yedges = np.histogram2d(pos[:, i], pos[:, j],
+    #                                      bins=Ndim,
+    #                                      range=imgrange,
+    #                                      weights=ls)
 
     return gsmooth_img
 

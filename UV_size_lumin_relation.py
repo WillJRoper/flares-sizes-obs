@@ -104,7 +104,7 @@ for tag in snaps:
         csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
 
     # Define width
-    ini_width = 100
+    ini_width = 60
 
     # Compute the resolution
     ini_res = ini_width / csoft
@@ -146,7 +146,8 @@ for tag in snaps:
 
                 this_pos = poss[:, b: e].T
                 this_lumin = reg_dict[f][b: e]
-                this_smls = smls[b: e]
+                # this_smls = smls[b: e]
+                this_smls = np.full_like(this_lumin, csoft / 2.355)
 
                 if np.nansum(this_lumin) == 0:
                     continue
@@ -166,7 +167,7 @@ for tag in snaps:
 
                     img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
                                              this_lumin,
-                                             this_smls / 2.355)
+                                             this_smls)
                 else:
 
                     # Centre positions on luminosity weighted centre
