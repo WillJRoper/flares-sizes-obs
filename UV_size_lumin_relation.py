@@ -160,12 +160,12 @@ for tag in snaps:
 
                 if orientation == "sim" or orientation == "face-on":
 
-                    # Centre positions on luminosity weighted centre
-                    # NOTE: This is done in 3D not in projection!
-                    lumin_cent = util.lumin_weighted_centre(this_pos,
-                                                            this_lumin,
-                                                            i=0, j=1)
-                    this_pos[:, (0, 1)] -= lumin_cent
+                    # # Centre positions on luminosity weighted centre
+                    # # NOTE: This is done in 3D not in projection!
+                    # lumin_cent = util.lumin_weighted_centre(this_pos,
+                    #                                         this_lumin,
+                    #                                         i=0, j=1)
+                    # this_pos[:, (0, 1)] -= lumin_cent
 
                     this_radii = util.calc_rad(this_pos, i=0, j=1)
 
