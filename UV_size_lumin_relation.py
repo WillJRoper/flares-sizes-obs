@@ -773,6 +773,7 @@ for f in filters:
 
             hlrs = np.array(hlr_dict[snap][f])
             lumins = np.array(lumin_dict[snap][f])
+            mass = np.array(mass_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
                                     np.logical_and(lumins > 10 ** 28,
@@ -870,8 +871,8 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
-                cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
-                                 yscale='log',
+                cbar = ax.hexbin(mass, hlrs, gridsize=50, mincnt=1,
+                                 yscale='log', xscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
