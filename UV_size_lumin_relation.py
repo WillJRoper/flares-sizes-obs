@@ -183,9 +183,9 @@ for tag in snaps:
 
                     this_radii = util.calc_rad(this_pos, i=0, j=1)
 
-                    img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
-                                             this_lumin,
-                                             this_smls)
+                    # img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
+                    #                          this_lumin,
+                    #                          this_smls)
                 else:
 
                     # # Centre positions on luminosity weighted centre
@@ -201,10 +201,10 @@ for tag in snaps:
                     #                          this_lumin,
                     #                          this_smls)
 
-                hlr_app_dict[tag][f].append(util.get_img_hlr(img,
-                                                             apertures,
-                                                             app_radii, res,
-                                                             csoft))
+                # hlr_app_dict[tag][f].append(util.get_img_hlr(img,
+                #                                              apertures,
+                #                                              app_radii, res,
+                #                                              csoft))
 
                 hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
                                                                  this_lumin))
@@ -212,21 +212,21 @@ for tag in snaps:
                 lumin_dict[tag][f].append(tot_l)
                 mass_dict[tag][f].append(this_mass)
 
-                fig = plt.figure()
-                ax = fig.add_subplot(111)
-                ax.imshow(np.log10(img), extent=imgextent)
-                ax.grid(False)
-                circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
-                ax.add_artist(circle1)
-                circle1 = plt.Circle((0, 0), hlr_app_dict[tag][f][-1],
-                                     color='g', linestyle="--", fill=False)
-                ax.add_artist(circle1)
-                circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
-                                     color='b', linestyle="--", fill=False)
-                ax.add_artist(circle1)
-                fig.savefig("plots/gal_img_log_%.1f.png"
-                            % np.log10(np.sum(this_lumin)))
-                plt.close(fig)
+                # fig = plt.figure()
+                # ax = fig.add_subplot(111)
+                # ax.imshow(np.log10(img), extent=imgextent)
+                # ax.grid(False)
+                # circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
+                # ax.add_artist(circle1)
+                # circle1 = plt.Circle((0, 0), hlr_app_dict[tag][f][-1],
+                #                      color='g', linestyle="--", fill=False)
+                # ax.add_artist(circle1)
+                # circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
+                #                      color='b', linestyle="--", fill=False)
+                # ax.add_artist(circle1)
+                # fig.savefig("plots/gal_img_log_%.1f.png"
+                #             % np.log10(np.sum(this_lumin)))
+                # plt.close(fig)
 
 try:
     hdf = h5py.File("flares_sizes.hdf5", "r+")
