@@ -168,10 +168,11 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             gasCoords = G_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
             S_coords[:, begin[jj]: end[jj]] = starCoords.T
 
-            MetSurfaceDensities = util.get_Z_LOS(starCoords, gasCoords,
-                                                 gasMasses, gasMetallicities,
-                                                 gasSML, (0, 1, 2),
-                                                 lkernel, kbins)
+            # MetSurfaceDensities = util.get_Z_LOS(starCoords, gasCoords,
+            #                                      gasMasses, gasMetallicities,
+            #                                      gasSML, (0, 1, 2),
+            #                                      lkernel, kbins)
+            MetSurfaceDensities = S_los[begin[jj]:end[jj]]
 
         elif orientation == "face-on":
 
