@@ -85,10 +85,10 @@ lumin_dict = {}
 mass_dict = {}
 
 # Set orientation
-orientation = "sim"
+orientation = sys.argv[1]
 
 # Define luminosity and dust model types
-Type = sys.argv[1]
+Type = sys.argv[2]
 extinction = 'default'
 
 # Set mass limit
@@ -1066,7 +1066,7 @@ for f in filters:
                     fontsize=8)
 
             # Label axes
-            ax.set_xlabel(r'$M_{UV}$')
+            ax.set_xlabel(r'$M_\star/M_\odot$')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             fig.savefig('plots/HalfLightRadius_Mass_' + f + '_' + str(z) + '_'
