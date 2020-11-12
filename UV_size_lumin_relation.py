@@ -27,16 +27,27 @@ sns.set_style('whitegrid')
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
-kawa_up_params = {'beta': {6: 0.46 + 0.08, 7: 0.46 + 0.08,
-                           8: 0.38 + 0.28, 9: 0.56 + 1.01},
-                  'r_0': {6: 0.94 + 0.2, 7: 0.94 + 0.2,
-                          8: 0.81 + 5.28, 9: 1.2 + 367.64}}
-kawa_low_params = {'beta': {6: 0.46 - 0.09, 7: 0.46 - 0.09,
-                            8: 0.38 - 0.78, 9: 0.56 - 0.27},
-                   'r_0': {6: 0.94 - 0.15, 7: 0.94 - 0.15,
-                           8: 0.81 - 0.26, 9: 1.2 - 0.74}}
+kawa_up_params = {'beta': {6: 0.08, 7: 0.08,
+                           8: 0.28, 9: 1.01},
+                  'r_0': {6: 0.2, 7: 0.2,
+                          8: 5.28, 9: 367.64}}
+kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
+                            8: 0.78, 9: 0.27},
+                   'r_0': {6: 0.15, 7: 0.15,
+                           8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 
+
+def kawa_fit_err(y, l, ro, b, ro_err, b_err, uplow="up"):
+
+    ro_term = ro_err * (l / M_to_lum(-21))**b
+    beta_term = b_err * ro * (l / M_to_lum(-21)) ** b \
+                * np.log(l / M_to_lum(-21))
+
+    if uplow == "up":
+        return y + np.sqrt(ro_term**2 + beta_term**2)
+    else:
+        return y - np.sqrt(ro_term ** 2 + beta_term ** 2)
 
 def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
     if bins == None:
@@ -362,12 +373,22 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
-                ax.plot(fit_lumins,
-                        kawa_fit(fit_lumins,
-                                 kawa_params['r_0'][int(z)],
-                                 kawa_params['beta'][int(z)]) / (
-                                    csoft / (1 + z)),
-                        linestyle='dashed', color='k', alpha=0.9)
+                fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+                               kawa_params['beta'][int(z)])
+                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)], 
+                                  kawa_params['beta'][int(z)],
+                                  kawa_up_params['r_0'][int(z)],
+                                  kawa_up_params['beta'][int(z)], uplow="low")
+                low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                   kawa_params['beta'][int(z)],
+                                   kawa_low_params['r_0'][int(z)],
+                                   kawa_low_params['beta'][int(z)],
+                                   uplow="low")
+                ax.plot(fit_lumins, fit,
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2,
+                        label="Kawamata+18")
+                ax.fill_between(fit_lumins, up, low,
+                                color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -471,10 +492,22 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
-                ax.plot(fit_lumins, kawa_fit(fit_lumins,
-                                             kawa_params['r_0'][int(z)],
-                                             kawa_params['beta'][int(z)]),
-                        linestyle='dashed', color='k', alpha=0.9)
+                fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+                               kawa_params['beta'][int(z)])
+                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                  kawa_params['beta'][int(z)],
+                                  kawa_up_params['r_0'][int(z)],
+                                  kawa_up_params['beta'][int(z)], uplow="low")
+                low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                   kawa_params['beta'][int(z)],
+                                   kawa_low_params['r_0'][int(z)],
+                                   kawa_low_params['beta'][int(z)],
+                                   uplow="low")
+                ax.plot(fit_lumins, fit,
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2,
+                        label="Kawamata+18")
+                ax.fill_between(fit_lumins, up, low,
+                                color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -558,18 +591,21 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
-                ax.plot(fit_lumins, kawa_fit(fit_lumins,
-                                             kawa_params['r_0'][int(z)],
-                                             kawa_params['beta'][int(z)]),
+                fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+                               kawa_params['beta'][int(z)])
+                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                  kawa_params['beta'][int(z)],
+                                  kawa_up_params['r_0'][int(z)],
+                                  kawa_up_params['beta'][int(z)], uplow="low")
+                low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                   kawa_params['beta'][int(z)],
+                                   kawa_low_params['r_0'][int(z)],
+                                   kawa_low_params['beta'][int(z)],
+                                   uplow="low")
+                ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins,
-                                kawa_fit(fit_lumins,
-                                         kawa_low_params['r_0'][int(z)],
-                                         kawa_low_params['beta'][int(z)]),
-                                kawa_fit(fit_lumins,
-                                         kawa_up_params['r_0'][int(z)],
-                                         kawa_up_params['beta'][int(z)]),
+                ax.fill_between(fit_lumins, up, low,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -638,12 +674,22 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
-                ax.plot(fit_lumins,
-                        kawa_fit(fit_lumins,
-                                 kawa_params['r_0'][int(z)],
-                                 kawa_params['beta'][int(z)]) / (
-                                    csoft / (1 + z)),
-                        linestyle='dashed', color='k', alpha=0.9)
+                fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+                               kawa_params['beta'][int(z)])
+                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                  kawa_params['beta'][int(z)],
+                                  kawa_up_params['r_0'][int(z)],
+                                  kawa_up_params['beta'][int(z)], uplow="low")
+                low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                   kawa_params['beta'][int(z)],
+                                   kawa_low_params['r_0'][int(z)],
+                                   kawa_low_params['beta'][int(z)],
+                                   uplow="low")
+                ax.plot(fit_lumins, fit,
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2,
+                        label="Kawamata+18")
+                ax.fill_between(fit_lumins, up, low,
+                                color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -747,10 +793,22 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
-                ax.plot(fit_lumins, kawa_fit(fit_lumins,
-                                             kawa_params['r_0'][int(z)],
-                                             kawa_params['beta'][int(z)]),
-                        linestyle='dashed', color='k', alpha=0.9)
+                fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+                               kawa_params['beta'][int(z)])
+                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                  kawa_params['beta'][int(z)],
+                                  kawa_up_params['r_0'][int(z)],
+                                  kawa_up_params['beta'][int(z)], uplow="low")
+                low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                   kawa_params['beta'][int(z)],
+                                   kawa_low_params['r_0'][int(z)],
+                                   kawa_low_params['beta'][int(z)],
+                                   uplow="low")
+                ax.plot(fit_lumins, fit,
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2,
+                        label="Kawamata+18")
+                ax.fill_between(fit_lumins, up, low,
+                                color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -835,18 +893,21 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
-                ax.plot(fit_lumins, kawa_fit(fit_lumins,
-                                             kawa_params['r_0'][int(z)],
-                                             kawa_params['beta'][int(z)]),
+                fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+                               kawa_params['beta'][int(z)])
+                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                  kawa_params['beta'][int(z)],
+                                  kawa_up_params['r_0'][int(z)],
+                                  kawa_up_params['beta'][int(z)], uplow="low")
+                low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                   kawa_params['beta'][int(z)],
+                                   kawa_low_params['r_0'][int(z)],
+                                   kawa_low_params['beta'][int(z)],
+                                   uplow="low")
+                ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins,
-                                kawa_fit(fit_lumins,
-                                         kawa_low_params['r_0'][int(z)],
-                                         kawa_low_params['beta'][int(z)]),
-                                kawa_fit(fit_lumins,
-                                         kawa_up_params['r_0'][int(z)],
-                                         kawa_up_params['beta'][int(z)]),
+                ax.fill_between(fit_lumins, up, low,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -899,18 +960,21 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
-                ax.plot(fit_lumins, kawa_fit(fit_lumins,
-                                             kawa_params['r_0'][int(z)],
-                                             kawa_params['beta'][int(z)]),
+                fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+                               kawa_params['beta'][int(z)])
+                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                  kawa_params['beta'][int(z)],
+                                  kawa_up_params['r_0'][int(z)],
+                                  kawa_up_params['beta'][int(z)], uplow="low")
+                low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                   kawa_params['beta'][int(z)],
+                                   kawa_low_params['r_0'][int(z)],
+                                   kawa_low_params['beta'][int(z)],
+                                   uplow="low")
+                ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins,
-                                kawa_fit(fit_lumins,
-                                         kawa_low_params['r_0'][int(z)],
-                                         kawa_low_params['beta'][int(z)]),
-                                kawa_fit(fit_lumins,
-                                         kawa_up_params['r_0'][int(z)],
-                                         kawa_up_params['beta'][int(z)]),
+                ax.fill_between(fit_lumins, up, low,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -945,20 +1009,21 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
-                ax.plot(lum_to_M(fit_lumins), kawa_fit(fit_lumins,
-                                                       kawa_params['r_0'][
-                                                           int(z)],
-                                                       kawa_params['beta'][
-                                                           int(z)]),
+                fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+                               kawa_params['beta'][int(z)])
+                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                  kawa_params['beta'][int(z)],
+                                  kawa_up_params['r_0'][int(z)],
+                                  kawa_up_params['beta'][int(z)], uplow="low")
+                low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                   kawa_params['beta'][int(z)],
+                                   kawa_low_params['r_0'][int(z)],
+                                   kawa_low_params['beta'][int(z)],
+                                   uplow="low")
+                ax.plot(lum_to_M(fit_lumins), fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(lum_to_M(fit_lumins),
-                                kawa_fit(fit_lumins,
-                                         kawa_low_params['r_0'][int(z)],
-                                         kawa_low_params['beta'][int(z)]),
-                                kawa_fit(fit_lumins,
-                                         kawa_up_params['r_0'][int(z)],
-                                         kawa_up_params['beta'][int(z)]),
+                ax.fill_between(lum_to_M(fit_lumins), up, low,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -1030,18 +1095,21 @@ for f in filters:
             #     continue
             #
             # if int(z) in [6, 7, 8, 9]:
-            #     ax.plot(fit_lumins, kawa_fit(fit_lumins,
-            #                                  kawa_params['r_0'][int(z)],
-            #                                  kawa_params['beta'][int(z)]),
+            #     fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+            #                    kawa_params['beta'][int(z)])
+            #     up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+            #                       kawa_params['beta'][int(z)],
+            #                       kawa_up_params['r_0'][int(z)],
+            #                       kawa_up_params['beta'][int(z)], uplow="low")
+            #     low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+            #                        kawa_params['beta'][int(z)],
+            #                        kawa_low_params['r_0'][int(z)],
+            #                        kawa_low_params['beta'][int(z)],
+            #                        uplow="low")
+            #     ax.plot(fit_lumins, fit,
             #             linestyle='dashed', color='k', alpha=0.9, zorder=2,
             #             label="Kawamata+18")
-            #     ax.fill_between(fit_lumins,
-            #                     kawa_fit(fit_lumins,
-            #                              kawa_low_params['r_0'][int(z)],
-            #                              kawa_low_params['beta'][int(z)]),
-            #                     kawa_fit(fit_lumins,
-            #                              kawa_up_params['r_0'][int(z)],
-            #                              kawa_up_params['beta'][int(z)]),
+            #     ax.fill_between(fit_lumins, up, low,
             #                     color='k', alpha=0.4, zorder=1)
             #
             # ax.text(0.8, 0.1, f'$z={z}$',
