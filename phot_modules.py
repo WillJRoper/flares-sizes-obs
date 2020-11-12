@@ -144,6 +144,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     # Convert coordinates to physical
     S_coords = S_coords / (1 + z)
     G_coords = G_coords / (1 + z)
+    cops = cops / (1 + z)
 
     # --- create rest-frame luminosities
     F = FLARE.filters.add_filters(filters, new_lam=model.lam)
