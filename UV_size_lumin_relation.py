@@ -144,7 +144,7 @@ for tag in snaps:
 
         print("Processing galaxies in results", num)
 
-        poss = reg_dict["coords"] * 10 ** 3 / (1 + z)
+        poss = reg_dict["coords"] * 10 ** 3
         smls = reg_dict["smls"] * 10 ** 3
         masses = reg_dict["masses"]
         begin = reg_dict["begin"]
@@ -438,7 +438,7 @@ for f in filters:
                         labelleft=False, labelright=False)
 
         handles, labels = ax6.get_legend_handles_labels()
-        ax1.legend(handles, labels)
+        ax1.legend(handles, labels, loc="")
 
         fig.savefig('plots/HalfLightRadius_' + f + '_soft_' + orientation + '_'
                     + Type + "_" + extinction + "_"
@@ -557,7 +557,7 @@ for f in filters:
                         labelleft=False, labelright=False)
 
         handles, labels = ax6.get_legend_handles_labels()
-        ax1.legend(handles, labels)
+        ax1.legend(handles, labels, loc="bottom right")
 
         fig.savefig('plots/HalfLightRadius_' + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
@@ -739,7 +739,7 @@ for f in filters:
                         labelleft=False, labelright=False)
 
         handles, labels = ax6.get_legend_handles_labels()
-        ax1.legend(handles, labels)
+        ax1.legend(handles, labels, loc="bottom right")
 
         fig.savefig('plots/HalfLightRadiusAperture_' + f + '_soft_'
                     + orientation + '_' + Type + "_" + extinction
@@ -858,7 +858,7 @@ for f in filters:
                         labelleft=False, labelright=False)
 
         handles, labels = ax6.get_legend_handles_labels()
-        ax1.legend(handles, labels)
+        ax1.legend(handles, labels, loc="bottom right")
 
         fig.savefig('plots/HalfLightRadiusAperture_'
                     + f + '_' + orientation + '_'
@@ -920,7 +920,7 @@ for f in filters:
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend()
+            ax.legend(loc="")
 
             fig.savefig('plots/HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
@@ -987,7 +987,7 @@ for f in filters:
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend()
+            ax.legend(loc="bottom right")
 
             fig.savefig('plots/HalfLightRadius_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
@@ -1036,7 +1036,7 @@ for f in filters:
             ax.set_xlabel(r'$M_{UV}$')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend()
+            ax.legend(loc="bottom left")
 
             fig.savefig('plots/HalfLightRadius_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
