@@ -19,6 +19,7 @@ import phot_modules as phot
 import utilities as util
 from FLARE.photom import lum_to_M, M_to_lum
 import h5py
+import sys
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -87,7 +88,7 @@ mass_dict = {}
 orientation = "sim"
 
 # Define luminosity and dust model types
-Type = 'Total'
+Type = sys.argv[1]
 extinction = 'default'
 
 # Set mass limit
@@ -375,7 +376,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
                 fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
                                kawa_params['beta'][int(z)])
-                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)], 
+                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
                                   kawa_params['beta'][int(z)],
                                   kawa_up_params['r_0'][int(z)],
                                   kawa_up_params['beta'][int(z)], uplow="low")
