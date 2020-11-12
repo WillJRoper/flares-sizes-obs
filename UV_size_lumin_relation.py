@@ -92,7 +92,7 @@ Type = sys.argv[2]
 extinction = 'default'
 
 # Set mass limit
-masslim = 10 ** 9.5
+masslim = 10 ** 7
 
 for tag in snaps:
 
@@ -355,7 +355,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
             print(hlrs, lumins)
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > 10 ** 28,
+                                    np.logical_and(lumins > M_to_lum(-18),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
@@ -388,7 +388,7 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, up, low,
+                ax.fill_between(fit_lumins, low, up,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -479,7 +479,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > 10 ** 28,
+                                    np.logical_and(lumins > M_to_lum(-18),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
@@ -507,7 +507,7 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, up, low,
+                ax.fill_between(fit_lumins, low, up,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -575,7 +575,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > 10 ** 28,
+                                    np.logical_and(lumins > M_to_lum(-18),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
@@ -606,7 +606,7 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, up, low,
+                ax.fill_between(fit_lumins, low, up,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -657,7 +657,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > 10 ** 28,
+                                    np.logical_and(lumins > M_to_lum(-18),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
@@ -689,7 +689,7 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, up, low,
+                ax.fill_between(fit_lumins, low, up,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -780,7 +780,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > 10 ** 28,
+                                    np.logical_and(lumins > M_to_lum(-18),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds] * 1000
@@ -808,7 +808,7 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, up, low,
+                ax.fill_between(fit_lumins, low, up,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -877,7 +877,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > 10 ** 28,
+                                    np.logical_and(lumins > M_to_lum(-18),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
@@ -908,7 +908,7 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, up, low,
+                ax.fill_between(fit_lumins, low, up,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -943,7 +943,7 @@ for f in filters:
             mass = np.array(mass_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > 10 ** 28,
+                                    np.logical_and(lumins > M_to_lum(-18),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
@@ -975,7 +975,7 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, up, low,
+                ax.fill_between(fit_lumins, low, up,
                                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -1080,7 +1080,7 @@ for f in filters:
             # lumins = np.array(lumin_dict[snap][f])
             #
             # okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-            #                         np.logical_and(lumins > 10 ** 28,
+            #                         np.logical_and(lumins > M_to_lum(-18),
             #                                        lumins < 10 ** 50))
             # lumins = lumins[okinds]
             # hlrs = hlrs[okinds]
@@ -1110,7 +1110,7 @@ for f in filters:
             #     ax.plot(fit_lumins, fit,
             #             linestyle='dashed', color='k', alpha=0.9, zorder=2,
             #             label="Kawamata+18")
-            #     ax.fill_between(fit_lumins, up, low,
+            #     ax.fill_between(fit_lumins, low, up,
             #                     color='k', alpha=0.4, zorder=1)
             #
             # ax.text(0.8, 0.1, f'$z={z}$',
