@@ -43,8 +43,6 @@ def kawa_fit_err(y, l, ro, b, ro_err, b_err, uplow="up"):
     beta_term = b_err * ro * (l / M_to_lum(-21)) ** b \
                 * np.log(l / M_to_lum(-21))
 
-    print(np.sqrt(ro_term ** 2 + beta_term ** 2), uplow)
-
     if uplow == "up":
         return y + np.sqrt(ro_term ** 2 + beta_term ** 2)
     else:
