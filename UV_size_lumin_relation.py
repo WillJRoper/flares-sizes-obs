@@ -95,7 +95,9 @@ for tag in snaps:
     hlr_app_dict.setdefault(tag, {})
     lumin_dict.setdefault(tag, {})
 
-    lumin_dicts = phot.get_lum_all(kappa=0.0795, tag=tag, BC_fac=1.,
+    # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
+
+    lumin_dicts = phot.get_lum_all(kappa=0.0063, tag=tag, BC_fac=1.25,
                                    IMF='Chabrier_300',
                                    bins=np.arange(-24, -16, 0.5), inp='FLARES',
                                    LF=False, filters=filters, Type=Type,
@@ -806,15 +808,15 @@ for f in filters:
 
             plt.close(fig)
 
-            hlrs = np.array(hlr_app_dict[snap][f])
-            lumins = np.array(lumin_dict[snap][f])
-
-            okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > 10 ** 28,
-                                                   lumins < 10 ** 50))
-            lumins = lumins[okinds]
-            hlrs = hlrs[okinds]
-
+            # hlrs = np.array(hlr_app_dict[snap][f])
+            # lumins = np.array(lumin_dict[snap][f])
+            #
+            # okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+            #                         np.logical_and(lumins > 10 ** 28,
+            #                                        lumins < 10 ** 50))
+            # lumins = lumins[okinds]
+            # hlrs = hlrs[okinds]
+            #
             # fig = plt.figure()
             # ax = fig.add_subplot(111)
             # try:
