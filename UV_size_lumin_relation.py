@@ -78,8 +78,12 @@ lumin_dict = {}
 # Set orientation
 orientation = "sim"
 
+# Define luminosity and dust model types
+Type = 'Total'
+extinction = 'default'
+
 # Set mass limit
-masslim = 10 ** 10
+masslim = 10 ** 9.5
 
 for tag in snaps:
 
@@ -93,8 +97,8 @@ for tag in snaps:
     lumin_dicts = phot.get_lum_all(kappa=0.0795, tag=tag, BC_fac=1.,
                                    IMF='Chabrier_300',
                                    bins=np.arange(-24, -16, 0.5), inp='FLARES',
-                                   LF=False, filters=filters, Type='Total',
-                                   log10t_BC=7., extinction='default',
+                                   LF=False, filters=filters, Type=Type,
+                                   log10t_BC=7., extinction=extinction,
                                    orientation=orientation, numThreads=8,
                                    masslim=masslim)
 
@@ -187,7 +191,6 @@ for tag in snaps:
                 ax = fig.add_subplot(111)
                 ax.imshow(np.log10(img), extent=imgextent)
                 ax.grid(False)
-
                 circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
                 ax.add_artist(circle1)
                 fig.savefig("plots/gal_img_log_%.1f.png"
@@ -309,6 +312,7 @@ for f in filters:
                     labelleft=False, labelright=False)
 
     fig.savefig('plots/HalfLightRadius_' + f + '_soft_' + orientation + '_'
+                + Type + "_" + extinction + "_"
                 + '%.2f.png' % np.log10(masslim),
                 bbox_inches='tight')
 
@@ -410,6 +414,7 @@ for f in filters:
                     labelleft=False, labelright=False)
 
     fig.savefig('plots/HalfLightRadius_' + f + '_' + orientation + '_'
+                + Type + "_" + extinction + "_"
                 + '%.2f.png' % np.log10(masslim), bbox_inches='tight')
 
     plt.close(fig)
@@ -463,7 +468,8 @@ for f in filters:
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
         fig.savefig('plots/HalfLightRadius_' + f + '_' + str(z) + '_'
-                    + orientation + '_' + '%.2f.png' % np.log10(masslim),
+                    + orientation + '_' + Type + "_" + extinction + "_"
+                    + '%.2f.png' % np.log10(masslim),
                     bbox_inches='tight')
 
         plt.close(fig)
@@ -568,7 +574,8 @@ for f in filters:
                     labelleft=False, labelright=False)
 
     fig.savefig('plots/HalfLightRadiusAperture_' + f + '_soft_'
-                + orientation + '_' + '%.2f.png' % np.log10(masslim),
+                + orientation + '_' + Type + "_" + extinction
+                + "_" + '%.2f.png' % np.log10(masslim),
                 bbox_inches='tight')
 
     plt.close(fig)
@@ -670,6 +677,7 @@ for f in filters:
 
     fig.savefig('plots/HalfLightRadiusAperture_'
                 + f + '_' + orientation + '_'
+                + Type + "_" + extinction + "_"
                 + '%.2f.png' % np.log10(masslim), bbox_inches='tight')
 
     plt.close(fig)
@@ -724,7 +732,8 @@ for f in filters:
 
         fig.savefig('plots/HalfLightRadiusAperture_'
                     + f + '_' + str(z) + '_' + orientation
-                    + '_' + '%.2f.png' % np.log10(masslim),
+                    + '_' + Type + "_" + extinction + "_"
+                    + '%.2f.png' % np.log10(masslim),
                     bbox_inches='tight')
 
         plt.close(fig)
