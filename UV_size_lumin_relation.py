@@ -817,7 +817,8 @@ for f in filters:
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
-            except ValueError:
+            except ValueError as e:
+                print(e)
                 continue
 
             if int(z) in [6, 7, 8, 9]:
