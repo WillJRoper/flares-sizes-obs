@@ -61,7 +61,7 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
 # snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
 #          '006_z009p000', '007_z008p000', '008_z007p000',
 #          '009_z006p000', '010_z005p000', '011_z004p770']
-snaps = ['005_z010p000', ]
+snaps = ['009_z006p000', ]
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
@@ -138,8 +138,6 @@ for tag in snaps:
         masses = reg_dict["masses"]
         begin = reg_dict["begin"]
         end = reg_dict["end"]
-
-        print(masses)
 
         for f in filters:
 
@@ -984,7 +982,7 @@ for f in filters:
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
-            print(mass)
+
             try:
                 cbar = ax.hexbin(mass, hlrs, gridsize=50, mincnt=1,
                                  yscale='log', xscale='log',
