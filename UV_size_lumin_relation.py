@@ -813,7 +813,7 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
-                                 xscale='log', yscale='log',
+                                 yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
