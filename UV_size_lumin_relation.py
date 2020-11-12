@@ -43,6 +43,8 @@ def kawa_fit_err(y, l, ro, b, ro_err, b_err, uplow="up"):
     beta_term = b_err * ro * (l / M_to_lum(-21)) ** b \
                 * np.log(l / M_to_lum(-21))
 
+    print(np.sqrt(ro_term ** 2 + beta_term ** 2), uplow)
+
     if uplow == "up":
         return y + np.sqrt(ro_term ** 2 + beta_term ** 2)
     else:
@@ -72,7 +74,7 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
 # snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
 #          '006_z009p000', '007_z008p000', '008_z007p000',
 #          '009_z006p000', '010_z005p000', '011_z004p770']
-snaps = ['009_z006p000', '010_z005p000', '011_z004p770']
+snaps = ['009_z006p000', ]
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
