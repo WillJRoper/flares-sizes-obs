@@ -69,10 +69,10 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
             label=lab)
 
 
-# snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
-#          '006_z009p000', '007_z008p000', '008_z007p000',
-#          '009_z006p000', '010_z005p000', '011_z004p770']
-snaps = ['009_z006p000', ]
+snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
+         '006_z009p000', '007_z008p000', '008_z007p000',
+         '009_z006p000', '010_z005p000', '011_z004p770']
+# snaps = ['009_z006p000', ]
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
@@ -165,7 +165,6 @@ for tag in snaps:
                 this_lumin = reg_dict[f][b: e]
                 this_smls = smls[b: e]
                 this_mass = np.nansum(masses[b: e])
-                # this_smls = np.full_like(this_lumin, csoft / 2.355)
 
                 if np.nansum(this_lumin) == 0:
                     continue
@@ -183,9 +182,9 @@ for tag in snaps:
 
                     this_radii = util.calc_rad(this_pos, i=0, j=1)
 
-                    # img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
-                    #                          this_lumin,
-                    #                          this_smls)
+                    img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
+                                             this_lumin,
+                                             this_smls)
                 else:
 
                     # # Centre positions on luminosity weighted centre
@@ -197,14 +196,14 @@ for tag in snaps:
 
                     this_radii = util.calc_rad(this_pos, i=2, j=0)
 
-                    # img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
-                    #                          this_lumin,
-                    #                          this_smls)
+                    img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
+                                             this_lumin,
+                                             this_smls)
 
-                # hlr_app_dict[tag][f].append(util.get_img_hlr(img,
-                #                                              apertures,
-                #                                              app_radii, res,
-                #                                              csoft))
+                hlr_app_dict[tag][f].append(util.get_img_hlr(img,
+                                                             apertures,
+                                                             app_radii, res,
+                                                             csoft))
 
                 hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
                                                                  this_lumin))
@@ -387,8 +386,8 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, low, up,
-                                color='k', alpha=0.4, zorder=1)
+                # ax.fill_between(fit_lumins, low, up,
+                #                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -506,8 +505,8 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, low, up,
-                                color='k', alpha=0.4, zorder=1)
+                # ax.fill_between(fit_lumins, low, up,
+                #                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -605,8 +604,8 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, low, up,
-                                color='k', alpha=0.4, zorder=1)
+                # ax.fill_between(fit_lumins, low, up,
+                #                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -688,8 +687,8 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, low, up,
-                                color='k', alpha=0.4, zorder=1)
+                # ax.fill_between(fit_lumins, low, up,
+                #                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -807,8 +806,8 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, low, up,
-                                color='k', alpha=0.4, zorder=1)
+                # ax.fill_between(fit_lumins, low, up,
+                #                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
