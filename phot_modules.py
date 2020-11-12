@@ -57,6 +57,8 @@ def get_data(ii, tag, inp='FLARES'):
                          dtype=np.int64)
         cops = np.array(hf[tag + '/Galaxy'].get("COP"),
                         dtype=np.float64)
+        S_mass_ini = np.array(hf[tag + '/Particle'].get('S_MassInitial'),
+                          dtype=np.float64)
         S_mass = np.array(hf[tag + '/Particle'].get('S_MassInitial'),
                           dtype=np.float64) * 10 ** 10
         S_Z = np.array(hf[tag + '/Particle'].get('S_Z_smooth'),
@@ -72,7 +74,7 @@ def get_data(ii, tag, inp='FLARES'):
         G_sml = np.array(hf[tag + '/Particle'].get('G_sml'),
                          dtype=np.float64)
         G_mass = np.array(hf[tag + '/Particle'].get('G_Mass'),
-                          dtype=np.float64) * 10 ** 10
+                          dtype=np.float64)
         S_coords = np.array(hf[tag + '/Particle'].get('S_Coordinates'),
                             dtype=np.float64)
         G_coords = np.array(hf[tag + '/Particle'].get('G_Coordinates'),
@@ -92,9 +94,9 @@ def get_data(ii, tag, inp='FLARES'):
     gbegin[1:] = np.cumsum(G_len)[:-1]
     gend = np.cumsum(G_len)
 
-    return S_mass, S_Z, S_age, S_los, G_Z, S_len, \
+    return S_mass_ini, S_Z, S_age, S_los, G_Z, S_len, \
            G_len, G_sml, S_sml, G_mass, S_coords, G_coords, \
-           S_vels, G_vels, cops, \
+           S_vels, G_vels, S_mass, cops, \
            begin, end, gbegin, gend
 
 
@@ -108,9 +110,9 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     header = kinp['header']
     kbins = header.item()['bins']
 
-    S_mass, S_Z, S_age, S_los, G_Z, S_len, \
+    S_mass_ini, S_Z, S_age, S_los, G_Z, S_len, \
     G_len, G_sml, S_sml, G_mass, S_coords, G_coords, \
-    S_vels, G_vels, cops, \
+    S_vels, G_vels, S_mass, cops, \
     begin, end, gbegin, gend = get_data(sim, tag, inp)
 
     Lums = {f: np.zeros(len(S_mass), dtype=np.float64) for f in filters}
@@ -147,7 +149,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     for jj in range(len(begin)):
 
         # Extract values for this galaxy
-        Masses = S_mass[begin[jj]: end[jj]]
+        Masses = S_mass_ini[begin[jj]: end[jj]]
         Ages = S_age[begin[jj]: end[jj]]
         Metallicities = S_Z[begin[jj]: end[jj]]
         gasMetallicities = G_Z[begin[jj]: end[jj]]
