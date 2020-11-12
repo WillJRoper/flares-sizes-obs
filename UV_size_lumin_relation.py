@@ -33,7 +33,7 @@ def M_to_lum(M):
 
 def lum_to_M(lum):
     return -2.5 * np.log10(
-        lum / (3.0128 * 10 ** 28 * u.W).to(u.erg * u.s ** -1)) - 48.6
+        lum / (3.0128 * 10 ** 28 * u.W).to(u.erg * u.s ** -1).value) - 48.6
 
 
 # Define Kawamata17 fit and parameters
