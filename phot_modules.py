@@ -213,10 +213,10 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
                   "is not an recognised orientation. "
                   "Accepted types are 'sim', 'face-on', or 'side-on'")
 
-        # Mage = np.nansum(Masses * Ages) / np.nansum(Masses)
-        # Z = np.nanmean(gasMetallicities)
-        #
-        # MetSurfaceDensities = DTM_fit(Z, Mage) * MetSurfaceDensities
+        Mage = np.nansum(Masses * Ages) / np.nansum(Masses)
+        Z = np.nanmean(gasMetallicities)
+
+        MetSurfaceDensities = DTM_fit(Z, Mage) * MetSurfaceDensities
 
         if Type == 'Total':
             # --- calculate V-band (550nm) optical depth for each star particle

@@ -98,7 +98,7 @@ for tag in snaps:
 
     # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
 
-    lumin_dicts = phot.get_lum_all(kappa=0.0063, tag=tag, BC_fac=1.25,
+    lumin_dicts = phot.get_lum_all(kappa=0.0795, tag=tag, BC_fac=1,
                                    IMF='Chabrier_300',
                                    bins=np.arange(-24, -16, 0.5), inp='FLARES',
                                    LF=False, filters=filters, Type=Type,
