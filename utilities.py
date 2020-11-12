@@ -363,14 +363,11 @@ def lumin_weighted_centre(poss, ls, i, j):
 def calc_light_mass_rad(rs, ls):
 
     # Sort the radii and masses
-    okinds = rs <= 30
-    rs = rs[okinds]
-    ls = ls[okinds]
     sinds = np.argsort(rs)
     rs = rs[sinds]
     ls = ls[sinds]
 
-    if ls.size < 100:
+    if ls.size < 1:
         return 0.0
 
     # Get the cumalative sum of masses

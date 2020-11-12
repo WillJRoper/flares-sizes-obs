@@ -17,6 +17,7 @@ import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 import phot_modules as phot
 import utilities as util
+from FLARE.photom import lum_to_M, M_to_lum
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -802,6 +803,48 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             fig.savefig('plots/HalfLightRadius_' + f + '_' + str(z) + '_'
+                        + orientation + '_' + Type + "_" + extinction + "_"
+                        + '%.2f.png' % np.log10(masslim),
+                        bbox_inches='tight')
+
+            plt.close(fig)
+
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            try:
+                cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
+                                 xscale='log', yscale='log',
+                                 norm=LogNorm(), linewidths=0.2,
+                                 cmap='viridis')
+                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+            except ValueError:
+                continue
+
+            if int(z) in [6, 7, 8, 9]:
+                ax.plot(lum_to_M(fit_lumins), kawa_fit(fit_lumins,
+                                             kawa_params['r_0'][int(z)],
+                                             kawa_params['beta'][int(z)]),
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
+                ax.fill_between(lum_to_M(fit_lumins),
+                                kawa_fit(fit_lumins,
+                                         kawa_low_params['r_0'][int(z)],
+                                         kawa_low_params['beta'][int(z)]),
+                                kawa_fit(fit_lumins,
+                                         kawa_up_params['r_0'][int(z)],
+                                         kawa_up_params['beta'][int(z)]),
+                                color='k', alpha=0.4, zorder=1)
+
+            ax.text(0.8, 0.1, f'$z={z}$',
+                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                              ec="k", lw=1, alpha=0.8),
+                    transform=ax.transAxes, horizontalalignment='right',
+                    fontsize=8)
+
+            # Label axes
+            ax.set_xlabel(r'$M_{UV}$')
+            ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+            fig.savefig('plots/HalfLightRadius_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
                         + '%.2f.png' % np.log10(masslim),
                         bbox_inches='tight')
