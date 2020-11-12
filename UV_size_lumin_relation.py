@@ -202,7 +202,6 @@ for tag in snaps:
 
                 lumin_dict[tag][f].append(tot_l)
                 mass_dict[tag][f].append(this_mass)
-                print(this_mass)
 
                 # fig = plt.figure()
                 # ax = fig.add_subplot(111)
@@ -253,6 +252,61 @@ for snap in snaps:
         except KeyError:
             f_group = snap_group.create_group(f)
 
+        try:
+            dset = f_group.create_dataset("Luminosity", data=lumins,
+                                          dtype=lumins.dtype,
+                                          shape=lumins.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+        except RuntimeError:
+            del f_group["Luminosity"]
+            dset = f_group.create_dataset("Luminosity", data=lumins,
+                                          dtype=lumins.dtype,
+                                          shape=lumins.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+            
+        try:
+            dset = f_group.create_dataset("Mass", data=mass,
+                                          dtype=mass.dtype,
+                                          shape=mass.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$M_\odot$"
+        except RuntimeError:
+            del f_group["Mass"]
+            dset = f_group.create_dataset("Mass", data=mass,
+                                          dtype=mass.dtype,
+                                          shape=mass.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$M_\odot$"
+            
+        try:
+            dset = f_group.create_dataset("HLR", data=hlrs,
+                                          dtype=hlrs.dtype,
+                                          shape=hlrs.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
+        except RuntimeError:
+            del f_group["Luminosity"]
+            dset = f_group.create_dataset("HLR", data=hlrs,
+                                          dtype=hlrs.dtype,
+                                          shape=hlrs.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
+            
+        try:
+            dset = f_group.create_dataset("HLR_Aperture", data=hlrs_app,
+                                          dtype=hlrs_app.dtype,
+                                          shape=hlrs_app.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
+        except RuntimeError:
+            del f_group["HLR_Aperture"]
+            dset = f_group.create_dataset("HLR_Aperture", data=hlrs_app,
+                                          dtype=hlrs_app.dtype,
+                                          shape=hlrs_app.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
 
 for f in filters:
 
