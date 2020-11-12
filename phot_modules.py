@@ -38,7 +38,6 @@ def DTM_fit(Z, Age):
 
 
 def get_data(ii, tag, inp='FLARES'):
-
     num = str(ii)
     if inp == 'FLARES':
         if len(num) == 1:
@@ -59,7 +58,7 @@ def get_data(ii, tag, inp='FLARES'):
         cops = np.array(hf[tag + '/Galaxy'].get("COP"),
                         dtype=np.float64)
         S_mass = np.array(hf[tag + '/Particle'].get('S_MassInitial'),
-                          dtype=np.float64) * 10**10
+                          dtype=np.float64) * 10 ** 10
         S_Z = np.array(hf[tag + '/Particle'].get('S_Z_smooth'),
                        dtype=np.float64)
         S_age = np.array(hf[tag + '/Particle'].get('S_Age'),
@@ -73,11 +72,11 @@ def get_data(ii, tag, inp='FLARES'):
         G_sml = np.array(hf[tag + '/Particle'].get('G_sml'),
                          dtype=np.float64)
         G_mass = np.array(hf[tag + '/Particle'].get('G_Mass'),
-                          dtype=np.float64) * 10**10
+                          dtype=np.float64) * 10 ** 10
         S_coords = np.array(hf[tag + '/Particle'].get('S_Coordinates'),
-                           dtype=np.float64)
+                            dtype=np.float64)
         G_coords = np.array(hf[tag + '/Particle'].get('G_Coordinates'),
-                           dtype=np.float64)
+                            dtype=np.float64)
         S_vels = np.array(hf[tag + '/Particle'].get('S_Vel'),
                           dtype=np.float64)
         G_vels = np.array(hf[tag + '/Particle'].get('G_Vel'),
@@ -102,7 +101,6 @@ def get_data(ii, tag, inp='FLARES'):
 def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         filters=('FAKE.TH.FUV',), Type='Total', log10t_BC=7.,
         extinction='default', orientation="sim", masslim=None):
-    
     kinp = np.load('/cosma/home/dp004/dc-rope1/cosma7/FLARES/'
                    'flares/los_extinction/kernel_sph-anarchy.npz',
                    allow_pickle=True)
@@ -250,10 +248,10 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         # --- calculate rest-frame Luminosity. In units of erg/s/Hz
         for f in filters:
             Lnu = models.generate_Lnu_array(model, Masses, Ages, Metallicities,
-                                            tauVs_ISM, tauVs_BC, F, f, 
+                                            tauVs_ISM, tauVs_BC, F, f,
                                             fesc=fesc, log10t_BC=log10t_BC)
             Lums[f][begin[jj]: end[jj]] = Lnu
-            
+
     Lums["coords"] = S_coords
     Lums["smls"] = S_sml
     Lums["begin"] = begin
@@ -265,7 +263,6 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 def flux(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300',
          filters=FLARE.filters.NIRCam_W, Type='Total', log10t_BC=7.,
          extinction='default', orientation="sim"):
-    
     kinp = np.load('/cosma/home/dp004/dc-rope1/cosma7/FLARES/'
                    'flares/los_extinction/kernel_sph-anarchy.npz',
                    allow_pickle=True)
@@ -369,14 +366,10 @@ def flux(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300',
                   "is not an recognised orientation. "
                   "Accepted types are 'sim', 'face-on', or 'side-on'")
 
-        # GMetallicities=G_Z[gbegin[jj]:gend[jj]]
-        #
-        # Mage=Masses*Ages/np.nansum(Masses)
-        # Z=np.nanmean(GMetallicities)
-        # if kappa == 0:
-        #     tauVs=kappa * MetSurfaceDensities
-        # else:
-        #     tauVs=DTM_fit(Z, Mage) * MetSurfaceDensities
+        Mage = np.nansum(Masses * Ages) / np.nansum(Masses)
+        Z = np.nanmean(gasMetallicities)
+
+        MetSurfaceDensities = DTM_fit(Z, Mage) * MetSurfaceDensities
 
         if Type == 'Total':
             # --- calculate V-band (550nm) optical depth for each star particle
@@ -404,13 +397,12 @@ def flux(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300',
             tauVs_BC = None
             fesc = None
             ValueError(F"Undefined Type {Type}")
-            
+
         # --- calculate rest-frame Luminosity. In units of erg/s/Hz
         for f in filters:
-
             # --- calculate rest-frame flux of each object in nJy
             Fnu = models.generate_Fnu_array(model, Masses, Ages, Metallicities,
-                                            tauVs_ISM, tauVs_BC, F, f, 
+                                            tauVs_ISM, tauVs_BC, F, f,
                                             fesc=fesc, log10t_BC=log10t_BC)
 
             Fnus[f][begin[jj]: end[jj]] = Fnu
@@ -426,7 +418,6 @@ def flux(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300',
 def get_lines(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300',
               LF=False, lines='HI6563', Type='Total', log10t_BC=7.,
               extinction='default', orientation="sim"):
-
     kinp = np.load('/cosma/home/dp004/dc-rope1/cosma7/FLARES/'
                    'flares/los_extinction/kernel_sph-anarchy.npz',
                    allow_pickle=True)
@@ -586,7 +577,6 @@ def get_lum_all(kappa, tag, BC_fac, IMF='Chabrier_300',
                 filters=('FAKE.TH.FUV'), Type='Total', log10t_BC=7.,
                 extinction='default', orientation="sim", numThreads=8,
                 masslim=None):
-
     print(f"Getting luminosities for tag {tag} with kappa={kappa}")
 
     if inp == 'FLARES':
@@ -629,7 +619,6 @@ def get_lum_all(kappa, tag, BC_fac, IMF='Chabrier_300',
 def get_flux(sim, kappa, tag, BC_fac, IMF='Chabrier_300', inp='FLARES',
              filters=FLARE.filters.NIRCam, Type='Total', log10t_BC=7.,
              extinction='default', orientation="sim"):
-
     try:
         Fnus = flux(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp,
                     filters=filters, Type=Type, log10t_BC=log10t_BC,
@@ -645,7 +634,6 @@ def get_flux(sim, kappa, tag, BC_fac, IMF='Chabrier_300', inp='FLARES',
 def get_flux_all(kappa, tag, BC_fac, IMF='Chabrier_300', inp='FLARES',
                  filters=FLARE.filters.NIRCam, Type='Total', log10t_BC=7.,
                  extinction='default', orientation="sim", numThreads=8):
-
     print(f"Getting fluxes for tag {tag} with kappa={kappa}")
 
     if inp == 'FLARES':

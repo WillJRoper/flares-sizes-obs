@@ -63,9 +63,10 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
             label=lab)
 
 
-snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
-         '006_z009p000', '007_z008p000', '008_z007p000',
-         '009_z006p000', '010_z005p000', '011_z004p770']
+# snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
+#          '006_z009p000', '007_z008p000', '008_z007p000',
+#          '009_z006p000', '010_z005p000', '011_z004p770']
+snaps = ['009_z006p000', ]
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
@@ -187,16 +188,6 @@ for tag in snaps:
                                              this_lumin,
                                              this_smls)
 
-                # fig = plt.figure()
-                # ax = fig.add_subplot(111)
-                # ax.imshow(np.log10(img), extent=imgextent)
-                # ax.grid(False)
-                # circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
-                # ax.add_artist(circle1)
-                # fig.savefig("plots/gal_img_log_%.1f.png"
-                #             % np.log10(np.sum(this_lumin)))
-                # plt.close(fig)
-
                 hlr_app_dict[tag][f].append(util.get_img_hlr(img,
                                                              apertures,
                                                              app_radii, res,
@@ -207,533 +198,661 @@ for tag in snaps:
 
                 lumin_dict[tag][f].append(tot_l)
 
+                fig = plt.figure()
+                ax = fig.add_subplot(111)
+                ax.imshow(np.log10(img), extent=imgextent)
+                ax.grid(False)
+                circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
+                ax.add_artist(circle1)
+                circle1 = plt.Circle((0, 0), hlr_app_dict[tag][f][-1],
+                                     color='g', linestyle="--", fill=False)
+                ax.add_artist(circle1)
+                circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
+                                     color='b', linestyle="--", fill=False)
+                ax.add_artist(circle1)
+                fig.savefig("plots/gal_img_log_%.1f.png"
+                            % np.log10(np.sum(this_lumin)))
+                plt.close(fig)
+
+
 for f in filters:
 
     fit_lumins = np.logspace(28, 31, 1000)
 
-    axlims_x = []
-    axlims_y = []
+    if len(snaps) == 9:
 
-    # Set up plot
-    fig = plt.figure(figsize=(18, 10))
-    gs = gridspec.GridSpec(3, 6)
-    gs.update(wspace=0.0, hspace=0.0)
-    ax1 = fig.add_subplot(gs[0, 0])
-    ax2 = fig.add_subplot(gs[0, 1])
-    ax3 = fig.add_subplot(gs[0, 2])
-    ax4 = fig.add_subplot(gs[1, 0])
-    ax5 = fig.add_subplot(gs[1, 1])
-    ax6 = fig.add_subplot(gs[1, 2])
-    ax7 = fig.add_subplot(gs[2, 0])
-    ax8 = fig.add_subplot(gs[2, 1])
-    ax9 = fig.add_subplot(gs[2, 2])
+        axlims_x = []
+        axlims_y = []
 
-    for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
-                                snaps,
-                                [(0, 0), (0, 1), (0, 2),
-                                 (1, 0), (1, 1), (1, 2),
-                                 (2, 0), (2, 1), (2, 2)]):
+        # Set up plot
+        fig = plt.figure(figsize=(18, 10))
+        gs = gridspec.GridSpec(3, 6)
+        gs.update(wspace=0.0, hspace=0.0)
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[0, 1])
+        ax3 = fig.add_subplot(gs[0, 2])
+        ax4 = fig.add_subplot(gs[1, 0])
+        ax5 = fig.add_subplot(gs[1, 1])
+        ax6 = fig.add_subplot(gs[1, 2])
+        ax7 = fig.add_subplot(gs[2, 0])
+        ax8 = fig.add_subplot(gs[2, 1])
+        ax9 = fig.add_subplot(gs[2, 2])
 
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
+        for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
+                                    snaps,
+                                    [(0, 0), (0, 1), (0, 2),
+                                     (1, 0), (1, 1), (1, 2),
+                                     (2, 0), (2, 1), (2, 2)]):
 
-        hlrs = np.array(hlr_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
-        print(hlrs, lumins)
-        okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                np.logical_and(lumins > 10 ** 28,
-                                               lumins < 10 ** 50))
-        lumins = lumins[okinds]
-        hlrs = hlrs[okinds]
-        print(hlrs, lumins)
-        try:
-            cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)), gridsize=100,
-                             mincnt=1, xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            if lumins.size > 10:
-                plot_meidan_stat(lumins, hlrs / (csoft / (1 + z)), ax,
-                                 lab='REF',
-                                 color='r')
-        except ValueError:
-            continue
+            z_str = snap.split('z')[1].split('p')
+            z = float(z_str[0] + '.' + z_str[1])
 
-        if int(z) in [6, 7, 8, 9]:
-            ax.plot(fit_lumins,
-                    kawa_fit(fit_lumins,
-                             kawa_params['r_0'][int(z)],
-                             kawa_params['beta'][int(z)]) / (csoft / (1 + z)),
-                    linestyle='dashed', color='k', alpha=0.9)
+            hlrs = np.array(hlr_dict[snap][f])
+            lumins = np.array(lumin_dict[snap][f])
+            print(hlrs, lumins)
+            okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+                                    np.logical_and(lumins > 10 ** 28,
+                                                   lumins < 10 ** 50))
+            lumins = lumins[okinds]
+            hlrs = hlrs[okinds]
+            print(hlrs, lumins)
+            try:
+                cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)), gridsize=100,
+                                 mincnt=1, xscale='log', yscale='log',
+                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                if lumins.size > 10:
+                    plot_meidan_stat(lumins, hlrs / (csoft / (1 + z)), ax,
+                                     lab='REF',
+                                     color='r')
+            except ValueError:
+                continue
 
-        ax.text(0.8, 0.1, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
+            if int(z) in [6, 7, 8, 9]:
+                ax.plot(fit_lumins,
+                        kawa_fit(fit_lumins,
+                                 kawa_params['r_0'][int(z)],
+                                 kawa_params['beta'][int(z)]) / (csoft / (1 + z)),
+                        linestyle='dashed', color='k', alpha=0.9)
 
-        axlims_x.extend(ax.get_xlim())
-        axlims_y.extend(ax.get_ylim())
+            ax.text(0.8, 0.1, f'$z={z}$',
+                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                              ec="k", lw=1, alpha=0.8),
+                    transform=ax.transAxes, horizontalalignment='right',
+                    fontsize=8)
 
-        # Label axes
-        if i == 2:
-            ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        if j == 0:
-            ax.set_ylabel('$R_{1/2}/\epsilon$')
+            axlims_x.extend(ax.get_xlim())
+            axlims_y.extend(ax.get_ylim())
 
-    for ax in [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9]:
-        ax.set_xlim(np.min(axlims_x), np.max(axlims_x))
-        ax.set_ylim(10 ** -1.1, 10 ** 2.2)
-        for spine in ax.spines.values():
-            spine.set_edgecolor('k')
+            # Label axes
+            if i == 2:
+                ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+            if j == 0:
+                ax.set_ylabel('$R_{1/2}/\epsilon$')
 
-    # Remove axis labels
-    ax1.tick_params(axis='x', top=False, bottom=False,
-                    labeltop=False, labelbottom=False)
-    ax2.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax3.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax4.tick_params(axis='x', top=False, bottom=False,
-                    labeltop=False, labelbottom=False)
-    ax5.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax6.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax8.tick_params(axis='y', left=False, right=False,
-                    labelleft=False, labelright=False)
-    ax9.tick_params(axis='y', left=False, right=False,
-                    labelleft=False, labelright=False)
+        for ax in [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9]:
+            ax.set_xlim(np.min(axlims_x), np.max(axlims_x))
+            ax.set_ylim(10 ** -1.1, 10 ** 2.2)
+            for spine in ax.spines.values():
+                spine.set_edgecolor('k')
 
-    fig.savefig('plots/HalfLightRadius_' + f + '_soft_' + orientation + '_'
-                + Type + "_" + extinction + "_"
-                + '%.2f.png' % np.log10(masslim),
-                bbox_inches='tight')
+        # Remove axis labels
+        ax1.tick_params(axis='x', top=False, bottom=False,
+                        labeltop=False, labelbottom=False)
+        ax2.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax3.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax4.tick_params(axis='x', top=False, bottom=False,
+                        labeltop=False, labelbottom=False)
+        ax5.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax6.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax8.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
+        ax9.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
 
-    plt.close(fig)
-
-    axlims_x = []
-    axlims_y = []
-
-    # Set up plot
-    fig = plt.figure(figsize=(18, 10))
-    gs = gridspec.GridSpec(3, 6)
-    gs.update(wspace=0.0, hspace=0.0)
-    ax1 = fig.add_subplot(gs[0, 0])
-    ax2 = fig.add_subplot(gs[0, 1])
-    ax3 = fig.add_subplot(gs[0, 2])
-    ax4 = fig.add_subplot(gs[1, 0])
-    ax5 = fig.add_subplot(gs[1, 1])
-    ax6 = fig.add_subplot(gs[1, 2])
-    ax7 = fig.add_subplot(gs[2, 0])
-    ax8 = fig.add_subplot(gs[2, 1])
-    ax9 = fig.add_subplot(gs[2, 2])
-
-    for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
-                                snaps,
-                                [(0, 0), (0, 1), (0, 2),
-                                 (1, 0), (1, 1), (1, 2),
-                                 (2, 0), (2, 1), (2, 2)]):
-
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
-
-        hlrs = np.array(hlr_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
-
-        okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                np.logical_and(lumins > 10 ** 28,
-                                               lumins < 10 ** 50))
-        lumins = lumins[okinds]
-        hlrs = hlrs[okinds] * 1000
-        try:
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
-        except ValueError:
-            continue
-
-        if int(z) in [6, 7, 8, 9]:
-            ax.plot(fit_lumins, kawa_fit(fit_lumins,
-                                         kawa_params['r_0'][int(z)],
-                                         kawa_params['beta'][int(z)]),
-                    linestyle='dashed', color='k', alpha=0.9)
-
-        ax.text(0.8, 0.1, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
-        axlims_x.extend(ax.get_xlim())
-        axlims_y.extend(ax.get_ylim())
-
-        # Label axes
-        if i == 2:
-            ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        if j == 0:
-            ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-
-    for ax in [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9]:
-        ax.set_xlim(np.min(axlims_x), np.max(axlims_x))
-        ax.set_ylim(np.min(axlims_y), np.max(axlims_y))
-        for spine in ax.spines.values():
-            spine.set_edgecolor('k')
-
-    # Remove axis labels
-    ax1.tick_params(axis='x', top=False, bottom=False,
-                    labeltop=False, labelbottom=False)
-    ax2.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax3.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax4.tick_params(axis='x', top=False, bottom=False,
-                    labeltop=False, labelbottom=False)
-    ax5.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax6.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax8.tick_params(axis='y', left=False, right=False,
-                    labelleft=False, labelright=False)
-    ax9.tick_params(axis='y', left=False, right=False,
-                    labelleft=False, labelright=False)
-
-    fig.savefig('plots/HalfLightRadius_' + f + '_' + orientation + '_'
-                + Type + "_" + extinction + "_"
-                + '%.2f.png' % np.log10(masslim), bbox_inches='tight')
-
-    plt.close(fig)
-
-    for snap in snaps:
-
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
-
-        hlrs = np.array(hlr_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
-
-        okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                np.logical_and(lumins > 10 ** 28,
-                                               lumins < 10 ** 50))
-        lumins = lumins[okinds]
-        hlrs = hlrs[okinds]
-
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        try:
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
-        except ValueError:
-            continue
-
-        if int(z) in [6, 7, 8, 9]:
-            ax.plot(fit_lumins, kawa_fit(fit_lumins,
-                                         kawa_params['r_0'][int(z)],
-                                         kawa_params['beta'][int(z)]),
-                    linestyle='dashed', color='k', alpha=0.9, zorder=2)
-            ax.fill_between(fit_lumins,
-                            kawa_fit(fit_lumins,
-                                     kawa_low_params['r_0'][int(z)],
-                                     kawa_low_params['beta'][int(z)]),
-                            kawa_fit(fit_lumins,
-                                     kawa_up_params['r_0'][int(z)],
-                                     kawa_up_params['beta'][int(z)]),
-                            color='k', alpha=0.4, zorder=1)
-
-        ax.text(0.8, 0.1, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
-        # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-
-        fig.savefig('plots/HalfLightRadius_' + f + '_' + str(z) + '_'
-                    + orientation + '_' + Type + "_" + extinction + "_"
+        fig.savefig('plots/HalfLightRadius_' + f + '_soft_' + orientation + '_'
+                    + Type + "_" + extinction + "_"
                     + '%.2f.png' % np.log10(masslim),
                     bbox_inches='tight')
 
         plt.close(fig)
 
-    axlims_x = []
-    axlims_y = []
+        axlims_x = []
+        axlims_y = []
 
-    # Set up plot
-    fig = plt.figure(figsize=(18, 10))
-    gs = gridspec.GridSpec(3, 6)
-    gs.update(wspace=0.0, hspace=0.0)
-    ax1 = fig.add_subplot(gs[0, 0])
-    ax2 = fig.add_subplot(gs[0, 1])
-    ax3 = fig.add_subplot(gs[0, 2])
-    ax4 = fig.add_subplot(gs[1, 0])
-    ax5 = fig.add_subplot(gs[1, 1])
-    ax6 = fig.add_subplot(gs[1, 2])
-    ax7 = fig.add_subplot(gs[2, 0])
-    ax8 = fig.add_subplot(gs[2, 1])
-    ax9 = fig.add_subplot(gs[2, 2])
+        # Set up plot
+        fig = plt.figure(figsize=(18, 10))
+        gs = gridspec.GridSpec(3, 6)
+        gs.update(wspace=0.0, hspace=0.0)
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[0, 1])
+        ax3 = fig.add_subplot(gs[0, 2])
+        ax4 = fig.add_subplot(gs[1, 0])
+        ax5 = fig.add_subplot(gs[1, 1])
+        ax6 = fig.add_subplot(gs[1, 2])
+        ax7 = fig.add_subplot(gs[2, 0])
+        ax8 = fig.add_subplot(gs[2, 1])
+        ax9 = fig.add_subplot(gs[2, 2])
 
-    for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
-                                snaps,
-                                [(0, 0), (0, 1), (0, 2),
-                                 (1, 0), (1, 1), (1, 2),
-                                 (2, 0), (2, 1), (2, 2)]):
+        for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
+                                    snaps,
+                                    [(0, 0), (0, 1), (0, 2),
+                                     (1, 0), (1, 1), (1, 2),
+                                     (2, 0), (2, 1), (2, 2)]):
 
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
+            z_str = snap.split('z')[1].split('p')
+            z = float(z_str[0] + '.' + z_str[1])
 
-        hlrs = np.array(hlr_app_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
+            hlrs = np.array(hlr_dict[snap][f])
+            lumins = np.array(lumin_dict[snap][f])
 
-        okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                np.logical_and(lumins > 10 ** 28,
-                                               lumins < 10 ** 50))
-        lumins = lumins[okinds]
-        hlrs = hlrs[okinds]
-        try:
-            cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)), gridsize=100,
-                             mincnt=1, xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            if lumins.size > 10:
-                plot_meidan_stat(lumins, hlrs / (csoft / (1 + z)), ax,
-                                 lab='REF',
-                                 color='r')
-        except ValueError:
-            continue
+            okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+                                    np.logical_and(lumins > 10 ** 28,
+                                                   lumins < 10 ** 50))
+            lumins = lumins[okinds]
+            hlrs = hlrs[okinds] * 1000
+            try:
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 xscale='log', yscale='log',
+                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+            except ValueError:
+                continue
 
-        if int(z) in [6, 7, 8, 9]:
-            ax.plot(fit_lumins,
-                    kawa_fit(fit_lumins,
-                             kawa_params['r_0'][int(z)],
-                             kawa_params['beta'][int(z)]) / (csoft / (1 + z)),
-                    linestyle='dashed', color='k', alpha=0.9)
+            if int(z) in [6, 7, 8, 9]:
+                ax.plot(fit_lumins, kawa_fit(fit_lumins,
+                                             kawa_params['r_0'][int(z)],
+                                             kawa_params['beta'][int(z)]),
+                        linestyle='dashed', color='k', alpha=0.9)
 
-        ax.text(0.8, 0.1, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
+            ax.text(0.8, 0.1, f'$z={z}$',
+                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                              ec="k", lw=1, alpha=0.8),
+                    transform=ax.transAxes, horizontalalignment='right',
+                    fontsize=8)
 
-        axlims_x.extend(ax.get_xlim())
-        axlims_y.extend(ax.get_ylim())
+            axlims_x.extend(ax.get_xlim())
+            axlims_y.extend(ax.get_ylim())
 
-        # Label axes
-        if i == 2:
+            # Label axes
+            if i == 2:
+                ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+            if j == 0:
+                ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+        for ax in [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9]:
+            ax.set_xlim(np.min(axlims_x), np.max(axlims_x))
+            ax.set_ylim(np.min(axlims_y), np.max(axlims_y))
+            for spine in ax.spines.values():
+                spine.set_edgecolor('k')
+
+        # Remove axis labels
+        ax1.tick_params(axis='x', top=False, bottom=False,
+                        labeltop=False, labelbottom=False)
+        ax2.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax3.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax4.tick_params(axis='x', top=False, bottom=False,
+                        labeltop=False, labelbottom=False)
+        ax5.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax6.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax8.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
+        ax9.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
+
+        fig.savefig('plots/HalfLightRadius_' + f + '_' + orientation + '_'
+                    + Type + "_" + extinction + "_"
+                    + '%.2f.png' % np.log10(masslim), bbox_inches='tight')
+
+        plt.close(fig)
+
+        for snap in snaps:
+
+            z_str = snap.split('z')[1].split('p')
+            z = float(z_str[0] + '.' + z_str[1])
+
+            hlrs = np.array(hlr_dict[snap][f])
+            lumins = np.array(lumin_dict[snap][f])
+
+            okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+                                    np.logical_and(lumins > 10 ** 28,
+                                                   lumins < 10 ** 50))
+            lumins = lumins[okinds]
+            hlrs = hlrs[okinds]
+
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            try:
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 xscale='log', yscale='log',
+                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+            except ValueError:
+                continue
+
+            if int(z) in [6, 7, 8, 9]:
+                ax.plot(fit_lumins, kawa_fit(fit_lumins,
+                                             kawa_params['r_0'][int(z)],
+                                             kawa_params['beta'][int(z)]),
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
+                ax.fill_between(fit_lumins,
+                                kawa_fit(fit_lumins,
+                                         kawa_low_params['r_0'][int(z)],
+                                         kawa_low_params['beta'][int(z)]),
+                                kawa_fit(fit_lumins,
+                                         kawa_up_params['r_0'][int(z)],
+                                         kawa_up_params['beta'][int(z)]),
+                                color='k', alpha=0.4, zorder=1)
+
+            ax.text(0.8, 0.1, f'$z={z}$',
+                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                              ec="k", lw=1, alpha=0.8),
+                    transform=ax.transAxes, horizontalalignment='right',
+                    fontsize=8)
+
+            # Label axes
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        if j == 0:
-            ax.set_ylabel('$R_{1/2}/\epsilon$')
-
-    for ax in [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9]:
-        ax.set_xlim(np.min(axlims_x), np.max(axlims_x))
-        ax.set_ylim(10 ** -1.1, 10 ** 2.2)
-        for spine in ax.spines.values():
-            spine.set_edgecolor('k')
-
-    # Remove axis labels
-    ax1.tick_params(axis='x', top=False, bottom=False,
-                    labeltop=False, labelbottom=False)
-    ax2.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax3.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax4.tick_params(axis='x', top=False, bottom=False,
-                    labeltop=False, labelbottom=False)
-    ax5.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax6.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax8.tick_params(axis='y', left=False, right=False,
-                    labelleft=False, labelright=False)
-    ax9.tick_params(axis='y', left=False, right=False,
-                    labelleft=False, labelright=False)
-
-    fig.savefig('plots/HalfLightRadiusAperture_' + f + '_soft_'
-                + orientation + '_' + Type + "_" + extinction
-                + "_" + '%.2f.png' % np.log10(masslim),
-                bbox_inches='tight')
-
-    plt.close(fig)
-
-    axlims_x = []
-    axlims_y = []
-
-    # Set up plot
-    fig = plt.figure(figsize=(18, 10))
-    gs = gridspec.GridSpec(3, 6)
-    gs.update(wspace=0.0, hspace=0.0)
-    ax1 = fig.add_subplot(gs[0, 0])
-    ax2 = fig.add_subplot(gs[0, 1])
-    ax3 = fig.add_subplot(gs[0, 2])
-    ax4 = fig.add_subplot(gs[1, 0])
-    ax5 = fig.add_subplot(gs[1, 1])
-    ax6 = fig.add_subplot(gs[1, 2])
-    ax7 = fig.add_subplot(gs[2, 0])
-    ax8 = fig.add_subplot(gs[2, 1])
-    ax9 = fig.add_subplot(gs[2, 2])
-
-    for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
-                                snaps,
-                                [(0, 0), (0, 1), (0, 2),
-                                 (1, 0), (1, 1), (1, 2),
-                                 (2, 0), (2, 1), (2, 2)]):
-
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
-
-        hlrs = np.array(hlr_app_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
-
-        okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                np.logical_and(lumins > 10 ** 28,
-                                               lumins < 10 ** 50))
-        lumins = lumins[okinds]
-        hlrs = hlrs[okinds] * 1000
-        try:
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
-        except ValueError:
-            continue
-
-        if int(z) in [6, 7, 8, 9]:
-            ax.plot(fit_lumins, kawa_fit(fit_lumins,
-                                         kawa_params['r_0'][int(z)],
-                                         kawa_params['beta'][int(z)]),
-                    linestyle='dashed', color='k', alpha=0.9)
-
-        ax.text(0.8, 0.1, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
-        axlims_x.extend(ax.get_xlim())
-        axlims_y.extend(ax.get_ylim())
-
-        # Label axes
-        if i == 2:
-            ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        if j == 0:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-    for ax in [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9]:
-        ax.set_xlim(np.min(axlims_x), np.max(axlims_x))
-        ax.set_ylim(np.min(axlims_y), np.max(axlims_y))
-        for spine in ax.spines.values():
-            spine.set_edgecolor('k')
+            fig.savefig('plots/HalfLightRadius_' + f + '_' + str(z) + '_'
+                        + orientation + '_' + Type + "_" + extinction + "_"
+                        + '%.2f.png' % np.log10(masslim),
+                        bbox_inches='tight')
 
-    # Remove axis labels
-    ax1.tick_params(axis='x', top=False, bottom=False,
-                    labeltop=False, labelbottom=False)
-    ax2.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax3.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax4.tick_params(axis='x', top=False, bottom=False,
-                    labeltop=False, labelbottom=False)
-    ax5.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax6.tick_params(axis='both', left=False, top=False,
-                    right=False, bottom=False,
-                    labelleft=False, labeltop=False,
-                    labelright=False, labelbottom=False)
-    ax8.tick_params(axis='y', left=False, right=False,
-                    labelleft=False, labelright=False)
-    ax9.tick_params(axis='y', left=False, right=False,
-                    labelleft=False, labelright=False)
+            plt.close(fig)
 
-    fig.savefig('plots/HalfLightRadiusAperture_'
-                + f + '_' + orientation + '_'
-                + Type + "_" + extinction + "_"
-                + '%.2f.png' % np.log10(masslim), bbox_inches='tight')
+        axlims_x = []
+        axlims_y = []
 
-    plt.close(fig)
+        # Set up plot
+        fig = plt.figure(figsize=(18, 10))
+        gs = gridspec.GridSpec(3, 6)
+        gs.update(wspace=0.0, hspace=0.0)
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[0, 1])
+        ax3 = fig.add_subplot(gs[0, 2])
+        ax4 = fig.add_subplot(gs[1, 0])
+        ax5 = fig.add_subplot(gs[1, 1])
+        ax6 = fig.add_subplot(gs[1, 2])
+        ax7 = fig.add_subplot(gs[2, 0])
+        ax8 = fig.add_subplot(gs[2, 1])
+        ax9 = fig.add_subplot(gs[2, 2])
 
-    for snap in snaps:
+        for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
+                                    snaps,
+                                    [(0, 0), (0, 1), (0, 2),
+                                     (1, 0), (1, 1), (1, 2),
+                                     (2, 0), (2, 1), (2, 2)]):
 
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
+            z_str = snap.split('z')[1].split('p')
+            z = float(z_str[0] + '.' + z_str[1])
 
-        hlrs = np.array(hlr_app_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
+            hlrs = np.array(hlr_app_dict[snap][f])
+            lumins = np.array(lumin_dict[snap][f])
 
-        okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                np.logical_and(lumins > 10 ** 28,
-                                               lumins < 10 ** 50))
-        lumins = lumins[okinds]
-        hlrs = hlrs[okinds]
+            okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+                                    np.logical_and(lumins > 10 ** 28,
+                                                   lumins < 10 ** 50))
+            lumins = lumins[okinds]
+            hlrs = hlrs[okinds]
+            try:
+                cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)), gridsize=100,
+                                 mincnt=1, xscale='log', yscale='log',
+                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                if lumins.size > 10:
+                    plot_meidan_stat(lumins, hlrs / (csoft / (1 + z)), ax,
+                                     lab='REF',
+                                     color='r')
+            except ValueError:
+                continue
 
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        try:
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2, cmap='viridis')
-            # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
-        except ValueError:
-            continue
+            if int(z) in [6, 7, 8, 9]:
+                ax.plot(fit_lumins,
+                        kawa_fit(fit_lumins,
+                                 kawa_params['r_0'][int(z)],
+                                 kawa_params['beta'][int(z)]) / (csoft / (1 + z)),
+                        linestyle='dashed', color='k', alpha=0.9)
 
-        if int(z) in [6, 7, 8, 9]:
-            ax.plot(fit_lumins, kawa_fit(fit_lumins,
-                                         kawa_params['r_0'][int(z)],
-                                         kawa_params['beta'][int(z)]),
-                    linestyle='dashed', color='k', alpha=0.9, zorder=2)
-            ax.fill_between(fit_lumins,
-                            kawa_fit(fit_lumins,
-                                     kawa_low_params['r_0'][int(z)],
-                                     kawa_low_params['beta'][int(z)]),
-                            kawa_fit(fit_lumins,
-                                     kawa_up_params['r_0'][int(z)],
-                                     kawa_up_params['beta'][int(z)]),
-                            color='k', alpha=0.4, zorder=1)
+            ax.text(0.8, 0.1, f'$z={z}$',
+                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                              ec="k", lw=1, alpha=0.8),
+                    transform=ax.transAxes, horizontalalignment='right',
+                    fontsize=8)
 
-        ax.text(0.8, 0.1, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
+            axlims_x.extend(ax.get_xlim())
+            axlims_y.extend(ax.get_ylim())
 
-        # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+            # Label axes
+            if i == 2:
+                ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+            if j == 0:
+                ax.set_ylabel('$R_{1/2}/\epsilon$')
+
+        for ax in [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9]:
+            ax.set_xlim(np.min(axlims_x), np.max(axlims_x))
+            ax.set_ylim(10 ** -1.1, 10 ** 2.2)
+            for spine in ax.spines.values():
+                spine.set_edgecolor('k')
+
+        # Remove axis labels
+        ax1.tick_params(axis='x', top=False, bottom=False,
+                        labeltop=False, labelbottom=False)
+        ax2.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax3.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax4.tick_params(axis='x', top=False, bottom=False,
+                        labeltop=False, labelbottom=False)
+        ax5.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax6.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax8.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
+        ax9.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
+
+        fig.savefig('plots/HalfLightRadiusAperture_' + f + '_soft_'
+                    + orientation + '_' + Type + "_" + extinction
+                    + "_" + '%.2f.png' % np.log10(masslim),
+                    bbox_inches='tight')
+
+        plt.close(fig)
+
+        axlims_x = []
+        axlims_y = []
+
+        # Set up plot
+        fig = plt.figure(figsize=(18, 10))
+        gs = gridspec.GridSpec(3, 6)
+        gs.update(wspace=0.0, hspace=0.0)
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[0, 1])
+        ax3 = fig.add_subplot(gs[0, 2])
+        ax4 = fig.add_subplot(gs[1, 0])
+        ax5 = fig.add_subplot(gs[1, 1])
+        ax6 = fig.add_subplot(gs[1, 2])
+        ax7 = fig.add_subplot(gs[2, 0])
+        ax8 = fig.add_subplot(gs[2, 1])
+        ax9 = fig.add_subplot(gs[2, 2])
+
+        for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
+                                    snaps,
+                                    [(0, 0), (0, 1), (0, 2),
+                                     (1, 0), (1, 1), (1, 2),
+                                     (2, 0), (2, 1), (2, 2)]):
+
+            z_str = snap.split('z')[1].split('p')
+            z = float(z_str[0] + '.' + z_str[1])
+
+            hlrs = np.array(hlr_app_dict[snap][f])
+            lumins = np.array(lumin_dict[snap][f])
+
+            okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+                                    np.logical_and(lumins > 10 ** 28,
+                                                   lumins < 10 ** 50))
+            lumins = lumins[okinds]
+            hlrs = hlrs[okinds] * 1000
+            try:
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 xscale='log', yscale='log',
+                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+            except ValueError:
+                continue
+
+            if int(z) in [6, 7, 8, 9]:
+                ax.plot(fit_lumins, kawa_fit(fit_lumins,
+                                             kawa_params['r_0'][int(z)],
+                                             kawa_params['beta'][int(z)]),
+                        linestyle='dashed', color='k', alpha=0.9)
+
+            ax.text(0.8, 0.1, f'$z={z}$',
+                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                              ec="k", lw=1, alpha=0.8),
+                    transform=ax.transAxes, horizontalalignment='right',
+                    fontsize=8)
+
+            axlims_x.extend(ax.get_xlim())
+            axlims_y.extend(ax.get_ylim())
+
+            # Label axes
+            if i == 2:
+                ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+            if j == 0:
+                ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+        for ax in [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9]:
+            ax.set_xlim(np.min(axlims_x), np.max(axlims_x))
+            ax.set_ylim(np.min(axlims_y), np.max(axlims_y))
+            for spine in ax.spines.values():
+                spine.set_edgecolor('k')
+
+        # Remove axis labels
+        ax1.tick_params(axis='x', top=False, bottom=False,
+                        labeltop=False, labelbottom=False)
+        ax2.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax3.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax4.tick_params(axis='x', top=False, bottom=False,
+                        labeltop=False, labelbottom=False)
+        ax5.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax6.tick_params(axis='both', left=False, top=False,
+                        right=False, bottom=False,
+                        labelleft=False, labeltop=False,
+                        labelright=False, labelbottom=False)
+        ax8.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
+        ax9.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
 
         fig.savefig('plots/HalfLightRadiusAperture_'
-                    + f + '_' + str(z) + '_' + orientation
-                    + '_' + Type + "_" + extinction + "_"
-                    + '%.2f.png' % np.log10(masslim),
-                    bbox_inches='tight')
+                    + f + '_' + orientation + '_'
+                    + Type + "_" + extinction + "_"
+                    + '%.2f.png' % np.log10(masslim), bbox_inches='tight')
 
         plt.close(fig)
+
+        for snap in snaps:
+
+            z_str = snap.split('z')[1].split('p')
+            z = float(z_str[0] + '.' + z_str[1])
+
+            hlrs = np.array(hlr_app_dict[snap][f])
+            lumins = np.array(lumin_dict[snap][f])
+
+            okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+                                    np.logical_and(lumins > 10 ** 28,
+                                                   lumins < 10 ** 50))
+            lumins = lumins[okinds]
+            hlrs = hlrs[okinds]
+
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            try:
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 xscale='log', yscale='log',
+                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+            except ValueError:
+                continue
+
+            if int(z) in [6, 7, 8, 9]:
+                ax.plot(fit_lumins, kawa_fit(fit_lumins,
+                                             kawa_params['r_0'][int(z)],
+                                             kawa_params['beta'][int(z)]),
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
+                ax.fill_between(fit_lumins,
+                                kawa_fit(fit_lumins,
+                                         kawa_low_params['r_0'][int(z)],
+                                         kawa_low_params['beta'][int(z)]),
+                                kawa_fit(fit_lumins,
+                                         kawa_up_params['r_0'][int(z)],
+                                         kawa_up_params['beta'][int(z)]),
+                                color='k', alpha=0.4, zorder=1)
+
+            ax.text(0.8, 0.1, f'$z={z}$',
+                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                              ec="k", lw=1, alpha=0.8),
+                    transform=ax.transAxes, horizontalalignment='right',
+                    fontsize=8)
+
+            # Label axes
+            ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+            ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+            fig.savefig('plots/HalfLightRadiusAperture_'
+                        + f + '_' + str(z) + '_' + orientation
+                        + '_' + Type + "_" + extinction + "_"
+                        + '%.2f.png' % np.log10(masslim),
+                        bbox_inches='tight')
+
+            plt.close(fig)
+
+    else:
+
+        for snap in snaps:
+
+            z_str = snap.split('z')[1].split('p')
+            z = float(z_str[0] + '.' + z_str[1])
+
+            hlrs = np.array(hlr_dict[snap][f])
+            lumins = np.array(lumin_dict[snap][f])
+
+            okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+                                    np.logical_and(lumins > 10 ** 28,
+                                                   lumins < 10 ** 50))
+            lumins = lumins[okinds]
+            hlrs = hlrs[okinds]
+
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            try:
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 xscale='log', yscale='log',
+                                 norm=LogNorm(), linewidths=0.2,
+                                 cmap='viridis')
+                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+            except ValueError:
+                continue
+
+            if int(z) in [6, 7, 8, 9]:
+                ax.plot(fit_lumins, kawa_fit(fit_lumins,
+                                             kawa_params['r_0'][int(z)],
+                                             kawa_params['beta'][int(z)]),
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
+                ax.fill_between(fit_lumins,
+                                kawa_fit(fit_lumins,
+                                         kawa_low_params['r_0'][int(z)],
+                                         kawa_low_params['beta'][int(z)]),
+                                kawa_fit(fit_lumins,
+                                         kawa_up_params['r_0'][int(z)],
+                                         kawa_up_params['beta'][int(z)]),
+                                color='k', alpha=0.4, zorder=1)
+
+            ax.text(0.8, 0.1, f'$z={z}$',
+                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                              ec="k", lw=1, alpha=0.8),
+                    transform=ax.transAxes, horizontalalignment='right',
+                    fontsize=8)
+
+            # Label axes
+            ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+            ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+            fig.savefig('plots/HalfLightRadius_' + f + '_' + str(z) + '_'
+                        + orientation + '_' + Type + "_" + extinction + "_"
+                        + '%.2f.png' % np.log10(masslim),
+                        bbox_inches='tight')
+
+            plt.close(fig)
+
+            hlrs = np.array(hlr_app_dict[snap][f])
+            lumins = np.array(lumin_dict[snap][f])
+
+            okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+                                    np.logical_and(lumins > 10 ** 28,
+                                                   lumins < 10 ** 50))
+            lumins = lumins[okinds]
+            hlrs = hlrs[okinds]
+
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            try:
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 xscale='log', yscale='log',
+                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+            except ValueError:
+                continue
+
+            if int(z) in [6, 7, 8, 9]:
+                ax.plot(fit_lumins, kawa_fit(fit_lumins,
+                                             kawa_params['r_0'][int(z)],
+                                             kawa_params['beta'][int(z)]),
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
+                ax.fill_between(fit_lumins,
+                                kawa_fit(fit_lumins,
+                                         kawa_low_params['r_0'][int(z)],
+                                         kawa_low_params['beta'][int(z)]),
+                                kawa_fit(fit_lumins,
+                                         kawa_up_params['r_0'][int(z)],
+                                         kawa_up_params['beta'][int(z)]),
+                                color='k', alpha=0.4, zorder=1)
+
+            ax.text(0.8, 0.1, f'$z={z}$',
+                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                              ec="k", lw=1, alpha=0.8),
+                    transform=ax.transAxes, horizontalalignment='right',
+                    fontsize=8)
+
+            # Label axes
+            ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+            ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+            fig.savefig('plots/HalfLightRadiusAperture_'
+                        + f + '_' + str(z) + '_' + orientation
+                        + '_' + Type + "_" + extinction + "_"
+                        + '%.2f.png' % np.log10(masslim),
+                        bbox_inches='tight')
+
+            plt.close(fig)
