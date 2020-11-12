@@ -183,9 +183,9 @@ for tag in snaps:
 
                     this_radii = util.calc_rad(this_pos, i=0, j=1)
 
-                    # img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
-                    #                          this_lumin,
-                    #                          this_smls)
+                    img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
+                                             this_lumin,
+                                             this_smls)
                 else:
 
                     # # Centre positions on luminosity weighted centre
@@ -197,9 +197,9 @@ for tag in snaps:
 
                     this_radii = util.calc_rad(this_pos, i=2, j=0)
 
-                    img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
-                                             this_lumin,
-                                             this_smls)
+                    # img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
+                    #                          this_lumin,
+                    #                          this_smls)
 
                 hlr_app_dict[tag][f].append(util.get_img_hlr(img,
                                                              apertures,
