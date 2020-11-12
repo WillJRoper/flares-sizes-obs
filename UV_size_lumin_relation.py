@@ -17,7 +17,8 @@ import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 import phot_modules as phot
 import utilities as util
-from FLARE.photom import lum_to_M, M_to_lum
+# from FLARE.photom import lum_to_M, M_to_lum
+import astropy.units as u
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -28,6 +29,11 @@ geo = 4. * np.pi * (100. * 10. * 3.0867 * 10 ** 16) ** 2
 
 def M_to_lum(M):
     return 10 ** (-0.4 * (M + 48.6)) * geo
+
+
+def lum_to_M(lum):
+    return -2.5 * np.log10(
+        lum / (3.0128 * 10 ** 28 * u.W).to(u.erg * u.s ** -1)) - 48.6
 
 
 # Define Kawamata17 fit and parameters
@@ -137,8 +143,8 @@ for tag in snaps:
 
         print("Processing galaxies in results", num)
 
-        poss = reg_dict["coords"] * 10**3 / (1 + z)
-        smls = reg_dict["smls"] * 10**3
+        poss = reg_dict["coords"] * 10 ** 3 / (1 + z)
+        smls = reg_dict["smls"] * 10 ** 3
         begin = reg_dict["begin"]
         end = reg_dict["end"]
 
@@ -217,7 +223,6 @@ for tag in snaps:
                 #             % np.log10(np.sum(this_lumin)))
                 # plt.close(fig)
 
-
 for f in filters:
 
     fit_lumins = np.logspace(28, 31, 1000)
@@ -241,11 +246,12 @@ for f in filters:
         ax8 = fig.add_subplot(gs[2, 1])
         ax9 = fig.add_subplot(gs[2, 2])
 
-        for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
-                                    snaps,
-                                    [(0, 0), (0, 1), (0, 2),
-                                     (1, 0), (1, 1), (1, 2),
-                                     (2, 0), (2, 1), (2, 2)]):
+        for ax, snap, (i, j) in zip(
+                [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
+                snaps,
+                [(0, 0), (0, 1), (0, 2),
+                 (1, 0), (1, 1), (1, 2),
+                 (2, 0), (2, 1), (2, 2)]):
 
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
@@ -260,9 +266,11 @@ for f in filters:
             hlrs = hlrs[okinds]
             print(hlrs, lumins)
             try:
-                cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)), gridsize=100,
+                cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)),
+                                 gridsize=100,
                                  mincnt=1, xscale='log', yscale='log',
-                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                                 norm=LogNorm(), linewidths=0.2,
+                                 cmap='viridis')
                 if lumins.size > 10:
                     plot_meidan_stat(lumins, hlrs / (csoft / (1 + z)), ax,
                                      lab='REF',
@@ -274,7 +282,8 @@ for f in filters:
                 ax.plot(fit_lumins,
                         kawa_fit(fit_lumins,
                                  kawa_params['r_0'][int(z)],
-                                 kawa_params['beta'][int(z)]) / (csoft / (1 + z)),
+                                 kawa_params['beta'][int(z)]) / (
+                                    csoft / (1 + z)),
                         linestyle='dashed', color='k', alpha=0.9)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -348,11 +357,12 @@ for f in filters:
         ax8 = fig.add_subplot(gs[2, 1])
         ax9 = fig.add_subplot(gs[2, 2])
 
-        for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
-                                    snaps,
-                                    [(0, 0), (0, 1), (0, 2),
-                                     (1, 0), (1, 1), (1, 2),
-                                     (2, 0), (2, 1), (2, 2)]):
+        for ax, snap, (i, j) in zip(
+                [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
+                snaps,
+                [(0, 0), (0, 1), (0, 2),
+                 (1, 0), (1, 1), (1, 2),
+                 (2, 0), (2, 1), (2, 2)]):
 
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
@@ -368,7 +378,8 @@ for f in filters:
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  xscale='log', yscale='log',
-                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                                 norm=LogNorm(), linewidths=0.2,
+                                 cmap='viridis')
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
             except ValueError:
                 continue
@@ -451,7 +462,8 @@ for f in filters:
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  xscale='log', yscale='log',
-                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                                 norm=LogNorm(), linewidths=0.2,
+                                 cmap='viridis')
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
             except ValueError:
                 continue
@@ -504,11 +516,12 @@ for f in filters:
         ax8 = fig.add_subplot(gs[2, 1])
         ax9 = fig.add_subplot(gs[2, 2])
 
-        for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
-                                    snaps,
-                                    [(0, 0), (0, 1), (0, 2),
-                                     (1, 0), (1, 1), (1, 2),
-                                     (2, 0), (2, 1), (2, 2)]):
+        for ax, snap, (i, j) in zip(
+                [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
+                snaps,
+                [(0, 0), (0, 1), (0, 2),
+                 (1, 0), (1, 1), (1, 2),
+                 (2, 0), (2, 1), (2, 2)]):
 
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
@@ -522,9 +535,11 @@ for f in filters:
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
             try:
-                cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)), gridsize=100,
+                cbar = ax.hexbin(lumins, hlrs / (csoft / (1 + z)),
+                                 gridsize=100,
                                  mincnt=1, xscale='log', yscale='log',
-                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                                 norm=LogNorm(), linewidths=0.2,
+                                 cmap='viridis')
                 if lumins.size > 10:
                     plot_meidan_stat(lumins, hlrs / (csoft / (1 + z)), ax,
                                      lab='REF',
@@ -536,7 +551,8 @@ for f in filters:
                 ax.plot(fit_lumins,
                         kawa_fit(fit_lumins,
                                  kawa_params['r_0'][int(z)],
-                                 kawa_params['beta'][int(z)]) / (csoft / (1 + z)),
+                                 kawa_params['beta'][int(z)]) / (
+                                    csoft / (1 + z)),
                         linestyle='dashed', color='k', alpha=0.9)
 
             ax.text(0.8, 0.1, f'$z={z}$',
@@ -610,11 +626,12 @@ for f in filters:
         ax8 = fig.add_subplot(gs[2, 1])
         ax9 = fig.add_subplot(gs[2, 2])
 
-        for ax, snap, (i, j) in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
-                                    snaps,
-                                    [(0, 0), (0, 1), (0, 2),
-                                     (1, 0), (1, 1), (1, 2),
-                                     (2, 0), (2, 1), (2, 2)]):
+        for ax, snap, (i, j) in zip(
+                [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9],
+                snaps,
+                [(0, 0), (0, 1), (0, 2),
+                 (1, 0), (1, 1), (1, 2),
+                 (2, 0), (2, 1), (2, 2)]):
 
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
@@ -630,7 +647,8 @@ for f in filters:
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  xscale='log', yscale='log',
-                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                                 norm=LogNorm(), linewidths=0.2,
+                                 cmap='viridis')
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
             except ValueError:
                 continue
@@ -714,7 +732,8 @@ for f in filters:
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  xscale='log', yscale='log',
-                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                                 norm=LogNorm(), linewidths=0.2,
+                                 cmap='viridis')
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
             except ValueError:
                 continue
@@ -823,8 +842,10 @@ for f in filters:
 
             if int(z) in [6, 7, 8, 9]:
                 ax.plot(lum_to_M(fit_lumins), kawa_fit(fit_lumins,
-                                             kawa_params['r_0'][int(z)],
-                                             kawa_params['beta'][int(z)]),
+                                                       kawa_params['r_0'][
+                                                           int(z)],
+                                                       kawa_params['beta'][
+                                                           int(z)]),
                         linestyle='dashed', color='k', alpha=0.9, zorder=2)
                 ax.fill_between(lum_to_M(fit_lumins),
                                 kawa_fit(fit_lumins,
