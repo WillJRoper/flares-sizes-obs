@@ -297,7 +297,7 @@ for snap in snaps:
                                           compression="gzip")
             dset.attrs["units"] = "$\mathrm{pkpc}$"
         except RuntimeError:
-            del f_group["Luminosity"]
+            del f_group["HLR"]
             dset = f_group.create_dataset("HLR", data=hlrs,
                                           dtype=hlrs.dtype,
                                           shape=hlrs.shape,
