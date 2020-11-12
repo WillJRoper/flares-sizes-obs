@@ -61,7 +61,7 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
 # snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
 #          '006_z009p000', '007_z008p000', '008_z007p000',
 #          '009_z006p000', '010_z005p000', '011_z004p770']
-snaps = ['009_z006p000', ]
+snaps = ['005_z010p000', ]
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
@@ -139,6 +139,8 @@ for tag in snaps:
         begin = reg_dict["begin"]
         end = reg_dict["end"]
 
+        print(masses)
+
         for f in filters:
 
             hlr_dict[tag].setdefault(f, [])
@@ -153,7 +155,7 @@ for tag in snaps:
                 this_pos = poss[:, b: e].T
                 this_lumin = reg_dict[f][b: e]
                 this_smls = smls[b: e]
-                this_mass = np.sum(masses[b: e])
+                this_mass = np.nansum(masses[b: e])
                 # this_smls = np.full_like(this_lumin, csoft / 2.355)
 
                 if np.nansum(this_lumin) == 0:
@@ -200,6 +202,7 @@ for tag in snaps:
 
                 lumin_dict[tag][f].append(tot_l)
                 mass_dict[tag][f].append(this_mass)
+                print(this_mass)
 
                 # fig = plt.figure()
                 # ax = fig.add_subplot(111)
@@ -221,6 +224,35 @@ try:
     hdf = h5py.File("flares_sizes.hdf5", "r+")
 except OSError:
     hdf = h5py.File("flares_sizes.hdf5", "w")
+
+try:
+    type_group = hdf[Type]
+except KeyError:
+    type_group = hdf.create_group(Type)
+
+try:
+    orientation_group = type_group[orientation]
+except KeyError:
+    orientation_group = type_group.create_group(orientation)
+
+for snap in snaps:
+    for f in filters:
+
+        hlrs = np.array(hlr_dict[snap][f])
+        hlrs_app = np.array(hlr_app_dict[snap][f])
+        lumins = np.array(lumin_dict[snap][f])
+        mass = np.array(mass_dict[snap][f])
+
+        try:
+            snap_group = orientation_group[snap]
+        except KeyError:
+            snap_group = orientation_group.create_group(snap)
+
+        try:
+            f_group = snap_group[f]
+        except KeyError:
+            f_group = snap_group.create_group(f)
+
 
 for f in filters:
 
@@ -332,6 +364,9 @@ for f in filters:
         ax9.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
 
+        handles, labels = ax6.get_legend_handles_labels()
+        ax1.legend(handles, labels)
+
         fig.savefig('plots/HalfLightRadius_' + f + '_soft_' + orientation + '_'
                     + Type + "_" + extinction + "_"
                     + '%.2f.png' % np.log10(masslim),
@@ -436,6 +471,9 @@ for f in filters:
         ax9.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
 
+        handles, labels = ax6.get_legend_handles_labels()
+        ax1.legend(handles, labels)
+
         fig.savefig('plots/HalfLightRadius_' + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
                     + '%.2f.png' % np.log10(masslim), bbox_inches='tight')
@@ -471,7 +509,8 @@ for f in filters:
                 ax.plot(fit_lumins, kawa_fit(fit_lumins,
                                              kawa_params['r_0'][int(z)],
                                              kawa_params['beta'][int(z)]),
-                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2,
+                        label="Kawamata+18")
                 ax.fill_between(fit_lumins,
                                 kawa_fit(fit_lumins,
                                          kawa_low_params['r_0'][int(z)],
@@ -601,6 +640,9 @@ for f in filters:
         ax9.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
 
+        handles, labels = ax6.get_legend_handles_labels()
+        ax1.legend(handles, labels)
+
         fig.savefig('plots/HalfLightRadiusAperture_' + f + '_soft_'
                     + orientation + '_' + Type + "_" + extinction
                     + "_" + '%.2f.png' % np.log10(masslim),
@@ -705,6 +747,9 @@ for f in filters:
         ax9.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
 
+        handles, labels = ax6.get_legend_handles_labels()
+        ax1.legend(handles, labels)
+
         fig.savefig('plots/HalfLightRadiusAperture_'
                     + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
@@ -741,7 +786,8 @@ for f in filters:
                 ax.plot(fit_lumins, kawa_fit(fit_lumins,
                                              kawa_params['r_0'][int(z)],
                                              kawa_params['beta'][int(z)]),
-                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2,
+                        label="Kawamata+18")
                 ax.fill_between(fit_lumins,
                                 kawa_fit(fit_lumins,
                                          kawa_low_params['r_0'][int(z)],
@@ -760,6 +806,8 @@ for f in filters:
             # Label axes
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+            ax.legend()
 
             fig.savefig('plots/HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
@@ -802,7 +850,8 @@ for f in filters:
                 ax.plot(fit_lumins, kawa_fit(fit_lumins,
                                              kawa_params['r_0'][int(z)],
                                              kawa_params['beta'][int(z)]),
-                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2,
+                        label="Kawamata+18")
                 ax.fill_between(fit_lumins,
                                 kawa_fit(fit_lumins,
                                          kawa_low_params['r_0'][int(z)],
@@ -821,6 +870,8 @@ for f in filters:
             # Label axes
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+            ax.legend()
 
             fig.savefig('plots/HalfLightRadius_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
@@ -847,7 +898,8 @@ for f in filters:
                                                            int(z)],
                                                        kawa_params['beta'][
                                                            int(z)]),
-                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2,
+                        label="Kawamata+18")
                 ax.fill_between(lum_to_M(fit_lumins),
                                 kawa_fit(fit_lumins,
                                          kawa_low_params['r_0'][int(z)],
@@ -866,6 +918,8 @@ for f in filters:
             # Label axes
             ax.set_xlabel(r'$M_{UV}$')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+            ax.legend()
 
             fig.savefig('plots/HalfLightRadius_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
@@ -927,7 +981,8 @@ for f in filters:
             #     ax.plot(fit_lumins, kawa_fit(fit_lumins,
             #                                  kawa_params['r_0'][int(z)],
             #                                  kawa_params['beta'][int(z)]),
-            #             linestyle='dashed', color='k', alpha=0.9, zorder=2)
+            #             linestyle='dashed', color='k', alpha=0.9, zorder=2,
+            #             label="Kawamata+18")
             #     ax.fill_between(fit_lumins,
             #                     kawa_fit(fit_lumins,
             #                              kawa_low_params['r_0'][int(z)],
