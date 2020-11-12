@@ -170,49 +170,49 @@ for tag in snaps:
 
                     this_radii = util.calc_rad(this_pos, i=0, j=1)
 
-                    img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
-                                             this_lumin,
-                                             this_smls)
+                    # img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
+                    #                          this_lumin,
+                    #                          this_smls)
                 else:
 
-                    # Centre positions on luminosity weighted centre
-                    # NOTE: This is done in 3D not in projection!
-                    lumin_cent = util.lumin_weighted_centre(this_pos,
-                                                            this_lumin,
-                                                            i=2, j=0)
-                    this_pos[:, (2, 0)] -= lumin_cent
+                    # # Centre positions on luminosity weighted centre
+                    # # NOTE: This is done in 3D not in projection!
+                    # lumin_cent = util.lumin_weighted_centre(this_pos,
+                    #                                         this_lumin,
+                    #                                         i=2, j=0)
+                    # this_pos[:, (2, 0)] -= lumin_cent
 
                     this_radii = util.calc_rad(this_pos, i=2, j=0)
 
-                    img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
-                                             this_lumin,
-                                             this_smls)
+                    # img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
+                    #                          this_lumin,
+                    #                          this_smls)
 
-                hlr_app_dict[tag][f].append(util.get_img_hlr(img,
-                                                             apertures,
-                                                             app_radii, res,
-                                                             csoft))
+                # hlr_app_dict[tag][f].append(util.get_img_hlr(img,
+                #                                              apertures,
+                #                                              app_radii, res,
+                #                                              csoft))
 
                 hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
                                                                  this_lumin))
 
                 lumin_dict[tag][f].append(tot_l)
 
-                fig = plt.figure()
-                ax = fig.add_subplot(111)
-                ax.imshow(np.log10(img), extent=imgextent)
-                ax.grid(False)
-                circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
-                ax.add_artist(circle1)
-                circle1 = plt.Circle((0, 0), hlr_app_dict[tag][f][-1],
-                                     color='g', linestyle="--", fill=False)
-                ax.add_artist(circle1)
-                circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
-                                     color='b', linestyle="--", fill=False)
-                ax.add_artist(circle1)
-                fig.savefig("plots/gal_img_log_%.1f.png"
-                            % np.log10(np.sum(this_lumin)))
-                plt.close(fig)
+                # fig = plt.figure()
+                # ax = fig.add_subplot(111)
+                # ax.imshow(np.log10(img), extent=imgextent)
+                # ax.grid(False)
+                # circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
+                # ax.add_artist(circle1)
+                # circle1 = plt.Circle((0, 0), hlr_app_dict[tag][f][-1],
+                #                      color='g', linestyle="--", fill=False)
+                # ax.add_artist(circle1)
+                # circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
+                #                      color='b', linestyle="--", fill=False)
+                # ax.add_artist(circle1)
+                # fig.savefig("plots/gal_img_log_%.1f.png"
+                #             % np.log10(np.sum(this_lumin)))
+                # plt.close(fig)
 
 
 for f in filters:
@@ -815,44 +815,44 @@ for f in filters:
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
 
-            fig = plt.figure()
-            ax = fig.add_subplot(111)
-            try:
-                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                                 xscale='log', yscale='log',
-                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
-            except ValueError:
-                continue
-
-            if int(z) in [6, 7, 8, 9]:
-                ax.plot(fit_lumins, kawa_fit(fit_lumins,
-                                             kawa_params['r_0'][int(z)],
-                                             kawa_params['beta'][int(z)]),
-                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
-                ax.fill_between(fit_lumins,
-                                kawa_fit(fit_lumins,
-                                         kawa_low_params['r_0'][int(z)],
-                                         kawa_low_params['beta'][int(z)]),
-                                kawa_fit(fit_lumins,
-                                         kawa_up_params['r_0'][int(z)],
-                                         kawa_up_params['beta'][int(z)]),
-                                color='k', alpha=0.4, zorder=1)
-
-            ax.text(0.8, 0.1, f'$z={z}$',
-                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                              ec="k", lw=1, alpha=0.8),
-                    transform=ax.transAxes, horizontalalignment='right',
-                    fontsize=8)
-
-            # Label axes
-            ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-            ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-
-            fig.savefig('plots/HalfLightRadiusAperture_'
-                        + f + '_' + str(z) + '_' + orientation
-                        + '_' + Type + "_" + extinction + "_"
-                        + '%.2f.png' % np.log10(masslim),
-                        bbox_inches='tight')
-
-            plt.close(fig)
+            # fig = plt.figure()
+            # ax = fig.add_subplot(111)
+            # try:
+            #     cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+            #                      xscale='log', yscale='log',
+            #                      norm=LogNorm(), linewidths=0.2, cmap='viridis')
+            #     # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+            # except ValueError:
+            #     continue
+            #
+            # if int(z) in [6, 7, 8, 9]:
+            #     ax.plot(fit_lumins, kawa_fit(fit_lumins,
+            #                                  kawa_params['r_0'][int(z)],
+            #                                  kawa_params['beta'][int(z)]),
+            #             linestyle='dashed', color='k', alpha=0.9, zorder=2)
+            #     ax.fill_between(fit_lumins,
+            #                     kawa_fit(fit_lumins,
+            #                              kawa_low_params['r_0'][int(z)],
+            #                              kawa_low_params['beta'][int(z)]),
+            #                     kawa_fit(fit_lumins,
+            #                              kawa_up_params['r_0'][int(z)],
+            #                              kawa_up_params['beta'][int(z)]),
+            #                     color='k', alpha=0.4, zorder=1)
+            #
+            # ax.text(0.8, 0.1, f'$z={z}$',
+            #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
+            #                   ec="k", lw=1, alpha=0.8),
+            #         transform=ax.transAxes, horizontalalignment='right',
+            #         fontsize=8)
+            #
+            # # Label axes
+            # ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+            # ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+            #
+            # fig.savefig('plots/HalfLightRadiusAperture_'
+            #             + f + '_' + str(z) + '_' + orientation
+            #             + '_' + Type + "_" + extinction + "_"
+            #             + '%.2f.png' % np.log10(masslim),
+            #             bbox_inches='tight')
+            #
+            # plt.close(fig)
