@@ -17,23 +17,11 @@ import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 import phot_modules as phot
 import utilities as util
-# from FLARE.photom import lum_to_M, M_to_lum
+from FLARE.photom import lum_to_M, M_to_lum
 import astropy.units as u
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
-
-# Define factor relating the L to M in cm^2
-geo = 4. * np.pi * (100. * 10. * 3.0867 * 10 ** 16) ** 2
-
-
-def M_to_lum(M):
-    return 10 ** (-0.4 * (M + 48.6)) * geo
-
-
-def lum_to_M(lum):
-    return -2.5 * np.log10(
-        lum / (3.0128 * 10 ** 28 * u.W).to(u.erg * u.s ** -1).value) - 48.6
 
 
 # Define Kawamata17 fit and parameters
@@ -82,6 +70,7 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 hlr_dict = {}
 hlr_app_dict = {}
 lumin_dict = {}
+mass_dict = {}
 
 # Set orientation
 orientation = "sim"
@@ -101,6 +90,7 @@ for tag in snaps:
     hlr_dict.setdefault(tag, {})
     hlr_app_dict.setdefault(tag, {})
     lumin_dict.setdefault(tag, {})
+    mass_dict.setdefault(tag, {})
 
     # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
 
@@ -145,6 +135,7 @@ for tag in snaps:
 
         poss = reg_dict["coords"] * 10 ** 3 / (1 + z)
         smls = reg_dict["smls"] * 10 ** 3
+        masses = reg_dict["masses"]
         begin = reg_dict["begin"]
         end = reg_dict["end"]
 
@@ -153,6 +144,7 @@ for tag in snaps:
             hlr_dict[tag].setdefault(f, [])
             hlr_app_dict[tag].setdefault(f, [])
             lumin_dict[tag].setdefault(f, [])
+            mass_dict[tag].setdefault(f, [])
 
             for ind in range(len(begin)):
 
@@ -161,6 +153,7 @@ for tag in snaps:
                 this_pos = poss[:, b: e].T
                 this_lumin = reg_dict[f][b: e]
                 this_smls = smls[b: e]
+                this_mass = np.sum(masses[b: e])
                 # this_smls = np.full_like(this_lumin, csoft / 2.355)
 
                 if np.nansum(this_lumin) == 0:
@@ -206,6 +199,7 @@ for tag in snaps:
                                                                  this_lumin))
 
                 lumin_dict[tag][f].append(tot_l)
+                mass_dict[tag][f].append(this_mass)
 
                 # fig = plt.figure()
                 # ax = fig.add_subplot(111)
@@ -374,7 +368,7 @@ for f in filters:
                                     np.logical_and(lumins > 10 ** 28,
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
-            hlrs = hlrs[okinds] * 1000
+            hlrs = hlrs[okinds]
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  xscale='log', yscale='log',
@@ -867,6 +861,51 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             fig.savefig('plots/HalfLightRadius_AbMag_' + f + '_' + str(z) + '_'
+                        + orientation + '_' + Type + "_" + extinction + "_"
+                        + '%.2f.png' % np.log10(masslim),
+                        bbox_inches='tight')
+
+            plt.close(fig)
+
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            try:
+                cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
+                                 yscale='log',
+                                 norm=LogNorm(), linewidths=0.2,
+                                 cmap='viridis')
+                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+            except ValueError as e:
+                print(e)
+                continue
+
+            if int(z) in [6, 7, 8, 9]:
+                ax.plot(lum_to_M(fit_lumins), kawa_fit(fit_lumins,
+                                                       kawa_params['r_0'][
+                                                           int(z)],
+                                                       kawa_params['beta'][
+                                                           int(z)]),
+                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
+                ax.fill_between(lum_to_M(fit_lumins),
+                                kawa_fit(fit_lumins,
+                                         kawa_low_params['r_0'][int(z)],
+                                         kawa_low_params['beta'][int(z)]),
+                                kawa_fit(fit_lumins,
+                                         kawa_up_params['r_0'][int(z)],
+                                         kawa_up_params['beta'][int(z)]),
+                                color='k', alpha=0.4, zorder=1)
+
+            ax.text(0.8, 0.1, f'$z={z}$',
+                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                              ec="k", lw=1, alpha=0.8),
+                    transform=ax.transAxes, horizontalalignment='right',
+                    fontsize=8)
+
+            # Label axes
+            ax.set_xlabel(r'$M_{UV}$')
+            ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+            fig.savefig('plots/HalfLightRadius_Mass_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
                         + '%.2f.png' % np.log10(masslim),
                         bbox_inches='tight')
