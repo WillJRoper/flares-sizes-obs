@@ -68,7 +68,7 @@ snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
          '009_z006p000', '010_z005p000', '011_z004p770']
 
 # Define filter
-filters = ('FAKE.TH.FUV', )
+filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
 # Define dictionaries for results
 hlr_dict = {}
@@ -187,15 +187,15 @@ for tag in snaps:
                                              this_lumin,
                                              this_smls)
 
-                fig = plt.figure()
-                ax = fig.add_subplot(111)
-                ax.imshow(np.log10(img), extent=imgextent)
-                ax.grid(False)
-                circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
-                ax.add_artist(circle1)
-                fig.savefig("plots/gal_img_log_%.1f.png"
-                            % np.log10(np.sum(this_lumin)))
-                plt.close(fig)
+                # fig = plt.figure()
+                # ax = fig.add_subplot(111)
+                # ax.imshow(np.log10(img), extent=imgextent)
+                # ax.grid(False)
+                # circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
+                # ax.add_artist(circle1)
+                # fig.savefig("plots/gal_img_log_%.1f.png"
+                #             % np.log10(np.sum(this_lumin)))
+                # plt.close(fig)
 
                 hlr_app_dict[tag][f].append(util.get_img_hlr(img,
                                                              apertures,
