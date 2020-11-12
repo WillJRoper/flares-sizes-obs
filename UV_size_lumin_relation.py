@@ -18,7 +18,7 @@ from scipy.stats import binned_statistic
 import phot_modules as phot
 import utilities as util
 from FLARE.photom import lum_to_M, M_to_lum
-import astropy.units as u
+import h5py
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -216,6 +216,11 @@ for tag in snaps:
                 # fig.savefig("plots/gal_img_log_%.1f.png"
                 #             % np.log10(np.sum(this_lumin)))
                 # plt.close(fig)
+
+try:
+    hdf = h5py.File("flares_sizes.hdf5", "r+")
+except OSError:
+    hdf = h5py.File("flares_sizes.hdf5", "w")
 
 for f in filters:
 
@@ -780,6 +785,7 @@ for f in filters:
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
+            mass = mass[okinds]
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
@@ -870,6 +876,7 @@ for f in filters:
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
+            print(mass)
             try:
                 cbar = ax.hexbin(mass, hlrs, gridsize=50, mincnt=1,
                                  yscale='log', xscale='log',
@@ -879,22 +886,6 @@ for f in filters:
             except ValueError as e:
                 print(e)
                 continue
-
-            if int(z) in [6, 7, 8, 9]:
-                ax.plot(lum_to_M(fit_lumins), kawa_fit(fit_lumins,
-                                                       kawa_params['r_0'][
-                                                           int(z)],
-                                                       kawa_params['beta'][
-                                                           int(z)]),
-                        linestyle='dashed', color='k', alpha=0.9, zorder=2)
-                ax.fill_between(lum_to_M(fit_lumins),
-                                kawa_fit(fit_lumins,
-                                         kawa_low_params['r_0'][int(z)],
-                                         kawa_low_params['beta'][int(z)]),
-                                kawa_fit(fit_lumins,
-                                         kawa_up_params['r_0'][int(z)],
-                                         kawa_up_params['beta'][int(z)]),
-                                color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
