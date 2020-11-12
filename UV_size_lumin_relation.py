@@ -24,7 +24,6 @@ import sys
 sns.set_context("paper")
 sns.set_style('whitegrid')
 
-
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
@@ -40,15 +39,15 @@ kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 
 
 def kawa_fit_err(y, l, ro, b, ro_err, b_err, uplow="up"):
-
-    ro_term = ro_err * (l / M_to_lum(-21))**b
+    ro_term = ro_err * (l / M_to_lum(-21)) ** b
     beta_term = b_err * ro * (l / M_to_lum(-21)) ** b \
                 * np.log(l / M_to_lum(-21))
 
     if uplow == "up":
-        return y + np.sqrt(ro_term**2 + beta_term**2)
+        return y + np.sqrt(ro_term ** 2 + beta_term ** 2)
     else:
         return y - np.sqrt(ro_term ** 2 + beta_term ** 2)
+
 
 def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
     if bins == None:
@@ -73,7 +72,7 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
 # snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
 #          '006_z009p000', '007_z008p000', '008_z007p000',
 #          '009_z006p000', '010_z005p000', '011_z004p770']
-snaps = ['009_z006p000', ]
+snaps = ['009_z006p000', '010_z005p000', '011_z004p770']
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
@@ -275,7 +274,7 @@ for snap in snaps:
                                           shape=lumins.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
-            
+
         try:
             dset = f_group.create_dataset("Mass", data=mass,
                                           dtype=mass.dtype,
@@ -289,7 +288,7 @@ for snap in snaps:
                                           shape=mass.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$M_\odot$"
-            
+
         try:
             dset = f_group.create_dataset("HLR", data=hlrs,
                                           dtype=hlrs.dtype,
@@ -303,7 +302,7 @@ for snap in snaps:
                                           shape=hlrs.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$\mathrm{pkpc}$"
-            
+
         try:
             dset = f_group.create_dataset("HLR_Aperture", data=hlrs_app,
                                           dtype=hlrs_app.dtype,
@@ -908,8 +907,8 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, low, up,
-                                color='k', alpha=0.4, zorder=1)
+                # ax.fill_between(fit_lumins, low, up,
+                #                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -975,8 +974,8 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(fit_lumins, low, up,
-                                color='k', alpha=0.4, zorder=1)
+                # ax.fill_between(fit_lumins, low, up,
+                #                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -1024,8 +1023,8 @@ for f in filters:
                 ax.plot(lum_to_M(fit_lumins), fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                ax.fill_between(lum_to_M(fit_lumins), up, low,
-                                color='k', alpha=0.4, zorder=1)
+                # ax.fill_between(lum_to_M(fit_lumins), up, low,
+                #                 color='k', alpha=0.4, zorder=1)
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
