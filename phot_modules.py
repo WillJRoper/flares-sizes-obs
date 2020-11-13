@@ -563,15 +563,20 @@ def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
             bins=np.arange(-24, -16, 0.5), inp='FLARES', LF=True,
             filters=('FAKE.TH.FUV'), Type='Total', log10t_BC=7.,
             extinction='default', orientation="sim", masslim=None):
-    try:
-        Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
-                   filters=filters, Type=Type, log10t_BC=log10t_BC,
-                   extinction=extinction, orientation=orientation,
-                   masslim=masslim)
+    Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
+               filters=filters, Type=Type, log10t_BC=log10t_BC,
+               extinction=extinction, orientation=orientation,
+               masslim=masslim)
 
-    except Exception as e:
-        Lums = np.ones(len(filters)) * np.nan
-        print(e)
+    # try:
+    #     Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
+    #                filters=filters, Type=Type, log10t_BC=log10t_BC,
+    #                extinction=extinction, orientation=orientation,
+    #                masslim=masslim)
+    #
+    # except Exception as e:
+    #     Lums = np.ones(len(filters)) * np.nan
+    #     print(e)
 
     if LF:
         tmp, edges = np.histogram(lum_to_M(Lums), bins=bins)
