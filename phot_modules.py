@@ -160,8 +160,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         gasMetallicities = G_Z[begin[jj]: end[jj]]
         gasSML = G_sml[begin[jj]: end[jj]]
         gasMasses = G_mass[begin[jj]: end[jj]]
-        print(S_age.shape)
-        print(S_los.shape)
+
         print(S_age)
         print(S_los)
         if masslim != None:
@@ -180,6 +179,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             #                                      gasMasses, gasMetallicities,
             #                                      gasSML, (0, 1, 2),
             #                                      lkernel, kbins)
+            print(begin[jj], end[jj])
             MetSurfaceDensities = S_los[begin[jj]:end[jj]]
 
         elif orientation == "face-on":
