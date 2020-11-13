@@ -182,6 +182,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             except IndexError:
                 for f in filters:
                     Lums[f][begin[jj]: end[jj]] = np.nan
+                continue
 
         elif orientation == "face-on":
 
