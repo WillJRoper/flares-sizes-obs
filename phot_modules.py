@@ -160,7 +160,10 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         gasMetallicities = G_Z[begin[jj]: end[jj]]
         gasSML = G_sml[begin[jj]: end[jj]]
         gasMasses = G_mass[begin[jj]: end[jj]]
-
+        print(S_age.shape)
+        print(S_los.shape)
+        print(S_age)
+        print(S_los)
         if masslim != None:
             if np.sum(Masses) < masslim:
                 for f in filters:
@@ -575,7 +578,12 @@ def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
     #                masslim=masslim)
     #
     # except Exception as e:
-    #     Lums = np.ones(len(filters)) * np.nan
+    #     Lums = {f: np.array([], dtype=np.float64) for f in filters}
+    #     Lums["coords"] = np.array([], dtype=np.float64)
+    #     Lums["smls"] = np.array([], dtype=np.float64)
+    #     Lums["masses"] = np.array([], dtype=np.float64)
+    #     Lums["begin"] = np.array([], dtype=np.float64)
+    #     Lums["end"] = np.array([], dtype=np.float64)
     #     print(e)
 
     if LF:

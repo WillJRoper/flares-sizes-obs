@@ -91,7 +91,7 @@ Type = sys.argv[2]
 extinction = 'default'
 
 # Set mass limit
-masslim = 10 ** 7
+masslim = 0
 
 for tag in snaps:
 
