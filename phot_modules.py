@@ -177,8 +177,11 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             #                                      gasMasses, gasMetallicities,
             #                                      gasSML, (0, 1, 2),
             #                                      lkernel, kbins)
-            print(begin[jj], end[jj], S_los.shape)
-            MetSurfaceDensities = S_los[begin[jj]:end[jj]]
+            try:
+                MetSurfaceDensities = S_los[begin[jj]:end[jj]]
+            except IndexError:
+                for f in filters:
+                    Lums[f][begin[jj]: end[jj]] = np.nan
 
         elif orientation == "face-on":
 
