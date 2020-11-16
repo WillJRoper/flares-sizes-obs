@@ -80,6 +80,7 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 # Define dictionaries for results
 hlr_dict = {}
 hlr_app_dict = {}
+hlr_pix_dict = {}
 lumin_dict = {}
 mass_dict = {}
 
@@ -91,7 +92,7 @@ Type = sys.argv[2]
 extinction = 'default'
 
 # Set mass limit
-masslim = 0
+masslim = 100
 
 for tag in snaps:
 
@@ -100,6 +101,7 @@ for tag in snaps:
 
     hlr_dict.setdefault(tag, {})
     hlr_app_dict.setdefault(tag, {})
+    hlr_pix_dict.setdefault(tag, {})
     lumin_dict.setdefault(tag, {})
     mass_dict.setdefault(tag, {})
 
@@ -130,6 +132,8 @@ for tag in snaps:
 
     print(width, res)
 
+    single_pixel_area = res * res
+
     # Define range and extent for the images
     imgrange = ((-width / 2, width / 2), (-width / 2, width / 2))
     imgextent = [-width / 2, width / 2, -width / 2, width / 2]
@@ -154,6 +158,7 @@ for tag in snaps:
 
             hlr_dict[tag].setdefault(f, [])
             hlr_app_dict[tag].setdefault(f, [])
+            hlr_pix_dict[tag].setdefault(f, [])
             lumin_dict[tag].setdefault(f, [])
             mass_dict[tag].setdefault(f, [])
 
@@ -205,6 +210,9 @@ for tag in snaps:
                                                              app_radii, res,
                                                              csoft))
 
+                hlr_pix_dict[tag][f].append(
+                    util.get_pixel_hlr(img, single_pixel_area))
+
                 hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
                                                                  this_lumin))
 
@@ -247,6 +255,7 @@ for snap in snaps:
 
         hlrs = np.array(hlr_dict[snap][f])
         hlrs_app = np.array(hlr_app_dict[snap][f])
+        hlrs_pix = np.array(hlr_pix_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
         mass = np.array(mass_dict[snap][f])
 
@@ -315,10 +324,24 @@ for snap in snaps:
                                           shape=hlrs_app.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$\mathrm{pkpc}$"
+            
+        try:
+            dset = f_group.create_dataset("HLR_Pixel", data=hlrs_pix,
+                                          dtype=hlrs_pix.dtype,
+                                          shape=hlrs_pix.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
+        except RuntimeError:
+            del f_group["HLR_Pixel"]
+            dset = f_group.create_dataset("HLR_Pixel", data=hlrs_pix,
+                                          dtype=hlrs_pix.dtype,
+                                          shape=hlrs_pix.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
 
 for f in filters:
 
-    fit_lumins = np.logspace(28, 31, 1000)
+    fit_lumins = np.logspace(M_to_lum(-21.6), M_to_lum(-18), 1000)
 
     if len(snaps) == 9:
 

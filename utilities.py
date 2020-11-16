@@ -335,6 +335,27 @@ def get_img_hlr(img, apertures, app_rs, res, csoft):
 
     return hmr
 
+def get_pixel_hlr(img, single_pix_area):
+
+    # Get half the total luminosity
+    half_l = np.sum(img) / 2
+
+    # Sort pixels into 1D array ordered by decreasing intensity
+    sort_1d_img = np.sort(img.flatten())[::-1]
+
+    # Loop over pixels
+    npix = 1
+    lum_sum = -1
+    while lum_sum < half_l:
+        lum_sum = np.sum(sort_1d_img[:npix])
+        npix += 1
+
+    # Calculate radius from pixel area
+    pix_area = single_pix_area * npix
+    hlr = np.sqrt(pix_area / np.pi)
+
+    return hlr
+
 
 @nb.njit(nogil=True, parallel=True)
 def calc_rad(poss, i, j):
