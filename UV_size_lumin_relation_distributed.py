@@ -71,7 +71,7 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
 
 
 regions = []
-for reg in range(0, 40):
+for reg in range(40, 0):
     if reg < 10:
         regions.append('0' + str(reg))
     else:
@@ -249,16 +249,10 @@ for f in filters:
         #             % np.log10(np.sum(this_lumin)))
         # plt.close(fig)
 
-while os.path.exists("lumin.lock"):
-    time.sleep(5)
-
-f = open("lumin.lock", "w")
-f.close()
-
 try:
-    hdf = h5py.File("flares_sizes.hdf5", "r+")
+    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "r+")
 except OSError:
-    hdf = h5py.File("flares_sizes.hdf5", "w")
+    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "w")
 
 try:
     type_group = hdf[Type]
@@ -362,5 +356,3 @@ for f in filters:
                                       shape=hlrs_pix.shape,
                                       compression="gzip")
         dset.attrs["units"] = "$\mathrm{pkpc}$"
-
-os.remove("lumin.lock")
