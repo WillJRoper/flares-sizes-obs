@@ -127,7 +127,7 @@ lumin_dict.setdefault(tag, {})
 mass_dict.setdefault(tag, {})
 
 # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
-lumin_dicts = phot.get_lum(reg, kappa=0.0795, tag=tag, BC_fac=1,
+reg_dict = phot.get_lum(reg, kappa=0.0795, tag=tag, BC_fac=1,
                            IMF='Chabrier_300', bins=np.arange(-24, -16, 0.5),
                            inp='FLARES', LF=False, filters=filters, Type=Type,
                            log10t_BC=7., extinction=extinction,
@@ -162,96 +162,92 @@ app_radii = np.linspace(0.001, res / 4, 100)
 apertures = [CircularAperture(positions, r=r) for r in app_radii]
 app_radii *= csoft
 
-for num, reg_dict in enumerate(lumin_dicts):
+poss = reg_dict["coords"] * 10 ** 3
+smls = reg_dict["smls"] * 10 ** 3
+masses = reg_dict["masses"]
+begin = reg_dict["begin"]
+end = reg_dict["end"]
 
-    print("Processing galaxies in results", num)
+for f in filters:
 
-    poss = reg_dict["coords"] * 10 ** 3
-    smls = reg_dict["smls"] * 10 ** 3
-    masses = reg_dict["masses"]
-    begin = reg_dict["begin"]
-    end = reg_dict["end"]
+    hlr_dict[tag].setdefault(f, [])
+    hlr_app_dict[tag].setdefault(f, [])
+    hlr_pix_dict[tag].setdefault(f, [])
+    lumin_dict[tag].setdefault(f, [])
+    mass_dict[tag].setdefault(f, [])
 
-    for f in filters:
+    for ind in range(len(begin)):
 
-        hlr_dict[tag].setdefault(f, [])
-        hlr_app_dict[tag].setdefault(f, [])
-        hlr_pix_dict[tag].setdefault(f, [])
-        lumin_dict[tag].setdefault(f, [])
-        mass_dict[tag].setdefault(f, [])
+        b, e = begin[ind], end[ind]
 
-        for ind in range(len(begin)):
+        this_pos = poss[:, b: e].T
+        this_lumin = reg_dict[f][b: e]
+        this_smls = smls[b: e]
+        this_mass = np.nansum(masses[b: e])
 
-            b, e = begin[ind], end[ind]
+        if np.nansum(this_lumin) == 0:
+            continue
 
-            this_pos = poss[:, b: e].T
-            this_lumin = reg_dict[f][b: e]
-            this_smls = smls[b: e]
-            this_mass = np.nansum(masses[b: e])
+        tot_l = np.sum(this_lumin)
 
-            if np.nansum(this_lumin) == 0:
-                continue
+        if orientation == "sim" or orientation == "face-on":
 
-            tot_l = np.sum(this_lumin)
+            # # Centre positions on luminosity weighted centre
+            # # NOTE: This is done in 3D not in projection!
+            # lumin_cent = util.lumin_weighted_centre(this_pos,
+            #                                         this_lumin,
+            #                                         i=0, j=1)
+            # this_pos[:, (0, 1)] -= lumin_cent
 
-            if orientation == "sim" or orientation == "face-on":
+            this_radii = util.calc_rad(this_pos, i=0, j=1)
 
-                # # Centre positions on luminosity weighted centre
-                # # NOTE: This is done in 3D not in projection!
-                # lumin_cent = util.lumin_weighted_centre(this_pos,
-                #                                         this_lumin,
-                #                                         i=0, j=1)
-                # this_pos[:, (0, 1)] -= lumin_cent
+            img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
+                                     this_lumin,
+                                     this_smls)
+        else:
 
-                this_radii = util.calc_rad(this_pos, i=0, j=1)
+            # # Centre positions on luminosity weighted centre
+            # # NOTE: This is done in 3D not in projection!
+            # lumin_cent = util.lumin_weighted_centre(this_pos,
+            #                                         this_lumin,
+            #                                         i=2, j=0)
+            # this_pos[:, (2, 0)] -= lumin_cent
 
-                img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
-                                         this_lumin,
-                                         this_smls)
-            else:
+            this_radii = util.calc_rad(this_pos, i=2, j=0)
 
-                # # Centre positions on luminosity weighted centre
-                # # NOTE: This is done in 3D not in projection!
-                # lumin_cent = util.lumin_weighted_centre(this_pos,
-                #                                         this_lumin,
-                #                                         i=2, j=0)
-                # this_pos[:, (2, 0)] -= lumin_cent
+            img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
+                                     this_lumin,
+                                     this_smls)
 
-                this_radii = util.calc_rad(this_pos, i=2, j=0)
+        hlr_app_dict[tag][f].append(util.get_img_hlr(img,
+                                                     apertures,
+                                                     app_radii, res,
+                                                     csoft))
 
-                img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
-                                         this_lumin,
-                                         this_smls)
+        hlr_pix_dict[tag][f].append(
+            util.get_pixel_hlr(img, single_pixel_area))
 
-            hlr_app_dict[tag][f].append(util.get_img_hlr(img,
-                                                         apertures,
-                                                         app_radii, res,
-                                                         csoft))
+        hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
+                                                         this_lumin))
 
-            hlr_pix_dict[tag][f].append(
-                util.get_pixel_hlr(img, single_pixel_area))
+        lumin_dict[tag][f].append(tot_l)
+        mass_dict[tag][f].append(this_mass)
 
-            hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
-                                                             this_lumin))
-
-            lumin_dict[tag][f].append(tot_l)
-            mass_dict[tag][f].append(this_mass)
-
-            # fig = plt.figure()
-            # ax = fig.add_subplot(111)
-            # ax.imshow(np.log10(img), extent=imgextent)
-            # ax.grid(False)
-            # circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
-            # ax.add_artist(circle1)
-            # circle1 = plt.Circle((0, 0), hlr_app_dict[tag][f][-1],
-            #                      color='g', linestyle="--", fill=False)
-            # ax.add_artist(circle1)
-            # circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
-            #                      color='b', linestyle="--", fill=False)
-            # ax.add_artist(circle1)
-            # fig.savefig("plots/gal_img_log_%.1f.png"
-            #             % np.log10(np.sum(this_lumin)))
-            # plt.close(fig)
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # ax.imshow(np.log10(img), extent=imgextent)
+        # ax.grid(False)
+        # circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
+        # ax.add_artist(circle1)
+        # circle1 = plt.Circle((0, 0), hlr_app_dict[tag][f][-1],
+        #                      color='g', linestyle="--", fill=False)
+        # ax.add_artist(circle1)
+        # circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
+        #                      color='b', linestyle="--", fill=False)
+        # ax.add_artist(circle1)
+        # fig.savefig("plots/gal_img_log_%.1f.png"
+        #             % np.log10(np.sum(this_lumin)))
+        # plt.close(fig)
 
 while os.path.exists("lumin.lock"):
     time.sleep(5)
