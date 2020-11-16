@@ -335,6 +335,7 @@ def get_img_hlr(img, apertures, app_rs, res, csoft):
 
     return hmr
 
+
 def get_pixel_hlr(img, single_pix_area):
 
     # Get half the total luminosity
@@ -342,13 +343,11 @@ def get_pixel_hlr(img, single_pix_area):
 
     # Sort pixels into 1D array ordered by decreasing intensity
     sort_1d_img = np.sort(img.flatten())[::-1]
+    sum_1d_img = np.cumsum(sort_1d_img)
 
-    # Loop over pixels
-    npix = 1
-    lum_sum = -1
-    while lum_sum < half_l:
-        lum_sum = np.sum(sort_1d_img[:npix])
-        npix += 1
+    # Calculate the number of pixels
+    # (the index of the pixel closest to half the total luminosity)
+    npix = np.argmin(np.abs(sum_1d_img - half_l)) + 1
 
     # Calculate radius from pixel area
     pix_area = single_pix_area * npix
