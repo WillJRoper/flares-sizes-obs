@@ -24,7 +24,8 @@ source activate flares-env
 i=$(($SLURM_ARRAY_TASK_ID - 1))
 
 # Run the program
-./UV_size_lumin_relation_distributed.py $i
+./UV_size_lumin_relation_distributed.py $i sim Total
+./UV_size_lumin_relation_distributed.py $i sim Intrinsic
 
 source deactivate
 

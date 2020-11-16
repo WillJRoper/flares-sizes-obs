@@ -92,8 +92,17 @@ for reg in reversed(regions):
 
 ind = int(sys.argv[1])
 
+# Set orientation
+orientation = sys.argv[2]
+
+# Define luminosity and dust model types
+Type = sys.argv[3]
+extinction = 'default'
+
 reg, tag = reg_snaps[ind]
-print("Computing for region {x} and snapshot {u}".format(x=reg, u=tag))
+print("Computing HLRs with orientation {o}, type {t}, and extinction {e}"
+      "for region {x} and snapshot {u}".format(o=orientation, t=Type,
+                                               e=extinction, x=reg, u=tag))
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
@@ -104,13 +113,6 @@ hlr_app_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
 mass_dict = {}
-
-# Set orientation
-orientation = sys.argv[1]
-
-# Define luminosity and dust model types
-Type = sys.argv[2]
-extinction = 'default'
 
 # Set mass limit
 masslim = 100
@@ -272,108 +274,97 @@ try:
 except KeyError:
     orientation_group = type_group.create_group(orientation)
 
-for snap in snaps:
-    for f in filters:
+try:
+    reg_group = type_group[reg]
+except KeyError:
+    reg_group = type_group.create_group(str(reg))
 
-        hlrs = np.array(hlr_dict[snap][f])
-        hlrs_app = np.array(hlr_app_dict[snap][f])
-        hlrs_pix = np.array(hlr_pix_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
-        mass = np.array(mass_dict[snap][f])
+for f in filters:
 
-        try:
-            snap_group = orientation_group[snap]
-        except KeyError:
-            snap_group = orientation_group.create_group(snap)
+    hlrs = np.array(hlr_dict[tag][f])
+    hlrs_app = np.array(hlr_app_dict[tag][f])
+    hlrs_pix = np.array(hlr_pix_dict[tag][f])
+    lumins = np.array(lumin_dict[tag][f])
+    mass = np.array(mass_dict[tag][f])
 
-        try:
-            f_group = snap_group[f]
-        except KeyError:
-            f_group = snap_group.create_group(f)
+    try:
+        tag_group = reg_group[tag]
+    except KeyError:
+        tag_group = reg_group.create_group(tag)
 
-        try:
-            dset = f_group.create_dataset("Luminosity", data=lumins,
-                                          dtype=lumins.dtype,
-                                          shape=lumins.shape,
-                                          compression="gzip")
-            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
-        except RuntimeError:
-            old = list(f_group["Luminosity"])
-            old.extend(lumins)
-            lumins = np.array(old, dtype=lumins.dtype)
-            del f_group["Luminosity"]
-            dset = f_group.create_dataset("Luminosity", data=lumins,
-                                          dtype=lumins.dtype,
-                                          shape=lumins.shape,
-                                          compression="gzip")
-            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+    try:
+        f_group = tag_group[f]
+    except KeyError:
+        f_group = tag_group.create_group(f)
 
-        try:
-            dset = f_group.create_dataset("Mass", data=mass,
-                                          dtype=mass.dtype,
-                                          shape=mass.shape,
-                                          compression="gzip")
-            dset.attrs["units"] = "$M_\odot$"
-        except RuntimeError:
-            old = list(f_group["Mass"])
-            old.extend(mass)
-            mass = np.array(old, dtype=mass.dtype)
-            del f_group["Mass"]
-            dset = f_group.create_dataset("Mass", data=mass,
-                                          dtype=mass.dtype,
-                                          shape=mass.shape,
-                                          compression="gzip")
-            dset.attrs["units"] = "$M_\odot$"
+    try:
+        dset = f_group.create_dataset("Luminosity", data=lumins,
+                                      dtype=lumins.dtype,
+                                      shape=lumins.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+    except RuntimeError:
+        del f_group["Luminosity"]
+        dset = f_group.create_dataset("Luminosity", data=lumins,
+                                      dtype=lumins.dtype,
+                                      shape=lumins.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
 
-        try:
-            dset = f_group.create_dataset("HLR", data=hlrs,
-                                          dtype=hlrs.dtype,
-                                          shape=hlrs.shape,
-                                          compression="gzip")
-            dset.attrs["units"] = "$\mathrm{pkpc}$"
-        except RuntimeError:
-            old = list(f_group["HLR"])
-            old.extend(hlrs)
-            hlrs = np.array(old, dtype=hlrs.dtype)
-            del f_group["HLR"]
-            dset = f_group.create_dataset("HLR", data=hlrs,
-                                          dtype=hlrs.dtype,
-                                          shape=hlrs.shape,
-                                          compression="gzip")
-            dset.attrs["units"] = "$\mathrm{pkpc}$"
+    try:
+        dset = f_group.create_dataset("Mass", data=mass,
+                                      dtype=mass.dtype,
+                                      shape=mass.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$M_\odot$"
+    except RuntimeError:
+        del f_group["Mass"]
+        dset = f_group.create_dataset("Mass", data=mass,
+                                      dtype=mass.dtype,
+                                      shape=mass.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$M_\odot$"
 
-        try:
-            dset = f_group.create_dataset("HLR_Aperture", data=hlrs_app,
-                                          dtype=hlrs_app.dtype,
-                                          shape=hlrs_app.shape,
-                                          compression="gzip")
-            dset.attrs["units"] = "$\mathrm{pkpc}$"
-        except RuntimeError:
-            old = list(f_group["HLR_Aperture"])
-            old.extend(hlrs_app)
-            hlrs_app = np.array(old, dtype=hlrs_app.dtype)
-            del f_group["HLR_Aperture"]
-            dset = f_group.create_dataset("HLR_Aperture", data=hlrs_app,
-                                          dtype=hlrs_app.dtype,
-                                          shape=hlrs_app.shape,
-                                          compression="gzip")
-            dset.attrs["units"] = "$\mathrm{pkpc}$"
-            
-        try:
-            dset = f_group.create_dataset("HLR_Pixel", data=hlrs_pix,
-                                          dtype=hlrs_pix.dtype,
-                                          shape=hlrs_pix.shape,
-                                          compression="gzip")
-            dset.attrs["units"] = "$\mathrm{pkpc}$"
-        except RuntimeError:
-            old = list(f_group["HLR_Pixel"])
-            old.extend(hlrs_pix)
-            hlrs_pix = np.array(old, dtype=hlrs_pix.dtype)
-            del f_group["HLR_Pixel"]
-            dset = f_group.create_dataset("HLR_Pixel", data=hlrs_pix,
-                                          dtype=hlrs_pix.dtype,
-                                          shape=hlrs_pix.shape,
-                                          compression="gzip")
-            dset.attrs["units"] = "$\mathrm{pkpc}$"
+    try:
+        dset = f_group.create_dataset("HLR", data=hlrs,
+                                      dtype=hlrs.dtype,
+                                      shape=hlrs.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$\mathrm{pkpc}$"
+    except RuntimeError:
+        del f_group["HLR"]
+        dset = f_group.create_dataset("HLR", data=hlrs,
+                                      dtype=hlrs.dtype,
+                                      shape=hlrs.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$\mathrm{pkpc}$"
+
+    try:
+        dset = f_group.create_dataset("HLR_Aperture", data=hlrs_app,
+                                      dtype=hlrs_app.dtype,
+                                      shape=hlrs_app.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$\mathrm{pkpc}$"
+    except RuntimeError:
+        del f_group["HLR_Aperture"]
+        dset = f_group.create_dataset("HLR_Aperture", data=hlrs_app,
+                                      dtype=hlrs_app.dtype,
+                                      shape=hlrs_app.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$\mathrm{pkpc}$"
+
+    try:
+        dset = f_group.create_dataset("HLR_Pixel", data=hlrs_pix,
+                                      dtype=hlrs_pix.dtype,
+                                      shape=hlrs_pix.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$\mathrm{pkpc}$"
+    except RuntimeError:
+        del f_group["HLR_Pixel"]
+        dset = f_group.create_dataset("HLR_Pixel", data=hlrs_pix,
+                                      dtype=hlrs_pix.dtype,
+                                      shape=hlrs_pix.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$\mathrm{pkpc}$"
 
 os.remove("lumin.lock")
