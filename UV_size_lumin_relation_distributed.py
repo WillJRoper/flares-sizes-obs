@@ -107,6 +107,9 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e}"
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
+# Define radii
+radii_fracs = (0.2, 0.5, 0.8)
+
 # Define dictionaries for results
 hlr_dict = {}
 hlr_app_dict = {}
@@ -170,9 +173,15 @@ end = reg_dict["end"]
 
 for f in filters:
 
-    hlr_dict[tag].setdefault(f, [])
-    hlr_app_dict[tag].setdefault(f, [])
-    hlr_pix_dict[tag].setdefault(f, [])
+    hlr_dict[tag].setdefault(f, {})
+    hlr_app_dict[tag].setdefault(f, {})
+    hlr_pix_dict[tag].setdefault(f, {})
+
+    for r in radii_fracs:
+        hlr_dict[f].setdefault(r, [])
+        hlr_app_dict[f].setdefault(r, [])
+        hlr_pix_dict[f].setdefault(r, [])
+
     lumin_dict[tag].setdefault(f, [])
     mass_dict[tag].setdefault(f, [])
 
@@ -218,17 +227,19 @@ for f in filters:
             img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
                                      this_lumin,
                                      this_smls)
+        for r in radii_fracs:
 
-        hlr_app_dict[tag][f].append(util.get_img_hlr(img,
-                                                     apertures,
-                                                     app_radii, res,
-                                                     csoft))
+            hlr_app_dict[tag][f][r].append(util.get_img_hlr(img,
+                                                            apertures,
+                                                            app_radii, res,
+                                                            csoft, r))
 
-        hlr_pix_dict[tag][f].append(
-            util.get_pixel_hlr(img, single_pixel_area))
+            hlr_pix_dict[tag][f][r].append(
+                util.get_pixel_hlr(img, single_pixel_area, r))
 
-        hlr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
-                                                         this_lumin))
+            hlr_dict[tag][f][r].append(util.calc_light_mass_rad(this_radii,
+                                                                this_lumin,
+                                                                r))
 
         lumin_dict[tag][f].append(tot_l)
         mass_dict[tag][f].append(this_mass)
@@ -264,28 +275,15 @@ try:
 except KeyError:
     orientation_group = type_group.create_group(orientation)
 
-try:
-    reg_group = type_group[reg]
-except KeyError:
-    reg_group = type_group.create_group(str(reg))
-
 for f in filters:
 
-    hlrs = np.array(hlr_dict[tag][f])
-    hlrs_app = np.array(hlr_app_dict[tag][f])
-    hlrs_pix = np.array(hlr_pix_dict[tag][f])
     lumins = np.array(lumin_dict[tag][f])
     mass = np.array(mass_dict[tag][f])
 
     try:
-        tag_group = reg_group[tag]
+        f_group = orientation_group[f]
     except KeyError:
-        tag_group = reg_group.create_group(tag)
-
-    try:
-        f_group = tag_group[f]
-    except KeyError:
-        f_group = tag_group.create_group(f)
+        f_group = orientation_group.create_group(f)
 
     try:
         dset = f_group.create_dataset("Luminosity", data=lumins,
@@ -315,44 +313,54 @@ for f in filters:
                                       compression="gzip")
         dset.attrs["units"] = "$M_\odot$"
 
-    try:
-        dset = f_group.create_dataset("HLR", data=hlrs,
-                                      dtype=hlrs.dtype,
-                                      shape=hlrs.shape,
-                                      compression="gzip")
-        dset.attrs["units"] = "$\mathrm{pkpc}$"
-    except RuntimeError:
-        del f_group["HLR"]
-        dset = f_group.create_dataset("HLR", data=hlrs,
-                                      dtype=hlrs.dtype,
-                                      shape=hlrs.shape,
-                                      compression="gzip")
-        dset.attrs["units"] = "$\mathrm{pkpc}$"
+    for r in radii_fracs:
 
-    try:
-        dset = f_group.create_dataset("HLR_Aperture", data=hlrs_app,
-                                      dtype=hlrs_app.dtype,
-                                      shape=hlrs_app.shape,
-                                      compression="gzip")
-        dset.attrs["units"] = "$\mathrm{pkpc}$"
-    except RuntimeError:
-        del f_group["HLR_Aperture"]
-        dset = f_group.create_dataset("HLR_Aperture", data=hlrs_app,
-                                      dtype=hlrs_app.dtype,
-                                      shape=hlrs_app.shape,
-                                      compression="gzip")
-        dset.attrs["units"] = "$\mathrm{pkpc}$"
+        hlrs = np.array(hlr_dict[tag][f][r])
+        hlrs_app = np.array(hlr_app_dict[tag][f][r])
+        hlrs_pix = np.array(hlr_pix_dict[tag][f][r])
 
-    try:
-        dset = f_group.create_dataset("HLR_Pixel", data=hlrs_pix,
-                                      dtype=hlrs_pix.dtype,
-                                      shape=hlrs_pix.shape,
-                                      compression="gzip")
-        dset.attrs["units"] = "$\mathrm{pkpc}$"
-    except RuntimeError:
-        del f_group["HLR_Pixel"]
-        dset = f_group.create_dataset("HLR_Pixel", data=hlrs_pix,
-                                      dtype=hlrs_pix.dtype,
-                                      shape=hlrs_pix.shape,
-                                      compression="gzip")
-        dset.attrs["units"] = "$\mathrm{pkpc}$"
+        try:
+            dset = f_group.create_dataset("HLR_%.1f" % r, data=hlrs,
+                                          dtype=hlrs.dtype,
+                                          shape=hlrs.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
+        except RuntimeError:
+            del f_group["HLR_%.1f" % r]
+            dset = f_group.create_dataset("HLR_%.1f" % r, data=hlrs,
+                                          dtype=hlrs.dtype,
+                                          shape=hlrs.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
+
+        try:
+            dset = f_group.create_dataset("HLR_Aperture_%.1f" % r,
+                                          data=hlrs_app,
+                                          dtype=hlrs_app.dtype,
+                                          shape=hlrs_app.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
+        except RuntimeError:
+            del f_group["HLR_Aperture_%.1f" % r]
+            dset = f_group.create_dataset("HLR_Aperture_%.1f" % r,
+                                          data=hlrs_app,
+                                          dtype=hlrs_app.dtype,
+                                          shape=hlrs_app.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
+
+        try:
+            dset = f_group.create_dataset("HLR_Pixel_%.1f" % r,
+                                          data=hlrs_pix,
+                                          dtype=hlrs_pix.dtype,
+                                          shape=hlrs_pix.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"
+        except RuntimeError:
+            del f_group["HLR_Pixel_%.1f" % r]
+            dset = f_group.create_dataset("HLR_Pixel_%.1f" % r,
+                                          data=hlrs_pix,
+                                          dtype=hlrs_pix.dtype,
+                                          shape=hlrs_pix.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$\mathrm{pkpc}$"

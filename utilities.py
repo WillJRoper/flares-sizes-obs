@@ -310,7 +310,7 @@ def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth):
 
 
 @nb.jit(nogil=True, parallel=True)
-def get_img_hlr(img, apertures, app_rs, res, csoft):
+def get_img_hlr(img, apertures, app_rs, res, csoft, radii_frac=0.5):
 
     # Apply the apertures
     phot_table = aperture_photometry(img, apertures, method='subpixel',
@@ -322,7 +322,7 @@ def get_img_hlr(img, apertures, app_rs, res, csoft):
     lumins = row[3:]
 
     # Get half the total luminosity
-    half_l = np.sum(img) / 2
+    half_l = np.sum(img) * radii_frac
 
     # Interpolate to increase resolution
     func = interp1d(app_rs, lumins, kind="linear")
@@ -336,10 +336,10 @@ def get_img_hlr(img, apertures, app_rs, res, csoft):
     return hmr
 
 
-def get_pixel_hlr(img, single_pix_area):
+def get_pixel_hlr(img, single_pix_area, radii_frac=0.5):
 
     # Get half the total luminosity
-    half_l = np.sum(img) / 2
+    half_l = np.sum(img) * radii_frac
 
     # Sort pixels into 1D array ordered by decreasing intensity
     sort_1d_img = np.sort(img.flatten())[::-1]
@@ -380,7 +380,7 @@ def lumin_weighted_centre(poss, ls, i, j):
 
 
 @nb.njit(nogil=True, parallel=True)
-def calc_light_mass_rad(rs, ls):
+def calc_light_mass_rad(rs, ls, radii_frac=0.5):
 
     # Sort the radii and masses
     sinds = np.argsort(rs)
@@ -395,7 +395,7 @@ def calc_light_mass_rad(rs, ls):
 
     # Get the total mass and half the total mass
     tot_l = np.sum(ls)
-    half_l = tot_l / 2
+    half_l = tot_l * radii_frac
 
     # Get the half mass radius particle
     hmr_ind = np.argmin(np.abs(l_profile - half_l))
