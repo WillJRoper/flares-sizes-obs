@@ -112,9 +112,15 @@ for reg, snap in reg_snaps:
 
     hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, snap), "r")
 
+    print(list(hdf.keys()))
+
     type_group = hdf[Type]
 
+    print(list(type_group.keys()))
+
     orientation_group = type_group[orientation]
+
+    print(list(orientation_group.keys()))
 
     hlr_dict.setdefault(snap, {})
     hlr_app_dict.setdefault(snap, {})
@@ -123,6 +129,8 @@ for reg, snap in reg_snaps:
     mass_dict.setdefault(snap, {})
     
     snap_group = orientation_group[snap]
+
+    print(list(snap_group.keys()))
     
     for f in filters:
         
@@ -133,6 +141,8 @@ for reg, snap in reg_snaps:
         mass_dict[snap].setdefault(f, [])
 
         f_group = snap_group[snap][f]
+
+        print(list(f_group.keys()))
 
         hlr_dict[snap][f].extend(snap_group[snap][f]["HLR"][...])
         hlr_app_dict[snap][f].extend(snap_group[snap][f]["HLR_Aperture"][...])
