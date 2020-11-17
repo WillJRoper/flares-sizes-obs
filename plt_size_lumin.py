@@ -140,10 +140,6 @@ for reg, snap in reg_snaps:
         lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
 
-        f_group = snap_group[snap][f]
-
-        print(list(f_group.keys()))
-
         hlr_dict[snap][f].extend(snap_group[f]["HLR"][...])
         hlr_app_dict[snap][f].extend(snap_group[f]["HLR_Aperture"][...])
         hlr_pix_dict[snap][f].extend(snap_group[f]["HLR_Pixel"][...])
