@@ -71,7 +71,7 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
 
 
 regions = []
-for reg in range(40, 0, -1):
+for reg in range(0, 40):
     if reg < 10:
         regions.append('0' + str(reg))
     else:
