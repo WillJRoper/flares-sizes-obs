@@ -9,8 +9,6 @@
 #SBATCH -A cosma8
 #SBATCH --exclusive
 #SBATCH -t 72:00:00
-#SBATCH --mail-type=END
-#SBATCH --mail-user=wjr21@sussex.ac.uk #PLEASE PUT YOUR EMAIL ADDRESS HERE (without the <>)
 
 # Run the job from the following directory - change this to point to your own personal space on /lustre
 cd /cosma7/data/dp004/dc-rope1/FLARES/flares-sizes-obs
