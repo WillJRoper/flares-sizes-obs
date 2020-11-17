@@ -144,11 +144,11 @@ for reg, snap in reg_snaps:
 
         print(list(f_group.keys()))
 
-        hlr_dict[snap][f].extend(snap_group[snap][f]["HLR"][...])
-        hlr_app_dict[snap][f].extend(snap_group[snap][f]["HLR_Aperture"][...])
-        hlr_pix_dict[snap][f].extend(snap_group[snap][f]["HLR_Pixel"][...])
-        lumin_dict[snap][f].extend(snap_group[snap][f]["Luminosity"][...])
-        mass_dict[snap][f].extend(snap_group[snap][f]["Mass"][...])
+        hlr_dict[snap][f].extend(snap_group[f]["HLR"][...])
+        hlr_app_dict[snap][f].extend(snap_group[f]["HLR_Aperture"][...])
+        hlr_pix_dict[snap][f].extend(snap_group[f]["HLR_Pixel"][...])
+        lumin_dict[snap][f].extend(snap_group[f]["Luminosity"][...])
+        mass_dict[snap][f].extend(snap_group[f]["Mass"][...])
 
 for f in filters:
 
