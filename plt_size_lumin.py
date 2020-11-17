@@ -118,9 +118,8 @@ for reg, snap in reg_snaps:
 
     print(list(type_group.keys()))
 
-    orientation_group = type_group[orientation]
+    orientation_group = type_group[reg]
 
-    print(list(type_group[reg].keys()))
     print(list(orientation_group.keys()))
 
     hlr_dict.setdefault(snap, {})
