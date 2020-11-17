@@ -178,9 +178,9 @@ for f in filters:
     hlr_pix_dict[tag].setdefault(f, {})
 
     for r in radii_fracs:
-        hlr_dict[f].setdefault(r, [])
-        hlr_app_dict[f].setdefault(r, [])
-        hlr_pix_dict[f].setdefault(r, [])
+        hlr_dict[tag][f].setdefault(r, [])
+        hlr_app_dict[tag][f].setdefault(r, [])
+        hlr_pix_dict[tag][f].setdefault(r, [])
 
     lumin_dict[tag].setdefault(f, [])
     mass_dict[tag].setdefault(f, [])
