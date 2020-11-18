@@ -178,7 +178,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > M_to_lum(-18),
+                                    np.logical_and(lumins > M_to_lum(-12),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
@@ -285,7 +285,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > M_to_lum(-18),
+                                    np.logical_and(lumins > M_to_lum(-12),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
@@ -378,7 +378,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > M_to_lum(-18),
+                                    np.logical_and(lumins > M_to_lum(-12),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds] * 1000
@@ -486,7 +486,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > M_to_lum(-18),
+                                    np.logical_and(lumins > M_to_lum(-12),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
@@ -563,7 +563,7 @@ for f in filters:
             mass = np.array(mass_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > M_to_lum(-18),
+                                    np.logical_and(lumins > M_to_lum(-12),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
@@ -722,7 +722,7 @@ for f in filters:
             lumins = np.array(lumin_dict[snap][f])
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                    np.logical_and(lumins > M_to_lum(-18),
+                                    np.logical_and(lumins > M_to_lum(-12),
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
