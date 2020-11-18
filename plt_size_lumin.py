@@ -88,6 +88,8 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
+radii =
+
 hlr_dict = {}
 hlr_app_dict = {}
 hlr_pix_dict = {}
@@ -136,9 +138,9 @@ for reg, snap in reg_snaps:
         lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
 
-        hlr_dict[snap][f].extend(orientation_group[f]["HLR"][...])
-        hlr_app_dict[snap][f].extend(orientation_group[f]["HLR_Aperture"][...])
-        hlr_pix_dict[snap][f].extend(orientation_group[f]["HLR_Pixel"][...])
+        hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...])
+        hlr_app_dict[snap][f].extend(orientation_group[f]["HLR_Aperture_0.5"][...])
+        hlr_pix_dict[snap][f].extend(orientation_group[f]["HLR_Pixel_0.5"][...])
         lumin_dict[snap][f].extend(orientation_group[f]["Luminosity"][...])
         mass_dict[snap][f].extend(orientation_group[f]["Mass"][...])
 
