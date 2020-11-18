@@ -111,16 +111,8 @@ for reg in reversed(regions):
 for reg, snap in reg_snaps:
 
     hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, snap), "r")
-
-    print(list(hdf.keys()))
-
     type_group = hdf[Type]
-
-    print(list(type_group.keys()))
-
     orientation_group = type_group[orientation]
-
-    print(list(orientation_group.keys()))
 
     hlr_dict.setdefault(snap, {})
     hlr_app_dict.setdefault(snap, {})
@@ -147,6 +139,11 @@ for f in filters:
     fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
                              np.log10(M_to_lum(-18)),
                              1000)
+
+    print("Plotting for:")
+    print("Orientation =", orientation)
+    print("Type =", Type)
+    print("Filter =", f)
 
     if len(snaps) == 9:
 
