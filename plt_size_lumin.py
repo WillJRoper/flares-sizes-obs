@@ -118,7 +118,7 @@ for reg, snap in reg_snaps:
 
     print(list(type_group.keys()))
 
-    orientation_group = type_group[reg]
+    orientation_group = type_group[orientation]
 
     print(list(orientation_group.keys()))
 
