@@ -128,10 +128,6 @@ for reg, snap in reg_snaps:
     lumin_dict.setdefault(snap, {})
     mass_dict.setdefault(snap, {})
     
-    snap_group = orientation_group[snap]
-
-    print(list(snap_group.keys()))
-    
     for f in filters:
         
         hlr_dict[snap].setdefault(f, [])
@@ -140,15 +136,17 @@ for reg, snap in reg_snaps:
         lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
 
-        hlr_dict[snap][f].extend(snap_group[f]["HLR"][...])
-        hlr_app_dict[snap][f].extend(snap_group[f]["HLR_Aperture"][...])
-        hlr_pix_dict[snap][f].extend(snap_group[f]["HLR_Pixel"][...])
-        lumin_dict[snap][f].extend(snap_group[f]["Luminosity"][...])
-        mass_dict[snap][f].extend(snap_group[f]["Mass"][...])
+        hlr_dict[snap][f].extend(orientation_group[f]["HLR"][...])
+        hlr_app_dict[snap][f].extend(orientation_group[f]["HLR_Aperture"][...])
+        hlr_pix_dict[snap][f].extend(orientation_group[f]["HLR_Pixel"][...])
+        lumin_dict[snap][f].extend(orientation_group[f]["Luminosity"][...])
+        mass_dict[snap][f].extend(orientation_group[f]["Mass"][...])
 
 for f in filters:
 
-    fit_lumins = np.logspace(M_to_lum(-21.6), M_to_lum(-18), 1000)
+    fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                             np.log10(M_to_lum(-18)),
+                             1000)
 
     if len(snaps) == 9:
 
