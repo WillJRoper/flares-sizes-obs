@@ -88,8 +88,6 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-radii =
-
 hlr_dict = {}
 hlr_app_dict = {}
 hlr_pix_dict = {}
@@ -197,6 +195,17 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
+
+                if z == 7 or z == 6:
+                    low_lim = -12.2
+                elif z == 8:
+                    low_lim = -16.8
+                else:
+                    low_lim = -15.4
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(low_lim)),
+                                         1000)
+
                 fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
                                kawa_params['beta'][int(z)])
                 up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
@@ -296,6 +305,17 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
+
+                if z == 7 or z == 6:
+                    low_lim = -12.2
+                elif z == 8:
+                    low_lim = -16.8
+                else:
+                    low_lim = -15.4
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(low_lim)),
+                                         1000)
+
                 fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
                                kawa_params['beta'][int(z)])
                 up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
@@ -375,6 +395,17 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
+
+                if z == 7 or z == 6:
+                    low_lim = -12.2
+                elif z == 8:
+                    low_lim = -16.8
+                else:
+                    low_lim = -15.4
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(low_lim)),
+                                         1000)
+
                 fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
                                kawa_params['beta'][int(z)])
                 up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
@@ -475,6 +506,17 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
+
+                if z == 7 or z == 6:
+                    low_lim = -12.2
+                elif z == 8:
+                    low_lim = -16.8
+                else:
+                    low_lim = -15.4
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(low_lim)),
+                                         1000)
+
                 fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
                                kawa_params['beta'][int(z)])
                 up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
@@ -542,6 +584,17 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
+
+                if z == 7 or z == 6:
+                    low_lim = -12.2
+                elif z == 8:
+                    low_lim = -16.8
+                else:
+                    low_lim = -15.4
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(low_lim)),
+                                         1000)
+
                 fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
                                kawa_params['beta'][int(z)])
                 up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
@@ -591,6 +644,17 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
+
+                if z == 7 or z == 6:
+                    low_lim = -12.2
+                elif z == 8:
+                    low_lim = -16.8
+                else:
+                    low_lim = -15.4
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(low_lim)),
+                                         1000)
+
                 fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
                                kawa_params['beta'][int(z)])
                 up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
@@ -677,6 +741,17 @@ for f in filters:
                 continue
 
             if int(z) in [6, 7, 8, 9]:
+
+                if z == 7 or z == 6:
+                    low_lim = -12.2
+                elif z == 8:
+                    low_lim = -16.8
+                else:
+                    low_lim = -15.4
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(low_lim)),
+                                         1000)
+
                 fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
                                kawa_params['beta'][int(z)])
                 up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
