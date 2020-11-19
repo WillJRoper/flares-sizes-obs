@@ -261,7 +261,7 @@ for f in filters:
                                         np.logical_and(plt_zs < (z + 0.5),
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
-                                                           plt_m > M_to_m(-16,
+                                                           plt_m <= M_to_m(-16,
                                                                           cosmo,
                                                                           z))))
                 plt_m = plt_m[okinds]
@@ -406,7 +406,7 @@ for f in filters:
                                         np.logical_and(plt_zs < (z + 0.5),
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
-                                                           plt_m > M_to_m(-16,
+                                                           plt_m <= M_to_m(-16,
                                                                           cosmo,
                                                                           z))))
                 plt_m = plt_m[okinds]
@@ -502,7 +502,7 @@ for f in filters:
                                         np.logical_and(plt_zs < (z + 0.5),
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
-                                                           plt_m > M_to_m(-16,
+                                                           plt_m <= M_to_m(-16,
                                                                           cosmo,
                                                                           z))))
                 plt_m = plt_m[okinds]
@@ -628,7 +628,7 @@ for f in filters:
                                         np.logical_and(plt_zs < (z + 0.5),
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
-                                                           plt_m > M_to_m(-16,
+                                                           plt_m <= M_to_m(-16,
                                                                           cosmo,
                                                                           z))))
                 plt_m = plt_m[okinds]
@@ -769,7 +769,7 @@ for f in filters:
                                         np.logical_and(plt_zs < (z + 0.5),
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
-                                                           plt_m > M_to_m(-16,
+                                                           plt_m <= M_to_m(-16,
                                                                           cosmo,
                                                                           z))))
                 plt_m = plt_m[okinds]
@@ -864,7 +864,7 @@ for f in filters:
                                         np.logical_and(plt_zs < (z + 0.5),
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
-                                                           plt_m > M_to_m(-16,
+                                                           plt_m <= M_to_m(-16,
                                                                           cosmo,
                                                                           z))))
                 plt_m = plt_m[okinds]
@@ -989,7 +989,7 @@ for f in filters:
                                         np.logical_and(plt_zs < (z + 0.5),
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
-                                                           plt_m > M_to_m(-16,
+                                                           plt_m <= M_to_m(-16,
                                                                           cosmo,
                                                                           z))))
                 plt_m = plt_m[okinds]
@@ -1131,7 +1131,7 @@ for f in filters:
                                         np.logical_and(plt_zs < (z + 0.5),
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
-                                                           plt_m > M_to_m(-16,
+                                                           plt_m <= M_to_m(-16,
                                                                           cosmo,
                                                                           z))))
                 plt_m = plt_m[okinds]
@@ -1226,7 +1226,7 @@ for f in filters:
                                         np.logical_and(plt_zs < (z + 0.5),
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
-                                                           plt_m > M_to_m(-16,
+                                                           plt_m <= M_to_m(-16,
                                                                           cosmo,
                                                                           z))))
                 plt_m = plt_m[okinds]
