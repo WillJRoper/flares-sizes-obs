@@ -23,6 +23,7 @@ from FLARE.photom import lum_to_M, M_to_lum
 import FLARE.photom as photconv
 import h5py
 import sys
+import pandas as pd
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
