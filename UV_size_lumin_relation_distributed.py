@@ -153,7 +153,7 @@ width = csoft * res
 
 print(width, res)
 
-single_pixel_area = res * res
+single_pixel_area = csoft * csoft
 
 # Define range and extent for the images
 imgrange = ((-width / 2, width / 2), (-width / 2, width / 2))

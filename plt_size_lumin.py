@@ -134,6 +134,8 @@ for reg, snap in reg_snaps:
         lumin_dict[snap][f].extend(orientation_group[f]["Luminosity"][...])
         mass_dict[snap][f].extend(orientation_group[f]["Mass"][...])
 
+    hdf.close()
+
 for f in filters:
 
     fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
