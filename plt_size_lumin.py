@@ -17,7 +17,10 @@ import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 import phot_modules as phot
 import utilities as util
+from matplotlib.lines import Line2D
+from astropy.cosmology import Planck13 as cosmo
 from FLARE.photom import lum_to_M, M_to_lum
+import FLARE.photom as photconv
 import h5py
 import sys
 
@@ -36,6 +39,20 @@ kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
                    'r_0': {6: 0.15, 7: 0.15,
                            8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
+
+
+def m_to_M(m, cosmo, z):
+    flux = photconv.m_to_flux(m)
+    lum = photconv.flux_to_L(flux, cosmo, z)
+    M = photconv.lum_to_M(lum)
+    return M
+
+
+def M_to_m(M, cosmo, z):
+    lum = photconv.M_to_lum(M)
+    flux = photconv.lum_to_flux(lum, cosmo, z)
+    m = photconv.flux_to_m(flux)
+    return m
 
 
 def kawa_fit_err(y, l, ro, b, ro_err, b_err, uplow="up"):
@@ -68,6 +85,48 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
     ax.plot(bin_cents[okinds], y_stat[okinds], color=color, linestyle=ls,
             label=lab)
 
+
+df = pd.read_csv("HighzSizes/All.csv")
+
+papers = df["Paper"].values
+mags = df["Magnitude"].values
+r_es_arcs = df["R_e"].values
+r_es_type = df["R_e (Unit)"].values
+mag_type = df["Magnitude Type"].values
+zs = df["Redshift"].values
+
+# Define pixel resolutions
+wfc3 = 0.13
+nircam_short = 0.031
+nircam_long = 0.063
+
+# Convert to physical kiloparsecs
+r_es = np.zeros(len(papers))
+for (ind, r), z in zip(enumerate(r_es_arcs), zs):
+    if r_es_type[ind] == "kpc":
+        r_es[ind] = r
+    else:
+        r_es[ind] = r / cosmo.arcsec_per_kpc_proper(z).value
+    if mags[ind] < 0:
+        mags[ind] = M_to_m(mags[ind], cosmo, z)
+
+labels = {"G11": "Grazian+2011",
+          "G12": "Grazian+2012",
+          "C16": "Calvi+2016",
+          "K18": "Kawamata+2018",
+          "M18": "FIRE-2 intrinsic",
+          "MO18": "Morishita+2018",
+          "B19": "Bridge+2019",
+          "O16": "Oesch+2016",
+          "S18": "Salmon+2018",
+          "H20": "Holwerda+2020"}
+markers = {"G11": "s", "G12": "v", "C16": "D",
+           "K18": "o", "M18": "H", "F20": ".", "MO18": "o",
+           "B19": "^", "O16": "P", "S18": "D", "H20": "*"}
+colors = {"G11": "darkred", "G12": "darkred", "C16": "darkred",
+           "K18": "darkred", "M18": "green", "F20": ".",
+          "MO18": "darkred", "B19": "darkred", "O16": "darkred",
+          "S18": "darkred", "H20": "darkred"}
 
 # Set orientation
 orientation = sys.argv[1]
@@ -151,6 +210,7 @@ for f in filters:
 
         axlims_x = []
         axlims_y = []
+        legend_elements = []
 
         # Set up plot
         fig = plt.figure(figsize=(18, 10))
@@ -193,6 +253,30 @@ for f in filters:
             except ValueError:
                 continue
 
+            for p in labels.keys():
+
+                okinds = papers == p
+                plt_m = mags[okinds]
+                plt_r_es = r_es[okinds]
+                plt_zs = zs[okinds]
+
+                okinds = np.logical_and(plt_zs >= (z - 0.5),
+                                        plt_zs < (z + 0.5))
+                plt_m = plt_m[okinds]
+                plt_r_es = plt_r_es[okinds]
+
+                plt_M = m_to_M(plt_m, cosmo, z)
+                plt_lumins = M_to_lum(plt_M)
+
+                legend_elements.append(
+                    Line2D([0], [0], marker=markers[p], color='w',
+                           label=labels[p], markerfacecolor=colors[p],
+                           markersize=8, alpha=0.7))
+
+                ax.scatter(plt_lumins, plt_r_es,
+                           marker=markers[p], label=labels[p], s=25,
+                           color=colors[p], alpha=0.7)
+
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
@@ -221,6 +305,10 @@ for f in filters:
                         label="Kawamata+18")
                 # ax.fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
+                if z == 6:
+                    legend_elements.append(
+                        Line2D([0], [0], color=colors["K18"], linestyle="-",
+                               label=labels["K18"]))
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -269,8 +357,7 @@ for f in filters:
         ax9.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
 
-        handles, labels = ax6.get_legend_handles_labels()
-        ax1.legend(handles, labels, loc="bottom right")
+        ax1.legend(handles=legend_elements, ncol=2)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_' + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
@@ -279,6 +366,8 @@ for f in filters:
         plt.close(fig)
 
         for snap in snaps:
+
+            legend_elements = []
 
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
@@ -302,6 +391,30 @@ for f in filters:
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
             except ValueError:
                 continue
+
+            for p in labels.keys():
+
+                okinds = papers == p
+                plt_m = mags[okinds]
+                plt_r_es = r_es[okinds]
+                plt_zs = zs[okinds]
+
+                okinds = np.logical_and(plt_zs >= (z - 0.5),
+                                        plt_zs < (z + 0.5))
+                plt_m = plt_m[okinds]
+                plt_r_es = plt_r_es[okinds]
+
+                plt_M = m_to_M(plt_m, cosmo, z)
+                plt_lumins = M_to_lum(plt_M)
+
+                legend_elements.append(
+                    Line2D([0], [0], marker=markers[p], color='w',
+                           label=labels[p], markerfacecolor=colors[p],
+                           markersize=8, alpha=0.7))
+
+                ax.scatter(plt_lumins, plt_r_es,
+                           marker=markers[p], label=labels[p], s=25,
+                           color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
 
@@ -329,6 +442,9 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
+                legend_elements.append(
+                    Line2D([0], [0], color=colors["K18"], linestyle="-",
+                           label=labels["K18"]))
                 # ax.fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -342,12 +458,16 @@ for f in filters:
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
+            ax.legend(handles=legend_elements, ncol=2)
+
             fig.savefig('plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
                         + '.png',
                         bbox_inches='tight')
 
             plt.close(fig)
+
+            legend_elements = []
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
@@ -360,6 +480,29 @@ for f in filters:
             except ValueError as e:
                 print(e)
                 continue
+
+            for p in labels.keys():
+
+                okinds = papers == p
+                plt_m = mags[okinds]
+                plt_r_es = r_es[okinds]
+                plt_zs = zs[okinds]
+
+                okinds = np.logical_and(plt_zs >= (z - 0.5),
+                                        plt_zs < (z + 0.5))
+                plt_m = plt_m[okinds]
+                plt_r_es = plt_r_es[okinds]
+
+                plt_M = m_to_M(plt_m, cosmo, z)
+
+                legend_elements.append(
+                    Line2D([0], [0], marker=markers[p], color='w',
+                           label=labels[p], markerfacecolor=colors[p],
+                           markersize=8, alpha=0.7))
+
+                ax.scatter(plt_M, plt_r_es,
+                           marker=markers[p], label=labels[p], s=25,
+                           color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
 
@@ -387,6 +530,9 @@ for f in filters:
                 ax.plot(lum_to_M(fit_lumins), fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
+                legend_elements.append(
+                    Line2D([0], [0], color=colors["K18"], linestyle="-",
+                           label=labels["K18"]))
                 # ax.fill_between(lum_to_M(fit_lumins), up, low,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -400,7 +546,7 @@ for f in filters:
             ax.set_xlabel(r'$M_{UV}$')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(loc="bottom left")
+            ax.legend(handles=legend_elements, ncol=2)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadius_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
@@ -411,6 +557,7 @@ for f in filters:
 
         axlims_x = []
         axlims_y = []
+        legend_elements = []
 
         # Set up plot
         fig = plt.figure(figsize=(18, 10))
@@ -453,6 +600,30 @@ for f in filters:
             except ValueError:
                 continue
 
+            for p in labels.keys():
+
+                okinds = papers == p
+                plt_m = mags[okinds]
+                plt_r_es = r_es[okinds]
+                plt_zs = zs[okinds]
+
+                okinds = np.logical_and(plt_zs >= (z - 0.5),
+                                        plt_zs < (z + 0.5))
+                plt_m = plt_m[okinds]
+                plt_r_es = plt_r_es[okinds]
+
+                plt_M = m_to_M(plt_m, cosmo, z)
+                plt_lumins = M_to_lum(plt_M)
+
+                legend_elements.append(
+                    Line2D([0], [0], marker=markers[p], color='w',
+                           label=labels[p], markerfacecolor=colors[p],
+                           markersize=8, alpha=0.7))
+
+                ax.scatter(plt_lumins, plt_r_es,
+                           marker=markers[p], label=labels[p], s=25,
+                           color=colors[p], alpha=0.7)
+
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
@@ -479,8 +650,8 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                # ax.fill_between(fit_lumins, low, up,
-                #                 color='k', alpha=0.4, zorder=1)
+            legend_elements.append(Line2D([0], [0], color=colors["K18"],
+                                          label=labels["K18"]))
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -529,8 +700,7 @@ for f in filters:
         ax9.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
 
-        handles, labels = ax6.get_legend_handles_labels()
-        ax1.legend(handles, labels, loc="bottom right")
+        ax1.legend(handles=legend_elements, ncol=2)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + orientation + '_'
@@ -540,6 +710,8 @@ for f in filters:
         plt.close(fig)
 
         for snap in snaps:
+
+            legend_elements = []
 
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
@@ -563,6 +735,30 @@ for f in filters:
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
             except ValueError:
                 continue
+
+            for p in labels.keys():
+
+                okinds = papers == p
+                plt_m = mags[okinds]
+                plt_r_es = r_es[okinds]
+                plt_zs = zs[okinds]
+
+                okinds = np.logical_and(plt_zs >= (z - 0.5),
+                                        plt_zs < (z + 0.5))
+                plt_m = plt_m[okinds]
+                plt_r_es = plt_r_es[okinds]
+
+                plt_M = m_to_M(plt_m, cosmo, z)
+                plt_lumins = M_to_lum(plt_M)
+
+                legend_elements.append(
+                    Line2D([0], [0], marker=markers[p], color='w',
+                           label=labels[p], markerfacecolor=colors[p],
+                           markersize=8, alpha=0.7))
+
+                ax.scatter(plt_lumins, plt_r_es,
+                           marker=markers[p], label=labels[p], s=25,
+                           color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
 
@@ -590,6 +786,9 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
+                legend_elements.append(
+                    Line2D([0], [0], color=colors["K18"], linestyle="-",
+                           label=labels["K18"]))
                 # ax.fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -603,7 +802,7 @@ for f in filters:
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(loc="")
+            ax.legend(handles=legend_elements, ncol=2)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
@@ -612,6 +811,8 @@ for f in filters:
                         bbox_inches='tight')
 
             plt.close(fig)
+
+            legend_elements = []
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
@@ -624,6 +825,29 @@ for f in filters:
             except ValueError as e:
                 print(e)
                 continue
+
+            for p in labels.keys():
+
+                okinds = papers == p
+                plt_m = mags[okinds]
+                plt_r_es = r_es[okinds]
+                plt_zs = zs[okinds]
+
+                okinds = np.logical_and(plt_zs >= (z - 0.5),
+                                        plt_zs < (z + 0.5))
+                plt_m = plt_m[okinds]
+                plt_r_es = plt_r_es[okinds]
+
+                plt_M = m_to_M(plt_m, cosmo, z)
+
+                legend_elements.append(
+                    Line2D([0], [0], marker=markers[p], color='w',
+                           label=labels[p], markerfacecolor=colors[p],
+                           markersize=8, alpha=0.7))
+
+                ax.scatter(plt_M, plt_r_es,
+                           marker=markers[p], label=labels[p], s=25,
+                           color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
 
@@ -651,6 +875,9 @@ for f in filters:
                 ax.plot(lum_to_M(fit_lumins), fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
+                legend_elements.append(
+                    Line2D([0], [0], color=colors["K18"], linestyle="-",
+                           label=labels["K18"]))
                 # ax.fill_between(lum_to_M(fit_lumins), up, low,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -664,7 +891,7 @@ for f in filters:
             ax.set_xlabel(r'$M_{UV}$')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(loc="bottom left")
+            ax.legend(handles=legend_elements, ncol=2)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
@@ -676,6 +903,7 @@ for f in filters:
 
         axlims_x = []
         axlims_y = []
+        legend_elements = []
 
         # Set up plot
         fig = plt.figure(figsize=(18, 10))
@@ -718,6 +946,30 @@ for f in filters:
             except ValueError:
                 continue
 
+            for p in labels.keys():
+
+                okinds = papers == p
+                plt_m = mags[okinds]
+                plt_r_es = r_es[okinds]
+                plt_zs = zs[okinds]
+
+                okinds = np.logical_and(plt_zs >= (z - 0.5),
+                                        plt_zs < (z + 0.5))
+                plt_m = plt_m[okinds]
+                plt_r_es = plt_r_es[okinds]
+
+                plt_M = m_to_M(plt_m, cosmo, z)
+                plt_lumins = M_to_lum(plt_M)
+
+                legend_elements.append(
+                    Line2D([0], [0], marker=markers[p], color='w',
+                           label=labels[p], markerfacecolor=colors[p],
+                           markersize=8, alpha=0.7))
+
+                ax.scatter(plt_lumins, plt_r_es,
+                           marker=markers[p], label=labels[p], s=25,
+                           color=colors[p], alpha=0.7)
+
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
@@ -744,8 +996,9 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                # ax.fill_between(fit_lumins, low, up,
-                #                 color='k', alpha=0.4, zorder=1)
+            legend_elements.append(
+                Line2D([0], [0], color=colors["K18"], linestyle="-",
+                       label=labels["K18"]))
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -794,8 +1047,7 @@ for f in filters:
         ax9.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
 
-        handles, labels = ax6.get_legend_handles_labels()
-        ax1.legend(handles, labels, loc="bottom right")
+        ax1.legend(handles=legend_elements, ncol=2)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + orientation + '_'
@@ -805,6 +1057,8 @@ for f in filters:
         plt.close(fig)
 
         for snap in snaps:
+
+            legend_elements = []
 
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
@@ -828,6 +1082,30 @@ for f in filters:
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
             except ValueError:
                 continue
+
+            for p in labels.keys():
+
+                okinds = papers == p
+                plt_m = mags[okinds]
+                plt_r_es = r_es[okinds]
+                plt_zs = zs[okinds]
+
+                okinds = np.logical_and(plt_zs >= (z - 0.5),
+                                        plt_zs < (z + 0.5))
+                plt_m = plt_m[okinds]
+                plt_r_es = plt_r_es[okinds]
+
+                plt_M = m_to_M(plt_m, cosmo, z)
+                plt_lumins = M_to_lum(plt_M)
+
+                legend_elements.append(
+                    Line2D([0], [0], marker=markers[p], color='w',
+                           label=labels[p], markerfacecolor=colors[p],
+                           markersize=8, alpha=0.7))
+
+                ax.scatter(plt_lumins, plt_r_es,
+                           marker=markers[p], label=labels[p], s=25,
+                           color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
 
@@ -855,6 +1133,9 @@ for f in filters:
                 ax.plot(fit_lumins, fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
+                legend_elements.append(
+                    Line2D([0], [0], color=colors["K18"], linestyle="-",
+                           label=labels["K18"]))
                 # ax.fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -868,7 +1149,7 @@ for f in filters:
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(loc="")
+            ax.legend(handles=legend_elements, ncol=2)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                         + f + '_' + str(z) + '_' + orientation
@@ -877,6 +1158,8 @@ for f in filters:
                         bbox_inches='tight')
 
             plt.close(fig)
+
+            legend_elements = []
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
@@ -889,6 +1172,29 @@ for f in filters:
             except ValueError as e:
                 print(e)
                 continue
+
+            for p in labels.keys():
+
+                okinds = papers == p
+                plt_m = mags[okinds]
+                plt_r_es = r_es[okinds]
+                plt_zs = zs[okinds]
+
+                okinds = np.logical_and(plt_zs >= (z - 0.5),
+                                        plt_zs < (z + 0.5))
+                plt_m = plt_m[okinds]
+                plt_r_es = plt_r_es[okinds]
+
+                plt_M = m_to_M(plt_m, cosmo, z)
+
+                legend_elements.append(
+                    Line2D([0], [0], marker=markers[p], color='w',
+                           label=labels[p], markerfacecolor=colors[p],
+                           markersize=8, alpha=0.7))
+
+                ax.scatter(plt_M, plt_r_es,
+                           marker=markers[p], label=labels[p], s=25,
+                           color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
 
@@ -916,6 +1222,9 @@ for f in filters:
                 ax.plot(lum_to_M(fit_lumins), fit,
                         linestyle='dashed', color='k', alpha=0.9, zorder=2,
                         label="Kawamata+18")
+                legend_elements.append(
+                    Line2D([0], [0], color=colors["K18"], linestyle="-",
+                           label=labels["K18"]))
                 # ax.fill_between(lum_to_M(fit_lumins), up, low,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -929,7 +1238,7 @@ for f in filters:
             ax.set_xlabel(r'$M_{UV}$')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(loc="bottom left")
+            ax.legend(handles=legend_elements, ncol=2)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
