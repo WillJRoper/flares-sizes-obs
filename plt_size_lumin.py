@@ -281,7 +281,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
-                    low_lim = -12.2
+                    low_lim = -16
                 elif z == 8:
                     low_lim = -16.8
                 else:
@@ -508,7 +508,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
-                    low_lim = -12.2
+                    low_lim = -16
                 elif z == 8:
                     low_lim = -16.8
                 else:
@@ -628,7 +628,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
-                    low_lim = -12.2
+                    low_lim = -16
                 elif z == 8:
                     low_lim = -16.8
                 else:
@@ -764,7 +764,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
-                    low_lim = -12.2
+                    low_lim = -16
                 elif z == 8:
                     low_lim = -16.8
                 else:
@@ -853,7 +853,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
-                    low_lim = -12.2
+                    low_lim = -16
                 elif z == 8:
                     low_lim = -16.8
                 else:
@@ -974,7 +974,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
-                    low_lim = -12.2
+                    low_lim = -16
                 elif z == 8:
                     low_lim = -16.8
                 else:
@@ -1111,7 +1111,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
-                    low_lim = -12.2
+                    low_lim = -16
                 elif z == 8:
                     low_lim = -16.8
                 else:
@@ -1200,7 +1200,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
-                    low_lim = -12.2
+                    low_lim = -16
                 elif z == 8:
                     low_lim = -16.8
                 else:
@@ -1280,7 +1280,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
-                    low_lim = -12.2
+                    low_lim = -16
                 elif z == 8:
                     low_lim = -16.8
                 else:
@@ -1377,7 +1377,7 @@ for f in filters:
             if int(z) in [6, 7, 8, 9]:
 
                 if z == 7 or z == 6:
-                    low_lim = -12.2
+                    low_lim = -16
                 elif z == 8:
                     low_lim = -16.8
                 else:
