@@ -267,6 +267,8 @@ for f in filters:
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
+                if plt_m.size == 0:
+                    continue
                 plt_M = m_to_M(plt_m, cosmo, z)
                 plt_lumins = M_to_lum(plt_M)
 
@@ -360,7 +362,7 @@ for f in filters:
                         labelleft=False, labelright=False)
 
         ax1.legend(handles=legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
+                   bbox_to_anchor=(0.5, -0.1), fancybox=True, ncol=3)
 
         fig.savefig('plots/' + str(
             z) + '/HalfLightRadius_' + f + '_' + orientation + '_'
@@ -412,6 +414,8 @@ for f in filters:
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
+                if plt_m.size == 0:
+                    continue
                 plt_M = m_to_M(plt_m, cosmo, z)
                 plt_lumins = M_to_lum(plt_M)
 
@@ -467,7 +471,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.1), fancybox=True, ncol=3)
 
             fig.savefig(
                 'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
@@ -508,6 +512,8 @@ for f in filters:
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
+                if plt_m.size == 0:
+                    continue
                 plt_M = m_to_M(plt_m, cosmo, z)
 
                 legend_elements.append(
@@ -562,7 +568,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.1), fancybox=True, ncol=3)
 
             fig.savefig(
                 'plots/' + str(z) + '/HalfLightRadius_AbMag_' + f + '_' + str(
@@ -634,6 +640,8 @@ for f in filters:
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
+                if plt_m.size == 0:
+                    continue
                 plt_M = m_to_M(plt_m, cosmo, z)
                 plt_lumins = M_to_lum(plt_M)
 
@@ -723,7 +731,7 @@ for f in filters:
                         labelleft=False, labelright=False)
 
         ax1.legend(handles=legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
+                   bbox_to_anchor=(0.5, -0.1), fancybox=True, ncol=3)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + orientation + '_'
@@ -775,6 +783,8 @@ for f in filters:
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
+                if plt_m.size == 0:
+                    continue
                 plt_M = m_to_M(plt_m, cosmo, z)
                 plt_lumins = M_to_lum(plt_M)
 
@@ -830,7 +840,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.1), fancybox=True, ncol=3)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
@@ -870,6 +880,8 @@ for f in filters:
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
+                if plt_m.size == 0:
+                    continue
                 plt_M = m_to_M(plt_m, cosmo, z)
 
                 legend_elements.append(
@@ -924,7 +936,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.1), fancybox=True, ncol=3)
 
             fig.savefig('plots/' + str(
                 z) + '/HalfLightRadiusAperture_AbMag_' + f + '_' + str(z) + '_'
@@ -995,6 +1007,8 @@ for f in filters:
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
+                if plt_m.size == 0:
+                    continue
                 plt_M = m_to_M(plt_m, cosmo, z)
                 plt_lumins = M_to_lum(plt_M)
 
@@ -1085,7 +1099,7 @@ for f in filters:
                         labelleft=False, labelright=False)
 
         ax1.legend(handles=legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
+                   bbox_to_anchor=(0.5, -0.1), fancybox=True, ncol=3)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + orientation + '_'
@@ -1137,6 +1151,8 @@ for f in filters:
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
+                if plt_m.size == 0:
+                    continue
                 plt_M = m_to_M(plt_m, cosmo, z)
                 plt_lumins = M_to_lum(plt_M)
 
@@ -1192,7 +1208,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.1), fancybox=True, ncol=3)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                         + f + '_' + str(z) + '_' + orientation
@@ -1232,6 +1248,8 @@ for f in filters:
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
+                if plt_m.size == 0:
+                    continue
                 plt_M = m_to_M(plt_m, cosmo, z)
 
                 legend_elements.append(
@@ -1286,7 +1304,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.1), fancybox=True, ncol=3)
 
             fig.savefig('plots/' + str(
                 z) + '/HalfLightRadiusPixel_AbMag_' + f + '_' + str(z) + '_'
