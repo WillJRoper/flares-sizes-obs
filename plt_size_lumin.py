@@ -5,7 +5,6 @@ import warnings
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-from photutils import CircularAperture
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
@@ -15,8 +14,6 @@ import seaborn as sns
 from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
-import phot_modules as phot
-import utilities as util
 from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
 from FLARE.photom import lum_to_M, M_to_lum
@@ -125,7 +122,7 @@ markers = {"G11": "s", "G12": "v", "C16": "D",
            "K18": "o", "M18": "H", "F20": ".", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "D", "H20": "*"}
 colors = {"G11": "darkred", "G12": "darkred", "C16": "darkred",
-           "K18": "darkred", "M18": "green", "F20": ".",
+          "K18": "darkred", "M18": "green", "F20": ".",
           "MO18": "darkred", "B19": "darkred", "O16": "darkred",
           "S18": "darkred", "H20": "darkred"}
 
@@ -165,7 +162,6 @@ reg_snaps = []
 for reg in reversed(regions):
 
     for snap in snaps:
-
         reg_snaps.append((reg, snap))
 
 for reg, snap in reg_snaps:
@@ -179,9 +175,8 @@ for reg, snap in reg_snaps:
     hlr_pix_dict.setdefault(snap, {})
     lumin_dict.setdefault(snap, {})
     mass_dict.setdefault(snap, {})
-    
+
     for f in filters:
-        
         hlr_dict[snap].setdefault(f, [])
         hlr_app_dict[snap].setdefault(f, [])
         hlr_pix_dict[snap].setdefault(f, [])
@@ -189,8 +184,10 @@ for reg, snap in reg_snaps:
         mass_dict[snap].setdefault(f, [])
 
         hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...])
-        hlr_app_dict[snap][f].extend(orientation_group[f]["HLR_Aperture_0.5"][...])
-        hlr_pix_dict[snap][f].extend(orientation_group[f]["HLR_Pixel_0.5"][...])
+        hlr_app_dict[snap][f].extend(
+            orientation_group[f]["HLR_Aperture_0.5"][...])
+        hlr_pix_dict[snap][f].extend(
+            orientation_group[f]["HLR_Pixel_0.5"][...])
         lumin_dict[snap][f].extend(orientation_group[f]["Luminosity"][...])
         mass_dict[snap][f].extend(orientation_group[f]["Mass"][...])
 
@@ -255,14 +252,18 @@ for f in filters:
                 continue
 
             for p in labels.keys():
-
                 okinds = papers == p
                 plt_m = mags[okinds]
                 plt_r_es = r_es[okinds]
                 plt_zs = zs[okinds]
 
                 okinds = np.logical_and(plt_zs >= (z - 0.5),
-                                        plt_zs < (z + 0.5))
+                                        np.logical_and(plt_zs < (z + 0.5),
+                                                       np.logical_and(
+                                                           plt_r_es > 0.08,
+                                                           plt_m > M_to_m(-16,
+                                                                          cosmo,
+                                                                          z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -358,9 +359,11 @@ for f in filters:
         ax9.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
 
-        ax1.legend(handles=legend_elements, ncol=2)
+        ax1.legend(handles=legend_elements, loc='upper center',
+                   bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
 
-        fig.savefig('plots/' + str(z) + '/HalfLightRadius_' + f + '_' + orientation + '_'
+        fig.savefig('plots/' + str(
+            z) + '/HalfLightRadius_' + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
                     + '.png', bbox_inches='tight')
 
@@ -394,14 +397,18 @@ for f in filters:
                 continue
 
             for p in labels.keys():
-
                 okinds = papers == p
                 plt_m = mags[okinds]
                 plt_r_es = r_es[okinds]
                 plt_zs = zs[okinds]
 
                 okinds = np.logical_and(plt_zs >= (z - 0.5),
-                                        plt_zs < (z + 0.5))
+                                        np.logical_and(plt_zs < (z + 0.5),
+                                                       np.logical_and(
+                                                           plt_r_es > 0.08,
+                                                           plt_m > M_to_m(-16,
+                                                                          cosmo,
+                                                                          z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -459,12 +466,15 @@ for f in filters:
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(handles=legend_elements, ncol=2)
+            ax.legend(handles=legend_elements, loc='upper center',
+                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
 
-            fig.savefig('plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(z) + '_'
-                        + orientation + '_' + Type + "_" + extinction + "_"
-                        + '.png',
-                        bbox_inches='tight')
+            fig.savefig(
+                'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
+                    z) + '_'
+                + orientation + '_' + Type + "_" + extinction + "_"
+                + '.png',
+                bbox_inches='tight')
 
             plt.close(fig)
 
@@ -483,14 +493,18 @@ for f in filters:
                 continue
 
             for p in labels.keys():
-
                 okinds = papers == p
                 plt_m = mags[okinds]
                 plt_r_es = r_es[okinds]
                 plt_zs = zs[okinds]
 
                 okinds = np.logical_and(plt_zs >= (z - 0.5),
-                                        plt_zs < (z + 0.5))
+                                        np.logical_and(plt_zs < (z + 0.5),
+                                                       np.logical_and(
+                                                           plt_r_es > 0.08,
+                                                           plt_m > M_to_m(-16,
+                                                                          cosmo,
+                                                                          z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -547,12 +561,15 @@ for f in filters:
             ax.set_xlabel(r'$M_{UV}$')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(handles=legend_elements, ncol=2)
+            ax.legend(handles=legend_elements, loc='upper center',
+                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
 
-            fig.savefig('plots/' + str(z) + '/HalfLightRadius_AbMag_' + f + '_' + str(z) + '_'
-                        + orientation + '_' + Type + "_" + extinction + "_"
-                        + '.png',
-                        bbox_inches='tight')
+            fig.savefig(
+                'plots/' + str(z) + '/HalfLightRadius_AbMag_' + f + '_' + str(
+                    z) + '_'
+                + orientation + '_' + Type + "_" + extinction + "_"
+                + '.png',
+                bbox_inches='tight')
 
             plt.close(fig)
 
@@ -602,14 +619,18 @@ for f in filters:
                 continue
 
             for p in labels.keys():
-
                 okinds = papers == p
                 plt_m = mags[okinds]
                 plt_r_es = r_es[okinds]
                 plt_zs = zs[okinds]
 
                 okinds = np.logical_and(plt_zs >= (z - 0.5),
-                                        plt_zs < (z + 0.5))
+                                        np.logical_and(plt_zs < (z + 0.5),
+                                                       np.logical_and(
+                                                           plt_r_es > 0.08,
+                                                           plt_m > M_to_m(-16,
+                                                                          cosmo,
+                                                                          z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -701,7 +722,8 @@ for f in filters:
         ax9.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
 
-        ax1.legend(handles=legend_elements, ncol=2)
+        ax1.legend(handles=legend_elements, loc='upper center',
+                   bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + orientation + '_'
@@ -738,14 +760,18 @@ for f in filters:
                 continue
 
             for p in labels.keys():
-
                 okinds = papers == p
                 plt_m = mags[okinds]
                 plt_r_es = r_es[okinds]
                 plt_zs = zs[okinds]
 
                 okinds = np.logical_and(plt_zs >= (z - 0.5),
-                                        plt_zs < (z + 0.5))
+                                        np.logical_and(plt_zs < (z + 0.5),
+                                                       np.logical_and(
+                                                           plt_r_es > 0.08,
+                                                           plt_m > M_to_m(-16,
+                                                                          cosmo,
+                                                                          z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -803,7 +829,8 @@ for f in filters:
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(handles=legend_elements, ncol=2)
+            ax.legend(handles=legend_elements, loc='upper center',
+                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
@@ -828,14 +855,18 @@ for f in filters:
                 continue
 
             for p in labels.keys():
-
                 okinds = papers == p
                 plt_m = mags[okinds]
                 plt_r_es = r_es[okinds]
                 plt_zs = zs[okinds]
 
                 okinds = np.logical_and(plt_zs >= (z - 0.5),
-                                        plt_zs < (z + 0.5))
+                                        np.logical_and(plt_zs < (z + 0.5),
+                                                       np.logical_and(
+                                                           plt_r_es > 0.08,
+                                                           plt_m > M_to_m(-16,
+                                                                          cosmo,
+                                                                          z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -892,15 +923,16 @@ for f in filters:
             ax.set_xlabel(r'$M_{UV}$')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(handles=legend_elements, ncol=2)
+            ax.legend(handles=legend_elements, loc='upper center',
+                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
 
-            fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_AbMag_' + f + '_' + str(z) + '_'
+            fig.savefig('plots/' + str(
+                z) + '/HalfLightRadiusAperture_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
                         + '.png',
                         bbox_inches='tight')
 
             plt.close(fig)
-
 
         axlims_x = []
         axlims_y = []
@@ -948,14 +980,18 @@ for f in filters:
                 continue
 
             for p in labels.keys():
-
                 okinds = papers == p
                 plt_m = mags[okinds]
                 plt_r_es = r_es[okinds]
                 plt_zs = zs[okinds]
 
                 okinds = np.logical_and(plt_zs >= (z - 0.5),
-                                        plt_zs < (z + 0.5))
+                                        np.logical_and(plt_zs < (z + 0.5),
+                                                       np.logical_and(
+                                                           plt_r_es > 0.08,
+                                                           plt_m > M_to_m(-16,
+                                                                          cosmo,
+                                                                          z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -1048,7 +1084,8 @@ for f in filters:
         ax9.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
 
-        ax1.legend(handles=legend_elements, ncol=2)
+        ax1.legend(handles=legend_elements, loc='upper center',
+                   bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + orientation + '_'
@@ -1085,14 +1122,18 @@ for f in filters:
                 continue
 
             for p in labels.keys():
-
                 okinds = papers == p
                 plt_m = mags[okinds]
                 plt_r_es = r_es[okinds]
                 plt_zs = zs[okinds]
 
                 okinds = np.logical_and(plt_zs >= (z - 0.5),
-                                        plt_zs < (z + 0.5))
+                                        np.logical_and(plt_zs < (z + 0.5),
+                                                       np.logical_and(
+                                                           plt_r_es > 0.08,
+                                                           plt_m > M_to_m(-16,
+                                                                          cosmo,
+                                                                          z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -1150,7 +1191,8 @@ for f in filters:
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(handles=legend_elements, ncol=2)
+            ax.legend(handles=legend_elements, loc='upper center',
+                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                         + f + '_' + str(z) + '_' + orientation
@@ -1175,14 +1217,18 @@ for f in filters:
                 continue
 
             for p in labels.keys():
-
                 okinds = papers == p
                 plt_m = mags[okinds]
                 plt_r_es = r_es[okinds]
                 plt_zs = zs[okinds]
 
                 okinds = np.logical_and(plt_zs >= (z - 0.5),
-                                        plt_zs < (z + 0.5))
+                                        np.logical_and(plt_zs < (z + 0.5),
+                                                       np.logical_and(
+                                                           plt_r_es > 0.08,
+                                                           plt_m > M_to_m(-16,
+                                                                          cosmo,
+                                                                          z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -1239,9 +1285,11 @@ for f in filters:
             ax.set_xlabel(r'$M_{UV}$')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            ax.legend(handles=legend_elements, ncol=2)
+            ax.legend(handles=legend_elements, loc='upper center',
+                      bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=3)
 
-            fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_AbMag_' + f + '_' + str(z) + '_'
+            fig.savefig('plots/' + str(
+                z) + '/HalfLightRadiusPixel_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
                         + '.png',
                         bbox_inches='tight')
@@ -1318,10 +1366,12 @@ for f in filters:
 
             ax.legend(loc="bottom right")
 
-            fig.savefig('plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(z) + '_'
-                        + orientation + '_' + Type + "_" + extinction + "_"
-                        + '.png',
-                        bbox_inches='tight')
+            fig.savefig(
+                'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
+                    z) + '_'
+                + orientation + '_' + Type + "_" + extinction + "_"
+                + '.png',
+                bbox_inches='tight')
 
             plt.close(fig)
 
@@ -1348,10 +1398,12 @@ for f in filters:
             ax.set_xlabel(r'$M_\star/M_\odot$')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            fig.savefig('plots/' + str(z) + '/HalfLightRadius_Mass_' + f + '_' + str(z) + '_'
-                        + orientation + '_' + Type + "_" + extinction + "_"
-                        + '%.2f.png' % np.log10(masslim),
-                        bbox_inches='tight')
+            fig.savefig(
+                'plots/' + str(z) + '/HalfLightRadius_Mass_' + f + '_' + str(
+                    z) + '_'
+                + orientation + '_' + Type + "_" + extinction + "_"
+                + '%.2f.png' % np.log10(masslim),
+                bbox_inches='tight')
 
             plt.close(fig)
 
@@ -1369,7 +1421,8 @@ for f in filters:
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  xscale='log', yscale='log',
-                                 norm=LogNorm(), linewidths=0.2, cmap='viridis')
+                                 norm=LogNorm(), linewidths=0.2,
+                                 cmap='viridis')
                 # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
             except ValueError:
                 continue
