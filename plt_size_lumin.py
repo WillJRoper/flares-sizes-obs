@@ -155,7 +155,7 @@ mass_dict = {}
 weight_dict = {}
 
 # Load weights
-df = pd.read_csv('weight_files/weights_grid.txt')
+df = pd.read_csv('../weight_files/weights_grid.txt')
 weights = np.array(df['weights'])
 
 regions = []
