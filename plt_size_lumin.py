@@ -1525,7 +1525,8 @@ for f in filters:
                 ax.plot(lumin_bin_cents, med, k="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError as e:
-                print(e)continue
+                print(e)
+                continue
 
             if int(z) in [6, 7, 8, 9]:
 
