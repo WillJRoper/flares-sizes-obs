@@ -1,5 +1,4 @@
 import os
-import sys
 import warnings
 
 import astropy.units as u
@@ -17,7 +16,6 @@ warnings.filterwarnings('ignore')
 
 
 def calc_ages(z, a_born):
-
     # Convert scale factor into redshift
     z_born = 1 / a_born - 1
 
@@ -32,7 +30,6 @@ def calc_ages(z, a_born):
 
 
 def calc_srf(z, a_born, mass, t_bin=100):
-
     # Convert scale factor into redshift
     z_born = 1 / a_born - 1
 
@@ -56,7 +53,6 @@ def calc_srf(z, a_born, mass, t_bin=100):
 
 
 def calc_srf_from_age(age, mass, t_bin=100):
-
     ok = np.where(age <= t_bin)[0]
     if len(ok) > 0:
 
@@ -109,8 +105,8 @@ def get_Z_LOS(s_cood, g_cood, g_mass, g_Z, g_sml, dimens, lkernel, kbins):
         kernel_vals = np.array([lkernel[int(kbins * ll)] for ll in boverh[ok]])
 
         Z_los_SD[ii] = np.sum((thisgmass[ok] * thisgZ[ok] / (
-                    thisgsml[ok] * thisgsml[
-                ok])) * kernel_vals)  # in units of Msun/Mpc^2
+                thisgsml[ok] * thisgsml[
+            ok])) * kernel_vals)  # in units of Msun/Mpc^2
 
     Z_los_SD *= conv  # in units of Msun/pc^2
 
@@ -268,11 +264,11 @@ def calc_eigenvec(coods):
     e_vectors = e_vectors[sort_idx, :]
 
     a = ((5. / (2 * len(coods))) * (
-                e_values[1] + e_values[2] - e_values[0])) ** 0.5
+            e_values[1] + e_values[2] - e_values[0])) ** 0.5
     b = ((5. / (2 * len(coods))) * (
-                e_values[0] + e_values[2] - e_values[1])) ** 0.5
+            e_values[0] + e_values[2] - e_values[1])) ** 0.5
     c = ((5. / (2 * len(coods))) * (
-                e_values[0] + e_values[1] - e_values[2])) ** 0.5
+            e_values[0] + e_values[1] - e_values[2])) ** 0.5
 
     #     print a, b, c
 
@@ -311,7 +307,6 @@ def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth):
 
 @nb.jit(nogil=True, parallel=True)
 def get_img_hlr(img, apertures, app_rs, res, csoft, radii_frac=0.5):
-
     # Apply the apertures
     phot_table = aperture_photometry(img, apertures, method='subpixel',
                                      subpixels=5)
@@ -337,7 +332,6 @@ def get_img_hlr(img, apertures, app_rs, res, csoft, radii_frac=0.5):
 
 
 def get_pixel_hlr(img, single_pix_area, radii_frac=0.5):
-
     # Get half the total luminosity
     half_l = np.sum(img) * radii_frac
 
@@ -373,7 +367,6 @@ def calc_3drad(poss):
 
 
 def lumin_weighted_centre(poss, ls, i, j):
-
     cent = np.average(poss[:, (i, j)], axis=0, weights=ls)
 
     return cent
@@ -381,7 +374,6 @@ def lumin_weighted_centre(poss, ls, i, j):
 
 @nb.njit(nogil=True, parallel=True)
 def calc_light_mass_rad(rs, ls, radii_frac=0.5):
-
     # Sort the radii and masses
     sinds = np.argsort(rs)
     rs = rs[sinds]
@@ -403,3 +395,58 @@ def calc_light_mass_rad(rs, ls, radii_frac=0.5):
 
     return hmr
 
+
+# Weighted quantiles
+def weighted_quantile(values, quantiles, sample_weight=None,
+                      values_sorted=False, old_style=False):
+    """
+    Taken from From https://stackoverflow.com/a/29677616/1718096
+    Very close to numpy.percentile, but supports weights.
+    NOTE: quantiles should be in [0, 1]!
+    :param values: numpy.array with data
+    :param quantiles: array-like with many quantiles needed
+    :param sample_weight: array-like of the same length as `array`
+    :param values_sorted: bool, if True, then will avoid sorting of
+        initial array
+    :param old_style: if True, will correct output to be consistent
+        with numpy.percentile.
+    :return: numpy.array with computed quantiles.
+    """
+
+    # do some housekeeping
+    values = np.array(values)
+    quantiles = np.array(quantiles)
+    if sample_weight is None:
+        sample_weight = np.ones(len(values))
+    sample_weight = np.array(sample_weight)
+    assert np.all(quantiles >= 0) and np.all(quantiles <= 1), \
+        'quantiles should be in [0, 1]'
+
+    # if not sorted, sort values array
+    if not values_sorted:
+        sorter = np.argsort(values)
+        values = values[sorter]
+        sample_weight = sample_weight[sorter]
+
+    weighted_quantiles = np.cumsum(sample_weight) - 0.5 * sample_weight
+    if old_style:
+        # To be convenient with numpy.percentile
+        weighted_quantiles -= weighted_quantiles[0]
+        weighted_quantiles /= weighted_quantiles[-1]
+    else:
+        weighted_quantiles /= np.sum(sample_weight)
+    return np.interp(quantiles, weighted_quantiles, values)
+
+
+def binned_weighted_quantile(x, y, weights, bins, quantiles):
+    # if ~isinstance(quantiles,list):
+    #     quantiles = [quantiles]
+
+    out = np.full((len(bins) - 1, len(quantiles)), np.nan)
+    for i, (b1, b2) in enumerate(zip(bins[:-1], bins[1:])):
+        mask = (x >= b1) & (x < b2)
+        if np.sum(mask) > 0:
+            out[i, :] = weighted_quantile(y[mask], quantiles,
+                                          sample_weight=weights[mask])
+
+    return np.squeeze(out)

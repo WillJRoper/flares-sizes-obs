@@ -21,6 +21,7 @@ import FLARE.photom as photconv
 import h5py
 import sys
 import pandas as pd
+import utilities as util
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -154,6 +155,15 @@ lumin_dict = {}
 mass_dict = {}
 weight_dict = {}
 
+lumin_bins = np.linspace(M_to_lum(-24), M_to_lum(-16), 20)
+M_bins = np.linspace(-24, -16, 20)
+
+lumin_bin_wid = lumin_bins[1] - lumin_bins[0]
+M_bin_wid = M_bins[1] - M_bins[0]
+
+lumin_bin_cents = lumin_bins[1] - (lumin_bin_wid / 2)
+M_bin_cents = M_bins[1] - (M_bin_wid / 2)
+
 # Load weights
 df = pd.read_csv('../weight_files/weights_grid.txt')
 weights = np.array(df['weights'])
@@ -265,7 +275,9 @@ for f in filters:
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError:
                 continue
 
@@ -414,7 +426,9 @@ for f in filters:
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError:
                 continue
 
@@ -513,7 +527,9 @@ for f in filters:
                                  yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError as e:
                 print(e)
                 continue
@@ -644,7 +660,9 @@ for f in filters:
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError:
                 continue
 
@@ -789,7 +807,9 @@ for f in filters:
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError:
                 continue
 
@@ -887,7 +907,9 @@ for f in filters:
                                  yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError as e:
                 print(e)
                 continue
@@ -1017,7 +1039,9 @@ for f in filters:
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError:
                 continue
 
@@ -1163,7 +1187,9 @@ for f in filters:
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError:
                 continue
 
@@ -1261,7 +1287,9 @@ for f in filters:
                                  yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError as e:
                 print(e)
                 continue
@@ -1350,6 +1378,8 @@ for f in filters:
 
     else:
 
+        legend_elements = []
+
         for snap in snaps:
 
             z_str = snap.split('z')[1].split('p')
@@ -1375,7 +1405,9 @@ for f in filters:
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError:
                 continue
 
@@ -1439,7 +1471,9 @@ for f in filters:
                                  yscale='log', xscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError as e:
                 print(e)
                 continue
@@ -1481,7 +1515,9 @@ for f in filters:
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                # plot_meidan_stat(lumins, hlrs * 10**3, ax, lab='REF', color='r')
+                med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
+                ax.plot(lumin_bin_cents, med, k="r")
+                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError:
                 continue
 
