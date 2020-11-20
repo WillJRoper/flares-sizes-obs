@@ -155,9 +155,9 @@ lumin_dict = {}
 mass_dict = {}
 weight_dict = {}
 
-lumin_bins = np.linspace(M_to_lum(-24), M_to_lum(-16), 20)
+lumin_bins = np.logspace(np.log10(M_to_lum(-16)), np.log10(M_to_lum(-24)), 20)
 M_bins = np.linspace(-24, -16, 20)
-print(lumin_bins)
+
 lumin_bin_wid = lumin_bins[1] - lumin_bins[0]
 M_bin_wid = M_bins[1] - M_bins[0]
 
