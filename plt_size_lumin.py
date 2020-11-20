@@ -146,7 +146,7 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-masslim = 10 ** sys.argv[4]
+masslim = 10 ** float(sys.argv[4])
 
 hlr_dict = {}
 hlr_app_dict = {}
