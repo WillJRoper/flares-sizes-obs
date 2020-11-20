@@ -145,11 +145,18 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
+masslim = 10 ** 9
+
 hlr_dict = {}
 hlr_app_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
 mass_dict = {}
+weight_dict = {}
+
+# Load weights
+df = pd.read_csv('weight_files/weights_grid.txt')
+weights = np.array(df['weights'])
 
 regions = []
 for reg in range(0, 40):
@@ -175,6 +182,7 @@ for reg, snap in reg_snaps:
     hlr_pix_dict.setdefault(snap, {})
     lumin_dict.setdefault(snap, {})
     mass_dict.setdefault(snap, {})
+    weight_dict.setdefault(snap, {})
 
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
@@ -182,14 +190,21 @@ for reg, snap in reg_snaps:
         hlr_pix_dict[snap].setdefault(f, [])
         lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
+        weight_dict[snap].setdefault(f, [])
 
-        hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...])
+        masses = orientation_group[f]["Mass"][...]
+        okinds = masses > masslim
+
+        hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...][okinds])
         hlr_app_dict[snap][f].extend(
-            orientation_group[f]["HLR_Aperture_0.5"][...])
+            orientation_group[f]["HLR_Aperture_0.5"][...])[okinds]
         hlr_pix_dict[snap][f].extend(
-            orientation_group[f]["HLR_Pixel_0.5"][...])
-        lumin_dict[snap][f].extend(orientation_group[f]["Luminosity"][...])
-        mass_dict[snap][f].extend(orientation_group[f]["Mass"][...])
+            orientation_group[f]["HLR_Pixel_0.5"][...][okinds])
+        lumin_dict[snap][f].extend(
+            orientation_group[f]["Luminosity"][...][okinds])
+        mass_dict[snap][f].extend(masses[okinds])
+        weight_dict[snap][f].extend(np.full(masses[okinds].size,
+                                            weights[int(reg)]))
 
     hdf.close()
 
@@ -243,7 +258,10 @@ for f in filters:
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
             try:
-                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lumins, hlrs,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum, gridsize=50,
+                                 mincnt=1,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -262,8 +280,8 @@ for f in filters:
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
                                                            plt_m <= M_to_m(-16,
-                                                                          cosmo,
-                                                                          z))))
+                                                                           cosmo,
+                                                                           z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -367,7 +385,7 @@ for f in filters:
         fig.savefig('plots/' + str(
             z) + '/HalfLightRadius_' + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
-                    + '.png', bbox_inches='tight')
+                    + '%.1f.png' % np.log10(masslim), bbox_inches='tight')
 
         plt.close(fig)
 
@@ -391,6 +409,8 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -409,8 +429,8 @@ for f in filters:
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
                                                            plt_m <= M_to_m(-16,
-                                                                          cosmo,
-                                                                          z))))
+                                                                           cosmo,
+                                                                           z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -477,7 +497,7 @@ for f in filters:
                 'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
-                + '.png',
+                + '%.1f.png' % np.log10(masslim),
                 bbox_inches='tight')
 
             plt.close(fig)
@@ -488,6 +508,8 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -507,8 +529,8 @@ for f in filters:
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
                                                            plt_m <= M_to_m(-16,
-                                                                          cosmo,
-                                                                          z))))
+                                                                           cosmo,
+                                                                           z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -574,7 +596,7 @@ for f in filters:
                 'plots/' + str(z) + '/HalfLightRadius_AbMag_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
-                + '.png',
+                + '%.1f.png' % np.log10(masslim),
                 bbox_inches='tight')
 
             plt.close(fig)
@@ -617,6 +639,8 @@ for f in filters:
             hlrs = hlrs[okinds] * 1000
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -635,8 +659,8 @@ for f in filters:
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
                                                            plt_m <= M_to_m(-16,
-                                                                          cosmo,
-                                                                          z))))
+                                                                           cosmo,
+                                                                           z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -736,7 +760,7 @@ for f in filters:
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
-                    + '.png', bbox_inches='tight')
+                    + '%.1f.png' % np.log10(masslim), bbox_inches='tight')
 
         plt.close(fig)
 
@@ -760,6 +784,8 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -778,8 +804,8 @@ for f in filters:
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
                                                            plt_m <= M_to_m(-16,
-                                                                          cosmo,
-                                                                          z))))
+                                                                           cosmo,
+                                                                           z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -845,7 +871,7 @@ for f in filters:
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
                         + '_' + Type + "_" + extinction + "_"
-                        + '.png',
+                        + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
 
             plt.close(fig)
@@ -856,6 +882,8 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -875,8 +903,8 @@ for f in filters:
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
                                                            plt_m <= M_to_m(-16,
-                                                                          cosmo,
-                                                                          z))))
+                                                                           cosmo,
+                                                                           z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -941,7 +969,7 @@ for f in filters:
             fig.savefig('plots/' + str(
                 z) + '/HalfLightRadiusAperture_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
-                        + '.png',
+                        + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
 
             plt.close(fig)
@@ -984,6 +1012,8 @@ for f in filters:
             hlrs = hlrs[okinds] * 1000
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -1002,8 +1032,8 @@ for f in filters:
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
                                                            plt_m <= M_to_m(-16,
-                                                                          cosmo,
-                                                                          z))))
+                                                                           cosmo,
+                                                                           z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -1104,7 +1134,7 @@ for f in filters:
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
-                    + '.png', bbox_inches='tight')
+                    + '%.1f.png' % np.log10(masslim), bbox_inches='tight')
 
         plt.close(fig)
 
@@ -1128,6 +1158,8 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -1146,8 +1178,8 @@ for f in filters:
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
                                                            plt_m <= M_to_m(-16,
-                                                                          cosmo,
-                                                                          z))))
+                                                                           cosmo,
+                                                                           z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -1213,7 +1245,7 @@ for f in filters:
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                         + f + '_' + str(z) + '_' + orientation
                         + '_' + Type + "_" + extinction + "_"
-                        + '.png',
+                        + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
 
             plt.close(fig)
@@ -1224,6 +1256,8 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -1243,8 +1277,8 @@ for f in filters:
                                                        np.logical_and(
                                                            plt_r_es > 0.08,
                                                            plt_m <= M_to_m(-16,
-                                                                          cosmo,
-                                                                          z))))
+                                                                           cosmo,
+                                                                           z))))
                 plt_m = plt_m[okinds]
                 plt_r_es = plt_r_es[okinds]
 
@@ -1309,7 +1343,7 @@ for f in filters:
             fig.savefig('plots/' + str(
                 z) + '/HalfLightRadiusPixel_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
-                        + '.png',
+                        + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
 
             plt.close(fig)
@@ -1336,6 +1370,8 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -1388,7 +1424,7 @@ for f in filters:
                 'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
-                + '.png',
+                + '%.1f.png' % np.log10(masslim),
                 bbox_inches='tight')
 
             plt.close(fig)
@@ -1398,6 +1434,8 @@ for f in filters:
 
             try:
                 cbar = ax.hexbin(mass, hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  yscale='log', xscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -1438,6 +1476,8 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                                 C=np.array(weight_dict[snap][f]),
+                                 reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -1487,7 +1527,7 @@ for f in filters:
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
                         + '_' + Type + "_" + extinction + "_"
-                        + '.png',
+                        + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
 
             plt.close(fig)
