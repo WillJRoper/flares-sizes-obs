@@ -145,7 +145,7 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-masslim = 10 ** 9
+masslim = 10 ** 8
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -380,7 +380,7 @@ for f in filters:
                         labelleft=False, labelright=False)
 
         ax1.legend(handles=legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.125), fancybox=True, ncol=3)
+                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
         fig.savefig('plots/' + str(
             z) + '/HalfLightRadius_' + f + '_' + orientation + '_'
@@ -491,7 +491,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.125), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
             fig.savefig(
                 'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
@@ -590,7 +590,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.125), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
             fig.savefig(
                 'plots/' + str(z) + '/HalfLightRadius_AbMag_' + f + '_' + str(
@@ -755,7 +755,7 @@ for f in filters:
                         labelleft=False, labelright=False)
 
         ax1.legend(handles=legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.125), fancybox=True, ncol=3)
+                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + orientation + '_'
@@ -866,7 +866,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.125), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
@@ -964,7 +964,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.125), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
             fig.savefig('plots/' + str(
                 z) + '/HalfLightRadiusAperture_AbMag_' + f + '_' + str(z) + '_'
@@ -1129,7 +1129,7 @@ for f in filters:
                         labelleft=False, labelright=False)
 
         ax1.legend(handles=legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.125), fancybox=True, ncol=3)
+                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + orientation + '_'
@@ -1240,7 +1240,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.125), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                         + f + '_' + str(z) + '_' + orientation
@@ -1338,7 +1338,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
-                      bbox_to_anchor=(0.5, -0.125), fancybox=True, ncol=3)
+                      bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
             fig.savefig('plots/' + str(
                 z) + '/HalfLightRadiusPixel_AbMag_' + f + '_' + str(z) + '_'
