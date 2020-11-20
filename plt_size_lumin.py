@@ -139,14 +139,14 @@ if sys.argv[3] == "All":
              '006_z009p000', '007_z008p000', '008_z007p000',
              '009_z006p000', '010_z005p000', '011_z004p770']
 else:
-    snaps = sys.argv[3:]
+    snaps = sys.argv[3]
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-masslim = 10 ** 8
+masslim = 10 ** sys.argv[4]
 
 hlr_dict = {}
 hlr_app_dict = {}
