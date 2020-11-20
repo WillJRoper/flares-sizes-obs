@@ -161,8 +161,8 @@ M_bins = np.linspace(-24, -16, 20)
 lumin_bin_wid = lumin_bins[1] - lumin_bins[0]
 M_bin_wid = M_bins[1] - M_bins[0]
 
-lumin_bin_cents = lumin_bins[1] - (lumin_bin_wid / 2)
-M_bin_cents = M_bins[1] - (M_bin_wid / 2)
+lumin_bin_cents = lumin_bins[1:] - (lumin_bin_wid / 2)
+M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 # Load weights
 df = pd.read_csv('../weight_files/weights_grid.txt')
