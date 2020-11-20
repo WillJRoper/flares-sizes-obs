@@ -278,7 +278,8 @@ for f in filters:
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
                 ax.plot(lumin_bin_cents, med, k="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
-            except ValueError:
+            except ValueError as e:
+                print(e)
                 continue
 
             for p in labels.keys():
@@ -429,7 +430,8 @@ for f in filters:
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
                 ax.plot(lumin_bin_cents, med, k="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
-            except ValueError:
+            except ValueError as e:
+                print(e)
                 continue
 
             for p in labels.keys():
@@ -663,7 +665,8 @@ for f in filters:
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
                 ax.plot(lumin_bin_cents, med, k="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
-            except ValueError:
+            except ValueError as e:
+                print(e)
                 continue
 
             for p in labels.keys():
@@ -810,7 +813,8 @@ for f in filters:
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
                 ax.plot(lumin_bin_cents, med, k="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
-            except ValueError:
+            except ValueError as e:
+                print(e)
                 continue
 
             for p in labels.keys():
@@ -1042,7 +1046,8 @@ for f in filters:
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
                 ax.plot(lumin_bin_cents, med, k="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
-            except ValueError:
+            except ValueError as e:
+                print(e)
                 continue
 
             for p in labels.keys():
@@ -1190,7 +1195,8 @@ for f in filters:
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
                 ax.plot(lumin_bin_cents, med, k="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
-            except ValueError:
+            except ValueError as e:
+                print(e)
                 continue
 
             for p in labels.keys():
@@ -1291,7 +1297,6 @@ for f in filters:
                 ax.plot(lumin_bin_cents, med, k="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError as e:
-                print(e)
                 continue
 
             for p in labels.keys():
@@ -1408,7 +1413,8 @@ for f in filters:
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
                 ax.plot(lumin_bin_cents, med, k="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
-            except ValueError:
+            except ValueError as e:
+                print(e)
                 continue
 
             if int(z) in [6, 7, 8, 9]:
@@ -1518,8 +1524,8 @@ for f in filters:
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[50, ])
                 ax.plot(lumin_bin_cents, med, k="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
-            except ValueError:
-                continue
+            except ValueError as e:
+                print(e)continue
 
             if int(z) in [6, 7, 8, 9]:
 
