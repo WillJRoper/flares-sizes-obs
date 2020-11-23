@@ -165,7 +165,7 @@ for f in filters:
         hlrs_pix = hlrs_pix[okinds]
         mass = mass[okinds]
 
-        fig = plt.figure()
+        fig = plt.figure(figsize=(6, 6))
         gs = gridspec.GridSpec(2, 2)
         gs.update(wspace=0.0, hspace=0.0)
         ax1 = fig.add_subplot(gs[0, 0])
@@ -202,6 +202,12 @@ for f in filters:
         ax1.set_ylabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
         ax2.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
         ax3.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
+
+        # Remove axis labels
+        ax1.tick_params(axis='x', top=False, bottom=False,
+                        labeltop=False, labelbottom=False)
+        ax3.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
 
         fig.savefig(
             'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
