@@ -171,15 +171,18 @@ for f in filters:
         ax1 = fig.add_subplot(gs[0, 0])
         ax2 = fig.add_subplot(gs[0, 1])
         try:
-            cbar = ax1.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                              C=np.array(weight_dict[snap][f]),
-                              reduce_C_function=np.sum,
+            cbar = ax1.hexbin(hlrs, hlrs_app, gridsize=50, mincnt=1,
+                              C=lumins,
+                              reduce_C_function=np.mean,
                               xscale='log', yscale='log',
                               norm=LogNorm(), linewidths=0.2,
                               cmap='viridis')
-            med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[0.5, ])
-            ax.plot(lumin_bin_cents, med, color="r")
-            legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
+            cbar = ax1.hexbin(hlrs, hlrs_pix, gridsize=50, mincnt=1,
+                              C=lumins,
+                              reduce_C_function=np.mean,
+                              xscale='log', yscale='log',
+                              norm=LogNorm(), linewidths=0.2,
+                              cmap='viridis')
         except ValueError as e:
             print(e)
             continue

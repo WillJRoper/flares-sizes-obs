@@ -273,7 +273,7 @@ for f in filters:
                                  reduce_C_function=np.sum, gridsize=50,
                                  mincnt=1,
                                  xscale='log', yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
@@ -425,7 +425,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
@@ -527,7 +527,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lum_to_M(lumins), hlrs, weights=np.array(weight_dict[snap][f]), bins=M_bins, quantiles=[0.5, ])
                 ax.plot(M_bin_cents, med, color="r")
@@ -660,7 +660,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
@@ -808,7 +808,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
@@ -909,7 +909,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lum_to_M(lumins), hlrs, weights=np.array(weight_dict[snap][f]), bins=M_bins, quantiles=[0.5, ])
                 ax.plot(M_bin_cents, med, color="r")
@@ -1041,7 +1041,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
@@ -1190,7 +1190,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
@@ -1291,7 +1291,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lum_to_M(lumins), hlrs, weights=np.array(weight_dict[snap][f]), bins=M_bins, quantiles=[0.5, ])
                 ax.plot(M_bin_cents, med, color="r")
@@ -1408,7 +1408,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
@@ -1475,7 +1475,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  yscale='log', xscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
@@ -1519,7 +1519,7 @@ for f in filters:
                                  C=np.array(weight_dict[snap][f]),
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
-                                 linewidths=0.2,
+                                 norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=np.array(weight_dict[snap][f]), bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
