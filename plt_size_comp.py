@@ -201,7 +201,7 @@ for f in filters:
         ax3.set_xlabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
         ax1.set_ylabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
         ax2.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
-        ax3.set_ylabel('$R_{1/2, \mathrm{pixel}/ [pkpc]$')
+        ax3.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
 
         fig.savefig(
             'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
