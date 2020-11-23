@@ -196,10 +196,12 @@ for f in filters:
                     color="k", linestyle="--")
 
         # Label axes
+        ax1.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
         ax2.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
         ax3.set_xlabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
         ax1.set_ylabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
         ax2.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
+        ax3.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
 
         # Remove axis labels
         ax1.tick_params(axis='x', top=False, bottom=False,
