@@ -166,20 +166,21 @@ for f in filters:
         mass = mass[okinds]
 
         fig = plt.figure()
-        gs = gridspec.GridSpec(1, 2)
+        gs = gridspec.GridSpec(2, 2)
         gs.update(wspace=0.0, hspace=0.0)
         ax1 = fig.add_subplot(gs[0, 0])
-        ax2 = fig.add_subplot(gs[0, 1])
+        ax2 = fig.add_subplot(gs[1, 0])
+        ax3 = fig.add_subplot(gs[1, 1])
         try:
             cbar = ax1.hexbin(hlrs, hlrs_app, gridsize=50, mincnt=1,
-                              C=lumins,
-                              reduce_C_function=np.mean,
                               xscale='log', yscale='log',
                               norm=LogNorm(), linewidths=0.2,
                               cmap='viridis')
-            cbar = ax1.hexbin(hlrs, hlrs_pix, gridsize=50, mincnt=1,
-                              C=lumins,
-                              reduce_C_function=np.mean,
+            cbar = ax2.hexbin(hlrs, hlrs_pix, gridsize=50, mincnt=1,
+                              xscale='log', yscale='log',
+                              norm=LogNorm(), linewidths=0.2,
+                              cmap='viridis')
+            cbar = ax3.hexbin(hlrs_app, hlrs_pix, gridsize=50, mincnt=1,
                               xscale='log', yscale='log',
                               norm=LogNorm(), linewidths=0.2,
                               cmap='viridis')
@@ -187,17 +188,11 @@ for f in filters:
             print(e)
             continue
 
-        ax.text(0.8, 0.1, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
         # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-
-        ax.legend(loc="bottom right")
+        ax1.set_ylabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+        ax1.set_ylabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+        ax1.set_ylabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+        ax1.set_ylabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
 
         fig.savefig(
             'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
