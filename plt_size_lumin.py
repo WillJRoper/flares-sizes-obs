@@ -270,7 +270,7 @@ for f in filters:
             w = np.array(weight_dict[snap][f])[okinds]
             try:
                 cbar = ax.hexbin(lumins, hlrs,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum, gridsize=50,
                                  mincnt=1,
                                  xscale='log', yscale='log',
@@ -424,7 +424,7 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
@@ -526,7 +526,7 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
@@ -660,7 +660,7 @@ for f in filters:
             w = np.array(weight_dict[snap][f])[okinds] * 1000
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
@@ -809,7 +809,7 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
@@ -910,7 +910,7 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
@@ -1043,7 +1043,7 @@ for f in filters:
             w = np.array(weight_dict[snap][f])[okinds] * 1000
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
@@ -1193,7 +1193,7 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
@@ -1294,7 +1294,7 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
@@ -1412,7 +1412,7 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
@@ -1479,7 +1479,7 @@ for f in filters:
 
             try:
                 cbar = ax.hexbin(mass, hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  yscale='log', xscale='log',
                                  norm=LogNorm(), linewidths=0.2,
@@ -1524,7 +1524,7 @@ for f in filters:
             ax = fig.add_subplot(111)
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                                 C=np.array(weight_dict[snap][f]),
+                                 C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
