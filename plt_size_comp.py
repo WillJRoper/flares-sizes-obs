@@ -188,14 +188,23 @@ for f in filters:
             print(e)
             continue
 
+        for ax in [ax1, ax2, ax3]:
+            axis_to_data = ax.transAxes + ax.transData.inverted()
+            left = axis_to_data.transform((0, 0))
+            right = axis_to_data.transform((1, 1))
+            ax.plot((left[0], right[0]), (left[1], right[1]),
+                    color="k", linestyle="--")
+
         # Label axes
-        ax1.set_ylabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
-        ax1.set_ylabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
-        ax1.set_ylabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
-        ax1.set_ylabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+        ax1.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+        ax2.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+        ax3.set_xlabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
+        ax1.set_ylabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
+        ax2.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
+        ax3.set_ylabel('$R_{1/2, \mathrm{pixel}/ [pkpc]$')
 
         fig.savefig(
-            'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
+            'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
                 z) + '_'
             + orientation + '_' + Type + "_" + extinction + "_"
             + '%.1f.png' % np.log10(masslim),
