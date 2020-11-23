@@ -215,7 +215,6 @@ for reg, snap in reg_snaps:
         mass_dict[snap][f].extend(masses[okinds])
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
-        print(weights[int(reg)])
 
     hdf.close()
 
@@ -268,7 +267,7 @@ for f in filters:
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
-            w = np.array(weight_dict[snap][f])
+            w = np.array(weight_dict[snap][f])[okinds]
             try:
                 cbar = ax.hexbin(lumins, hlrs,
                                  C=np.array(weight_dict[snap][f]),
@@ -419,7 +418,7 @@ for f in filters:
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
-            w = np.array(weight_dict[snap][f])
+            w = np.array(weight_dict[snap][f])[okinds]
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
@@ -658,7 +657,7 @@ for f in filters:
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
-            w = np.array(weight_dict[snap][f]) * 1000
+            w = np.array(weight_dict[snap][f])[okinds] * 1000
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  C=np.array(weight_dict[snap][f]),
@@ -804,7 +803,7 @@ for f in filters:
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
-            w = np.array(weight_dict[snap][f])
+            w = np.array(weight_dict[snap][f])[okinds]
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
@@ -1041,7 +1040,7 @@ for f in filters:
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
-            w = np.array(weight_dict[snap][f]) * 1000
+            w = np.array(weight_dict[snap][f])[okinds] * 1000
             try:
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  C=np.array(weight_dict[snap][f]),
@@ -1188,7 +1187,7 @@ for f in filters:
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
-            w = np.array(weight_dict[snap][f])
+            w = np.array(weight_dict[snap][f])[okinds]
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
@@ -1406,7 +1405,7 @@ for f in filters:
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
-            w = np.array(weight_dict[snap][f])
+            w = np.array(weight_dict[snap][f])[okinds]
             mass = mass[okinds]
 
             fig = plt.figure()
@@ -1519,7 +1518,7 @@ for f in filters:
                                                    lumins < 10 ** 50))
             lumins = lumins[okinds]
             hlrs = hlrs[okinds]
-            w = np.array(weight_dict[snap][f])
+            w = np.array(weight_dict[snap][f])[okinds]
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
