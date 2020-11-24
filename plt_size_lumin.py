@@ -439,11 +439,11 @@ for f in filters:
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
-                med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
-                ax.plot(lumin_bin_cents, med, color="r")
+                # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
+                # ax.plot(lumin_bin_cents, med, color="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
                 for sden in [10.**26, 10.**27, 10.**28, 10.**29]:
-                    ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="K", linestyle="--", alpha=0.5)
+                    ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="K", linestyle="..", alpha=0.5)
                     ax.text(10**30.05, r_from_surf_den(10**30.05, sden),
                             "%.1f" % np.log10(sden),
                             verticalalignment="center",
