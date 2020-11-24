@@ -428,7 +428,7 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
-                sden_lumins = np.logspace(10**27, 10**30.5)
+                sden_lumins = np.logspace(27, 30.5)
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  C=w,
                                  reduce_C_function=np.sum,
@@ -437,7 +437,8 @@ for f in filters:
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
-                ax.plot(sden_lumins, r_from_surf_den(lumins, 10**27), color="k", linestyle="--")
+                for sden in [10**25, 10**26, 10**27, 10**28, 10**29]:
+                    ax.plot(sden_lumins, r_from_surf_den(sden_lumins, 10**27), color="k", linestyle="--")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError as e:
                 print(e)
