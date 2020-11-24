@@ -89,6 +89,10 @@ def r_from_surf_den(lum, s_den):
 
     return np.sqrt(lum / (s_den * np.pi))
 
+def lum_from_surf_den_R(r, s_den):
+
+    return s_den * np.pi * r**2
+
 
 df = pd.read_csv("HighzSizes/All.csv")
 
@@ -437,9 +441,14 @@ for f in filters:
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
-                for sden in [10**25, 10**26, 10**27, 10**28, 10**29]:
-                    ax.plot(sden_lumins, r_from_surf_den(sden_lumins, 10**27), color="k", linestyle="--")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
+                for sden in [10**25, 10**26, 10**27, 10**28, 10**29]:
+                    ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="k", linestyle="--")
+                    ax.text(10, lum_from_surf_den_R(r=10, s_den=sden),
+                            "%.1f cMpc" % np.log10(sden),
+                            verticalalignment="top",
+                            horizontalalignment='center', fontsize=5,
+                            color="k")
             except ValueError as e:
                 print(e)
                 continue
