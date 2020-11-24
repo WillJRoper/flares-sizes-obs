@@ -446,11 +446,11 @@ for f in filters:
                     print(sden)
                     print(np.log10(sden))
                     ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="k", linestyle="--")
-                    ax.text(10, lum_from_surf_den_R(r=10, s_den=sden),
-                            "%.1f" % np.log10(sden),
-                            verticalalignment="top",
-                            horizontalalignment='center', fontsize=5,
-                            color="k")
+                    # ax.text(10, lum_from_surf_den_R(r=10, s_den=sden),
+                    #         "%.1f" % np.log10(sden),
+                    #         verticalalignment="top",
+                    #         horizontalalignment='center', fontsize=5,
+                    #         color="k")
             except ValueError as e:
                 print(e)
                 continue
