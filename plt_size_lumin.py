@@ -443,6 +443,7 @@ for f in filters:
                 ax.plot(lumin_bin_cents, med, color="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
                 for sden in [10**25, 10**26, 10**27, 10**28, 10**29]:
+                    print(sden)
                     print(np.log10(sden))
                     ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="k", linestyle="--")
                     ax.text(10, lum_from_surf_den_R(r=10, s_den=sden),
