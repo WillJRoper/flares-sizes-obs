@@ -443,7 +443,7 @@ for f in filters:
                 # ax.plot(lumin_bin_cents, med, color="r")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
                 for sden in [10.**26, 10.**27, 10.**28, 10.**29]:
-                    ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="grey", linestyle=":", alpha=0.8)
+                    ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="grey", linestyle="--", alpha=0.8)
                     ax.text(10**29.85, r_from_surf_den(10**29.85, sden),
                             "%.1f" % np.log10(sden),
                             verticalalignment="center",
@@ -507,7 +507,7 @@ for f in filters:
                                    kawa_low_params['beta'][int(z)],
                                    uplow="low")
                 ax.plot(fit_lumins, fit,
-                        linestyle='dashed', color='k', alpha=0.9, zorder=2,
+                        linestyle='dashed', color=colors["K18"], alpha=0.9, zorder=2,
                         label="Kawamata+18")
                 legend_elements.append(
                     Line2D([0], [0], color=colors["K18"], linestyle="-",
