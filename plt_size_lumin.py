@@ -432,7 +432,7 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
-                sden_lumins = np.logspace(27, 30)
+                sden_lumins = np.logspace(27, 29.8)
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  C=w,
                                  reduce_C_function=np.sum,
@@ -444,10 +444,10 @@ for f in filters:
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
                 for sden in [10.**26, 10.**27, 10.**28, 10.**29]:
                     ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="K", linestyle=":", alpha=0.5)
-                    ax.text(10**30.05, r_from_surf_den(10**30.05, sden),
+                    ax.text(10**29.85, r_from_surf_den(10**29.85, sden),
                             "%.1f" % np.log10(sden),
                             verticalalignment="center",
-                            horizontalalignment='left', fontsize=8,
+                            horizontalalignment='left', fontsize=10,
                             color="k")
             except ValueError as e:
                 print(e)
