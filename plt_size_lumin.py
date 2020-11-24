@@ -447,7 +447,7 @@ for f in filters:
                     ax.text(10**29.85, r_from_surf_den(10**29.85, sden),
                             "%.1f" % np.log10(sden),
                             verticalalignment="center",
-                            horizontalalignment='left', fontsize=10,
+                            horizontalalignment='left', fontsize=9,
                             color="k")
             except ValueError as e:
                 print(e)
