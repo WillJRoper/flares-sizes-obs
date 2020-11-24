@@ -85,6 +85,11 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
             label=lab)
 
 
+def r_from_surf_den(lum, s_den):
+
+    return np.sqrt(lum / (s_den * np.pi))
+
+
 df = pd.read_csv("HighzSizes/All.csv")
 
 papers = df["Paper"].values
@@ -423,6 +428,7 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
+                sden_lumins = np.logspace(10**27, 10**30.5)
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  C=w,
                                  reduce_C_function=np.sum,
@@ -431,6 +437,7 @@ for f in filters:
                                  cmap='viridis')
                 med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
                 ax.plot(lumin_bin_cents, med, color="r")
+                ax.plot(sden_lumins, r_from_surf_den(lumins, 10**27), color="k", linestyle="--")
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
             except ValueError as e:
                 print(e)
