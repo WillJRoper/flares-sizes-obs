@@ -449,7 +449,7 @@ for f in filters:
                     print((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2)
                     print(((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.nJy * u.sr**-1))
                     ax.text(10**29.85, r_from_surf_den(10**29.85, sden),
-                            "%.3f" % np.log10(((M_to_m(lum_to_M(sden), cosmo, z) * u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.sr**-1).value),
+                            "%.3f" % np.log10(((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.nJy * u.sr**-1).value),
                             verticalalignment="center",
                             horizontalalignment='left', fontsize=9,
                             color="k")
