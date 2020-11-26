@@ -442,12 +442,12 @@ for f in filters:
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
-                                 cmap='Greys')
+                                 cmap='cividis')
                 ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
                            gridsize=50, mincnt=1, C=w,
                            reduce_C_function=np.sum, xscale='log',
                            yscale='log', norm=LogNorm(), linewidths=0.2,
-                           cmap='Greys', alpha=0)
+                           cmap='cividis', alpha=0)
                 # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
                 # ax.plot(lumin_bin_cents, med, color="r")
                 # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
@@ -489,7 +489,7 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 ax.scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=15,
+                           marker=markers[p], label=labels[p], s=25,
                            color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
