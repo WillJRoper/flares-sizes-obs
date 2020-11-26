@@ -25,7 +25,7 @@ import pandas as pd
 import utilities as util
 
 sns.set_context("paper")
-sns.set_style('whitegrid')
+sns.set_style('white')
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
