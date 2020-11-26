@@ -16,6 +16,7 @@ import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
+import astropy.units as u
 from FLARE.photom import lum_to_M, M_to_lum
 import FLARE.photom as photconv
 import h5py
@@ -444,8 +445,11 @@ for f in filters:
                 legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
                 for sden in [10.**26, 10.**27, 10.**28, 10.**29]:
                     ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="grey", linestyle="--", alpha=0.8)
+                    print(M_to_m(lum_to_M(sden), cosmo, z) * u.kpc**-2)
+                    print((M_to_m(lum_to_M(sden), cosmo, z) * u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2)
+                    print(((M_to_m(lum_to_M(sden), cosmo, z) * u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.sr**-1))
                     ax.text(10**29.85, r_from_surf_den(10**29.85, sden),
-                            "%.1f" % np.log10(sden),
+                            "%.3f" % np.log10(((M_to_m(lum_to_M(sden), cosmo, z) * u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.sr**-1).value),
                             verticalalignment="center",
                             horizontalalignment='left', fontsize=9,
                             color="k")
