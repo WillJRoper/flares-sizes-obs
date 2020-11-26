@@ -436,13 +436,13 @@ for f in filters:
             ax = ax.twinx()
             try:
                 sden_lumins = np.logspace(27, 29.8)
-                cbar = ax.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                                  C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='Greys')
-                ax1.hexbin(lumins, hlrs,
+                ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
                            gridsize=50, mincnt=1, C=w,
                            reduce_C_function=np.sum, xscale='log',
                            yscale='log', norm=LogNorm(), linewidths=0.2,
@@ -523,7 +523,7 @@ for f in filters:
                 # ax.fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
-            ax.set_ylabel('$R_{1/2}/ [arcsecond]$')
+            ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
 
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -532,8 +532,8 @@ for f in filters:
                     fontsize=8)
 
             # Label axes
-            ax1.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-            ax1.set_ylabel('$R_{1/2}/ [pkpc]$')
+            ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+            ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             ax.legend(handles=legend_elements, loc='upper center',
                       bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
