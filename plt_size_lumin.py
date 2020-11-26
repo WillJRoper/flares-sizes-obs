@@ -90,9 +90,15 @@ def r_from_surf_den(lum, s_den):
 
     return np.sqrt(lum / (s_den * np.pi))
 
+
 def lum_from_surf_den_R(r, s_den):
 
     return s_den * np.pi * r**2
+
+
+def tick_function(r, z):
+    rs = r * cosmo.arcsec_per_kpc_proper(z).value
+    return ["%.1f" % im for im in rs]
 
 
 df = pd.read_csv("HighzSizes/All.csv")
@@ -130,8 +136,8 @@ labels = {"G11": "Grazian+2011",
           "S18": "Salmon+2018",
           "H20": "Holwerda+2020"}
 markers = {"G11": "s", "G12": "v", "C16": "D",
-           "K18": "o", "M18": "H", "F20": ".", "MO18": "o",
-           "B19": "^", "O16": "P", "S18": "D", "H20": "*"}
+           "K18": "o", "M18": "X", "F20": ".", "MO18": "o",
+           "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
 colors = {"G11": "darkred", "G12": "darkred", "C16": "darkred",
           "K18": "darkred", "M18": "green", "F20": ".",
           "MO18": "darkred", "B19": "darkred", "O16": "darkred",
@@ -432,6 +438,7 @@ for f in filters:
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
+            ax1 = ax.twinx()
             try:
                 sden_lumins = np.logspace(27, 29.8)
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
@@ -439,17 +446,18 @@ for f in filters:
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
-                                 cmap='viridis')
+                                 cmap='Greys')
+                ax1.hexbin(lumins, hlrs, gridsize=50, mincnt=1, C=w,
+                           reduce_C_function=np.sum, xscale='log',
+                           yscale='log', norm=LogNorm(), linewidths=0.2,
+                           cmap='Greys', alpha=0)
                 # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
                 # ax.plot(lumin_bin_cents, med, color="r")
-                legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
+                # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
                 for sden in [10.**26, 10.**27, 10.**28, 10.**29]:
                     ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="grey", linestyle="--", alpha=0.8)
-                    print(m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2)
-                    print((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2)
-                    print(((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.nJy * u.sr**-1))
                     ax.text(10**29.85, r_from_surf_den(10**29.85, sden),
-                            "%.3f" % np.log10(((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.nJy * u.sr**-1).value),
+                            "%.1f" % np.log10(((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.nJy * u.sr**-1).value),
                             verticalalignment="center",
                             horizontalalignment='left', fontsize=9,
                             color="k")
@@ -519,6 +527,12 @@ for f in filters:
                 # ax.fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
+            new_tick_locations = np.logspace(-1, 1, 4)
+
+            ax1.set_yticks(new_tick_locations)
+            ax1.set_yticklabels(tick_function(new_tick_locations, z))
+            ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
+
             ax.text(0.8, 0.1, f'$z={z}$',
                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
                               ec="k", lw=1, alpha=0.8),
@@ -531,6 +545,8 @@ for f in filters:
 
             ax.legend(handles=legend_elements, loc='upper center',
                       bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
+
+            ax.set_xlim(10**26.9, 10**30.1)
 
             fig.savefig(
                 'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
