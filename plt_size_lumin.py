@@ -442,12 +442,12 @@ for f in filters:
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
-                                 cmap='cividis')
+                                 cmap='viridis')
                 ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
                            gridsize=50, mincnt=1, C=w,
                            reduce_C_function=np.sum, xscale='log',
                            yscale='log', norm=LogNorm(), linewidths=0.2,
-                           cmap='cividis', alpha=0)
+                           cmap='viridis', alpha=0)
                 # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
                 # ax.plot(lumin_bin_cents, med, color="r")
                 # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
@@ -526,15 +526,17 @@ for f in filters:
 
             ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
 
-            ax.text(0.8, 0.1, f'$z={z}$',
-                    bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                              ec="k", lw=1, alpha=0.8),
-                    transform=ax.transAxes, horizontalalignment='right',
-                    fontsize=8)
+            # ax.text(0.8, 0.1, f'$z={z}$',
+            #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
+            #                   ec="k", lw=1, alpha=0.8),
+            #         transform=ax.transAxes, horizontalalignment='right',
+            #         fontsize=8)
 
             # Label axes
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+            ax.tick_params(axis='x', which='minor', bottom=True)
 
             ax.legend(handles=legend_elements, loc='upper center',
                       bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
