@@ -529,8 +529,8 @@ for f in filters:
 
             new_tick_locations = np.logspace(-1, 1, 4)
 
-            ax1.set_yticks(new_tick_locations)
-            ax1.set_yticklabels(tick_function(new_tick_locations, z))
+            # ax1.set_yticks(new_tick_locations)
+            # ax1.set_yticklabels(tick_function(new_tick_locations, z))
             ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
 
             ax.text(0.8, 0.1, f'$z={z}$',
