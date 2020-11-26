@@ -11,6 +11,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
+import matplotlib as mpl
 from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
@@ -120,6 +121,9 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
     if mags[ind] < 0:
         mags[ind] = M_to_m(mags[ind], cosmo, z)
 
+cmap = mpl.cm.get_cmap("autumn")
+norm = plt.Normalize(vmin=0, vmax=1)
+
 labels = {"G11": "Grazian+2011",
           "G12": "Grazian+2012",
           "C16": "Calvi+2016",
@@ -131,12 +135,11 @@ labels = {"G11": "Grazian+2011",
           "S18": "Salmon+2018",
           "H20": "Holwerda+2020"}
 markers = {"G11": "s", "G12": "v", "C16": "D",
-           "K18": "o", "M18": "X", "F20": ".", "MO18": "o",
+           "K18": "o", "M18": "X", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
-colors = {"G11": "darkred", "G12": "darkred", "C16": "darkred",
-          "K18": "darkred", "M18": "green", "F20": ".",
-          "MO18": "darkred", "B19": "darkred", "O16": "darkred",
-          "S18": "darkred", "H20": "darkred"}
+colors = {}
+for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
+    colors[key] = cmap(norm(col))
 
 # Set orientation
 orientation = sys.argv[1]
