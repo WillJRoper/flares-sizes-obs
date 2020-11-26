@@ -432,8 +432,9 @@ for f in filters:
             w = np.array(weight_dict[snap][f])[okinds]
 
             fig = plt.figure()
-            ax1 = fig.add_subplot(111)
-            ax = ax.twinx()
+            ax = fig.add_subplot(111)
+            ax1 = ax.twinx()
+            ax1.grid(False)
             try:
                 sden_lumins = np.logspace(27, 29.8)
                 cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
