@@ -96,11 +96,6 @@ def lum_from_surf_den_R(r, s_den):
     return s_den * np.pi * r**2
 
 
-def tick_function(r, z):
-    rs = r * cosmo.arcsec_per_kpc_proper(z).value
-    return ["%.1f" % im for im in rs]
-
-
 df = pd.read_csv("HighzSizes/All.csv")
 
 papers = df["Paper"].values
@@ -447,7 +442,8 @@ for f in filters:
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='Greys')
-                ax1.hexbin(lumins, hlrs, gridsize=50, mincnt=1, C=w,
+                ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
+                           gridsize=50, mincnt=1, C=w,
                            reduce_C_function=np.sum, xscale='log',
                            yscale='log', norm=LogNorm(), linewidths=0.2,
                            cmap='Greys', alpha=0)
@@ -527,10 +523,6 @@ for f in filters:
                 # ax.fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
-            new_tick_locations = np.logspace(-1, 1, 4)
-
-            # ax1.set_yticks(new_tick_locations)
-            # ax1.set_yticklabels(tick_function(new_tick_locations, z))
             ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
 
             ax.text(0.8, 0.1, f'$z={z}$',
