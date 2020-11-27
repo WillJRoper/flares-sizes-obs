@@ -464,68 +464,69 @@ for f in filters:
             except ValueError as e:
                 print(e)
                 continue
+            if Type != "Intrinsic":
+                
+                for p in labels.keys():
+                    okinds = papers == p
+                    plt_m = mags[okinds]
+                    plt_r_es = r_es[okinds]
+                    plt_zs = zs[okinds]
 
-            for p in labels.keys():
-                okinds = papers == p
-                plt_m = mags[okinds]
-                plt_r_es = r_es[okinds]
-                plt_zs = zs[okinds]
+                    okinds = np.logical_and(plt_zs >= (z - 0.5),
+                                            np.logical_and(plt_zs < (z + 0.5),
+                                                           np.logical_and(
+                                                               plt_r_es > 0.08,
+                                                               plt_m <= M_to_m(-16,
+                                                                               cosmo,
+                                                                               z))))
+                    plt_m = plt_m[okinds]
+                    plt_r_es = plt_r_es[okinds]
 
-                okinds = np.logical_and(plt_zs >= (z - 0.5),
-                                        np.logical_and(plt_zs < (z + 0.5),
-                                                       np.logical_and(
-                                                           plt_r_es > 0.08,
-                                                           plt_m <= M_to_m(-16,
-                                                                           cosmo,
-                                                                           z))))
-                plt_m = plt_m[okinds]
-                plt_r_es = plt_r_es[okinds]
+                    if plt_m.size == 0:
+                        continue
+                    plt_M = m_to_M(plt_m, cosmo, z)
+                    plt_lumins = M_to_lum(plt_M)
 
-                if plt_m.size == 0:
-                    continue
-                plt_M = m_to_M(plt_m, cosmo, z)
-                plt_lumins = M_to_lum(plt_M)
+                    legend_elements.append(
+                        Line2D([0], [0], marker=markers[p], color='w',
+                               label=labels[p], markerfacecolor=colors[p],
+                               markersize=8, alpha=0.7))
 
-                legend_elements.append(
-                    Line2D([0], [0], marker=markers[p], color='w',
-                           label=labels[p], markerfacecolor=colors[p],
-                           markersize=8, alpha=0.7))
+                    ax.scatter(plt_lumins, plt_r_es,
+                               marker=markers[p], label=labels[p], s=25,
+                               color=colors[p], alpha=0.7)
 
-                ax.scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=25,
-                           color=colors[p], alpha=0.7)
+                if int(z) in [6, 7, 8, 9]:
 
-            if int(z) in [6, 7, 8, 9]:
+                    if z == 7 or z == 6:
+                        low_lim = -16
+                    elif z == 8:
+                        low_lim = -16.8
+                    else:
+                        low_lim = -15.4
+                    fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                             np.log10(M_to_lum(low_lim)),
+                                             1000)
 
-                if z == 7 or z == 6:
-                    low_lim = -16
-                elif z == 8:
-                    low_lim = -16.8
-                else:
-                    low_lim = -15.4
-                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
-                                         np.log10(M_to_lum(low_lim)),
-                                         1000)
-
-                fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
-                               kawa_params['beta'][int(z)])
-                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
-                                  kawa_params['beta'][int(z)],
-                                  kawa_up_params['r_0'][int(z)],
-                                  kawa_up_params['beta'][int(z)], uplow="low")
-                low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
-                                   kawa_params['beta'][int(z)],
-                                   kawa_low_params['r_0'][int(z)],
-                                   kawa_low_params['beta'][int(z)],
-                                   uplow="low")
-                ax.plot(fit_lumins, fit,
-                        linestyle='dashed', color=colors["K18"], alpha=0.9, zorder=2,
-                        label="Kawamata+18")
-                legend_elements.append(
-                    Line2D([0], [0], color=colors["K18"], linestyle="-",
-                           label=labels["K18"]))
-                # ax.fill_between(fit_lumins, low, up,
-                #                 color='k', alpha=0.4, zorder=1)
+                    fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+                                   kawa_params['beta'][int(z)])
+                    up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                      kawa_params['beta'][int(z)],
+                                      kawa_up_params['r_0'][int(z)],
+                                      kawa_up_params['beta'][int(z)], uplow="low")
+                    low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                                       kawa_params['beta'][int(z)],
+                                       kawa_low_params['r_0'][int(z)],
+                                       kawa_low_params['beta'][int(z)],
+                                       uplow="low")
+                    ax.plot(fit_lumins, fit,
+                            linestyle='dashed', color=colors["K18"], alpha=0.9, zorder=2,
+                            label="Kawamata+18")
+                    legend_elements.append(
+                        Line2D([0], [0], color=colors["K18"], linestyle="-",
+                               label=labels["K18"]))
+                    # ax.fill_between(fit_lumins, low, up,
+                    #                 color='k', alpha=0.4, zorder=1)
 
             ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
 
