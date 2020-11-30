@@ -3,11 +3,10 @@
 #SBATCH --array=1-480%50
 #SBATCH -p cosma6 #or some other partition, e.g. cosma, cosma6, etc.
 #SBATCH -A dp004
-#SBATCH --cpus-per-task=14
+#SBATCH --cpus-per-task=1
 #SBATCH -J MEGA-FLARES #Give it something meaningful.
 #SBATCH -o logs/output_hlr_job.%A_%a.out
 #SBATCH -e logs/error_hlr_job.%A_%a.err
-#SBATCH --exclusive
 #SBATCH -t 72:00:00
 
 # Run the job from the following directory - change this to point to your own personal space on /lustre
@@ -22,8 +21,8 @@ source activate flares-env
 i=$(($SLURM_ARRAY_TASK_ID - 1))
 
 # Run the program
-#./UV_size_lumin_relation_distributed.py $i sim Total
-#./UV_size_lumin_relation_distributed.py $i sim Intrinsic
+./UV_size_lumin_relation_distributed.py $i sim Total
+./UV_size_lumin_relation_distributed.py $i sim Intrinsic
 ./UV_size_lumin_relation_distributed.py $i face-on Total
 ./UV_size_lumin_relation_distributed.py $i face-on Intrinsic
 
