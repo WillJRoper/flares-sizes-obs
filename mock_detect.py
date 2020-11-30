@@ -175,7 +175,7 @@ for reg, snap in reg_snaps:
 
             threshold = phut.detect_threshold(img, nsigma=3)
 
-            segm = phut.detect_sources(img, threshold, npixels=5,
+            segm = phut.detect_sources(img, threshold, npixels=3,
                                        filter_kernel=kernel)
 
             fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
