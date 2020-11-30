@@ -146,8 +146,6 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     G_coords = G_coords / (1 + z)
     cops = cops / (1 + z)
 
-    print(cops.shape, S_los.shape)
-
     # --- create rest-frame luminosities
     F = FLARE.filters.add_filters(filters, new_lam=model.lam)
     model.create_Lnu_grid(
@@ -174,28 +172,12 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             starCoords = S_coords[:, begin[jj]: end[jj]].T
             gasCoords = G_coords[:, gbegin[jj]: gend[jj]].T
 
-            print(starCoords)
-            print(gasCoords)
-            print(gasMasses)
-            print(gasMetallicities)
-            print(gasSML)
-
             MetSurfaceDensities = util.get_Z_LOS(starCoords, gasCoords,
                                                  gasMasses, gasMetallicities,
                                                  gasSML, (0, 1, 2),
                                                  lkernel, kbins)
 
             S_coords[:, begin[jj]: end[jj]] = (starCoords - cops[:, jj]).T
-
-            print("Computed", MetSurfaceDensities)
-            try:
-                MetSurfaceDensities = S_los[begin[jj]:end[jj]]
-            except IndexError:
-                for f in filters:
-                    Lums[f][begin[jj]: end[jj]] = np.nan
-                continue
-
-            print("Read", MetSurfaceDensities)
 
         elif orientation == "face-on":
 
