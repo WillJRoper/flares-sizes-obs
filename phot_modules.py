@@ -183,7 +183,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
             starCoords = S_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
             gasCoords = G_coords[:, gbegin[jj]: gend[jj]].T - cops[:, jj]
-            gasVels = G_vels[:, gbegin[jj]: gend[jj]]
+            gasVels = G_vels[gbegin[jj]: gend[jj], :]
 
             print(gasVels.shape)
 
