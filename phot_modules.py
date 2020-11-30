@@ -43,11 +43,11 @@ def get_data(ii, tag, inp='FLARES'):
         if len(num) == 1:
             num = '0' + num
 
-        sim = rF"/cosma7/data/dp004/dc-payy1/my_files/flares_pipeline/data/" \
+        sim = rF"/cosma7/data/dp004/dc-payy1/my_files/flares_pipeline/data2/" \
               rF"FLARES_{num}_sp_info.hdf5"
 
     else:
-        sim = rF"/cosma7/data/dp004/dc-payy1/my_files/flares_pipeline/data/" \
+        sim = rF"/cosma7/data/dp004/dc-payy1/my_files/flares_pipeline/data2/" \
               rF"EAGLE_{inp}_sp_info.hdf5"
 
     with h5py.File(sim, 'r') as hf:
@@ -146,6 +146,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     G_coords = G_coords / (1 + z)
     cops = cops / (1 + z)
 
+    print(cops.shape, S_los.shape)
+
     # --- create rest-frame luminosities
     F = FLARE.filters.add_filters(filters, new_lam=model.lam)
     model.create_Lnu_grid(
@@ -157,9 +159,9 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         Masses = S_mass_ini[begin[jj]: end[jj]]
         Ages = S_age[begin[jj]: end[jj]]
         Metallicities = S_Z[begin[jj]: end[jj]]
-        gasMetallicities = G_Z[begin[jj]: end[jj]]
-        gasSML = G_sml[begin[jj]: end[jj]]
-        gasMasses = G_mass[begin[jj]: end[jj]]
+        gasMetallicities = G_Z[gbegin[jj]: gend[jj]]
+        gasSML = G_sml[gbegin[jj]: gend[jj]]
+        gasMasses = G_mass[gbegin[jj]: gend[jj]]
 
         if masslim != None:
             if S_len[jj] < masslim:
@@ -170,7 +172,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         if orientation == "sim":
 
             starCoords = S_coords[:, begin[jj]: end[jj]].T
-            gasCoords = G_coords[:, begin[jj]: end[jj]].T
+            gasCoords = G_coords[:, gbegin[jj]: gend[jj]].T
 
             print(starCoords)
             print(gasCoords)
@@ -198,8 +200,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         elif orientation == "face-on":
 
             starCoords = S_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
-            gasCoords = G_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
-            gasVels = G_vels[:, begin[jj]: end[jj]].T
+            gasCoords = G_coords[:, gbegin[jj]: gend[jj]].T - cops[:, jj]
+            gasVels = G_vels[:, gbegin[jj]: gend[jj]].T
 
             # Get angular momentum vector
             ang_vec = util.ang_mom_vector(gasMasses, gasCoords, gasVels)
@@ -216,8 +218,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         elif orientation == "side-on":
 
             starCoords = S_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
-            gasCoords = G_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
-            gasVels = G_vels[:, begin[jj]: end[jj]].T
+            gasCoords = G_coords[:, gbegin[jj]: gend[jj]].T - cops[:, jj]
+            gasVels = G_vels[:, gbegin[jj]: gend[jj]].T
 
             # Get angular momentum vector
             ang_vec = util.ang_mom_vector(gasMasses, gasCoords, gasVels)
