@@ -217,7 +217,7 @@ for f in filters:
             #                          this_lumin,
             #                          this_smls)
 
-            img = np.histogram2d(this_pos[0], this_pos[1], bins=res, range=imgrange, weights=this_lumin)
+            img = np.histogram2d(this_pos[:, 0], this_pos[:, 1], bins=res, range=imgrange, weights=this_lumin)
 
         else:
 
@@ -234,7 +234,7 @@ for f in filters:
             #                          this_lumin,
             #                          this_smls)
 
-            img = np.histogram2d(this_pos[2], this_pos[0], bins=res, range=imgrange, weights=this_lumin)
+            img = np.histogram2d(this_pos[:, 2], this_pos[:, 0], bins=res, range=imgrange, weights=this_lumin)
 
         for r in radii_fracs:
 
