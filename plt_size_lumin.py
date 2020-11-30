@@ -219,6 +219,8 @@ for reg, snap in reg_snaps:
         masses = orientation_group[f]["Mass"][...]
         okinds = masses > masslim
 
+        print(masses.size, masses[okinds].size)
+
         hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...][okinds])
         hlr_app_dict[snap][f].extend(
             orientation_group[f]["HLR_Aperture_0.5"][...][okinds])
@@ -291,9 +293,6 @@ for f in filters:
 
             hlrs = np.array(hlr_dict[snap][f])
             lumins = np.array(lumin_dict[snap][f])
-
-            print(hlrs)
-            print(lumins)
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
                                     np.logical_and(lumins > M_to_lum(-12),
