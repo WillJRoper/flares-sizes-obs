@@ -1,5 +1,4 @@
 #!/bin/bash -l
-#SBATCH --nodes 1
 #SBATCH --array=1-480%50
 #SBATCH -p cosma6 #or some other partition, e.g. cosma, cosma6, etc.
 #SBATCH -A dp004
