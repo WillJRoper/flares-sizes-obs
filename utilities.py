@@ -106,6 +106,7 @@ def get_Z_LOS(s_cood, g_cood, g_mass, g_Z, g_sml, dimens, lkernel, kbins):
         Z_los_SD[ii] = np.sum((thisgmass[ok] * thisgZ[ok] / (
                     thisgsml[ok] * thisgsml[
                 ok])) * kernel_vals) * conv  # in units of Msun/pc^2
+        print(Z_los_SD / conv, Z_los_SD)
 
     return Z_los_SD
 

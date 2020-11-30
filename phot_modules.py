@@ -43,11 +43,11 @@ def get_data(ii, tag, inp='FLARES'):
         if len(num) == 1:
             num = '0' + num
 
-        sim = rF"/cosma7/data/dp004/dc-payy1/my_files/flares_pipeline/data2/" \
+        sim = rF"/cosma7/data/dp004/dc-payy1/my_files/flares_pipeline/data/" \
               rF"FLARES_{num}_sp_info.hdf5"
 
     else:
-        sim = rF"/cosma7/data/dp004/dc-payy1/my_files/flares_pipeline/data2/" \
+        sim = rF"/cosma7/data/dp004/dc-payy1/my_files/flares_pipeline/data/" \
               rF"EAGLE_{inp}_sp_info.hdf5"
 
     with h5py.File(sim, 'r') as hf:
