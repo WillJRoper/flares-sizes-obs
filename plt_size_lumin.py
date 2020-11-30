@@ -201,8 +201,6 @@ for reg, snap in reg_snaps:
     type_group = hdf[Type]
     orientation_group = type_group[orientation]
 
-    print(list(type_group.keys()))
-
     hlr_dict.setdefault(snap, {})
     hlr_app_dict.setdefault(snap, {})
     hlr_pix_dict.setdefault(snap, {})
@@ -293,6 +291,9 @@ for f in filters:
 
             hlrs = np.array(hlr_dict[snap][f])
             lumins = np.array(lumin_dict[snap][f])
+
+            print(hlrs)
+            print(lumins)
 
             okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
                                     np.logical_and(lumins > M_to_lum(-12),
