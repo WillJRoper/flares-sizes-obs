@@ -106,7 +106,8 @@ for reg, snap in reg_snaps:
 
     if reg != "39":
         continue
-    if snap != 
+    if snap != "010_z005p000":
+        continue
 
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
