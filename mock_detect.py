@@ -59,6 +59,10 @@ else:
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
+kernel_sigma = 3.0 / (2.0 * np.sqrt(2.0 * np.log(2.0)))  # FWHM = 3
+kernel = phut.Gaussian2DKernel(kernel_sigma, x_size=3, y_size=3)
+kernel.normalize()
+
 csoft = 0.001802390 / (0.6777) * 1e3
 
 masslim = 10 ** float(sys.argv[4])
@@ -168,24 +172,27 @@ for reg, snap in reg_snaps:
 
             img = imgs[i_img, :, :]
 
-            sources = phut.detect_sources(img, np.std(img), npixels=5)
-            print(sources)
+            threshold = phut.detect_threshold(img, nsigma=3)
 
-            fig = plt.figure()
-            ax = fig.add_subplot(111)
-            ax.imshow(np.log10(img), extent=imgextent)
-            ax.grid(False)
+            segm = phut.detect_sources(img, threshold, npixels=5,
+                                       filter_kernel=kernel)
+
+            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+            ax1.grid(False)
+            ax2.grid(False)
+            ax1.imshow(np.log10(img), extent=imgextent)
+            ax2.imshow(segm.data, extent=imgextent)
             circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
-            ax.add_artist(circle1)
+            ax1.add_artist(circle1)
             circle1 = plt.Circle((0, 0), hlr_app_dict[snap][f][i_img],
                                  color='g', linestyle="--", fill=False)
-            ax.add_artist(circle1)
+            ax1.add_artist(circle1)
             circle1 = plt.Circle((0, 0), hlr_dict[snap][f][i_img],
                                  color='b', linestyle="--", fill=False)
-            ax.add_artist(circle1)
+            ax1.add_artist(circle1)
             circle1 = plt.Circle((0, 0), hlr_pix_dict[snap][f][i_img],
                                  color='y', linestyle=":", fill=False)
-            ax.add_artist(circle1)
+            ax1.add_artist(circle1)
             fig.savefig("plots/gal_img_log_" + f + "_%.1f.png"
                         % np.log10(np.sum(img)))
             plt.close(fig)
