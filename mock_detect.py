@@ -136,6 +136,8 @@ for reg, snap in reg_snaps:
 
         imgs = orientation_group[f]["HLR_0.5"][...][okinds]
 
+        print(imgs.shape)
+
         for img in imgs:
             fig = plt.figure()
             ax = fig.add_subplot(111)
