@@ -4,6 +4,7 @@
 #SBATCH -p cosma6 #or some other partition, e.g. cosma, cosma6, etc.
 #SBATCH -A dp004
 #SBATCH --cpus-per-task=1
+#SBATCH --tasks-per-node=16
 #SBATCH -J MEGA-FLARES #Give it something meaningful.
 #SBATCH -o logs/output_hlr_job.%A_%a.out
 #SBATCH -e logs/error_hlr_job.%A_%a.err
