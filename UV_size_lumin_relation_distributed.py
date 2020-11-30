@@ -271,9 +271,9 @@ for f in filters:
         # plt.close(fig)
 
 try:
-    hdf = h5py.File("data/flares_sizes_noSmooth_{}_{}.hdf5".format(reg, tag), "r+")
+    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "r+")
 except OSError:
-    hdf = h5py.File("data/flares_sizes_noSmooth_{}_{}.hdf5".format(reg, tag), "w")
+    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "w")
 
 try:
     type_group = hdf[Type]
