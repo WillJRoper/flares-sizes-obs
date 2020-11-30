@@ -173,14 +173,14 @@ for reg, snap in reg_snaps:
 
             img = imgs[i_img, :, :]
 
-            threshold = phut.detect_threshold(img, nsigma=5, background=0)
+            threshold = phut.detect_threshold(img, nsigma=10, background=0)
 
-            segm = phut.detect_sources(img, threshold, npixels=3)
+            segm = phut.detect_sources(img, threshold, npixels=10)
 
             fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
             ax1.grid(False)
             ax2.grid(False)
-            ax1.imshow(np.log10(img), extent=imgextent)
+            ax1.imshow(np.log10(img), extent=imgextent, cmap="Greys_r")
             ax2.imshow(segm.data, extent=imgextent)
             circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
             ax1.add_artist(circle1)
