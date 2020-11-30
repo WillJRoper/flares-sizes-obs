@@ -186,7 +186,7 @@ for f in filters:
 
     lumin_dict[tag].setdefault(f, [])
     mass_dict[tag].setdefault(f, [])
-    img_dict[tag].setdefault(f, {})
+    img_dict[tag].setdefault(f, [])
 
     for ind in range(len(begin)):
 
