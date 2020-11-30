@@ -216,6 +216,9 @@ for f in filters:
             img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
                                      this_lumin,
                                      this_smls)
+
+            # img = np.histogram2d(this_pos[0], this_pos[1], bins=res, range=imgrange, weights=this_lumin)
+            
         else:
 
             # # Centre positions on luminosity weighted centre
@@ -229,7 +232,10 @@ for f in filters:
 
             img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
                                      this_lumin,
-                                     np.full_like(this_smls, csoft))
+                                     this_smls)
+
+            # img = np.histogram2d(this_pos[2], this_pos[0], bins=res, range=imgrange, weights=this_lumin)
+
         for r in radii_fracs:
 
             hlr_app_dict[tag][f][r].append(util.get_img_hlr(img,
