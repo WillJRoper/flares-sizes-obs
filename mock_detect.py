@@ -138,7 +138,8 @@ for reg, snap in reg_snaps:
 
         print(imgs.shape)
 
-        for img in imgs:
+        for i_img in range(imgs.shape[0]):
+            img = imgs[i_img, :, :]
             fig = plt.figure()
             ax = fig.add_subplot(111)
             ax.imshow(np.log10(img))
