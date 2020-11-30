@@ -104,11 +104,6 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
-    if reg != "39":
-        continue
-    if snap != "010_z005p000":
-        continue
-
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
@@ -182,7 +177,7 @@ for reg, snap in reg_snaps:
 
             segm = phut.detect_sources(img, threshold, npixels=5,
                                        filter_kernel=kernel)
-            
+
             segm = phut.deblend_sources(img, segm, npixels=5,
                                         filter_kernel=kernel,
                                         nlevels=32, contrast=0.001)
