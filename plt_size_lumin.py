@@ -201,6 +201,8 @@ for reg, snap in reg_snaps:
     type_group = hdf[Type]
     orientation_group = type_group[orientation]
 
+    print(list(type_group.keys()))
+
     hlr_dict.setdefault(snap, {})
     hlr_app_dict.setdefault(snap, {})
     hlr_pix_dict.setdefault(snap, {})
