@@ -174,6 +174,9 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
             print(starCoords)
             print(gasCoords)
+            print(gasMasses)
+            print(gasMetallicities)
+            print(gasSML)
 
             MetSurfaceDensities = util.get_Z_LOS(starCoords, gasCoords,
                                                  gasMasses, gasMetallicities,

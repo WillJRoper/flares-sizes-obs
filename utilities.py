@@ -80,7 +80,7 @@ def get_Z_LOS(s_cood, g_cood, g_mass, g_Z, g_sml, dimens, lkernel, kbins):
 
     """
 
-    conv = (u.solMass / u.Mpc ** 2).to(u.solMass / u.pc ** 2)
+    conv = (u.solMass/u.Mpc**2).to(u.solMass/u.pc**2)
 
     n = s_cood.shape[0]
     Z_los_SD = np.zeros(n)
@@ -88,8 +88,8 @@ def get_Z_LOS(s_cood, g_cood, g_mass, g_Z, g_sml, dimens, lkernel, kbins):
     # particle orientation to face-on
     xdir, ydir, zdir = dimens
     for ii in range(n):
-        thisspos = s_cood[ii, :]
-        ok = (g_cood[:, zdir] > thisspos[zdir])
+        thisspos = s_cood[ii]
+        ok = np.where(g_cood[:, zdir] > thisspos[zdir])[0]
         thisgpos = g_cood[ok]
         thisgsml = g_sml[ok]
         thisgZ = g_Z[ok]
@@ -100,15 +100,12 @@ def get_Z_LOS(s_cood, g_cood, g_mass, g_Z, g_sml, dimens, lkernel, kbins):
         b = np.sqrt(x * x + y * y)
         boverh = b / thisgsml
 
-        ok = (boverh <= 1.)
-
+        ok = np.where(boverh <= 1.)[0]
         kernel_vals = np.array([lkernel[int(kbins * ll)] for ll in boverh[ok]])
 
         Z_los_SD[ii] = np.sum((thisgmass[ok] * thisgZ[ok] / (
-                thisgsml[ok] * thisgsml[
-            ok])) * kernel_vals)  # in units of Msun/Mpc^2
-
-    Z_los_SD *= conv  # in units of Msun/pc^2
+                    thisgsml[ok] * thisgsml[
+                ok])) * kernel_vals) * conv  # in units of Msun/pc^2
 
     return Z_los_SD
 
