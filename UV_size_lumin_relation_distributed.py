@@ -116,6 +116,7 @@ hlr_app_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
 mass_dict = {}
+img_dict = {}
 
 # Set mass limit
 masslim = 100
@@ -128,6 +129,7 @@ hlr_app_dict.setdefault(tag, {})
 hlr_pix_dict.setdefault(tag, {})
 lumin_dict.setdefault(tag, {})
 mass_dict.setdefault(tag, {})
+img_dict.setdefault(tag, {})
 
 # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
 reg_dict = phot.get_lum(reg, kappa=0.0795, tag=tag, BC_fac=1,
@@ -176,11 +178,13 @@ for f in filters:
     hlr_dict[tag].setdefault(f, {})
     hlr_app_dict[tag].setdefault(f, {})
     hlr_pix_dict[tag].setdefault(f, {})
+    img_dict[tag].setdefault(f, {})
 
     for r in radii_fracs:
         hlr_dict[tag][f].setdefault(r, [])
         hlr_app_dict[tag][f].setdefault(r, [])
         hlr_pix_dict[tag][f].setdefault(r, [])
+        img_dict[tag][f].setdefault(r, [])
 
     lumin_dict[tag].setdefault(f, [])
     mass_dict[tag].setdefault(f, [])
@@ -243,6 +247,7 @@ for f in filters:
 
         lumin_dict[tag][f].append(tot_l)
         mass_dict[tag][f].append(this_mass)
+        img_dict[tag][f][r].append(img)
 
         # fig = plt.figure()
         # ax = fig.add_subplot(111)
@@ -318,6 +323,9 @@ for f in filters:
         hlrs = np.array(hlr_dict[tag][f][r])
         hlrs_app = np.array(hlr_app_dict[tag][f][r])
         hlrs_pix = np.array(hlr_pix_dict[tag][f][r])
+        imgs = np.array(img_dict[tag][f][r])
+
+        print(imgs.shape)
 
         try:
             dset = f_group.create_dataset("HLR_%.1f" % r, data=hlrs,
