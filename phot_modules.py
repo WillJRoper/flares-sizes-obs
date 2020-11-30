@@ -146,8 +146,6 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     G_coords = G_coords / (1 + z)
     cops = cops / (1 + z)
 
-    print(cops.shape)
-
     # --- create rest-frame luminosities
     F = FLARE.filters.add_filters(filters, new_lam=model.lam)
     model.create_Lnu_grid(
@@ -173,7 +171,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
             starCoords = S_coords[:, begin[jj]: end[jj]].T
             gasCoords = G_coords[:, begin[jj]: end[jj]].T
-            S_coords[:, begin[jj]: end[jj]] = starCoords.T - cops[:, jj]
+            S_coords[:, begin[jj]: end[jj]] = (starCoords- cops[:, jj]).T
 
             print(starCoords)
             print(gasCoords)
