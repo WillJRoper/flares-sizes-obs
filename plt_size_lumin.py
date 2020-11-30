@@ -201,9 +201,6 @@ for reg, snap in reg_snaps:
     type_group = hdf[Type]
     orientation_group = type_group[orientation]
 
-    print(list(hdf.keys()))
-    print(list(type_group.keys()))
-
     hlr_dict.setdefault(snap, {})
     hlr_app_dict.setdefault(snap, {})
     hlr_pix_dict.setdefault(snap, {})
@@ -232,6 +229,22 @@ for reg, snap in reg_snaps:
         mass_dict[snap][f].extend(masses[okinds])
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
+
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # ax.imshow(np.log10(img), extent=imgextent)
+        # ax.grid(False)
+        # circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
+        # ax.add_artist(circle1)
+        # circle1 = plt.Circle((0, 0), hlr_app_dict[tag][f][-1],
+        #                      color='g', linestyle="--", fill=False)
+        # ax.add_artist(circle1)
+        # circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
+        #                      color='b', linestyle="--", fill=False)
+        # ax.add_artist(circle1)
+        # fig.savefig("plots/gal_img_log_%.1f.png"
+        #             % np.log10(np.sum(this_lumin)))
+        # plt.close(fig)
 
     hdf.close()
 
