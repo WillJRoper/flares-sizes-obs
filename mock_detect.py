@@ -134,7 +134,7 @@ for reg, snap in reg_snaps:
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 
-        imgs = orientation_group[f]["HLR_0.5"][...][okinds]
+        imgs = orientation_group[f]["Images"][...][okinds]
 
         print(imgs.shape)
 
