@@ -20,6 +20,7 @@ from astropy.cosmology import Planck13 as cosmo
 import astropy.units as u
 from FLARE.photom import lum_to_M, M_to_lum, lum_to_flux, m_to_flux
 import FLARE.photom as photconv
+from astropy.convolution import Gaussian2DKernel
 import photutils as phut
 import h5py
 import sys
@@ -60,7 +61,7 @@ else:
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
 kernel_sigma = 3.0 / (2.0 * np.sqrt(2.0 * np.log(2.0)))  # FWHM = 3
-kernel = phut.Gaussian2DKernel(kernel_sigma, x_size=3, y_size=3)
+kernel = Gaussian2DKernel(kernel_sigma, x_size=3, y_size=3)
 kernel.normalize()
 
 csoft = 0.001802390 / (0.6777) * 1e3
