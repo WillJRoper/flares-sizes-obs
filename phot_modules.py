@@ -172,17 +172,21 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             starCoords = S_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
             gasCoords = G_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
             S_coords[:, begin[jj]: end[jj]] = starCoords.T
-            #
-            # MetSurfaceDensities = util.get_Z_LOS(starCoords, gasCoords,
-            #                                      gasMasses, gasMetallicities,
-            #                                      gasSML, (0, 1, 2),
-            #                                      lkernel, kbins)
+
+            MetSurfaceDensities = util.get_Z_LOS(starCoords, gasCoords,
+                                                 gasMasses, gasMetallicities,
+                                                 gasSML, (0, 1, 2),
+                                                 lkernel, kbins)
+
+            print("Computed", MetSurfaceDensities)
             try:
                 MetSurfaceDensities = S_los[begin[jj]:end[jj]]
             except IndexError:
                 for f in filters:
                     Lums[f][begin[jj]: end[jj]] = np.nan
                 continue
+                
+            print("Read", MetSurfaceDensities)
 
         elif orientation == "face-on":
 

@@ -131,10 +131,10 @@ mass_dict.setdefault(tag, {})
 
 # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
 reg_dict = phot.get_lum(reg, kappa=0.0795, tag=tag, BC_fac=1,
-                           IMF='Chabrier_300', bins=np.arange(-24, -16, 0.5),
-                           inp='FLARES', LF=False, filters=filters, Type=Type,
-                           log10t_BC=7., extinction=extinction,
-                           orientation=orientation, masslim=masslim)
+                        IMF='Chabrier_300', bins=np.arange(-24, -16, 0.5),
+                        inp='FLARES', LF=False, filters=filters, Type=Type,
+                        log10t_BC=7., extinction=extinction,
+                        orientation=orientation, masslim=masslim)
 
 if z <= 2.8:
     csoft = 0.000474390 / 0.6777 * 1e3
