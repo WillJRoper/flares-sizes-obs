@@ -229,7 +229,7 @@ for f in filters:
 
             img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
                                      this_lumin,
-                                     this_smls)
+                                     np.full_like(this_smls, csoft))
         for r in radii_fracs:
 
             hlr_app_dict[tag][f][r].append(util.get_img_hlr(img,

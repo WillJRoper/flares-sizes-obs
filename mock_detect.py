@@ -104,6 +104,10 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
+    if reg != "39":
+        continue
+    if snap != 
+
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
