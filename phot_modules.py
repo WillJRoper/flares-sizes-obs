@@ -59,7 +59,7 @@ def get_data(ii, tag, inp='FLARES'):
                         dtype=np.float64)
         S_mass_ini = np.array(hf[tag + '/Particle'].get('S_MassInitial'),
                           dtype=np.float64) * 10 ** 10
-        S_mass = np.array(hf[tag + '/Particle'].get('S_MassInitial'),
+        S_mass = np.array(hf[tag + '/Particle'].get('S_Mass'),
                           dtype=np.float64) * 10 ** 10
         S_Z = np.array(hf[tag + '/Particle'].get('S_Z_smooth'),
                        dtype=np.float64)
@@ -151,6 +151,9 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     model.create_Lnu_grid(
         F)  # --- create new L grid for each filter. In units of erg/s/Hz
 
+    print(S_coords)
+    print(cops)
+
     for jj in range(len(begin)):
 
         # Extract values for this galaxy
@@ -185,7 +188,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
                 for f in filters:
                     Lums[f][begin[jj]: end[jj]] = np.nan
                 continue
-                
+
             print("Read", MetSurfaceDensities)
 
         elif orientation == "face-on":
