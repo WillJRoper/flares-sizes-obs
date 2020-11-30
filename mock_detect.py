@@ -99,6 +99,9 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
+    z_str = snap.split('z')[1].split('p')
+    z = float(z_str[0] + '.' + z_str[1])
+
     hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, snap), "r")
     type_group = hdf[Type]
     orientation_group = type_group[orientation]
@@ -110,6 +113,29 @@ for reg, snap in reg_snaps:
     mass_dict.setdefault(snap, {})
     weight_dict.setdefault(snap, {})
     imgs_dict.setdefault(snap, {})
+
+    if z <= 2.8:
+        csoft = 0.000474390 / 0.6777 * 1e3
+    else:
+        csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
+
+    # Define width
+    ini_width = 60
+
+    # Compute the resolution
+    ini_res = ini_width / csoft
+    res = int(np.ceil(ini_res))
+
+    # Compute the new width
+    width = csoft * res
+
+    print(width, res)
+
+    single_pixel_area = csoft * csoft
+
+    # Define range and extent for the images
+    imgrange = ((-width / 2, width / 2), (-width / 2, width / 2))
+    imgextent = [-width / 2, width / 2, -width / 2, width / 2]
 
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
@@ -139,19 +165,27 @@ for reg, snap in reg_snaps:
         print(imgs.shape)
 
         for i_img in range(imgs.shape[0]):
+
             img = imgs[i_img, :, :]
+
+            sources = phut.detect_sources(img, np.std(img), npixels=5)
+            print(sources)
+
             fig = plt.figure()
             ax = fig.add_subplot(111)
-            ax.imshow(np.log10(img))
+            ax.imshow(np.log10(img), extent=imgextent)
             ax.grid(False)
-            # circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
-            # ax.add_artist(circle1)
-            # circle1 = plt.Circle((0, 0), hlr_app_dict[tag][f][-1],
-            #                      color='g', linestyle="--", fill=False)
-            # ax.add_artist(circle1)
-            # circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
-            #                      color='b', linestyle="--", fill=False)
-            # ax.add_artist(circle1)
+            circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
+            ax.add_artist(circle1)
+            circle1 = plt.Circle((0, 0), hlr_app_dict[snap][f][i_img],
+                                 color='g', linestyle="--", fill=False)
+            ax.add_artist(circle1)
+            circle1 = plt.Circle((0, 0), hlr_dict[snap][f][i_img],
+                                 color='b', linestyle="--", fill=False)
+            ax.add_artist(circle1)
+            circle1 = plt.Circle((0, 0), hlr_pix_dict[snap][f][i_img],
+                                 color='y', linestyle=":", fill=False)
+            ax.add_artist(circle1)
             fig.savefig("plots/gal_img_log_" + f + "_%.1f.png"
                         % np.log10(np.sum(img)))
             plt.close(fig)
