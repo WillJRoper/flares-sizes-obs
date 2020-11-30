@@ -171,7 +171,6 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
             starCoords = S_coords[:, begin[jj]: end[jj]].T
             gasCoords = G_coords[:, begin[jj]: end[jj]].T
-            S_coords[:, begin[jj]: end[jj]] = (starCoords- cops[:, jj]).T
 
             print(starCoords)
             print(gasCoords)
@@ -180,6 +179,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
                                                  gasMasses, gasMetallicities,
                                                  gasSML, (0, 1, 2),
                                                  lkernel, kbins)
+
+            S_coords[:, begin[jj]: end[jj]] = (starCoords - cops[:, jj]).T
 
             print("Computed", MetSurfaceDensities)
             try:
