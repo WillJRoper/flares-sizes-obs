@@ -146,13 +146,12 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     G_coords = G_coords / (1 + z)
     cops = cops / (1 + z)
 
+    print(cops.shape)
+
     # --- create rest-frame luminosities
     F = FLARE.filters.add_filters(filters, new_lam=model.lam)
     model.create_Lnu_grid(
         F)  # --- create new L grid for each filter. In units of erg/s/Hz
-
-    print(S_coords)
-    print(cops)
 
     for jj in range(len(begin)):
 
@@ -172,9 +171,9 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
         if orientation == "sim":
 
-            starCoords = S_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
-            gasCoords = G_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
-            S_coords[:, begin[jj]: end[jj]] = starCoords.T
+            starCoords = S_coords[:, begin[jj]: end[jj]].T
+            gasCoords = G_coords[:, begin[jj]: end[jj]].T
+            S_coords[:, begin[jj]: end[jj]] = starCoords.T - cops[:, jj]
 
             print(starCoords)
             print(gasCoords)
