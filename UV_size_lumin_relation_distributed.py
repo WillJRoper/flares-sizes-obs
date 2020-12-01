@@ -194,7 +194,7 @@ for f in filters:
 
         this_pos = poss[:, b: e].T
         this_lumin = reg_dict[f][b: e]
-        this_smls = smls[b: e]
+        this_smls = smls[b: e] / (2 * np.sqrt(2 * np.log(2)))
         this_mass = np.nansum(masses[b: e])
 
         if np.nansum(this_lumin) == 0:
