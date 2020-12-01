@@ -429,8 +429,8 @@ for f in filters:
         ax1.legend(handles=legend_elements, loc='upper center',
                    bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-        fig.savefig('plots/noSmooth_' + str(
-            z) + '/HalfLightRadius_' + f + '_' + orientation + '_'
+        fig.savefig('plots/' + str(
+            z) + '/noSmooth_HalfLightRadius_' + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
                     + '%.1f.png' % np.log10(masslim), bbox_inches='tight')
 
@@ -568,7 +568,7 @@ for f in filters:
             ax.set_xlim(10**26.9, 10**30.1)
 
             fig.savefig(
-                'plots/noSmooth_' + str(z) + '/HalfLightRadius_' + f + '_' + str(
+                'plots/' + str(z) + '/noSmooth_HalfLightRadius_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
                 + '%.1f.png' % np.log10(masslim),
@@ -669,7 +669,7 @@ for f in filters:
                       bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
             fig.savefig(
-                'plots/noSmooth_' + str(z) + '/HalfLightRadius_AbMag_' + f + '_' + str(
+                'plots/' + str(z) + '/noSmooth_HalfLightRadius_AbMag_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
                 + '%.1f.png' % np.log10(masslim),
@@ -837,7 +837,7 @@ for f in filters:
         ax1.legend(handles=legend_elements, loc='upper center',
                    bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-        fig.savefig('plots/noSmooth_' + str(z) + '/HalfLightRadiusAperture_'
+        fig.savefig('plots/' + str(z) + '/noSmooth_HalfLightRadiusAperture_'
                     + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
                     + '%.1f.png' % np.log10(masslim), bbox_inches='tight')
@@ -952,7 +952,7 @@ for f in filters:
             ax.legend(handles=legend_elements, loc='upper center',
                       bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-            fig.savefig('plots/noSmooth_' + str(z) + '/HalfLightRadiusAperture_'
+            fig.savefig('plots/' + str(z) + '/noSmooth_HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
                         + '_' + Type + "_" + extinction + "_"
                         + '%.1f.png' % np.log10(masslim),
@@ -1052,8 +1052,8 @@ for f in filters:
             ax.legend(handles=legend_elements, loc='upper center',
                       bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-            fig.savefig('plots/noSmooth_' + str(
-                z) + '/HalfLightRadiusAperture_AbMag_' + f + '_' + str(z) + '_'
+            fig.savefig('plots/' + str(
+                z) + '/noSmooth_HalfLightRadiusAperture_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
                         + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
@@ -1221,7 +1221,7 @@ for f in filters:
         ax1.legend(handles=legend_elements, loc='upper center',
                    bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-        fig.savefig('plots/noSmooth_' + str(z) + '/HalfLightRadiusPixel_'
+        fig.savefig('plots/' + str(z) + '/noSmooth_HalfLightRadiusPixel_'
                     + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
                     + '%.1f.png' % np.log10(masslim), bbox_inches='tight')
@@ -1336,7 +1336,7 @@ for f in filters:
             ax.legend(handles=legend_elements, loc='upper center',
                       bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-            fig.savefig('plots/noSmooth_' + str(z) + '/HalfLightRadiusPixel_'
+            fig.savefig('plots/' + str(z) + '/noSmooth_HalfLightRadiusPixel_'
                         + f + '_' + str(z) + '_' + orientation
                         + '_' + Type + "_" + extinction + "_"
                         + '%.1f.png' % np.log10(masslim),
@@ -1435,8 +1435,8 @@ for f in filters:
             ax.legend(handles=legend_elements, loc='upper center',
                       bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-            fig.savefig('plots/noSmooth_' + str(
-                z) + '/HalfLightRadiusPixel_AbMag_' + f + '_' + str(z) + '_'
+            fig.savefig('plots/' + str(
+                z) + '/noSmooth_HalfLightRadiusPixel_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
                         + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
@@ -1522,7 +1522,7 @@ for f in filters:
             ax.legend(loc="bottom right")
 
             fig.savefig(
-                'plots/noSmooth_' + str(z) + '/HalfLightRadius_' + f + '_' + str(
+                'plots/' + str(z) + '/noSmooth_HalfLightRadius_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
                 + '%.1f.png' % np.log10(masslim),
@@ -1558,7 +1558,7 @@ for f in filters:
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
             fig.savefig(
-                'plots/noSmooth_' + str(z) + '/HalfLightRadius_Mass_' + f + '_' + str(
+                'plots/' + str(z) + '/noSmooth_HalfLightRadius_Mass_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
                 + '%.2f.png' % np.log10(masslim),
@@ -1631,7 +1631,7 @@ for f in filters:
             ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
             ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-            fig.savefig('plots/noSmooth_' + str(z) + '/HalfLightRadiusAperture_'
+            fig.savefig('plots/' + str(z) + '/noSmooth_HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
                         + '_' + Type + "_" + extinction + "_"
                         + '%.1f.png' % np.log10(masslim),
