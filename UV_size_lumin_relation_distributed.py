@@ -391,3 +391,5 @@ for f in filters:
                                           shape=hlrs_pix.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$\mathrm{pkpc}$"
+
+hdf.close()
