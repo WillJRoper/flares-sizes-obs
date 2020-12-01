@@ -213,9 +213,7 @@ for f in filters:
 
             this_radii = util.calc_rad(this_pos, i=0, j=1)
 
-            img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
-                                     this_lumin,
-                                     this_smls)
+            img, _, _ = np.histogram2d(this_pos[:, 0], this_pos[:, 1], bins=res, range=imgrange, weights=this_lumin)
 
         else:
 
@@ -228,9 +226,7 @@ for f in filters:
 
             this_radii = util.calc_rad(this_pos, i=2, j=0)
 
-            img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
-                                     this_lumin,
-                                     this_smls)
+            img, _, _  = np.histogram2d(this_pos[:, 2], this_pos[:, 0], bins=res, range=imgrange, weights=this_lumin)
 
         for r in radii_fracs:
 
@@ -267,9 +263,9 @@ for f in filters:
         # plt.close(fig)
 
 try:
-    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "r+")
+    hdf = h5py.File("data/flares_sizes_noSmooth_{}_{}.hdf5".format(reg, tag), "r+")
 except OSError:
-    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "w")
+    hdf = h5py.File("data/flares_sizes_noSmooth_{}_{}.hdf5".format(reg, tag), "w")
 
 try:
     type_group = hdf[Type]
