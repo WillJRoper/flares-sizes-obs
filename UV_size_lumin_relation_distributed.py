@@ -210,7 +210,6 @@ for f in filters:
         if orientation == "sim" or orientation == "face-on":
 
             # # Centre positions on luminosity weighted centre
-            # # NOTE: This is done in 3D not in projection!
             # lumin_cent = util.lumin_weighted_centre(this_pos,
             #                                         this_lumin,
             #                                         i=0, j=1)
@@ -225,7 +224,6 @@ for f in filters:
         else:
 
             # # Centre positions on luminosity weighted centre
-            # # NOTE: This is done in 3D not in projection!
             # lumin_cent = util.lumin_weighted_centre(this_pos,
             #                                         this_lumin,
             #                                         i=2, j=0)
