@@ -116,6 +116,7 @@ hlr_app_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
 mass_dict = {}
+nstar_dict = {}
 img_dict = {}
 
 # Set mass limit
@@ -129,6 +130,7 @@ hlr_app_dict.setdefault(tag, {})
 hlr_pix_dict.setdefault(tag, {})
 lumin_dict.setdefault(tag, {})
 mass_dict.setdefault(tag, {})
+nstar_dict.setdefault(tag, {})
 img_dict.setdefault(tag, {})
 
 # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
@@ -170,6 +172,7 @@ app_radii *= csoft
 poss = reg_dict["coords"] * 10 ** 3
 smls = reg_dict["smls"] * 10 ** 3
 masses = reg_dict["masses"]
+nstars = reg_dict["nstar"]
 begin = reg_dict["begin"]
 end = reg_dict["end"]
 
@@ -186,6 +189,7 @@ for f in filters:
 
     lumin_dict[tag].setdefault(f, [])
     mass_dict[tag].setdefault(f, [])
+    nstar_dict[tag].setdefault(f, [])
     img_dict[tag].setdefault(f, [])
 
     for ind in range(len(begin)):
@@ -194,8 +198,9 @@ for f in filters:
 
         this_pos = poss[:, b: e].T
         this_lumin = reg_dict[f][b: e]
-        this_smls = smls[b: e] / (2 * np.sqrt(2 * np.log(2)))
+        this_smls = smls[b: e]
         this_mass = np.nansum(masses[b: e])
+        this_nstar = nstars[ind]
 
         if np.nansum(this_lumin) == 0:
             continue
@@ -248,6 +253,7 @@ for f in filters:
 
         lumin_dict[tag][f].append(tot_l)
         mass_dict[tag][f].append(this_mass)
+        nstar_dict[tag][f].append(this_nstar)
         img_dict[tag][f].append(img)
 
         # fig = plt.figure()
@@ -287,6 +293,7 @@ for f in filters:
 
     lumins = np.array(lumin_dict[tag][f])
     mass = np.array(mass_dict[tag][f])
+    nstar = np.array(nstar_dict[tag][f])
     imgs = np.array(img_dict[tag][f])
 
     print(imgs.shape)
@@ -341,6 +348,21 @@ for f in filters:
                                       shape=mass.shape,
                                       compression="gzip")
         dset.attrs["units"] = "$M_\odot$"
+        
+    try:
+        dset = f_group.create_dataset("nStar", data=nstar,
+                                      dtype=nstar.dtype,
+                                      shape=nstar.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "None"
+    except RuntimeError:
+        print("nStar already exists: Overwriting...")
+        del f_group["nStar"]
+        dset = f_group.create_dataset("nStar", data=nstar,
+                                      dtype=nstar.dtype,
+                                      shape=nstar.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "None"
 
     for r in radii_fracs:
 
