@@ -107,7 +107,7 @@ for reg, snap in reg_snaps:
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
-    hdf = h5py.File("data/flares_sizes_noSmooth_{}_{}.hdf5".format(reg, snap), "r")
+    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, snap), "r")
     type_group = hdf[Type]
     orientation_group = type_group[orientation]
 
