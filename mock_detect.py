@@ -175,14 +175,14 @@ for reg, snap in reg_snaps:
 
             threshold = phut.detect_threshold(img, nsigma=5)
 
-            segm = phut.detect_sources(img, threshold, npixels=5,
-                                       filter_kernel=kernel)
             try:
+                segm = phut.detect_sources(img, threshold, npixels=5,
+                                           filter_kernel=kernel)
                 segm = phut.deblend_sources(img, segm, npixels=5,
                                             filter_kernel=kernel,
                                             nlevels=32, contrast=0.001)
             except TypeError:
-                pass
+                continue
 
             fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
             ax1.grid(False)
