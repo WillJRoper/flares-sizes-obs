@@ -110,7 +110,7 @@ for reg, snap in reg_snaps:
         lumin_dict[snap][f].extend(
             orientation_group[f]["Luminosity"][...][okinds])
         mass_dict[snap][f].extend(masses[okinds])
-        nstar_dict[snap][f].extend(orientation_group[f]["nStar"][...])
+        # nstar_dict[snap][f].extend(orientation_group[f]["nStar"][...])
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 
@@ -176,37 +176,37 @@ for f in filters:
 
         plt.close(fig)
 
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        try:
-            cbar = ax.hexbin(mass, nstar,
-                             gridsize=50, mincnt=1, C=w,
-                             reduce_C_function=np.sum,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2,
-                             cmap='viridis', alpha=0.9)
-            ax.axhline(1000, linestyle="--", color="k", alpha=0.7)
-        except ValueError as e:
-            print(e)
-            continue
-
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
-        # Label axes
-        ax.set_ylabel(r'$N_\star$')
-        ax.set_xlabel('$M_\star/ M_\odot$')
-
-        ax.tick_params(axis='both', which='minor', bottom=True, left=True)
-
-        fig.savefig(
-            'plots/' + str(z) + '/MassNStar_' + f + '_' + str(
-                z) + '_'
-            + orientation + '_' + Type + "_" + extinction + "_"
-            + '%.1f.png' % np.log10(masslim),
-            bbox_inches='tight')
-
-        plt.close(fig)
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # try:
+        #     cbar = ax.hexbin(mass, nstar,
+        #                      gridsize=50, mincnt=1, C=w,
+        #                      reduce_C_function=np.sum,
+        #                      xscale='log', yscale='log',
+        #                      norm=LogNorm(), linewidths=0.2,
+        #                      cmap='viridis', alpha=0.9)
+        #     ax.axhline(1000, linestyle="--", color="k", alpha=0.7)
+        # except ValueError as e:
+        #     print(e)
+        #     continue
+        #
+        # ax.text(0.95, 0.05, f'$z={z}$',
+        #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
+        #                   ec="k", lw=1, alpha=0.8),
+        #         transform=ax.transAxes, horizontalalignment='right',
+        #         fontsize=8)
+        #
+        # # Label axes
+        # ax.set_ylabel(r'$N_\star$')
+        # ax.set_xlabel('$M_\star/ M_\odot$')
+        #
+        # ax.tick_params(axis='both', which='minor', bottom=True, left=True)
+        #
+        # fig.savefig(
+        #     'plots/' + str(z) + '/MassNStar_' + f + '_' + str(
+        #         z) + '_'
+        #     + orientation + '_' + Type + "_" + extinction + "_"
+        #     + '%.1f.png' % np.log10(masslim),
+        #     bbox_inches='tight')
+        #
+        # plt.close(fig)
