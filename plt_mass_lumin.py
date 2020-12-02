@@ -49,7 +49,7 @@ filters = ('FAKE.TH.FUV', )
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-masslim = 10 ** 9.0
+masslim = 10 ** 8.0
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -116,6 +116,8 @@ for reg, snap in reg_snaps:
                                             weights[int(reg)]))
 
     hdf.close()
+
+masslim = 10 ** 9.0
 
 for f in filters:
 
