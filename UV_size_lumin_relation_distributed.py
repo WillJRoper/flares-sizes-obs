@@ -135,7 +135,7 @@ img_dict.setdefault(tag, {})
 
 try:
     hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "r+")
-    print(hdf[Type][orientation][f]["nStar"][...].size)
+    print(hdf[Type][orientation]['FAKE.TH.FUV']["nStar"][...].size)
 except KeyError:
 
 
