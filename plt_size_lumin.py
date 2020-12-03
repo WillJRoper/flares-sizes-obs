@@ -533,6 +533,8 @@ for f in filters:
 
         ax.set_xlim(10 ** 27.9, 10 ** 30.5)
 
+        ax.tick_params(axis='x', which='minor', bottom=True)
+
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + str(z) + '_' + orientation
                     + '_' + Type + "_" + extinction + "_"

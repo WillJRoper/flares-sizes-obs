@@ -271,6 +271,8 @@ for f in filters:
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
+        ax.tick_params(axis='x', which='minor', bottom=True)
+
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + str(z) + '_' + orientation
                     + '_' + Type + "_" + extinction + "_"
@@ -328,6 +330,8 @@ for f in filters:
         # Label axes
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+        ax.tick_params(axis='x', which='minor', bottom=True)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + str(z) + '_' + orientation
