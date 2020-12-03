@@ -116,7 +116,7 @@ for reg, snap in reg_snaps:
         weight_dict[snap].setdefault(f, [])
 
         masses = orientation_group[f]["Mass"][...]
-        okinds = orientation_group[f]["nstar"][...] > masslim
+        okinds = orientation_group[f]["nStar"][...] > masslim
 
         print(reg, snap, f, masses[okinds].size)
 
