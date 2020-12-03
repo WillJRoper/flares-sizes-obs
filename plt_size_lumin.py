@@ -304,7 +304,7 @@ for f in filters:
             for sden in [10.**27, 10.**28, 10.**29]:
                 ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="grey", linestyle="--", alpha=0.8)
                 ax.text(10**29.85, r_from_surf_den(10**29.85, sden),
-                        "%d" % np.log10(((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.nJy * u.sr**-1).value),
+                        "%.1f" % np.log10(((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.nJy * u.sr**-1).value),
                         verticalalignment="center",
                         horizontalalignment='left', fontsize=9,
                         color="k")
@@ -443,7 +443,7 @@ for f in filters:
                 ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden),
                         color="grey", linestyle="--", alpha=0.8)
                 ax.text(10 ** 29.85, r_from_surf_den(10 ** 29.85, sden),
-                        "%d" % np.log10(((m_to_flux(
+                        "%.1f" % np.log10(((m_to_flux(
                             M_to_m(lum_to_M(sden), cosmo,
                                    z)) * u.nJy * u.kpc ** -2) * cosmo.kpc_proper_per_arcmin(
                             z) ** 2).to(u.nJy * u.sr ** -1).value),
@@ -585,7 +585,7 @@ for f in filters:
                 ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden),
                         color="grey", linestyle="--", alpha=0.8)
                 ax.text(10 ** 29.85, r_from_surf_den(10 ** 29.85, sden),
-                        "%d" % np.log10(((m_to_flux(
+                        "%.1f" % np.log10(((m_to_flux(
                             M_to_m(lum_to_M(sden), cosmo,
                                    z)) * u.nJy * u.kpc ** -2) * cosmo.kpc_proper_per_arcmin(
                             z) ** 2).to(u.nJy * u.sr ** -1).value),
