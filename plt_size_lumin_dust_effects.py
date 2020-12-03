@@ -224,7 +224,7 @@ for f in filters:
 
         ax.tick_params(axis='x', which='minor', bottom=True)
 
-        fig.colorar(im)
+        fig.colorbar(im)
 
         fig.savefig(
             'plots/' + str(z) + '/HalfLightRadius_dust_effects__' + f + '_' + str(
@@ -281,7 +281,7 @@ for f in filters:
 
         ax.tick_params(axis='x', which='minor', bottom=True)
 
-        fig.colorar(im)
+        fig.colorbar(im)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Aperture_'
                     + f + '_' + str(z) + '_' + orientation
@@ -337,7 +337,7 @@ for f in filters:
 
         ax.tick_params(axis='x', which='minor', bottom=True)
 
-        fig.colorar(im)
+        fig.colorbar(im)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Pixel_'
                     + f + '_' + str(z) + '_' + orientation
