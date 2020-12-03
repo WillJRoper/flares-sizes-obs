@@ -58,7 +58,7 @@ filters = ('FAKE.TH.FUV', )
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 1000
+nlim = 1500
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -230,7 +230,7 @@ for f in filters:
         cbaxes.xaxis.set_ticks_position("top")
         cbar.ax.set_xlabel("$A$", labelpad=-30)
 
-        ax.set_xlim(10**27.9, 10**31.5)
+        ax.set_xlim(10**27.9, 10**31.1)
         ax.set_ylim(10**-1.2, 10**1.4)
 
         fig.savefig(
@@ -294,7 +294,7 @@ for f in filters:
         cbaxes.xaxis.set_ticks_position("top")
         cbar.ax.set_xlabel("$A$", labelpad=-30)
 
-        ax.set_xlim(10**27.9, 10**31.5)
+        ax.set_xlim(10**27.9, 10**31.1)
         ax.set_ylim(10**-1.2, 10**1.4)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Aperture_'
@@ -357,7 +357,7 @@ for f in filters:
         cbaxes.xaxis.set_ticks_position("top")
         cbar.ax.set_xlabel("$A$", labelpad=-30)
 
-        ax.set_xlim(10**27.9, 10**31.5)
+        ax.set_xlim(10**27.9, 10**31.1)
         ax.set_ylim(10**-1.2, 10**1.4)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Pixel_'
