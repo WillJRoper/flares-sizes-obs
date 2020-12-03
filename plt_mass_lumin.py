@@ -97,6 +97,7 @@ for reg, snap in reg_snaps:
     weight_dict.setdefault(snap, {})
 
     for f in filters:
+        print(orientation_group[f].keys())
 
         lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
