@@ -112,7 +112,10 @@ for reg, snap in reg_snaps:
         lumin_dict[snap][f].extend(
             orientation_group[f]["Luminosity"][...][okinds])
         mass_dict[snap][f].extend(masses[okinds])
-        nstar_dict[snap][f].extend(orientation_group[f]["nStar"][...])
+        try:
+            nstar_dict[snap][f].extend(orientation_group[f]["nStar"][...])
+        except KeyError:
+            continue
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 

@@ -576,6 +576,7 @@ def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
         Lums["coords"] = np.array([], dtype=np.float64)
         Lums["smls"] = np.array([], dtype=np.float64)
         Lums["masses"] = np.array([], dtype=np.float64)
+        Lums["nstar"] = np.array([], dtype=np.float64)
         Lums["begin"] = np.array([], dtype=np.float64)
         Lums["end"] = np.array([], dtype=np.float64)
         print(e)
