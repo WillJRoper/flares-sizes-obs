@@ -92,7 +92,7 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
     if mags[ind] < 0:
         mags[ind] = M_to_m(mags[ind], cosmo, z)
 
-cmap = mpl.cm.get_cmap("twilight_shifted")
+cmap = mpl.cm.get_cmap("jet")
 norm = plt.Normalize(vmin=0, vmax=1)
 
 labels = {"C16": "Calvi+2016",
@@ -106,7 +106,7 @@ markers = {"G11": "s", "G12": "v", "C16": "D",
            "K18": "o", "M18": "X", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
 colors = {}
-for key, col in zip(labels.keys(), np.linspace(0, 0.5, len(labels.keys()))):
+for key, col in zip(labels.keys(), np.linspace(0, 1, len(labels.keys()))):
     colors[key] = cmap(norm(col))
 
 
@@ -411,7 +411,7 @@ for f in filters:
                    markersize=8, alpha=0.7))
 
         ax.scatter(plt_zs, plt_r_es,
-                   marker=markers[p], label=labels[p], s=25,
+                   marker=markers[p], label=labels[p], s=17,
                    color=colors[p], alpha=0.7)
 
     # Label axes
@@ -479,7 +479,7 @@ for f in filters:
                    markersize=8, alpha=0.7))
 
         ax.scatter(plt_zs, plt_r_es,
-                   marker=markers[p], label=labels[p], s=25,
+                   marker=markers[p], label=labels[p], s=17,
                    color=colors[p], alpha=0.7)
 
     # Label axes
@@ -547,7 +547,7 @@ for f in filters:
                    markersize=8, alpha=0.7))
 
         ax.scatter(plt_zs, plt_r_es,
-                   marker=markers[p], label=labels[p], s=25,
+                   marker=markers[p], label=labels[p], s=17,
                    color=colors[p], alpha=0.7)
 
     # Label axes
