@@ -111,7 +111,7 @@ for reg, snap in reg_snaps:
 
     hdf.close()
 
-masslim = 10 ** 9.0
+nlim = 500
 
 for f in filters:
 
@@ -130,8 +130,8 @@ for f in filters:
         nstar = np.array(nstar_dict[snap][f])
         w = np.array(weight_dict[snap][f])
 
-        okinds1 = mass < masslim
-        okinds2 = mass >= masslim
+        okinds1 = nstar < masslim
+        okinds2 = nstar >= masslim
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
