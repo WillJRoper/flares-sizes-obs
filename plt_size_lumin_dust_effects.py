@@ -229,7 +229,7 @@ for f in filters:
         fig.savefig(
             'plots/' + str(z) + '/HalfLightRadius_dust_effects__' + f + '_' + str(
                 z) + '_'
-            + orientation + '_' + Type + "_" + extinction + "_"
+            + orientation + "_" + extinction + "_"
             + '%d.png' % np.log10(nlim),
             bbox_inches='tight')
 
@@ -285,7 +285,7 @@ for f in filters:
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Aperture_'
                     + f + '_' + str(z) + '_' + orientation
-                    + '_' + Type + "_" + extinction + "_"
+                    + "_" + extinction + "_"
                     + '%d.png' % np.log10(nlim),
                     bbox_inches='tight')
 
