@@ -400,11 +400,6 @@ for f in filters:
         okinds = papers == p
         plt_r_es = r_es[okinds]
         plt_zs = zs[okinds]
-        plt_m = mags[okinds]
-
-        okinds = m_to_M(plt_m, cosmo, plt_zs) > lum_to_M(10 ** 28)
-        plt_r_es = plt_r_es[okinds]
-        plt_zs = plt_zs[okinds]
 
         if plt_zs.size == 0:
             continue
@@ -473,11 +468,6 @@ for f in filters:
         okinds = papers == p
         plt_r_es = r_es[okinds]
         plt_zs = zs[okinds]
-        plt_m = mags[okinds]
-
-        okinds = m_to_M(plt_m, cosmo, plt_zs) > lum_to_M(10 ** 28)
-        plt_r_es = plt_r_es[okinds]
-        plt_zs = plt_zs[okinds]
 
         if plt_zs.size == 0:
             continue
@@ -546,10 +536,6 @@ for f in filters:
         plt_r_es = r_es[okinds]
         plt_zs = zs[okinds]
         plt_m = mags[okinds]
-
-        okinds = m_to_M(plt_m, cosmo, plt_zs) > lum_to_M(10**28)
-        plt_r_es = plt_r_es[okinds]
-        plt_zs = plt_zs[okinds]
 
         if plt_zs.size == 0:
             continue

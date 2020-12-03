@@ -329,12 +329,17 @@ def get_img_hlr(img, apertures, app_rs, res, csoft, radii_frac=0.5):
 
 
 def get_pixel_hlr(img, single_pix_area, radii_frac=0.5):
+
     # Get half the total luminosity
     half_l = np.sum(img) * radii_frac
 
     # Sort pixels into 1D array ordered by decreasing intensity
     sort_1d_img = np.sort(img.flatten())[::-1]
     sum_1d_img = np.cumsum(sort_1d_img)
+    cumal_area = np.full_like(sum_1d_img, single_pix_area)\
+                 * np.arange(1, sum_1d_img.size + 1, 1)
+
+    # Interpolate the arrays for better resolution
 
     # Calculate the number of pixels
     # (the index of the pixel closest to half the total luminosity)
