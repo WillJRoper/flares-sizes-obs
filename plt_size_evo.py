@@ -419,8 +419,8 @@ for f in filters:
 
     ax.tick_params(axis='x', which='minor', bottom=True)
 
-    ax.set_xlim(4.5, 12)
-    ax.set_ylim(10**-1.2, 10**1.4)
+    ax.set_xlim(4.5, 11.5)
+    ax.set_ylim(10**-1.25, 10**0.8)
 
     ax.legend(handles=legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
@@ -487,8 +487,8 @@ for f in filters:
 
     ax.tick_params(axis='x', which='minor', bottom=True)
 
-    ax.set_xlim(4.5, 12)
-    ax.set_ylim(10**-1.2, 10**1.4)
+    ax.set_xlim(4.5, 11.5)
+    ax.set_ylim(10**-1.25, 10**0.8)
 
     ax.legend(handles=legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
@@ -554,8 +554,8 @@ for f in filters:
 
     ax.tick_params(axis='x', which='minor', bottom=True)
 
-    ax.set_xlim(4.5, 12)
-    ax.set_ylim(10**-1.2, 10**1.4)
+    ax.set_xlim(4.5, 11.5)
+    ax.set_ylim(10**-1.25, 10**0.8)
 
     ax.legend(handles=legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
