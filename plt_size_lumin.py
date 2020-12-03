@@ -388,7 +388,7 @@ for f in filters:
         ax.legend(handles=legend_elements, loc='upper center',
                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-        ax.set_xlim(10**26.9, 10**30.5)
+        ax.set_xlim(10 ** 27.9, 10 ** 30.5)
 
         fig.savefig(
             'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
@@ -531,7 +531,7 @@ for f in filters:
         ax.legend(handles=legend_elements, loc='upper center',
                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-        ax.set_xlim(10 ** 26.9, 10 ** 30.5)
+        ax.set_xlim(10 ** 27.9, 10 ** 30.5)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + str(z) + '_' + orientation
@@ -561,7 +561,7 @@ for f in filters:
         ax1 = ax.twinx()
         ax1.grid(False)
         try:
-            sden_lumins = np.logspace(27, 29.8)
+            sden_lumins = np.logspace(28, 29.8)
             cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
                              C=w,
                              reduce_C_function=np.sum,
@@ -673,7 +673,7 @@ for f in filters:
         ax.legend(handles=legend_elements, loc='upper center',
                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-        ax.set_xlim(10 ** 26.9, 10 ** 30.5)
+        ax.set_xlim(10 ** 27.9, 10 ** 30.5)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + str(z) + '_' + orientation

@@ -182,7 +182,7 @@ for f in filters:
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='viridis', alpha=0.9)
-            ax.axhline(500, linestyle="--", color="k", alpha=0.7)
+            ax.axhline(nlim, linestyle="--", color="k", alpha=0.7)
         except ValueError as e:
             print(e)
             continue
@@ -203,7 +203,7 @@ for f in filters:
             'plots/' + str(z) + '/MassNStar_' + f + '_' + str(
                 z) + '_'
             + orientation + '_' + Type + "_" + extinction + "_"
-            + '%d.png' % np.log10(masslim),
+            + '%d.png' % nlim,
             bbox_inches='tight')
 
         plt.close(fig)
