@@ -168,7 +168,7 @@ for f in filters:
             'plots/' + str(z) + '/MassLumin_' + f + '_' + str(
                 z) + '_'
             + orientation + '_' + Type + "_" + extinction + "_"
-            + '%.1f.png' % np.log10(masslim),
+            + '%d.png' % np.log10(masslim),
             bbox_inches='tight')
 
         plt.close(fig)
@@ -203,7 +203,7 @@ for f in filters:
             'plots/' + str(z) + '/MassNStar_' + f + '_' + str(
                 z) + '_'
             + orientation + '_' + Type + "_" + extinction + "_"
-            + '%.1f.png' % np.log10(masslim),
+            + '%d.png' % np.log10(masslim),
             bbox_inches='tight')
 
         plt.close(fig)

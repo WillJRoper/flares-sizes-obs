@@ -210,7 +210,7 @@ for f in filters:
             'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
                 z) + '_'
             + orientation + '_' + Type + "_" + extinction + "_"
-            + '%.1f.png' % nlim,
+            + '%d.png' % nlim,
             bbox_inches='tight')
 
         plt.close(fig)

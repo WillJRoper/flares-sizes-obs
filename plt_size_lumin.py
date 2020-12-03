@@ -26,7 +26,7 @@ import pandas as pd
 import utilities as util
 
 sns.set_context("paper")
-sns.set_style('white')
+sns.set_style('whitegrid')
 
 
 # Define Kawamata17 fit and parameters
@@ -129,7 +129,6 @@ labels = {"G11": "Grazian+2011",
           "G12": "Grazian+2012",
           "C16": "Calvi+2016",
           "K18": "Kawamata+2018",
-          "M18": "FIRE-2 intrinsic",
           "MO18": "Morishita+2018",
           "B19": "Bridge+2019",
           "O16": "Oesch+2016",
@@ -243,7 +242,7 @@ for reg, snap in reg_snaps:
         # circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
         #                      color='b', linestyle="--", fill=False)
         # ax.add_artist(circle1)
-        # fig.savefig("plots/gal_img_log_%.1f.png"
+        # fig.savefig("plots/gal_img_log_%d.png"
         #             % np.log10(np.sum(this_lumin)))
         # plt.close(fig)
 
@@ -305,7 +304,7 @@ for f in filters:
             for sden in [10.**26, 10.**27, 10.**28, 10.**29]:
                 ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden), color="grey", linestyle="--", alpha=0.8)
                 ax.text(10**29.85, r_from_surf_den(10**29.85, sden),
-                        "%.1f" % np.log10(((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.nJy * u.sr**-1).value),
+                        "%d" % np.log10(((m_to_flux(M_to_m(lum_to_M(sden), cosmo, z)) * u.nJy *u.kpc**-2) * cosmo.kpc_proper_per_arcmin(z)**2).to(u.nJy * u.sr**-1).value),
                         verticalalignment="center",
                         horizontalalignment='left', fontsize=9,
                         color="k")
@@ -367,7 +366,7 @@ for f in filters:
                         linestyle='dashed', color=colors["K18"], alpha=0.9, zorder=2,
                         label="Kawamata+18")
                 legend_elements.append(
-                    Line2D([0], [0], color=colors["K18"], linestyle="-",
+                    Line2D([0], [0], color=colors["K18"], linestyle="--",
                            label=labels["K18"]))
                 # ax.fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
@@ -395,7 +394,7 @@ for f in filters:
             'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
                 z) + '_'
             + orientation + '_' + Type + "_" + extinction + "_"
-            + '%.1f.png' % nlim,
+            + '%d.png' % nlim,
             bbox_inches='tight')
 
         plt.close(fig)
@@ -444,7 +443,7 @@ for f in filters:
                 ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden),
                         color="grey", linestyle="--", alpha=0.8)
                 ax.text(10 ** 29.85, r_from_surf_den(10 ** 29.85, sden),
-                        "%.1f" % np.log10(((m_to_flux(
+                        "%d" % np.log10(((m_to_flux(
                             M_to_m(lum_to_M(sden), cosmo,
                                    z)) * u.nJy * u.kpc ** -2) * cosmo.kpc_proper_per_arcmin(
                             z) ** 2).to(u.nJy * u.sr ** -1).value),
@@ -510,7 +509,7 @@ for f in filters:
                         zorder=2,
                         label="Kawamata+18")
                 legend_elements.append(
-                    Line2D([0], [0], color=colors["K18"], linestyle="-",
+                    Line2D([0], [0], color=colors["K18"], linestyle="--",
                            label=labels["K18"]))
                 # ax.fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
@@ -537,7 +536,7 @@ for f in filters:
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + str(z) + '_' + orientation
                     + '_' + Type + "_" + extinction + "_"
-                    + '%.1f.png' % nlim,
+                    + '%d.png' % nlim,
                     bbox_inches='tight')
 
         plt.close(fig)
@@ -586,7 +585,7 @@ for f in filters:
                 ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden),
                         color="grey", linestyle="--", alpha=0.8)
                 ax.text(10 ** 29.85, r_from_surf_den(10 ** 29.85, sden),
-                        "%.1f" % np.log10(((m_to_flux(
+                        "%d" % np.log10(((m_to_flux(
                             M_to_m(lum_to_M(sden), cosmo,
                                    z)) * u.nJy * u.kpc ** -2) * cosmo.kpc_proper_per_arcmin(
                             z) ** 2).to(u.nJy * u.sr ** -1).value),
@@ -652,7 +651,7 @@ for f in filters:
                         zorder=2,
                         label="Kawamata+18")
                 legend_elements.append(
-                    Line2D([0], [0], color=colors["K18"], linestyle="-",
+                    Line2D([0], [0], color=colors["K18"], linestyle="--",
                            label=labels["K18"]))
                 # ax.fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
@@ -679,7 +678,7 @@ for f in filters:
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + str(z) + '_' + orientation
                     + '_' + Type + "_" + extinction + "_"
-                    + '%.1f.png' % nlim,
+                    + '%d.png' % nlim,
                     bbox_inches='tight')
 
         plt.close(fig)

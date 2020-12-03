@@ -143,7 +143,7 @@ for reg, snap in reg_snaps:
         # circle1 = plt.Circle((0, 0), hlr_dict[tag][f][-1],
         #                      color='b', linestyle="--", fill=False)
         # ax.add_artist(circle1)
-        # fig.savefig("plots/gal_img_log_%.1f.png"
+        # fig.savefig("plots/gal_img_log_%d.png"
         #             % np.log10(np.sum(this_lumin)))
         # plt.close(fig)
 
@@ -216,7 +216,7 @@ for f in filters:
             'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
                 z) + '_'
             + orientation + '_' + Type + "_" + extinction + "_"
-            + '%.1f.png' % np.log10(nlim),
+            + '%d.png' % np.log10(nlim),
             bbox_inches='tight')
 
         plt.close(fig)
@@ -274,7 +274,7 @@ for f in filters:
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + str(z) + '_' + orientation
                     + '_' + Type + "_" + extinction + "_"
-                    + '%.1f.png' % np.log10(nlim),
+                    + '%d.png' % np.log10(nlim),
                     bbox_inches='tight')
 
         plt.close(fig)
@@ -332,7 +332,7 @@ for f in filters:
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + str(z) + '_' + orientation
                     + '_' + Type + "_" + extinction + "_"
-                    + '%.1f.png' % nlim,
+                    + '%d.png' % nlim,
                     bbox_inches='tight')
 
         plt.close(fig)
