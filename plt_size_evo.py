@@ -327,6 +327,9 @@ for f in filters:
         intr_lumins = np.array(intr_lumin_dict[snap][f])
         w = np.array(weight_dict[snap][f])
 
+        if len(w) == 0:
+            continue
+
         quants = weighted_quantile(hlrs, [0.16, 0.5, 0.84], sample_weight=w,
                                    values_sorted=False, old_style=False)
 
