@@ -92,7 +92,7 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
     if mags[ind] < 0:
         mags[ind] = M_to_m(mags[ind], cosmo, z)
 
-cmap = mpl.cm.get_cmap("autumn")
+cmap = mpl.cm.get_cmap("twilight_shifted")
 norm = plt.Normalize(vmin=0, vmax=1)
 
 labels = {"C16": "Calvi+2016",
@@ -106,7 +106,7 @@ markers = {"G11": "s", "G12": "v", "C16": "D",
            "K18": "o", "M18": "X", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
 colors = {}
-for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
+for key, col in zip(labels.keys(), np.linspace(0, 1, len(markers.keys()))):
     colors[key] = cmap(norm(col))
 
 
@@ -420,7 +420,7 @@ for f in filters:
 
     ax.tick_params(axis='x', which='minor', bottom=True)
 
-    ax.set_xlim(4.5, 15)
+    ax.set_xlim(4.5, 12)
     ax.set_ylim(10**-1.2, 10**1.4)
 
     ax.legend(handles=legend_elements, loc='upper center',
@@ -488,7 +488,7 @@ for f in filters:
 
     ax.tick_params(axis='x', which='minor', bottom=True)
 
-    ax.set_xlim(4.5, 15)
+    ax.set_xlim(4.5, 12)
     ax.set_ylim(10**-1.2, 10**1.4)
 
     ax.legend(handles=legend_elements, loc='upper center',
@@ -556,7 +556,7 @@ for f in filters:
 
     ax.tick_params(axis='x', which='minor', bottom=True)
 
-    ax.set_xlim(4.5, 15)
+    ax.set_xlim(4.5, 12)
     ax.set_ylim(10**-1.2, 10**1.4)
 
     ax.legend(handles=legend_elements, loc='upper center',
