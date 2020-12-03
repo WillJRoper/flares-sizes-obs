@@ -45,22 +45,19 @@ def M_to_m(M, cosmo, z):
 orientation = sys.argv[1]
 
 # Define luminosity and dust model types
-Type = sys.argv[2]
+Type = "Total"
 extinction = 'default'
 
-if sys.argv[3] == "All":
-    snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
-             '006_z009p000', '007_z008p000', '008_z007p000',
-             '009_z006p000', '010_z005p000', '011_z004p770']
-else:
-    snaps = sys.argv[3]
+snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
+         '006_z009p000', '007_z008p000', '008_z007p000',
+         '009_z006p000', '010_z005p000', '011_z004p770']
 
 # Define filter
-filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
+filters = ('FAKE.TH.FUV', )
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-masslim = 10 ** float(sys.argv[4])
+nlim = 500
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -117,7 +114,9 @@ for reg, snap in reg_snaps:
         weight_dict[snap].setdefault(f, [])
 
         masses = orientation_group[f]["Mass"][...]
-        okinds = masses > masslim
+        okinds = orientation_group[f]["nStar"][...] > nlim
+
+        print(reg, snap, f, masses[okinds].size)
 
         hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...][okinds])
         hlr_app_dict[snap][f].extend(
@@ -211,7 +210,7 @@ for f in filters:
             'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
                 z) + '_'
             + orientation + '_' + Type + "_" + extinction + "_"
-            + '%.1f.png' % np.log10(masslim),
+            + '%.1f.png' % nlim,
             bbox_inches='tight')
 
         plt.close(fig)
