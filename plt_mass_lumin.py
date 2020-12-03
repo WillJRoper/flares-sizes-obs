@@ -11,20 +11,11 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
-import matplotlib as mpl
 from matplotlib.colors import LogNorm
-import matplotlib.gridspec as gridspec
-from scipy.stats import binned_statistic
-from matplotlib.lines import Line2D
-from astropy.cosmology import Planck13 as cosmo
-import astropy.units as u
-from FLARE.photom import lum_to_M, M_to_lum, lum_to_flux, m_to_flux
-import FLARE.photom as photconv
+from FLARE.photom import M_to_lum
 import h5py
 import sys
 import pandas as pd
-import utilities as util
-
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -45,7 +36,7 @@ else:
 
 # Define filter
 # filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
-filters = ('FAKE.TH.FUV', )
+filters = ('FAKE.TH.FUV',)
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -97,7 +88,6 @@ for reg, snap in reg_snaps:
     weight_dict.setdefault(snap, {})
 
     for f in filters:
-        print(orientation_group[f].keys())
 
         lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
@@ -192,7 +182,7 @@ for f in filters:
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='viridis', alpha=0.9)
-            ax.axhline(1000, linestyle="--", color="k", alpha=0.7)
+            ax.axhline(500, linestyle="--", color="k", alpha=0.7)
         except ValueError as e:
             print(e)
             continue
