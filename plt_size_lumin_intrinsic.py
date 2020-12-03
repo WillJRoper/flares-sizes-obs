@@ -212,11 +212,6 @@ for f in filters:
 
         ax.tick_params(axis='x', which='minor', bottom=True)
 
-        ax.legend(handles=legend_elements, loc='upper center',
-                  bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
-
-        ax.set_xlim(10**26.9, 10**30.1)
-
         fig.savefig(
             'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
                 z) + '_'
@@ -276,9 +271,6 @@ for f in filters:
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-        ax.legend(handles=legend_elements, loc='upper center',
-                  bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
-
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + str(z) + '_' + orientation
                     + '_' + Type + "_" + extinction + "_"
@@ -336,9 +328,6 @@ for f in filters:
         # Label axes
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-
-        ax.legend(handles=legend_elements, loc='upper center',
-                  bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + str(z) + '_' + orientation
