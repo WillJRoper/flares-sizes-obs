@@ -59,7 +59,7 @@ filters = ('FAKE.TH.FUV', )
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-masslim = 500
+nlim = 500
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -116,7 +116,7 @@ for reg, snap in reg_snaps:
         weight_dict[snap].setdefault(f, [])
 
         masses = orientation_group[f]["Mass"][...]
-        okinds = orientation_group[f]["nStar"][...] > masslim
+        okinds = orientation_group[f]["nStar"][...] > nlim
 
         print(reg, snap, f, masses[okinds].size)
 
@@ -216,7 +216,7 @@ for f in filters:
             'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
                 z) + '_'
             + orientation + '_' + Type + "_" + extinction + "_"
-            + '%.1f.png' % np.log10(masslim),
+            + '%.1f.png' % np.log10(nlim),
             bbox_inches='tight')
 
         plt.close(fig)
@@ -274,7 +274,7 @@ for f in filters:
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + str(z) + '_' + orientation
                     + '_' + Type + "_" + extinction + "_"
-                    + '%.1f.png' % np.log10(masslim),
+                    + '%.1f.png' % np.log10(nlim),
                     bbox_inches='tight')
 
         plt.close(fig)
@@ -332,7 +332,7 @@ for f in filters:
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + str(z) + '_' + orientation
                     + '_' + Type + "_" + extinction + "_"
-                    + '%.1f.png' % np.log10(masslim),
+                    + '%.1f.png' % nlim,
                     bbox_inches='tight')
 
         plt.close(fig)

@@ -28,7 +28,6 @@ import utilities as util
 sns.set_context("paper")
 sns.set_style('white')
 
-
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
@@ -142,24 +141,26 @@ colors = {}
 for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
     colors[key] = cmap(norm(col))
 
-
 # Set orientation
 orientation = sys.argv[1]
 
 # Define luminosity and dust model types
-Type = "Intrinsic"
+Type = sys.argv[2]
 extinction = 'default'
 
-snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
-         '006_z009p000', '007_z008p000', '008_z007p000',
-         '009_z006p000', '010_z005p000', '011_z004p770']
+if sys.argv[3] == "All":
+    snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
+             '006_z009p000', '007_z008p000', '008_z007p000',
+             '009_z006p000', '010_z005p000', '011_z004p770']
+else:
+    snaps = sys.argv[3]
 
 # Define filter
-filters = ('FAKE.TH.FUV', )
+filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 500
+masslim = 10 ** float(sys.argv[4])
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -216,7 +217,7 @@ for reg, snap in reg_snaps:
         weight_dict[snap].setdefault(f, [])
 
         masses = orientation_group[f]["Mass"][...]
-        okinds = orientation_group[f]["nstar"][...] > nlim
+        okinds = masses > masslim
 
         print(reg, snap, f, masses[okinds].size)
 
@@ -430,7 +431,7 @@ for f in filters:
         fig.savefig('plots/' + str(
             z) + '/HalfLightRadius_' + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
-                    + '%.1f.png' % nlim, bbox_inches='tight')
+                    + '%.1f.png' % np.log10(masslim), bbox_inches='tight')
 
         plt.close(fig)
 
@@ -569,7 +570,7 @@ for f in filters:
                 'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
-                + '%.1f.png' % nlim,
+                + '%.1f.png' % np.log10(masslim),
                 bbox_inches='tight')
 
             plt.close(fig)
@@ -670,7 +671,7 @@ for f in filters:
                 'plots/' + str(z) + '/HalfLightRadius_AbMag_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
-                + '%.1f.png' % nlim,
+                + '%.1f.png' % np.log10(masslim),
                 bbox_inches='tight')
 
             plt.close(fig)
@@ -838,7 +839,7 @@ for f in filters:
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                     + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
-                    + '%.1f.png' % nlim, bbox_inches='tight')
+                    + '%.1f.png' % np.log10(masslim), bbox_inches='tight')
 
         plt.close(fig)
 
@@ -953,7 +954,7 @@ for f in filters:
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
                         + '_' + Type + "_" + extinction + "_"
-                        + '%.1f.png' % nlim,
+                        + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
 
             plt.close(fig)
@@ -1053,7 +1054,7 @@ for f in filters:
             fig.savefig('plots/' + str(
                 z) + '/HalfLightRadiusAperture_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
-                        + '%.1f.png' % nlim,
+                        + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
 
             plt.close(fig)
@@ -1222,7 +1223,7 @@ for f in filters:
         fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                     + f + '_' + orientation + '_'
                     + Type + "_" + extinction + "_"
-                    + '%.1f.png' % nlim, bbox_inches='tight')
+                    + '%.1f.png' % np.log10(masslim), bbox_inches='tight')
 
         plt.close(fig)
 
@@ -1337,7 +1338,7 @@ for f in filters:
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusPixel_'
                         + f + '_' + str(z) + '_' + orientation
                         + '_' + Type + "_" + extinction + "_"
-                        + '%.1f.png' % nlim,
+                        + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
 
             plt.close(fig)
@@ -1436,7 +1437,7 @@ for f in filters:
             fig.savefig('plots/' + str(
                 z) + '/HalfLightRadiusPixel_AbMag_' + f + '_' + str(z) + '_'
                         + orientation + '_' + Type + "_" + extinction + "_"
-                        + '%.1f.png' % nlim,
+                        + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
 
             plt.close(fig)
@@ -1523,7 +1524,7 @@ for f in filters:
                 'plots/' + str(z) + '/HalfLightRadius_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
-                + '%.1f.png' % nlim,
+                + '%.1f.png' % np.log10(masslim),
                 bbox_inches='tight')
 
             plt.close(fig)
@@ -1559,7 +1560,7 @@ for f in filters:
                 'plots/' + str(z) + '/HalfLightRadius_Mass_' + f + '_' + str(
                     z) + '_'
                 + orientation + '_' + Type + "_" + extinction + "_"
-                + '%.2f.png' % nlim,
+                + '%.2f.png' % np.log10(masslim),
                 bbox_inches='tight')
 
             plt.close(fig)
@@ -1632,7 +1633,7 @@ for f in filters:
             fig.savefig('plots/' + str(z) + '/HalfLightRadiusAperture_'
                         + f + '_' + str(z) + '_' + orientation
                         + '_' + Type + "_" + extinction + "_"
-                        + '%.1f.png' % nlim,
+                        + '%.1f.png' % np.log10(masslim),
                         bbox_inches='tight')
 
             plt.close(fig)
