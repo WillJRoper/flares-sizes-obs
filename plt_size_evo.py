@@ -106,7 +106,7 @@ markers = {"G11": "s", "G12": "v", "C16": "D",
            "K18": "o", "M18": "X", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
 colors = {}
-for key, col in zip(labels.keys(), np.linspace(0, 1, len(markers.keys()))):
+for key, col in zip(labels.keys(), np.linspace(0, 0.5, len(labels.keys()))):
     colors[key] = cmap(norm(col))
 
 
