@@ -58,7 +58,7 @@ filters = ('FAKE.TH.FUV', )
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 800
+nlim = 1000
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -200,7 +200,8 @@ for f in filters:
                        alpha=0.6)
             for intr_l, l, intr_r, r in zip(intr_lumins, lumins,
                                             intr_hlrs, hlrs):
-                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k")
+                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
+                        alpha=0.3)
             im = ax.scatter(lumins, hlrs,
                             c=lum_to_M(intr_lumins) - lum_to_M(lumins),
                             marker="D",
@@ -224,13 +225,19 @@ for f in filters:
 
         ax.tick_params(axis='x', which='minor', bottom=True)
 
-        fig.colorbar(im)
+        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
+        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
+        cbaxes.xaxis.set_ticks_position("top")
+        cbar.ax.set_xlabel("$A$", labelpad=-30)
+
+        ax.set_xlim(10**27.9, 10**31.5)
+        ax.set_ylim(10**-1.2, 10**1.4)
 
         fig.savefig(
             'plots/' + str(z) + '/HalfLightRadius_dust_effects__' + f + '_' + str(
                 z) + '_'
             + orientation + "_" + extinction + "_"
-            + '%d.png' % np.log10(nlim),
+            + '%d.png' % nlim,
             bbox_inches='tight')
 
         plt.close(fig)
@@ -257,7 +264,8 @@ for f in filters:
                        alpha=0.6)
             for intr_l, l, intr_r, r in zip(intr_lumins, lumins,
                                             intr_hlrs, hlrs):
-                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k")
+                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
+                        alpha=0.3)
             im = ax.scatter(lumins, hlrs,
                             c=lum_to_M(intr_lumins) - lum_to_M(lumins),
                             marker="D",
@@ -281,12 +289,18 @@ for f in filters:
 
         ax.tick_params(axis='x', which='minor', bottom=True)
 
-        fig.colorbar(im)
+        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
+        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
+        cbaxes.xaxis.set_ticks_position("top")
+        cbar.ax.set_xlabel("$A$", labelpad=-30)
+
+        ax.set_xlim(10**27.9, 10**31.5)
+        ax.set_ylim(10**-1.2, 10**1.4)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Aperture_'
                     + f + '_' + str(z) + '_' + orientation
                     + "_" + extinction + "_"
-                    + '%d.png' % np.log10(nlim),
+                    + '%d.png' % nlim,
                     bbox_inches='tight')
 
         plt.close(fig)
@@ -313,7 +327,8 @@ for f in filters:
                        alpha=0.6)
             for intr_l, l, intr_r, r in zip(intr_lumins, lumins, 
                                             intr_hlrs, hlrs):
-                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k")
+                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
+                        alpha=0.3)
             im = ax.scatter(lumins, hlrs, 
                             c=lum_to_M(intr_lumins) - lum_to_M(lumins), 
                             marker="D",
@@ -337,7 +352,13 @@ for f in filters:
 
         ax.tick_params(axis='x', which='minor', bottom=True)
 
-        fig.colorbar(im)
+        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
+        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
+        cbaxes.xaxis.set_ticks_position("top")
+        cbar.ax.set_xlabel("$A$", labelpad=-30)
+
+        ax.set_xlim(10**27.9, 10**31.5)
+        ax.set_ylim(10**-1.2, 10**1.4)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Pixel_'
                     + f + '_' + str(z) + '_' + orientation
