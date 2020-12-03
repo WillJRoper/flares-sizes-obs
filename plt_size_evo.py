@@ -29,6 +29,126 @@ sns.set_context("paper")
 sns.set_style('whitegrid')
 
 
+
+# Define Kawamata17 fit and parameters
+kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
+               'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
+kawa_up_params = {'beta': {6: 0.08, 7: 0.08,
+                           8: 0.28, 9: 1.01},
+                  'r_0': {6: 0.2, 7: 0.2,
+                          8: 5.28, 9: 367.64}}
+kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
+                            8: 0.78, 9: 0.27},
+                   'r_0': {6: 0.15, 7: 0.15,
+                           8: 0.26, 9: 0.74}}
+kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
+
+
+def m_to_M(m, cosmo, z):
+    flux = photconv.m_to_flux(m)
+    lum = photconv.flux_to_L(flux, cosmo, z)
+    M = photconv.lum_to_M(lum)
+    return M
+
+
+def M_to_m(M, cosmo, z):
+    lum = photconv.M_to_lum(M)
+    flux = photconv.lum_to_flux(lum, cosmo, z)
+    m = photconv.flux_to_m(flux)
+    return m
+
+
+def r_from_surf_den(lum, s_den):
+
+    return np.sqrt(lum / (s_den * np.pi))
+
+
+def lum_from_surf_den_R(r, s_den):
+
+    return s_den * np.pi * r**2
+
+
+df = pd.read_csv("HighzSizes/All.csv")
+
+papers = df["Paper"].values
+mags = df["Magnitude"].values
+r_es_arcs = df["R_e"].values
+r_es_type = df["R_e (Unit)"].values
+mag_type = df["Magnitude Type"].values
+zs = df["Redshift"].values
+
+# Define pixel resolutions
+wfc3 = 0.13
+nircam_short = 0.031
+nircam_long = 0.063
+
+# Convert to physical kiloparsecs
+r_es = np.zeros(len(papers))
+for (ind, r), z in zip(enumerate(r_es_arcs), zs):
+    if r_es_type[ind] == "kpc":
+        r_es[ind] = r
+    else:
+        r_es[ind] = r / cosmo.arcsec_per_kpc_proper(z).value
+    if mags[ind] < 0:
+        mags[ind] = M_to_m(mags[ind], cosmo, z)
+
+cmap = mpl.cm.get_cmap("autumn")
+norm = plt.Normalize(vmin=0, vmax=1)
+
+labels = {"C16": "Calvi+2016",
+          "K18": "Kawamata+2018",
+          "MO18": "Morishita+2018",
+          "B19": "Bridge+2019",
+          "O16": "Oesch+2016",
+          "S18": "Salmon+2018",
+          "H20": "Holwerda+2020"}
+markers = {"G11": "s", "G12": "v", "C16": "D",
+           "K18": "o", "M18": "X", "MO18": "o",
+           "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
+colors = {}
+for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
+    colors[key] = cmap(norm(col))
+
+
+def weighted_quantile(values, quantiles, sample_weight=None,
+                      values_sorted=False, old_style=False):
+    """ https://stackoverflow.com/questions/21844024/
+        weighted-percentile-using-numpy
+
+    Very close to numpy.percentile, but supports weights.
+    NOTE: quantiles should be in [0, 1]!
+    :param values: numpy.array with data
+    :param quantiles: array-like with many quantiles needed
+    :param sample_weight: array-like of the same length as `array`
+    :param values_sorted: bool, if True, then will avoid sorting of
+        initial array
+    :param old_style: if True, will correct output to be consistent
+        with numpy.percentile.
+    :return: numpy.array with computed quantiles.
+    """
+    values = np.array(values)
+    quantiles = np.array(quantiles)
+    if sample_weight is None:
+        sample_weight = np.ones(len(values))
+    sample_weight = np.array(sample_weight)
+    assert np.all(quantiles >= 0) and np.all(quantiles <= 1), \
+        'quantiles should be in [0, 1]'
+
+    if not values_sorted:
+        sorter = np.argsort(values)
+        values = values[sorter]
+        sample_weight = sample_weight[sorter]
+
+    weighted_quantiles = np.cumsum(sample_weight) - 0.5 * sample_weight
+    if old_style:
+        # To be convenient with numpy.percentile
+        weighted_quantiles -= weighted_quantiles[0]
+        weighted_quantiles /= weighted_quantiles[-1]
+    else:
+        weighted_quantiles /= np.sum(sample_weight)
+    return np.interp(quantiles, weighted_quantiles, values)
+
+
 def m_to_M(m, cosmo, z):
     flux = photconv.m_to_flux(m)
     lum = photconv.flux_to_L(flux, cosmo, z)
@@ -168,202 +288,281 @@ for reg, snap in reg_snaps:
 
 for f in filters:
 
-    fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
-                             np.log10(M_to_lum(-18)),
-                             1000)
-
     print("Plotting for:")
     print("Orientation =", orientation)
     print("Filter =", f)
 
-    for snap in snaps:
+    hlr_med = []
+    hlr_16 = []
+    hlr_84 = []
+    hlr_med_app = []
+    hlr_16_app = []
+    hlr_84_app = []
+    hlr_med_pix = []
+    hlr_16_pix = []
+    hlr_84_pix = []
+    intr_hlr_med = []
+    intr_hlr_16 = []
+    intr_hlr_84 = []
+    intr_hlr_med_app = []
+    intr_hlr_16_app = []
+    intr_hlr_84_app = []
+    intr_hlr_med_pix = []
+    intr_hlr_16_pix = []
+    intr_hlr_84_pix = []
+    plt_z = []
 
-        legend_elements = []
+    for snap in snaps:
 
         z_str = snap.split('z')[1].split('p')
         z = float(z_str[0] + '.' + z_str[1])
 
         hlrs = np.array(hlr_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
         intr_hlrs = np.array(intr_hlr_dict[snap][f])
-        intr_lumins = np.array(intr_lumin_dict[snap][f])
-        w = np.array(weight_dict[snap][f])
-
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax1 = ax.twinx()
-        ax1.grid(False)
-        ax.loglog()
-        ax1.loglog()
-        try:
-            ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D",
-                       alpha=0.6)
-            for intr_l, l, intr_r, r in zip(intr_lumins, lumins,
-                                            intr_hlrs, hlrs):
-                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
-                        alpha=0.3)
-            im = ax.scatter(lumins, hlrs,
-                            c=lum_to_M(intr_lumins) - lum_to_M(lumins),
-                            marker="D",
-                            alpha=0.7,
-                            cmap="viridis")
-        except ValueError as e:
-            print(e)
-            continue
-
-        ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
-
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
-        # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-
-        ax.tick_params(axis='x', which='minor', bottom=True)
-
-        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
-        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
-        cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-30)
-
-        ax.set_xlim(10**27.9, 10**31.5)
-        ax.set_ylim(10**-1.2, 10**1.4)
-
-        fig.savefig(
-            'plots/' + str(z) + '/HalfLightRadius_dust_effects__' + f + '_' + str(
-                z) + '_'
-            + orientation + "_" + extinction + "_"
-            + '%d.png' % nlim,
-            bbox_inches='tight')
-
-        plt.close(fig)
-
-        legend_elements = []
-
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
-
-        hlrs = np.array(hlr_app_dict[snap][f])
+        hlrs_app = np.array(hlr_app_dict[snap][f])
+        intr_hlrs_app = np.array(intr_hlr_app_dict[snap][f])
+        hlrs_pix = np.array(hlr_pix_dict[snap][f])
+        intr_hlrs_pix = np.array(intr_hlr_pix_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
-        intr_hlrs = np.array(intr_hlr_app_dict[snap][f])
         intr_lumins = np.array(intr_lumin_dict[snap][f])
         w = np.array(weight_dict[snap][f])
 
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax1 = ax.twinx()
-        ax1.grid(False)
-        ax.loglog()
-        ax1.loglog()
-        try:
-            ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D",
-                       alpha=0.6)
-            for intr_l, l, intr_r, r in zip(intr_lumins, lumins,
-                                            intr_hlrs, hlrs):
-                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
-                        alpha=0.3)
-            im = ax.scatter(lumins, hlrs,
-                            c=lum_to_M(intr_lumins) - lum_to_M(lumins),
-                            marker="D",
-                            alpha=0.7,
-                            cmap="viridis")
-        except ValueError as e:
-            print(e)
+        quants = weighted_quantile(hlrs, [0.16, 0.5, 0.84], sample_weight=w,
+                                   values_sorted=False, old_style=False)
+
+        hlr_med.append(quants[1])
+        hlr_16.append(quants[0])
+        hlr_84.append(quants[2])
+
+        quants = weighted_quantile(hlrs_app, [0.16, 0.5, 0.84], sample_weight=w,
+                                   values_sorted=False, old_style=False)
+
+        hlr_med_app.append(quants[1])
+        hlr_16_app.append(quants[0])
+        hlr_84_app.append(quants[2])
+
+        quants = weighted_quantile(hlrs_pix, [0.16, 0.5, 0.84], sample_weight=w,
+                                   values_sorted=False, old_style=False)
+
+        hlr_med_pix.append(quants[1])
+        hlr_16_pix.append(quants[0])
+        hlr_84_pix.append(quants[2])
+
+        quants = weighted_quantile(intr_hlrs, [0.16, 0.5, 0.84], sample_weight=w,
+                                   values_sorted=False, old_style=False)
+
+        intr_hlr_med.append(quants[1])
+        intr_hlr_16.append(quants[0])
+        intr_hlr_84.append(quants[2])
+
+        quants = weighted_quantile(intr_hlrs_app, [0.16, 0.5, 0.84], sample_weight=w,
+                                   values_sorted=False, old_style=False)
+
+        intr_hlr_med_app.append(quants[1])
+        intr_hlr_16_app.append(quants[0])
+        intr_hlr_84_app.append(quants[2])
+
+        quants = weighted_quantile(intr_hlrs_pix, [0.16, 0.5, 0.84], sample_weight=w,
+                                   values_sorted=False, old_style=False)
+
+        intr_hlr_med_pix.append(quants[1])
+        intr_hlr_16_pix.append(quants[0])
+        intr_hlr_84_pix.append(quants[2])
+
+        plt_z.append(z)
+
+
+    legend_elements = []
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.semilogy()
+    try:
+        ax.plot(plt_z, intr_hlr_med, color="b", marker="D", linestyle="--",
+                alpha=0.6)
+        ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="b", alpha=0.6)
+        legend_elements.append(
+            Line2D([0], [0], color="B", linestyle="--", label="Intrinsic"))
+
+        ax.plot(plt_z, hlr_med, color="g", marker="^", linestyle="-")
+        ax.fill_between(plt_z, hlr_16, hlr_84, color="g", alpha=0.6)
+        legend_elements.append(
+            Line2D([0], [0], color="g", linestyle="-",
+                   label="Attenuated"))
+    except ValueError as e:
+        print(e)
+        continue
+
+    for p in labels.keys():
+
+        okinds = papers == p
+        plt_r_es = r_es[okinds]
+        plt_zs = zs[okinds]
+
+        if plt_zs.size == 0:
             continue
 
-        ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
+        legend_elements.append(
+            Line2D([0], [0], marker=markers[p], color='w',
+                   label=labels[p], markerfacecolor=colors[p],
+                   markersize=8, alpha=0.7))
 
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
+        ax.scatter(plt_zs, plt_r_es,
+                   marker=markers[p], label=labels[p], s=25,
+                   color=colors[p], alpha=0.7)
 
-        # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+    # Label axes
+    ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+    ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-        ax.tick_params(axis='x', which='minor', bottom=True)
+    ax.tick_params(axis='x', which='minor', bottom=True)
 
-        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
-        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
-        cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-30)
+    ax.set_xlim(4.5, 15)
+    ax.set_ylim(10**-1.2, 10**1.4)
 
-        ax.set_xlim(10**27.9, 10**31.5)
-        ax.set_ylim(10**-1.2, 10**1.4)
+    ax.legend(handles=legend_elements, loc='upper center',
+              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-        fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Aperture_'
-                    + f + '_' + str(z) + '_' + orientation
-                    + "_" + extinction + "_"
-                    + '%d.png' % nlim,
-                    bbox_inches='tight')
+    fig.savefig(
+        'plots/HalfLightRadius_evolution__' + f + '_'
+        + orientation + "_" + extinction + "_"
+        + '%d.png' % nlim,
+        bbox_inches='tight')
 
-        plt.close(fig)
+    plt.close(fig)
 
-        legend_elements = []
+    legend_elements = []
 
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
+    z_str = snap.split('z')[1].split('p')
+    z = float(z_str[0] + '.' + z_str[1])
 
-        hlrs = np.array(hlr_pix_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
-        intr_hlrs = np.array(intr_hlr_pix_dict[snap][f])
-        intr_lumins = np.array(intr_lumin_dict[snap][f])
-        w = np.array(weight_dict[snap][f])
+    hlrs = np.array(hlr_app_dict[snap][f])
+    lumins = np.array(lumin_dict[snap][f])
+    intr_hlrs = np.array(intr_hlr_app_dict[snap][f])
+    intr_lumins = np.array(intr_lumin_dict[snap][f])
+    w = np.array(weight_dict[snap][f])
 
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax1 = ax.twinx()
-        ax1.grid(False)
-        ax.loglog()
-        ax1.loglog()
-        try:
-            ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D", 
-                       alpha=0.6)
-            for intr_l, l, intr_r, r in zip(intr_lumins, lumins, 
-                                            intr_hlrs, hlrs):
-                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
-                        alpha=0.3)
-            im = ax.scatter(lumins, hlrs, 
-                            c=lum_to_M(intr_lumins) - lum_to_M(lumins), 
-                            marker="D",
-                            alpha=0.7, 
-                            cmap="viridis")
-        except ValueError as e:
-            print(e)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.semilogy()
+    try:
+        ax.plot(plt_z, intr_hlr_med_app, color="b", marker="D", linestyle="--",
+                alpha=0.6)
+        ax.fill_between(plt_z, intr_hlr_16_app, intr_hlr_84_app, color="b", alpha=0.6)
+        legend_elements.append(
+            Line2D([0], [0], color="B", linestyle="--", label="Intrinsic"))
+
+        ax.plot(plt_z, hlr_med_app, color="g", marker="^", linestyle="-")
+        ax.fill_between(plt_z, hlr_16_app, hlr_84_app, color="g", alpha=0.6)
+        legend_elements.append(
+            Line2D([0], [0], color="g", linestyle="-",
+                   label="Attenuated"))
+    except ValueError as e:
+        print(e)
+        continue
+
+    for p in labels.keys():
+
+        okinds = papers == p
+        plt_r_es = r_es[okinds]
+        plt_zs = zs[okinds]
+
+        if plt_zs.size == 0:
             continue
 
-        ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
+        legend_elements.append(
+            Line2D([0], [0], marker=markers[p], color='w',
+                   label=labels[p], markerfacecolor=colors[p],
+                   markersize=8, alpha=0.7))
 
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
+        ax.scatter(plt_zs, plt_r_es,
+                   marker=markers[p], label=labels[p], s=25,
+                   color=colors[p], alpha=0.7)
 
-        # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+    # Label axes
+    ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+    ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-        ax.tick_params(axis='x', which='minor', bottom=True)
+    ax.tick_params(axis='x', which='minor', bottom=True)
 
-        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
-        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
-        cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-30)
+    ax.set_xlim(4.5, 15)
+    ax.set_ylim(10**-1.2, 10**1.4)
 
-        ax.set_xlim(10**27.9, 10**31.5)
-        ax.set_ylim(10**-1.2, 10**1.4)
+    ax.legend(handles=legend_elements, loc='upper center',
+              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
-        fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Pixel_'
-                    + f + '_' + str(z) + '_' + orientation
-                    + "_" + extinction + "_"
-                    + '%d.png' % nlim,
-                    bbox_inches='tight')
+    fig.savefig('plots/HalfLightRadius_evolution_Aperture_'
+                + f + '_' + str(z) + '_' + orientation
+                + "_" + extinction + "_"
+                + '%d.png' % nlim,
+                bbox_inches='tight')
 
-        plt.close(fig)
+    plt.close(fig)
+
+    legend_elements = []
+
+    z_str = snap.split('z')[1].split('p')
+    z = float(z_str[0] + '.' + z_str[1])
+
+    hlrs = np.array(hlr_pix_dict[snap][f])
+    lumins = np.array(lumin_dict[snap][f])
+    intr_hlrs = np.array(intr_hlr_pix_dict[snap][f])
+    intr_lumins = np.array(intr_lumin_dict[snap][f])
+    w = np.array(weight_dict[snap][f])
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.semilogy()
+    try:
+        ax.plot(plt_z, intr_hlr_med_pix, color="b", marker="D", linestyle="--",
+                alpha=0.6)
+        ax.fill_between(plt_z, intr_hlr_16_pix, intr_hlr_84_pix, color="b", alpha=0.6)
+        legend_elements.append(
+            Line2D([0], [0], color="B", linestyle="--", label="Intrinsic"))
+
+        ax.plot(plt_z, hlr_med_pix, color="g", marker="^", linestyle="-")
+        ax.fill_between(plt_z, hlr_16_pix, hlr_84_pix, color="g", alpha=0.6)
+        legend_elements.append(
+            Line2D([0], [0], color="g", linestyle="-",
+                   label="Attenuated"))
+    except ValueError as e:
+        print(e)
+        continue
+
+    for p in labels.keys():
+
+        okinds = papers == p
+        plt_r_es = r_es[okinds]
+        plt_zs = zs[okinds]
+
+        if plt_zs.size == 0:
+            continue
+
+        legend_elements.append(
+            Line2D([0], [0], marker=markers[p], color='w',
+                   label=labels[p], markerfacecolor=colors[p],
+                   markersize=8, alpha=0.7))
+
+        ax.scatter(plt_zs, plt_r_es,
+                   marker=markers[p], label=labels[p], s=25,
+                   color=colors[p], alpha=0.7)
+
+    # Label axes
+    ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+    ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+    ax.tick_params(axis='x', which='minor', bottom=True)
+
+    ax.set_xlim(4.5, 15)
+    ax.set_ylim(10**-1.2, 10**1.4)
+
+    ax.legend(handles=legend_elements, loc='upper center',
+              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
+
+    fig.savefig('plots/HalfLightRadius_evolution_Pixel_'
+                + f + '_' + orientation
+                + "_" + extinction + "_"
+                + '%d.png' % nlim,
+                bbox_inches='tight')
+
+    plt.close(fig)
