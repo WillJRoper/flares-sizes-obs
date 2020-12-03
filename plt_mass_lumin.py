@@ -130,8 +130,8 @@ for f in filters:
         nstar = np.array(nstar_dict[snap][f])
         w = np.array(weight_dict[snap][f])
 
-        okinds1 = nstar < masslim
-        okinds2 = nstar >= masslim
+        okinds1 = nstar < nlim
+        okinds2 = nstar >= nlim
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
