@@ -64,7 +64,7 @@ df = pd.read_csv('../weight_files/weights_grid.txt')
 weights = np.array(df['weights'])
 
 regions = []
-for reg in range(15, 40):
+for reg in range(0, 40):
     if reg < 10:
         regions.append('0' + str(reg))
     else:
