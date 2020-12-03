@@ -439,7 +439,7 @@ for f in filters:
             continue
         if Type != "Intrinsic":
 
-            for sden in [10. ** 26, 10. ** 27, 10. ** 28, 10. ** 29]:
+            for sden in [10. ** 27, 10. ** 28, 10. ** 29]:
                 ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden),
                         color="grey", linestyle="--", alpha=0.8)
                 ax.text(10 ** 29.85, r_from_surf_den(10 ** 29.85, sden),
@@ -581,7 +581,7 @@ for f in filters:
             continue
         if Type != "Intrinsic":
 
-            for sden in [10. ** 26, 10. ** 27, 10. ** 28, 10. ** 29]:
+            for sden in [10. ** 27, 10. ** 28, 10. ** 29]:
                 ax.plot(sden_lumins, r_from_surf_den(sden_lumins, sden),
                         color="grey", linestyle="--", alpha=0.8)
                 ax.text(10 ** 29.85, r_from_surf_den(10 ** 29.85, sden),
