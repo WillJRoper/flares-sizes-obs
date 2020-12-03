@@ -153,14 +153,14 @@ for reg, snap in reg_snaps:
 
         print(reg, snap, f, masses[okinds].size)
 
-        hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...][okinds])
-        hlr_app_dict[snap][f].extend(
+        intr_hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...][okinds])
+        intr_hlr_app_dict[snap][f].extend(
             orientation_group[f]["HLR_Aperture_0.5"][...][okinds])
-        hlr_pix_dict[snap][f].extend(
+        intr_hlr_pix_dict[snap][f].extend(
             orientation_group[f]["HLR_Pixel_0.5"][...][okinds])
-        lumin_dict[snap][f].extend(
+        intr_lumin_dict[snap][f].extend(
             orientation_group[f]["Luminosity"][...][okinds])
-        weight_dict[snap][f].extend(np.full(masses[okinds].size,
+        intr_weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 
 
