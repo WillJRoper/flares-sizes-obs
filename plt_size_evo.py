@@ -381,14 +381,13 @@ for f in filters:
     ax = fig.add_subplot(111)
     ax.semilogy()
     try:
-        ax.plot(plt_z, intr_hlr_med, color="b", marker="D", linestyle="--",
-                alpha=0.6)
-        ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="b", alpha=0.6)
+        ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
+        ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
         legend_elements.append(
-            Line2D([0], [0], color="B", linestyle="--", label="Intrinsic"))
+            Line2D([0], [0], color="r", linestyle="--", label="Intrinsic"))
 
+        ax.fill_between(plt_z, hlr_16, hlr_84, color="g", alpha=0.4)
         ax.plot(plt_z, hlr_med, color="g", marker="^", linestyle="-")
-        ax.fill_between(plt_z, hlr_16, hlr_84, color="g", alpha=0.6)
         legend_elements.append(
             Line2D([0], [0], color="g", linestyle="-",
                    label="Attenuated"))
@@ -449,14 +448,14 @@ for f in filters:
     ax = fig.add_subplot(111)
     ax.semilogy()
     try:
-        ax.plot(plt_z, intr_hlr_med_app, color="b", marker="D", linestyle="--",
-                alpha=0.6)
-        ax.fill_between(plt_z, intr_hlr_16_app, intr_hlr_84_app, color="b", alpha=0.6)
+        ax.fill_between(plt_z, intr_hlr_16_app, intr_hlr_84_app, color="r",
+                        alpha=0.4)
+        ax.plot(plt_z, intr_hlr_med_app, color="r", marker="D", linestyle="--")
         legend_elements.append(
             Line2D([0], [0], color="B", linestyle="--", label="Intrinsic"))
 
+        ax.fill_between(plt_z, hlr_16_app, hlr_84_app, color="g", alpha=0.4)
         ax.plot(plt_z, hlr_med_app, color="g", marker="^", linestyle="-")
-        ax.fill_between(plt_z, hlr_16_app, hlr_84_app, color="g", alpha=0.6)
         legend_elements.append(
             Line2D([0], [0], color="g", linestyle="-",
                    label="Attenuated"))
@@ -517,14 +516,13 @@ for f in filters:
     ax = fig.add_subplot(111)
     ax.semilogy()
     try:
-        ax.plot(plt_z, intr_hlr_med_pix, color="b", marker="D", linestyle="--",
-                alpha=0.6)
-        ax.fill_between(plt_z, intr_hlr_16_pix, intr_hlr_84_pix, color="b", alpha=0.6)
+        ax.fill_between(plt_z, intr_hlr_16_pix, intr_hlr_84_pix, color="r", alpha=0.4)
+        ax.plot(plt_z, intr_hlr_med_pix, color="r", marker="D", linestyle="--")
         legend_elements.append(
             Line2D([0], [0], color="B", linestyle="--", label="Intrinsic"))
 
+        ax.fill_between(plt_z, hlr_16_pix, hlr_84_pix, color="g", alpha=0.4)
         ax.plot(plt_z, hlr_med_pix, color="g", marker="^", linestyle="-")
-        ax.fill_between(plt_z, hlr_16_pix, hlr_84_pix, color="g", alpha=0.6)
         legend_elements.append(
             Line2D([0], [0], color="g", linestyle="-",
                    label="Attenuated"))
