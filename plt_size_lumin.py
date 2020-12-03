@@ -28,19 +28,6 @@ import utilities as util
 sns.set_context("paper")
 sns.set_style('white')
 
-# Define Kawamata17 fit and parameters
-kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
-               'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
-kawa_up_params = {'beta': {6: 0.08, 7: 0.08,
-                           8: 0.28, 9: 1.01},
-                  'r_0': {6: 0.2, 7: 0.2,
-                          8: 5.28, 9: 367.64}}
-kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
-                            8: 0.78, 9: 0.27},
-                   'r_0': {6: 0.15, 7: 0.15,
-                           8: 0.26, 9: 0.74}}
-kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
-
 
 def m_to_M(m, cosmo, z):
     flux = photconv.m_to_flux(m)
@@ -56,111 +43,23 @@ def M_to_m(M, cosmo, z):
     return m
 
 
-def kawa_fit_err(y, l, ro, b, ro_err, b_err, uplow="up"):
-    ro_term = ro_err * (l / M_to_lum(-21)) ** b
-    beta_term = b_err * ro * (l / M_to_lum(-21)) ** b \
-                * np.log(l / M_to_lum(-21))
-
-    if uplow == "up":
-        return y + np.sqrt(ro_term ** 2 + beta_term ** 2)
-    else:
-        return y - np.sqrt(ro_term ** 2 + beta_term ** 2)
-
-
-def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
-    if bins == None:
-        bin = np.logspace(np.log10(xs.min()), np.log10(xs.max()), 15)
-    else:
-        bin = bins
-
-    # Compute binned statistics
-    y_stat, binedges, bin_ind = binned_statistic(xs, ys, statistic='median',
-                                                 bins=bin)
-
-    # Compute bincentres
-    bin_wid = binedges[1] - binedges[0]
-    bin_cents = binedges[1:] - bin_wid / 2
-
-    okinds = np.logical_and(~np.isnan(bin_cents), ~np.isnan(y_stat))
-
-    ax.plot(bin_cents[okinds], y_stat[okinds], color=color, linestyle=ls,
-            label=lab)
-
-
-def r_from_surf_den(lum, s_den):
-
-    return np.sqrt(lum / (s_den * np.pi))
-
-
-def lum_from_surf_den_R(r, s_den):
-
-    return s_den * np.pi * r**2
-
-
-df = pd.read_csv("HighzSizes/All.csv")
-
-papers = df["Paper"].values
-mags = df["Magnitude"].values
-r_es_arcs = df["R_e"].values
-r_es_type = df["R_e (Unit)"].values
-mag_type = df["Magnitude Type"].values
-zs = df["Redshift"].values
-
-# Define pixel resolutions
-wfc3 = 0.13
-nircam_short = 0.031
-nircam_long = 0.063
-
-# Convert to physical kiloparsecs
-r_es = np.zeros(len(papers))
-for (ind, r), z in zip(enumerate(r_es_arcs), zs):
-    if r_es_type[ind] == "kpc":
-        r_es[ind] = r
-    else:
-        r_es[ind] = r / cosmo.arcsec_per_kpc_proper(z).value
-    if mags[ind] < 0:
-        mags[ind] = M_to_m(mags[ind], cosmo, z)
-
-cmap = mpl.cm.get_cmap("autumn")
-norm = plt.Normalize(vmin=0, vmax=1)
-
-labels = {"G11": "Grazian+2011",
-          "G12": "Grazian+2012",
-          "C16": "Calvi+2016",
-          "K18": "Kawamata+2018",
-          "M18": "FIRE-2 intrinsic",
-          "MO18": "Morishita+2018",
-          "B19": "Bridge+2019",
-          "O16": "Oesch+2016",
-          "S18": "Salmon+2018",
-          "H20": "Holwerda+2020"}
-markers = {"G11": "s", "G12": "v", "C16": "D",
-           "K18": "o", "M18": "X", "MO18": "o",
-           "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
-colors = {}
-for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
-    colors[key] = cmap(norm(col))
-
 # Set orientation
 orientation = sys.argv[1]
 
 # Define luminosity and dust model types
-Type = sys.argv[2]
+Type = "Intrinsic"
 extinction = 'default'
 
-if sys.argv[3] == "All":
-    snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
-             '006_z009p000', '007_z008p000', '008_z007p000',
-             '009_z006p000', '010_z005p000', '011_z004p770']
-else:
-    snaps = sys.argv[3]
+snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
+         '006_z009p000', '007_z008p000', '008_z007p000',
+         '009_z006p000', '010_z005p000', '011_z004p770']
 
 # Define filter
-filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
+filters = ('FAKE.TH.FUV', )
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-masslim = 10 ** float(sys.argv[4])
+masslim = 500
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -217,7 +116,7 @@ for reg, snap in reg_snaps:
         weight_dict[snap].setdefault(f, [])
 
         masses = orientation_group[f]["Mass"][...]
-        okinds = masses > masslim
+        okinds = orientation_group[f]["nstar"][...] > masslim
 
         print(reg, snap, f, masses[okinds].size)
 
