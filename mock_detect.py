@@ -173,9 +173,10 @@ for reg, snap in reg_snaps:
 
             img = imgs[i_img, :, :]
 
-            img[img < 10**22.5] = 0
+            img[img < 10**23] = 0
 
-            threshold = phut.detect_threshold(img, nsigma=5)
+            # threshold = phut.detect_threshold(img, nsigma=5)
+            threshold = np.median(img) + np.std(img)
 
             try:
                 segm = phut.detect_sources(img, threshold, npixels=5,
