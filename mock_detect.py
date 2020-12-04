@@ -172,8 +172,8 @@ for reg, snap in reg_snaps:
         for i_img in range(imgs.shape[0]):
 
             img = imgs[i_img, :, :]
-            
-            img[img < 10**27] = 0
+
+            img[img < 10**25] = 0
 
             threshold = phut.detect_threshold(img, nsigma=5)
 
