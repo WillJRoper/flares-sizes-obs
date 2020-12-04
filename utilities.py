@@ -339,10 +339,14 @@ def get_pixel_hlr(img, single_pix_area, radii_frac=0.5):
     cumal_area = np.full_like(sum_1d_img, single_pix_area)\
                  * np.arange(1, sum_1d_img.size + 1, 1)
 
+    npix = np.argmin(np.abs(sum_1d_img - half_l))
+    cumal_area_cutout = cumal_area[npix - 10, npix + 10]
+    sum_1d_img_cutout = sum_1d_img[npix - 10, npix + 10]
+
     # Interpolate the arrays for better resolution
-    interp_func = interp1d(cumal_area, sum_1d_img, kind="linear")
-    interp_areas = np.linspace(cumal_area.min(), cumal_area.max(),
-                               cumal_area.size * 1000)
+    interp_func = interp1d(cumal_area_cutout, sum_1d_img_cutout, kind="linear")
+    interp_areas = np.linspace(cumal_area_cutout.min(), cumal_area_cutout.max(),
+                               500)
     interp_1d_img = interp_func(interp_areas)
 
     # Calculate radius from pixel area defined using the interpolated arrays
