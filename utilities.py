@@ -1,6 +1,6 @@
 import os
 import warnings
-
+from scipy.interpolate import interp1d
 import astropy.units as u
 import matplotlib
 import numba as nb
@@ -340,13 +340,13 @@ def get_pixel_hlr(img, single_pix_area, radii_frac=0.5):
                  * np.arange(1, sum_1d_img.size + 1, 1)
 
     # Interpolate the arrays for better resolution
+    interp_func = interp1d(cumal_area, sum_1d_img, kind="linear")
+    interp_areas = np.linspace(cumal_area.min(), cumal_area.max(),
+                               cumal_area.size * 1000)
+    interp_1d_img = interp_func(interp_areas)
 
-    # Calculate the number of pixels
-    # (the index of the pixel closest to half the total luminosity)
-    npix = np.argmin(np.abs(sum_1d_img - half_l)) + 1
-
-    # Calculate radius from pixel area
-    pix_area = single_pix_area * npix
+    # Calculate radius from pixel area defined using the interpolated arrays
+    pix_area = interp_areas[np.argmin(np.abs(interp_1d_img - half_l))]
     hlr = np.sqrt(pix_area / np.pi)
 
     return hlr
