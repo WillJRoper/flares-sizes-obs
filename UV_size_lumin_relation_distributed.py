@@ -253,8 +253,6 @@ for f in filters:
                                                                 this_lumin,
                                                                 r))
 
-        print(tot_l, np.sum(img))
-
         lumin_dict[tag][f].append(tot_l)
         img_lumin_dict[tag][f].append(np.sum(img))
         mass_dict[tag][f].append(this_mass)
