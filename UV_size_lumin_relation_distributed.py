@@ -115,6 +115,7 @@ hlr_dict = {}
 hlr_app_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
+img_lumin_dict = {}
 mass_dict = {}
 nstar_dict = {}
 img_dict = {}
@@ -129,6 +130,7 @@ hlr_dict.setdefault(tag, {})
 hlr_app_dict.setdefault(tag, {})
 hlr_pix_dict.setdefault(tag, {})
 lumin_dict.setdefault(tag, {})
+img_lumin_dict.setdefault(tag, {})
 mass_dict.setdefault(tag, {})
 nstar_dict.setdefault(tag, {})
 img_dict.setdefault(tag, {})
@@ -189,6 +191,7 @@ for f in filters:
         hlr_pix_dict[tag][f].setdefault(r, [])
 
     lumin_dict[tag].setdefault(f, [])
+    img_lumin_dict[tag].setdefault(f, [])
     mass_dict[tag].setdefault(f, [])
     nstar_dict[tag].setdefault(f, [])
     img_dict[tag].setdefault(f, [])
@@ -250,7 +253,10 @@ for f in filters:
                                                                 this_lumin,
                                                                 r))
 
+        print(tot_l, np.sum(img))
+
         lumin_dict[tag][f].append(tot_l)
+        img_lumin_dict[tag][f].append(np.sum(img))
         mass_dict[tag][f].append(this_mass)
         nstar_dict[tag][f].append(this_nstar)
         img_dict[tag][f].append(img)
@@ -291,6 +297,7 @@ except KeyError:
 for f in filters:
 
     lumins = np.array(lumin_dict[tag][f])
+    img_lumins = np.array(img_lumin_dict[tag][f])
     mass = np.array(mass_dict[tag][f])
     nstar = np.array(nstar_dict[tag][f])
     imgs = np.array(img_dict[tag][f])
@@ -315,6 +322,21 @@ for f in filters:
         dset = f_group.create_dataset("Luminosity", data=lumins,
                                       dtype=lumins.dtype,
                                       shape=lumins.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+        
+    try:
+        dset = f_group.create_dataset("Image_Luminosity", data=img_lumins,
+                                      dtype=img_lumins.dtype,
+                                      shape=img_lumins.shape,
+                                      compression="gzip")
+        dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+    except RuntimeError:
+        print("Image_Luminosity already exists: Overwriting...")
+        del f_group["Image_Luminosity"]
+        dset = f_group.create_dataset("Image_Luminosity", data=img_lumins,
+                                      dtype=img_lumins.dtype,
+                                      shape=img_lumins.shape,
                                       compression="gzip")
         dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
 
