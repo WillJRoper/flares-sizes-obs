@@ -189,7 +189,7 @@ for reg, snap in reg_snaps:
                 continue
             x_cent = []
             y_cent = []
-            for i in range(np.max(segm.data) + 1):
+            for i in range(1, np.max(segm.data) + 1):
                 tbl = find_peaks(img[segm.data == i], threshold, box_size=5)
                 x_cent.append((tbl["x_peak"] - (img.shape[0] / 2)) * csoft)
                 y_cent.append((tbl["y_peak"] - (img.shape[0] / 2)) * csoft)
