@@ -340,10 +340,10 @@ def get_pixel_hlr(img, single_pix_area, radii_frac=0.5):
                  * np.arange(1, sum_1d_img.size + 1, 1)
 
     npix = np.argmin(np.abs(sum_1d_img - half_l))
-    cumal_area_cutout = cumal_area[np.max((npix - 10, 0)), 
-                                   np.min((npix + 10, cumal_area.size))]
-    sum_1d_img_cutout = sum_1d_img[np.max((npix - 10, 0)),
-                                   np.min((npix + 10, cumal_area.size))]
+    cumal_area_cutout = cumal_area[np.max((npix - 10, 0)):
+                                   np.min((npix + 10, cumal_area.size - 1))]
+    sum_1d_img_cutout = sum_1d_img[np.max((npix - 10, 0)):
+                                   np.min((npix + 10, cumal_area.size - 1))]
 
     # Interpolate the arrays for better resolution
     interp_func = interp1d(cumal_area_cutout, sum_1d_img_cutout, kind="linear")
