@@ -22,6 +22,7 @@ from FLARE.photom import lum_to_M, M_to_lum, lum_to_flux, m_to_flux
 import FLARE.photom as photconv
 from astropy.convolution import Gaussian2DKernel
 import photutils as phut
+from photutils import find_peaks
 import h5py
 import sys
 import pandas as pd
@@ -186,12 +187,19 @@ for reg, snap in reg_snaps:
                                             nlevels=32, contrast=0.001)
             except TypeError:
                 continue
+            x_cent = []
+            y_cent = []
+            for i in range(segm + 1):
+                tbl = find_peaks(img[segm == i], threshold, box_size=5)
+                x_cent.append((tbl["x_peak"] - (img.shape[0] / 2)) * csoft)
+                y_cent.append((tbl["y_peak"] - (img.shape[0] / 2)) * csoft)
 
             fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
             ax1.grid(False)
             ax2.grid(False)
             ax1.imshow(np.log10(img), extent=imgextent, cmap="Greys_r")
             ax2.imshow(segm.data, extent=imgextent)
+            ax1.scatter(x_cent, y_cent)
             circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
             ax1.add_artist(circle1)
             circle1 = plt.Circle((0, 0), hlr_app_dict[snap][f][i_img],
