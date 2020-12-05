@@ -130,6 +130,9 @@ for reg, snap in reg_snaps:
     else:
         csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
 
+    if z != 7.0:
+        continue
+
     single_pix_area = csoft * csoft
 
     # Define width
