@@ -187,7 +187,7 @@ for reg, snap in reg_snaps:
             try:
                 segm = phut.detect_sources(img, threshold, npixels=5,
                                            filter_kernel=kernel)
-                segm = phut.deblend_sources(img, segm, npixels=5,
+                segm = phut.deblend_sources(img, segm, npixels=10,
                                             filter_kernel=kernel,
                                             nlevels=32, contrast=0.001)
             except TypeError:
@@ -203,6 +203,8 @@ for reg, snap in reg_snaps:
             #     y_cent.append((tbl["y_peak"] - 0.5 - (img.shape[0] / 2.)) * csoft)
 
             for i in range(np.max(segm.data + 1)):
+                if np.sum(img[segm.data == i]) <= 0:
+                    continue
                 hlr.append(util.get_pixel_hlr(img[segm.data == i],
                                               single_pix_area,
                                               radii_frac=0.5))
