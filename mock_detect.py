@@ -194,8 +194,8 @@ for reg, snap in reg_snaps:
                 test_img[segm.data != i] = 0.0
                 tbl = find_peaks(test_img, threshold, box_size=5)
                 print(tbl)
-                x_cent.append((tbl["x_peak"] + 0.5 - (img.shape[0] / 2.)) * csoft)
-                y_cent.append((tbl["y_peak"] + 0.5 - (img.shape[0] / 2.)) * csoft)
+                x_cent.append((tbl["x_peak"] - 0.5 - (img.shape[0] / 2.)) * csoft)
+                y_cent.append((tbl["y_peak"] - 0.5 - (img.shape[0] / 2.)) * csoft)
 
             fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
             ax1.grid(False)
