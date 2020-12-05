@@ -103,6 +103,9 @@ for reg in reversed(regions):
     for snap in snaps:
         reg_snaps.append((reg, snap))
 
+lumins = []
+hlr = []
+
 for reg, snap in reg_snaps:
 
     z_str = snap.split('z')[1].split('p')
@@ -200,29 +203,58 @@ for reg, snap in reg_snaps:
             #     y_cent.append((tbl["y_peak"] - 0.5 - (img.shape[0] / 2.)) * csoft)
 
             for i in range(np.max(segm.data + 1)):
-                print(hlr_pix_dict[snap][f][i_img],
-                      util.get_pixel_hlr(img[segm.data == i],
-                                         single_pix_area,
-                                         radii_frac=0.5))
+                hlr.append(util.get_pixel_hlr(img[segm.data == i],
+                                              single_pix_area,
+                                              radii_frac=0.5))
+                lumins.append(np.sum(img[segm.data == i]))
 
-            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
-            ax1.grid(False)
-            ax2.grid(False)
-            ax1.imshow(np.log10(img), extent=imgextent, cmap="Greys_r")
-            ax2.imshow(segm.data, extent=imgextent)
-            circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
-            ax1.add_artist(circle1)
-            circle1 = plt.Circle((0, 0), hlr_app_dict[snap][f][i_img],
-                                 color='g', linestyle="--", fill=False)
-            ax1.add_artist(circle1)
-            circle1 = plt.Circle((0, 0), hlr_dict[snap][f][i_img],
-                                 color='b', linestyle="--", fill=False)
-            ax1.add_artist(circle1)
-            circle1 = plt.Circle((0, 0), hlr_pix_dict[snap][f][i_img],
-                                 color='y', linestyle=":", fill=False)
-            ax1.add_artist(circle1)
-            fig.savefig("plots/gal_img_log_" + f + "_%.1f.png"
-                        % np.log10(np.sum(img)))
-            plt.close(fig)
+            # fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+            # ax1.grid(False)
+            # ax2.grid(False)
+            # ax1.imshow(np.log10(img), extent=imgextent, cmap="Greys_r")
+            # ax2.imshow(segm.data, extent=imgextent)
+            # circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
+            # ax1.add_artist(circle1)
+            # circle1 = plt.Circle((0, 0), hlr_app_dict[snap][f][i_img],
+            #                      color='g', linestyle="--", fill=False)
+            # ax1.add_artist(circle1)
+            # circle1 = plt.Circle((0, 0), hlr_dict[snap][f][i_img],
+            #                      color='b', linestyle="--", fill=False)
+            # ax1.add_artist(circle1)
+            # circle1 = plt.Circle((0, 0), hlr_pix_dict[snap][f][i_img],
+            #                      color='y', linestyle=":", fill=False)
+            # ax1.add_artist(circle1)
+            # fig.savefig("plots/gal_img_log_" + f + "_%.1f.png"
+            #             % np.log10(np.sum(img)))
+            # plt.close(fig)
 
     hdf.close()
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax1 = ax.twinx()
+ax1.grid(False)
+try:
+
+    cbar = ax.hexbin(np.array(lumins), np.array(hlr), gridsize=50, mincnt=1,
+                     xscale='log', yscale='log',
+                     norm=LogNorm(), linewidths=0.2,
+                     cmap='viridis')
+    ax1.hexbin(np.array(lumins), np.array(hlr) * cosmo.arcsec_per_kpc_proper(z).value,
+               gridsize=50, mincnt=1, xscale='log',
+               yscale='log', norm=LogNorm(), linewidths=0.2,
+               cmap='viridis', alpha=0)
+except ValueError as e:
+    print(e)
+
+ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
+
+# Label axes
+ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+ax.tick_params(axis='x', which='minor', bottom=True)
+
+ax.set_xlim(10 ** 27.9, 10 ** 30.5)
+
+fig.savefig('plots/HalfLightRadius_mock_detect_test.png', bbox_inches='tight')
