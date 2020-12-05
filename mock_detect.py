@@ -29,7 +29,7 @@ import pandas as pd
 import utilities as util
 
 sns.set_context("paper")
-sns.set_style('white')
+sns.set_style('whitegrid')
 
 def m_to_M(m, cosmo, z):
     flux = photconv.m_to_flux(m)
@@ -108,6 +108,8 @@ hlr = []
 
 for reg, snap in reg_snaps:
 
+    print(reg, snap)
+
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
@@ -179,10 +181,12 @@ for reg, snap in reg_snaps:
 
             img = imgs[i_img, :, :]
 
-            img[img < 10**23] = 0
+            img[img < 10**22] = 0
 
             # threshold = phut.detect_threshold(img, nsigma=5)
             threshold = np.median(img) + np.std(img)
+
+            print(np.median(img), threshold)
 
             try:
                 segm = phut.detect_sources(img, threshold, npixels=5,
