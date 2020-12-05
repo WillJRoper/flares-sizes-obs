@@ -125,6 +125,8 @@ for reg, snap in reg_snaps:
     else:
         csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
 
+    single_pix_area = csoft * csoft
+
     # Define width
     ini_width = 60
 
@@ -187,22 +189,27 @@ for reg, snap in reg_snaps:
                                             nlevels=32, contrast=0.001)
             except TypeError:
                 continue
-            x_cent = []
-            y_cent = []
-            for i in range(1, np.max(segm.data) + 1):
-                test_img = img
-                test_img[segm.data != i] = 0.0
-                tbl = find_peaks(test_img, threshold, box_size=5)
-                print(tbl)
-                x_cent.append((tbl["x_peak"] - 0.5 - (img.shape[0] / 2.)) * csoft)
-                y_cent.append((tbl["y_peak"] - 0.5 - (img.shape[0] / 2.)) * csoft)
+            # x_cent = []
+            # y_cent = []
+            # for i in range(1, np.max(segm.data) + 1):
+            #     test_img = img
+            #     test_img[segm.data != i] = 0.0
+            #     tbl = find_peaks(test_img, threshold, box_size=5)
+            #     print(tbl)
+            #     x_cent.append((tbl["x_peak"] - 0.5 - (img.shape[0] / 2.)) * csoft)
+            #     y_cent.append((tbl["y_peak"] - 0.5 - (img.shape[0] / 2.)) * csoft)
+
+            for i in range(np.max(segm.data + 1)):
+                print(hlr_pix_dict[snap][f][i_img],
+                      util.get_pixel_hlr(img[segm.data == i],
+                                         single_pix_area,
+                                         radii_frac=0.5))
 
             fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
             ax1.grid(False)
             ax2.grid(False)
             ax1.imshow(np.log10(img), extent=imgextent, cmap="Greys_r")
             ax2.imshow(segm.data, extent=imgextent)
-            ax1.scatter(x_cent, y_cent)
             circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
             ax1.add_artist(circle1)
             circle1 = plt.Circle((0, 0), hlr_app_dict[snap][f][i_img],
