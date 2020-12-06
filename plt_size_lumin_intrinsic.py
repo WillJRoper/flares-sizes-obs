@@ -190,7 +190,7 @@ for f in filters:
         ax1.grid(False)
         try:
             sden_lumins = np.logspace(27, 29.8)
-            okinds = nstars < 800
+            okinds = nstars < nlim_plot
             cbar = ax.hexbin(lumins[okinds], hlrs[okinds], gridsize=50,
                              mincnt=1, C=w[okinds],
                              reduce_C_function=np.sum,
@@ -201,7 +201,7 @@ for f in filters:
             print(e)
 
         try:
-            okinds = nstars >= 800
+            okinds = nstars >= nlim_plot
             ax1.hexbin(lumins[okinds],
                        hlrs[okinds] * cosmo.arcsec_per_kpc_proper(z).value,
                        gridsize=50, mincnt=1, C=w[okinds],
