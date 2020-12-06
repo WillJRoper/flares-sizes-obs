@@ -31,6 +31,22 @@ import utilities as util
 sns.set_context("paper")
 sns.set_style('whitegrid')
 
+
+
+# Define Kawamata17 fit and parameters
+kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
+               'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
+kawa_up_params = {'beta': {6: 0.08, 7: 0.08,
+                           8: 0.28, 9: 1.01},
+                  'r_0': {6: 0.2, 7: 0.2,
+                          8: 5.28, 9: 367.64}}
+kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
+                            8: 0.78, 9: 0.27},
+                   'r_0': {6: 0.15, 7: 0.15,
+                           8: 0.26, 9: 0.74}}
+kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
+
+
 def m_to_M(m, cosmo, z):
     flux = photconv.m_to_flux(m)
     lum = photconv.flux_to_L(flux, cosmo, z)
@@ -43,6 +59,91 @@ def M_to_m(M, cosmo, z):
     flux = photconv.lum_to_flux(lum, cosmo, z)
     m = photconv.flux_to_m(flux)
     return m
+
+
+def kawa_fit_err(y, l, ro, b, ro_err, b_err, uplow="up"):
+    ro_term = ro_err * (l / M_to_lum(-21)) ** b
+    beta_term = b_err * ro * (l / M_to_lum(-21)) ** b \
+                * np.log(l / M_to_lum(-21))
+
+    if uplow == "up":
+        return y + np.sqrt(ro_term ** 2 + beta_term ** 2)
+    else:
+        return y - np.sqrt(ro_term ** 2 + beta_term ** 2)
+
+
+def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
+    if bins == None:
+        bin = np.logspace(np.log10(xs.min()), np.log10(xs.max()), 15)
+    else:
+        bin = bins
+
+    # Compute binned statistics
+    y_stat, binedges, bin_ind = binned_statistic(xs, ys, statistic='median',
+                                                 bins=bin)
+
+    # Compute bincentres
+    bin_wid = binedges[1] - binedges[0]
+    bin_cents = binedges[1:] - bin_wid / 2
+
+    okinds = np.logical_and(~np.isnan(bin_cents), ~np.isnan(y_stat))
+
+    ax.plot(bin_cents[okinds], y_stat[okinds], color=color, linestyle=ls,
+            label=lab)
+
+
+def r_from_surf_den(lum, s_den):
+
+    return np.sqrt(lum / (s_den * np.pi))
+
+
+def lum_from_surf_den_R(r, s_den):
+
+    return s_den * np.pi * r**2
+
+
+df = pd.read_csv("HighzSizes/All.csv")
+
+papers = df["Paper"].values
+mags = df["Magnitude"].values
+r_es_arcs = df["R_e"].values
+r_es_type = df["R_e (Unit)"].values
+mag_type = df["Magnitude Type"].values
+zs = df["Redshift"].values
+
+# Define pixel resolutions
+wfc3 = 0.13
+nircam_short = 0.031
+nircam_long = 0.063
+
+# Convert to physical kiloparsecs
+r_es = np.zeros(len(papers))
+for (ind, r), z in zip(enumerate(r_es_arcs), zs):
+    if r_es_type[ind] == "kpc":
+        r_es[ind] = r
+    else:
+        r_es[ind] = r / cosmo.arcsec_per_kpc_proper(z).value
+    if mags[ind] < 0:
+        mags[ind] = M_to_m(mags[ind], cosmo, z)
+
+cmap = mpl.cm.get_cmap("autumn")
+norm = plt.Normalize(vmin=0, vmax=1)
+
+labels = {"G11": "Grazian+2011",
+          "G12": "Grazian+2012",
+          "C16": "Calvi+2016",
+          "K18": "Kawamata+2018",
+          "MO18": "Morishita+2018",
+          "B19": "Bridge+2019",
+          "O16": "Oesch+2016",
+          "S18": "Salmon+2018",
+          "H20": "Holwerda+2020"}
+markers = {"G11": "s", "G12": "v", "C16": "D",
+           "K18": "o", "M18": "X", "MO18": "o",
+           "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
+colors = {}
+for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
+    colors[key] = cmap(norm(col))
 
 # Set orientation
 orientation = sys.argv[1]
@@ -106,6 +207,8 @@ for reg in reversed(regions):
 lumins = []
 hlr = []
 
+z_plot = 7.0
+
 for reg, snap in reg_snaps:
 
     print(reg, snap)
@@ -130,7 +233,7 @@ for reg, snap in reg_snaps:
     else:
         csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
 
-    if z != 7.0:
+    if z != z_plot:
         continue
 
     single_pix_area = csoft * csoft
@@ -254,6 +357,38 @@ try:
 except ValueError as e:
     print(e)
 
+legend_elements = []
+
+for p in labels.keys():
+    okinds = papers == p
+    plt_m = mags[okinds]
+    plt_r_es = r_es[okinds]
+    plt_zs = zs[okinds]
+
+    okinds = np.logical_and(plt_zs >= (z_plot - 0.5),
+                            np.logical_and(plt_zs < (z_plot + 0.5),
+                                           np.logical_and(
+                                               plt_r_es > 0.08,
+                                               plt_m <= M_to_m(-16,
+                                                               cosmo,
+                                                               z))))
+    plt_m = plt_m[okinds]
+    plt_r_es = plt_r_es[okinds]
+
+    if plt_m.size == 0:
+        continue
+    plt_M = m_to_M(plt_m, cosmo, z)
+    plt_lumins = M_to_lum(plt_M)
+
+    legend_elements.append(
+        Line2D([0], [0], marker=markers[p], color='w',
+               label=labels[p], markerfacecolor=colors[p],
+               markersize=8, alpha=0.7))
+
+    ax.scatter(plt_lumins, plt_r_es,
+               marker=markers[p], label=labels[p], s=25,
+               color=colors[p], alpha=0.7)
+
 ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
 
 # Label axes
@@ -263,5 +398,8 @@ ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 ax.tick_params(axis='x', which='minor', bottom=True)
 
 ax.set_xlim(10 ** 27.9, 10 ** 30.5)
+
+ax.legend(handles=legend_elements, loc='upper center',
+          bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
 fig.savefig('plots/HalfLightRadius_mock_detect_test.png', bbox_inches='tight')
