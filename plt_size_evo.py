@@ -374,12 +374,20 @@ for f in filters:
 
         plt_z.append(z)
 
+    soft = []
+    for z in plt_z:
+
+        if z <= 2.8:
+            soft.append(0.000474390 / 0.6777 * 1e3)
+        else:
+            soft.append(0.001802390 / (0.6777 * (1 + z)) * 1e3)
 
     legend_elements = []
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.semilogy()
+    ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
     try:
         ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
         ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
