@@ -58,7 +58,7 @@ filters = ('FAKE.TH.FUV', )
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 1500
+nlim = 700
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -203,12 +203,12 @@ for f in filters:
                        yscale='log', norm=LogNorm(), linewidths=0.2,
                        cmap='viridis', alpha=0)
             sinds = np.argsort(lumins / intr_lumins)
-            for intr_l, l, intr_r, r in zip(intr_lumins[sinds][-10:],
-                                            lumins[sinds][-10:],
-                                            intr_hlrs[sinds][-10:],
-                                            hlrs[sinds][-10:]):
-                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
-                        marker=None, alpha=0.6)
+            # for intr_l, l, intr_r, r in zip(intr_lumins[sinds][-10:],
+            #                                 lumins[sinds][-10:],
+            #                                 intr_hlrs[sinds][-10:],
+            #                                 hlrs[sinds][-10:]):
+            #     ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
+            #             marker=None, alpha=0.6)
             im = ax.scatter(lumins[sinds], hlrs[sinds],
                             c=np.log10(lumins[sinds] / intr_lumins[sinds]),
                             marker="D",
