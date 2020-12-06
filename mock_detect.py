@@ -397,7 +397,7 @@ ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
 ax.tick_params(axis='x', which='minor', bottom=True)
 
-ax.set_xlim(10 ** 27.9, 10 ** 30.5)
+# ax.set_xlim(10 ** 26.9, 10 ** 30.5)
 
 ax.legend(handles=legend_elements, loc='upper center',
           bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
