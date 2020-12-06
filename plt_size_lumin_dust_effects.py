@@ -202,15 +202,15 @@ for f in filters:
                        gridsize=50, mincnt=1, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
                        cmap='viridis', alpha=0)
-            sinds = np.argsort(lum_to_M(intr_lumins) - lum_to_M(lumins))
-            for intr_l, l, intr_r, r in zip(intr_lumins[sinds][:10],
-                                            lumins[sinds][:10],
-                                            intr_hlrs[sinds][:10],
-                                            hlrs[sinds][:10]):
+            sinds = np.argsort(lumins / intr_lumins)
+            for intr_l, l, intr_r, r in zip(intr_lumins[sinds][-10:],
+                                            lumins[sinds][-10:],
+                                            intr_hlrs[sinds][-10:],
+                                            hlrs[sinds][-10:]):
                 ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
                         alpha=0.6)
-            im = ax.scatter(lumins, hlrs,
-                            c=lum_to_M(intr_lumins) - lum_to_M(lumins),
+            im = ax.scatter(lumins[sinds], hlrs[sinds],
+                            c=lumins[sinds] / intr_lumins[sinds],
                             marker="D",
                             cmap="viridis")
         except ValueError as e:
@@ -234,7 +234,7 @@ for f in filters:
         cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
         cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
         cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-60)
+        cbar.ax.set_xlabel("$A$", labelpad=-45)
 
         ax.set_xlim(10**27.9, 10**31.1)
         ax.set_ylim(10**-1.2, 10**1.4)
