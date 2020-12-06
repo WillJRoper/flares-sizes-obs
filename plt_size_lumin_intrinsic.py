@@ -60,7 +60,7 @@ filters = ('FAKE.TH.FUV', )
 csoft = 0.001802390 / (0.6777) * 1e3
 
 nlim = 100
-nlim_plot = 600
+nlim_plot = 700
 
 hlr_dict = {}
 hlr_app_dict = {}
