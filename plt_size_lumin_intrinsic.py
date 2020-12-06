@@ -196,6 +196,10 @@ for f in filters:
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='Greys')
+        except ValueError as e:
+            print(e)
+
+        try:
             okinds = nstars >= 800
             ax1.hexbin(lumins[okinds],
                        hlrs[okinds] * cosmo.arcsec_per_kpc_proper(z).value,
