@@ -45,7 +45,7 @@ def M_to_m(M, cosmo, z):
 orientation = sys.argv[1]
 
 # Define luminosity and dust model types
-Type = "Total"
+Type = "Intrinsic"
 extinction = 'default'
 
 snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
