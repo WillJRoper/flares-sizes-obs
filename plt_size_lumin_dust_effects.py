@@ -198,8 +198,11 @@ for f in filters:
         try:
             ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D",
                        alpha=0.6)
-            for intr_l, l, intr_r, r in zip(intr_lumins, lumins,
-                                            intr_hlrs, hlrs):
+            sinds = np.argsort(lum_to_M(intr_lumins) - lum_to_M(lumins))
+            for intr_l, l, intr_r, r in zip(intr_lumins[sinds][-10:],
+                                            lumins[sinds][-10:],
+                                            intr_hlrs[sinds][-10:],
+                                            hlrs[sinds][-10:]):
                 ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
                         alpha=0.3)
             im = ax.scatter(lumins, hlrs,
