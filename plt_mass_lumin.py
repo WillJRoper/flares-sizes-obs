@@ -111,7 +111,7 @@ for reg, snap in reg_snaps:
 
     hdf.close()
 
-nlim = 600
+nlim = 700
 
 for f in filters:
 
