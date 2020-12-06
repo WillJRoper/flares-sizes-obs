@@ -59,13 +59,14 @@ filters = ('FAKE.TH.FUV', )
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 800
+nlim = 100
 
 hlr_dict = {}
 hlr_app_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
 mass_dict = {}
+nstar_dict = {}
 weight_dict = {}
 
 lumin_bins = np.logspace(np.log10(M_to_lum(-16)), np.log10(M_to_lum(-24)), 20)
@@ -105,6 +106,7 @@ for reg, snap in reg_snaps:
     hlr_pix_dict.setdefault(snap, {})
     lumin_dict.setdefault(snap, {})
     mass_dict.setdefault(snap, {})
+    nstar_dict.setdefault(snap, {})
     weight_dict.setdefault(snap, {})
 
     for f in filters:
@@ -113,6 +115,7 @@ for reg, snap in reg_snaps:
         hlr_pix_dict[snap].setdefault(f, [])
         lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
+        nstar_dict[snap].setdefault(f, [])
         weight_dict[snap].setdefault(f, [])
 
         masses = orientation_group[f]["Mass"][...]
@@ -128,6 +131,7 @@ for reg, snap in reg_snaps:
         lumin_dict[snap][f].extend(
             orientation_group[f]["Luminosity"][...][okinds])
         mass_dict[snap][f].extend(masses[okinds])
+        nstar_dict[snap][f].extend(orientation_group[f]["nStar"][...][okinds])
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 
@@ -169,12 +173,14 @@ for f in filters:
 
         hlrs = np.array(hlr_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
+        nstars = np.array(nstar_dict[snap][f])
 
         okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
                                 np.logical_and(lumins > M_to_lum(-12),
                                                lumins < 10 ** 50))
         lumins = lumins[okinds]
         hlrs = hlrs[okinds]
+        nstars = nstars[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
 
         fig = plt.figure()
@@ -183,17 +189,20 @@ for f in filters:
         ax1.grid(False)
         try:
             sden_lumins = np.logspace(27, 29.8)
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                             C=w,
+            okinds = nstars < 800
+            cbar = ax.hexbin(lumins[okinds], hlrs[okinds], gridsize=50,
+                             mincnt=1, C=w[okinds],
                              reduce_C_function=np.sum,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
-                             cmap='viridis')
-            ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
-                       gridsize=50, mincnt=1, C=w,
+                             cmap='Greys')
+            okinds = nstars >= 800
+            ax1.hexbin(lumins[okinds],
+                       hlrs[okinds] * cosmo.arcsec_per_kpc_proper(z).value,
+                       gridsize=50, mincnt=1, C=w[okinds],
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='viridis', alpha=0)
+                       cmap='viridis')
         except ValueError as e:
             print(e)
             continue
