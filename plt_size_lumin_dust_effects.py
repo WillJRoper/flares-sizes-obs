@@ -210,7 +210,7 @@ for f in filters:
                 ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
                         marker=None, alpha=0.6)
             im = ax.scatter(lumins[sinds], hlrs[sinds],
-                            c=lumins[sinds] / intr_lumins[sinds],
+                            c=np.log10(lumins[sinds] / intr_lumins[sinds]),
                             marker="D",
                             cmap="viridis")
         except ValueError as e:
@@ -234,7 +234,8 @@ for f in filters:
         cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
         cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
         cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-45)
+        cbar.ax.set_xlabel("$\log_{10}(L_{\mathrm{ex}}/L_{\mathrm{int}})$",
+                           labelpad=-40)
 
         ax.set_xlim(10**27.9, 10**31.1)
         ax.set_ylim(10**-1.2, 10**1.4)
