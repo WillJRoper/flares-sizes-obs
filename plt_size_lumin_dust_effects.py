@@ -208,7 +208,7 @@ for f in filters:
                                             intr_hlrs[sinds][-10:],
                                             hlrs[sinds][-10:]):
                 ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
-                        alpha=0.6)
+                        marker=None, alpha=0.6)
             im = ax.scatter(lumins[sinds], hlrs[sinds],
                             c=lumins[sinds] / intr_lumins[sinds],
                             marker="D",
