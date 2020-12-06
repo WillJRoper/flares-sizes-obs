@@ -455,6 +455,7 @@ for f in filters:
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.semilogy()
+    ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
     try:
         ax.fill_between(plt_z, intr_hlr_16_app, intr_hlr_84_app, color="r",
                         alpha=0.4)
@@ -523,6 +524,7 @@ for f in filters:
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.semilogy()
+    ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
     try:
         ax.fill_between(plt_z, intr_hlr_16_pix, intr_hlr_84_pix, color="r", alpha=0.4)
         ax.plot(plt_z, intr_hlr_med_pix, color="r", marker="D", linestyle="--")
