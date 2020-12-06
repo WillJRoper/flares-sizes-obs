@@ -199,16 +199,15 @@ for f in filters:
             ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D",
                        alpha=0.6)
             sinds = np.argsort(lum_to_M(intr_lumins) - lum_to_M(lumins))
-            for intr_l, l, intr_r, r in zip(intr_lumins[sinds][-10:],
-                                            lumins[sinds][-10:],
-                                            intr_hlrs[sinds][-10:],
-                                            hlrs[sinds][-10:]):
+            for intr_l, l, intr_r, r in zip(intr_lumins[sinds][:10],
+                                            lumins[sinds][:10],
+                                            intr_hlrs[sinds][:10],
+                                            hlrs[sinds][:10]):
                 ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
-                        alpha=0.3)
+                        alpha=0.6)
             im = ax.scatter(lumins, hlrs,
                             c=lum_to_M(intr_lumins) - lum_to_M(lumins),
                             marker="D",
-                            alpha=0.7,
                             cmap="viridis")
         except ValueError as e:
             print(e)
@@ -231,7 +230,7 @@ for f in filters:
         cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
         cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
         cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-30)
+        cbar.ax.set_xlabel("$A$", labelpad=-60)
 
         ax.set_xlim(10**27.9, 10**31.1)
         ax.set_ylim(10**-1.2, 10**1.4)
