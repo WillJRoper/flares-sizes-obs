@@ -108,8 +108,6 @@ for reg, tag in reg_snaps:
     G_coords = G_coords / (1 + z) * 1e3
     cops = cops / (1 + z) * 1e3
 
-    print(cops.shape)
-
     for jj in range(len(begin)):
 
         if S_len[jj] < masslim:
@@ -117,13 +115,11 @@ for reg, tag in reg_snaps:
 
         b, e = begin[jj], end[jj]
 
-        print(cops[jj])
-
         # Extract values for this galaxy
         Masses = S_mass[begin[jj]: end[jj]]
         gasMetallicities = G_Z[gbegin[jj]: gend[jj]]
         gasMasses = G_mass[gbegin[jj]: gend[jj]]
-        this_pos = G_coords[:, gbegin[jj]: gend[jj]].T - cops[jj]
+        this_pos = G_coords[:, gbegin[jj]: gend[jj]].T - cops[:, jj]
 
         this_radii = util.calc_rad(this_pos, i=0, j=1)
 
