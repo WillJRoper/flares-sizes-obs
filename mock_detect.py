@@ -287,7 +287,7 @@ for reg, snap in reg_snaps:
 
             img = imgs[i_img, :, :]
 
-            img[img < 10**21] = 0
+            img[img < 10**20] = 0
 
             # threshold = phut.detect_threshold(img, nsigma=5)
             threshold = np.median(img) + np.std(img)
@@ -297,7 +297,7 @@ for reg, snap in reg_snaps:
                                            filter_kernel=kernel)
                 segm = phut.deblend_sources(img, segm, npixels=5,
                                             filter_kernel=kernel,
-                                            nlevels=64, contrast=0.3)
+                                            nlevels=32, contrast=0.001)
             except TypeError:
                 continue
             # x_cent = []
