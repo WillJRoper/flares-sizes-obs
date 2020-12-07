@@ -287,7 +287,7 @@ for reg, snap in reg_snaps:
 
             img = imgs[i_img, :, :]
 
-            img[img < 10**23] = 0
+            img[img < 10**22] = 0
 
             # threshold = phut.detect_threshold(img, nsigma=5)
             threshold = np.median(img) + np.std(img)
@@ -295,9 +295,9 @@ for reg, snap in reg_snaps:
             try:
                 segm = phut.detect_sources(img, threshold, npixels=5,
                                            filter_kernel=kernel)
-                segm = phut.deblend_sources(img, segm, npixels=10,
+                segm = phut.deblend_sources(img, segm, npixels=20,
                                             filter_kernel=kernel,
-                                            nlevels=16, contrast=0.01)
+                                            nlevels=16, contrast=0.001)
             except TypeError:
                 continue
             # x_cent = []
@@ -318,25 +318,25 @@ for reg, snap in reg_snaps:
                                               radii_frac=0.5))
                 lumins.append(np.sum(img[segm.data == i]))
 
-            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
-            ax1.grid(False)
-            ax2.grid(False)
-            ax1.imshow(np.log10(img), extent=imgextent, cmap="Greys_r")
-            ax2.imshow(segm.data, extent=imgextent)
-            circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
-            ax1.add_artist(circle1)
-            circle1 = plt.Circle((0, 0), hlr_app_dict[snap][f][i_img],
-                                 color='g', linestyle="--", fill=False)
-            ax1.add_artist(circle1)
-            circle1 = plt.Circle((0, 0), hlr_dict[snap][f][i_img],
-                                 color='b', linestyle="--", fill=False)
-            ax1.add_artist(circle1)
-            circle1 = plt.Circle((0, 0), hlr_pix_dict[snap][f][i_img],
-                                 color='y', linestyle=":", fill=False)
-            ax1.add_artist(circle1)
-            fig.savefig("plots/gal_img_log_" + f + "_%.1f.png"
-                        % np.log10(np.sum(img)))
-            plt.close(fig)
+            # fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+            # ax1.grid(False)
+            # ax2.grid(False)
+            # ax1.imshow(np.log10(img), extent=imgextent, cmap="Greys_r")
+            # ax2.imshow(segm.data, extent=imgextent)
+            # circle1 = plt.Circle((0, 0), 30, color='r', fill=False)
+            # ax1.add_artist(circle1)
+            # circle1 = plt.Circle((0, 0), hlr_app_dict[snap][f][i_img],
+            #                      color='g', linestyle="--", fill=False)
+            # ax1.add_artist(circle1)
+            # circle1 = plt.Circle((0, 0), hlr_dict[snap][f][i_img],
+            #                      color='b', linestyle="--", fill=False)
+            # ax1.add_artist(circle1)
+            # circle1 = plt.Circle((0, 0), hlr_pix_dict[snap][f][i_img],
+            #                      color='y', linestyle=":", fill=False)
+            # ax1.add_artist(circle1)
+            # fig.savefig("plots/gal_img_log_" + f + "_%.1f.png"
+            #             % np.log10(np.sum(img)))
+            # plt.close(fig)
 
     hdf.close()
 
