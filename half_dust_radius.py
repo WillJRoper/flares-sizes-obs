@@ -159,10 +159,10 @@ for snap in snaps:
             fontsize=8)
 
     # Label axes
-    ax.set_xlabel(r'$M_\star/M_\odot')
+    ax.set_xlabel(r'$M_\star/M_\odot$')
     ax.set_ylabel('$R_{1/2, dust}/ [pkpc]$')
 
-    fig.savefig('plots/HalfDustRadius_'
+    fig.savefig('plots/' + str(z) + '/HalfDustRadius_'
                 + str(z) + '_%d.png' % masslim,
                 bbox_inches='tight')
 
