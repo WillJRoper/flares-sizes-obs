@@ -20,7 +20,6 @@ sns.set_style('whitegrid')
 
 
 def get_data(ii, tag, inp='FLARES'):
-    print(ii, tag, inp)
     num = str(ii)
     if inp == 'FLARES':
         if len(num) == 1:
@@ -96,8 +95,12 @@ for reg, tag in reg_snaps:
 
     hdr_dict.setdefault(tag, [])
     mass_dict.setdefault(tag, [])
+    try:
+        data = get_data(reg, tag, inp='FLARES')
+    except TypeError as e:
+        print(e)
+        continue
 
-    data = get_data(reg, tag, inp='FLARES')
     G_Z, S_len, G_len, G_coords, S_mass, G_mass, cops, \
     begin, end, gbegin, gend = data
 
