@@ -380,7 +380,6 @@ def lumin_weighted_centre(poss, ls, i, j):
     return cent
 
 
-@nb.njit(nogil=True, parallel=True)
 def calc_light_mass_rad(rs, ls, radii_frac=0.5):
 
     # Sort the radii and masses
