@@ -105,7 +105,8 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e}"
                                                e=extinction, x=reg, u=tag))
 
 # Define filter
-filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
+# filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
+filters = ('FAKE.TH.V')
 
 # Define radii
 radii_fracs = (0.2, 0.5, 0.8)
