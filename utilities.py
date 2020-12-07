@@ -400,13 +400,15 @@ def calc_light_mass_rad(rs, ls, radii_frac=0.5):
     # Get the half mass radius particle
     hmr_ind = np.argmin(np.abs(l_profile - half_l))
     l_profile_cutout = l_profile[np.max((hmr_ind - 10, 0)):
-                                 np.min((hmr_ind + 10, l_profile.size - 1))]
+                                 np.min((hmr_ind + 10, l_profile.size))]
     rs_cutout = rs[np.max((hmr_ind - 10, 0)):
-                   np.min((hmr_ind + 10, l_profile.size - 1))]
+                   np.min((hmr_ind + 10, l_profile.size))]
 
     # Interpolate the arrays for better resolution
     interp_func = interp1d(l_profile_cutout, rs_cutout, kind="linear")
     interp_rs = np.linspace(rs_cutout.min(),  rs_cutout.max(), 500)
+    print(interp_rs)
+    print(rs_cutout.min(),  rs_cutout.max())
     interp_1d_ls = interp_func(interp_rs)
 
     new_hmr_ind = np.argmin(np.abs(interp_1d_ls - half_l))
