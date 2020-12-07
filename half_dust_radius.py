@@ -115,14 +115,15 @@ for reg, tag in reg_snaps:
 
         b, e = begin[jj], end[jj]
 
+        print(cops[jj])
+
         # Extract values for this galaxy
         Masses = S_mass[begin[jj]: end[jj]]
         gasMetallicities = G_Z[gbegin[jj]: gend[jj]]
         gasMasses = G_mass[gbegin[jj]: gend[jj]]
-        this_pos = G_coords[:, gbegin[jj]: gend[jj]].T
+        this_pos = G_coords[:, gbegin[jj]: gend[jj]].T - cops[jj]
 
         this_radii = util.calc_rad(this_pos, i=0, j=1)
-        print(this_radii)
 
         hdr_dict[tag].append(util.calc_light_mass_rad(this_radii,
                                                       gasMetallicities
