@@ -63,10 +63,7 @@ def get_data(ii, tag, inp='FLARES'):
 
 regions = []
 for reg in range(0, 40):
-    if reg < 10:
-        regions.append('0' + str(reg))
-    else:
-        regions.append(str(reg))
+    regions.append(reg)
 
 snaps = ['000_z015p000', '001_z014p000', '002_z013p000',
          '003_z012p000', '004_z011p000', '005_z010p000',
