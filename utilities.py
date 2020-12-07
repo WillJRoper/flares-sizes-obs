@@ -405,10 +405,8 @@ def calc_light_mass_rad(rs, ls, radii_frac=0.5):
                    np.min((hmr_ind + 10, l_profile.size))]
 
     # Interpolate the arrays for better resolution
-    interp_func = interp1d(l_profile_cutout, rs_cutout, kind="linear")
+    interp_func = interp1d(rs_cutout, l_profile_cutout, kind="linear")
     interp_rs = np.linspace(rs_cutout.min(),  rs_cutout.max(), 500)
-    print(interp_rs)
-    print(rs_cutout.min(),  rs_cutout.max())
     interp_1d_ls = interp_func(interp_rs)
 
     new_hmr_ind = np.argmin(np.abs(interp_1d_ls - half_l))

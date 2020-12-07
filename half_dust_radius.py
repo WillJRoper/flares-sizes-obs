@@ -122,6 +122,7 @@ for reg, tag in reg_snaps:
         this_pos = G_coords[:, gbegin[jj]: gend[jj]].T
 
         this_radii = util.calc_rad(this_pos, i=0, j=1)
+        print(this_radii)
 
         hdr_dict[tag].append(util.calc_light_mass_rad(this_radii,
                                                       gasMetallicities
