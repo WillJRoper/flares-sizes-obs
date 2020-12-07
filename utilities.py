@@ -387,7 +387,7 @@ def calc_light_mass_rad(rs, ls, radii_frac=0.5):
     rs = rs[sinds]
     ls = ls[sinds]
 
-    if ls.size < 1:
+    if ls.size < 100:
         return 0.0
 
     # Get the cumalative sum of masses
@@ -403,6 +403,9 @@ def calc_light_mass_rad(rs, ls, radii_frac=0.5):
                                  np.min((hmr_ind + 10, l_profile.size))]
     rs_cutout = rs[np.max((hmr_ind - 10, 0)):
                    np.min((hmr_ind + 10, l_profile.size))]
+
+    if len(rs_cutout) < 3:
+        return 0
 
     # Interpolate the arrays for better resolution
     interp_func = interp1d(rs_cutout, l_profile_cutout, kind="linear")
