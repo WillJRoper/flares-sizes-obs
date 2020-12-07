@@ -20,7 +20,7 @@ sns.set_style('whitegrid')
 
 
 def get_data(ii, tag, inp='FLARES'):
-    num = ii
+    num = str(ii)
     if inp == 'FLARES':
         if len(num) == 1:
             num = '0' + num
