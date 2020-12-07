@@ -108,6 +108,8 @@ for reg, tag in reg_snaps:
     G_coords = G_coords / (1 + z) * 1e3
     cops = cops / (1 + z) * 1e3
 
+    print(cops.shape)
+
     for jj in range(len(begin)):
 
         if S_len[jj] < masslim:
