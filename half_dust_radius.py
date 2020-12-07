@@ -20,7 +20,7 @@ sns.set_style('whitegrid')
 
 
 def get_data(ii, tag, inp='FLARES'):
-    num = str(ii)
+    num = ii
     if inp == 'FLARES':
         if len(num) == 1:
             num = '0' + num
@@ -108,6 +108,10 @@ for reg, tag in reg_snaps:
     cops = cops / (1 + z) * 1e3
 
     for jj in range(len(begin)):
+
+        if S_len[jj] < masslim:
+            continue
+
         b, e = begin[jj], end[jj]
 
         # Extract values for this galaxy
