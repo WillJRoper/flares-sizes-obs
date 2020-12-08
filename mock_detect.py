@@ -27,6 +27,7 @@ import h5py
 import sys
 import pandas as pd
 import utilities as util
+from astropy.convolution import convolve
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -163,7 +164,7 @@ else:
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
 kernel_sigma = 3.0 / (2.0 * np.sqrt(2.0 * np.log(2.0)))  # FWHM = 3
-kernel = Gaussian2DKernel(kernel_sigma, x_size=3, y_size=3)
+kernel = Gaussian2DKernel(kernel_sigma, x_size=5, y_size=5)
 kernel.normalize()
 
 csoft = 0.001802390 / (0.6777) * 1e3
@@ -286,6 +287,8 @@ for reg, snap in reg_snaps:
         for i_img in range(imgs.shape[0]):
 
             img = imgs[i_img, :, :]
+
+            img = convolve(img, kernel)
 
             img[img < 10**21] = 0
 
