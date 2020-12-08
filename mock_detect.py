@@ -162,7 +162,7 @@ else:
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
 
-kernel_sigma = 3.0 / (2.0 * np.sqrt(2.0 * np.log(2.0)))  # FWHM = 3
+kernel_sigma = 8 / (2.0 * np.sqrt(2.0 * np.log(2.0)))  # FWHM = 3
 kernel = Gaussian2DKernel(kernel_sigma)
 kernel.normalize()
 
@@ -289,7 +289,7 @@ for reg, snap in reg_snaps:
 
             # img = convolve_fft(img, kernel)
 
-            img[img < 10**21] = 0
+            img[img < 10**20] = 0
 
             # threshold = phut.detect_threshold(img, nsigma=5)
             threshold = np.median(img) + np.std(img)
