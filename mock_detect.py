@@ -289,7 +289,7 @@ for reg, snap in reg_snaps:
 
             # img = convolve_fft(img, kernel)
 
-            img[img < 10**20] = 0
+            img[img < 10**19] = 0
 
             # threshold = phut.detect_threshold(img, nsigma=5)
             threshold = np.median(img) + np.std(img)
