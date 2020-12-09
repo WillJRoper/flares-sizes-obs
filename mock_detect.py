@@ -289,17 +289,17 @@ for reg, snap in reg_snaps:
 
             # img = convolve_fft(img, kernel)
 
-            img[img < 10**21] = 0
+            # img[img < 10**21] = 0
 
             # threshold = phut.detect_threshold(img, nsigma=5)
-            threshold = np.median(img) #  + np.std(img)
+            threshold = 10**21
 
             try:
                 segm = phut.detect_sources(img, threshold, npixels=10,
                                            filter_kernel=kernel)
                 segm = phut.deblend_sources(img, segm, npixels=5,
                                             filter_kernel=kernel,
-                                            nlevels=32, contrast=0.1)
+                                            nlevels=16, contrast=0.1)
             except TypeError:
                 continue
             # x_cent = []
