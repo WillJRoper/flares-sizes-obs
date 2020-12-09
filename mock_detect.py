@@ -297,7 +297,7 @@ for reg, snap in reg_snaps:
             try:
                 segm = phut.detect_sources(img, threshold, npixels=10,
                                            filter_kernel=kernel)
-                segm = phut.deblend_sources(img, segm, npixels=5,
+                segm = phut.deblend_sources(img, segm, npixels=10,
                                             filter_kernel=kernel,
                                             nlevels=8, contrast=0.1)
             except TypeError:
