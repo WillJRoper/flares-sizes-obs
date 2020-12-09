@@ -315,7 +315,9 @@ for reg, snap in reg_snaps:
             for i in range(np.max(segm.data + 1)):
                 if np.sum(img[segm.data == i]) < 10**27:
                     continue
-                hlr.append(util.get_pixel_hlr(img[segm.data == i],
+                img_segm = np.zeros_like(img)
+                img_segm[segm.data == i] = img[segm.data == i]
+                hlr.append(util.get_pixel_hlr(img_segm,
                                               single_pix_area,
                                               radii_frac=0.5))
                 lumins.append(np.sum(img[segm.data == i]))
