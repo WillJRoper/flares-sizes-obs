@@ -292,12 +292,12 @@ for reg, snap in reg_snaps:
             # img[img < 10**21] = 0
 
             # threshold = phut.detect_threshold(img, nsigma=5)
-            threshold = 10**21
+            threshold = 10**20
 
             try:
-                segm = phut.detect_sources(img, threshold, npixels=10,
+                segm = phut.detect_sources(img, threshold, npixels=5,
                                            filter_kernel=kernel)
-                segm = phut.deblend_sources(img, segm, npixels=10,
+                segm = phut.deblend_sources(img, segm, npixels=5,
                                             filter_kernel=kernel,
                                             nlevels=16, contrast=0.1)
             except TypeError:
