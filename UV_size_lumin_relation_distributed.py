@@ -105,8 +105,7 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e}"
                                                e=extinction, x=reg, u=tag))
 
 # Define filter
-# filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
-filters = ('FAKE.TH.V', )
+filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 # Define radii
 radii_fracs = (0.2, 0.5, 0.8)
@@ -153,7 +152,7 @@ else:
 ini_width = 60
 
 # Compute the resolution
-ini_res = ini_width / csoft
+ini_res = ini_width / (csoft / 10)
 res = int(np.ceil(ini_res))
 
 # Compute the new width
@@ -277,9 +276,9 @@ for f in filters:
         # plt.close(fig)
 
 try:
-    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "r+")
+    hdf = h5py.File("data/flares_sizes_{}_{}_10th.hdf5".format(reg, tag), "r+")
 except OSError:
-    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "w")
+    hdf = h5py.File("data/flares_sizes_{}_{}_10th.hdf5".format(reg, tag), "w")
 
 try:
     type_group = hdf[Type]
