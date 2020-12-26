@@ -10,6 +10,7 @@ from photutils import aperture_photometry
 from scipy.interpolate import interp1d
 import schwimmbad
 from functools import partial
+import time
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
@@ -303,9 +304,36 @@ def test(N, numthreads):
     np.random.seed(100)
     pos = np.random.uniform(0, 100, (N, 3))
     ls = np.random.normal(100, 20, N)
-    smls = np.random.uniform(0, 5, N) 
+    smls = np.random.uniform(0, 5, N)
     imgrange = ((0, 100), (0, 100))
     make_soft_img(pos, 300, 0, 1, imgrange, ls, smls, numThreads=numthreads)
+
+start = time.time()
+test(N=100, numthreads=28)
+end = time.time()
+print("100, 28", end - start)
+start = time.time()
+test(N=100, numthreads=1)
+end = time.time()
+print("100, 1", end - start)
+
+start = time.time()
+test(N=1000, numthreads=28)
+end = time.time()
+print("1000, 28", end - start)
+start = time.time()
+test(N=1000, numthreads=1)
+end = time.time()
+print("1000, 1", end - start)
+
+start = time.time()
+test(N=10000, numthreads=28)
+end = time.time()
+print("10000, 28", end - start)
+start = time.time()
+test(N=10000, numthreads=1)
+end = time.time()
+print("10000, 1", end - start)
 
 
 def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth, numThreads=6):
