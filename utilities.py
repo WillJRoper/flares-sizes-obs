@@ -299,6 +299,15 @@ def img_loop(star_tup, imgrange, Ndim):
     return img
 
 
+def test(N, numthreads):
+    np.random.seed(100)
+    pos = np.random.uniform(0, 100, (N, 3))
+    ls = np.random.normal(100, 20, N)
+    smls = np.random.uniform(0, 5, N) 
+    imgrange = ((0, 100), (0, 100))
+    make_soft_img(pos, 300, 0, 1, imgrange, ls, smls, numThreads=numthreads)
+
+
 def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth, numThreads=6):
 
     if numThreads != 1:
