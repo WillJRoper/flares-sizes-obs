@@ -121,7 +121,7 @@ nstar_dict = {}
 img_dict = {}
 
 # Set mass limit
-masslim = 200
+masslim = 700
 
 z_str = tag.split('z')[1].split('p')
 z = float(z_str[0] + '.' + z_str[1])
