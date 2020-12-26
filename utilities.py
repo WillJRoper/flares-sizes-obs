@@ -300,76 +300,62 @@ def img_loop(star_tup, imgrange, Ndim):
     return img
 
 
-def test(N, numthreads):
-    np.random.seed(100)
-    pos = np.random.uniform(0, 100, (N, 3))
-    ls = np.random.normal(100, 20, N)
-    smls = np.random.uniform(0, 5, N)
-    imgrange = ((0, 100), (0, 100))
-    make_soft_img(pos, 300, 0, 1, imgrange, ls, smls, numThreads=numthreads)
+def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth, numThreads=1):
 
-start = time.time()
-test(N=100, numthreads=28)
-end = time.time()
-print("100, 28", end - start)
-start = time.time()
-test(N=100, numthreads=1)
-end = time.time()
-print("100, 1", end - start)
+    # if numThreads != 1:
+    #     pool = schwimmbad.MultiPool(processes=numThreads)
+    #
+    #     img_func = partial(img_loop, imgrange=imgrange, Ndim=Ndim)
+    #     gsmooth_img = np.sum(list(pool.map(img_func,
+    #                                        zip(pos[:, i], pos[:, j],
+    #                                            ls, smooth))), axis=0)
+    #     pool.close()
+    #
+    # else:
+    #
+    #     # Define x and y positions for the gaussians
+    #     Gx, Gy = np.meshgrid(np.linspace(imgrange[0][0], imgrange[0][1], Ndim),
+    #                          np.linspace(imgrange[1][0], imgrange[1][1], Ndim))
+    #
+    #     # Initialise the image array
+    #     gsmooth_img = np.zeros((Ndim, Ndim))
+    #
+    #     # Loop over each star computing the smoothed gaussian
+    #     # distribution for this particle
+    #     for x, y, l, sml in zip(pos[:, i], pos[:, j], ls, smooth):
+    #
+    #         # Compute the image
+    #         g = np.exp(-(((Gx - x) ** 2 + (Gy - y) ** 2) / (2.0 * sml ** 2)))
+    #
+    #         # Get the sum of the gaussian
+    #         gsum = np.sum(g)
+    #
+    #         # If there are stars within the image in this gaussian
+    #         # add it to the image array
+    #         if gsum > 0:
+    #             gsmooth_img += g * l / gsum
 
-start = time.time()
-test(N=1000, numthreads=28)
-end = time.time()
-print("1000, 28", end - start)
-start = time.time()
-test(N=1000, numthreads=1)
-end = time.time()
-print("1000, 1", end - start)
+    # Define x and y positions for the gaussians
+    Gx, Gy = np.meshgrid(np.linspace(imgrange[0][0], imgrange[0][1], Ndim),
+                         np.linspace(imgrange[1][0], imgrange[1][1], Ndim))
 
-start = time.time()
-test(N=10000, numthreads=28)
-end = time.time()
-print("10000, 28", end - start)
-start = time.time()
-test(N=10000, numthreads=1)
-end = time.time()
-print("10000, 1", end - start)
+    # Initialise the image array
+    gsmooth_img = np.zeros((Ndim, Ndim))
 
+    # Loop over each star computing the smoothed gaussian
+    # distribution for this particle
+    for x, y, l, sml in zip(pos[:, i], pos[:, j], ls, smooth):
 
-def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth, numThreads=6):
+        # Compute the image
+        g = np.exp(-(((Gx - x) ** 2 + (Gy - y) ** 2) / (2.0 * sml ** 2)))
 
-    if numThreads != 1:
-        pool = schwimmbad.MultiPool(processes=numThreads)
+        # Get the sum of the gaussian
+        gsum = np.sum(g)
 
-        img_func = partial(img_loop, imgrange=imgrange, Ndim=Ndim)
-        gsmooth_img = np.sum(list(pool.map(img_func,
-                                           zip(pos[:, i], pos[:, j],
-                                               ls, smooth))), axis=0)
-        pool.close()
-
-    else:
-
-        # Define x and y positions for the gaussians
-        Gx, Gy = np.meshgrid(np.linspace(imgrange[0][0], imgrange[0][1], Ndim),
-                             np.linspace(imgrange[1][0], imgrange[1][1], Ndim))
-
-        # Initialise the image array
-        gsmooth_img = np.zeros((Ndim, Ndim))
-
-        # Loop over each star computing the smoothed gaussian
-        # distribution for this particle
-        for x, y, l, sml in zip(pos[:, i], pos[:, j], ls, smooth):
-
-            # Compute the image
-            g = np.exp(-(((Gx - x) ** 2 + (Gy - y) ** 2) / (2.0 * sml ** 2)))
-
-            # Get the sum of the gaussian
-            gsum = np.sum(g)
-
-            # If there are stars within the image in this gaussian
-            # add it to the image array
-            if gsum > 0:
-                gsmooth_img += g * l / gsum
+        # If there are stars within the image in this gaussian
+        # add it to the image array
+        if gsum > 0:
+            gsmooth_img += g * l / gsum
 
     # gsmooth_img, xedges, yedges = np.histogram2d(pos[:, i], pos[:, j],
     #                                      bins=Ndim,
