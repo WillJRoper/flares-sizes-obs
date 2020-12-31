@@ -92,7 +92,7 @@ for reg in reversed(regions):
     for snap in snaps:
         reg_snaps.append((reg, snap))
 
-for reg, snap in reg_snaps:
+for num, (reg, snap) in enumerate(reg_snaps):
 
     hdf = h5py.File("data/flares_sizes_{}_{}_10th.hdf5".format(reg, snap), "r")
     type_group = hdf[Type]
