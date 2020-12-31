@@ -112,7 +112,7 @@ run = False
 
 try:
     hdf = h5py.File("data/flares_sizes_{}_{}_10th.hdf5".format(reg, tag), "r")
-    x = hdf[Type][orientation][f]["nStar"]
+    x = hdf[Type][orientation][filters[int(sys.argv[4])]]["nStar"]
 except OSError:
     run = True
 except KeyError:
