@@ -116,7 +116,7 @@ for num, (reg, snap) in enumerate(reg_snaps):
         masses = orientation_group[f]["Mass"][...]
         okinds = orientation_group[f]["nStar"][...] > nlim
 
-        print(reg, snap, f, masses[okinds].size)
+        print(reg, snap, f, masses[okinds].size, num)
 
         hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...][okinds])
         hlr_app_dict[snap][f].extend(
