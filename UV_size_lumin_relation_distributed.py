@@ -120,6 +120,8 @@ except KeyError:
 except ValueError:
     run = True
 
+hdf.close()
+
 if run:
 
     # Define radii
