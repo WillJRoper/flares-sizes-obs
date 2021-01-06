@@ -399,7 +399,7 @@ for f in filters:
                 fontsize=8)
 
         # Label axes
-        ax.set_xlabelax1.set_ylabel('$R_{1/2,\mathrm{intrinsic}}/ [arcsecond]$')
+        ax.set_xlabel('$R_{1/2,\mathrm{intrinsic}}/ [arcsecond]$')
         ax.set_ylabel('$R_{1/2, dust}/ [pkpc]$')
 
         ax.tick_params(axis='x', which='minor', bottom=True)
