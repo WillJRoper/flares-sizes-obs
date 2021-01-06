@@ -374,3 +374,49 @@ for f in filters:
                     bbox_inches='tight')
 
         plt.close(fig)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        # ax1 = ax.twinx()
+        # ax1.grid(False)
+        ax.loglog()
+        # ax1.loglog()
+        try:
+            im = ax.scatter(intr_hlrs, hlrs,
+                            c=lum_to_M(intr_lumins) - lum_to_M(lumins),
+                            marker="D",
+                            cmap="viridis")
+        except ValueError as e:
+            print(e)
+            continue
+
+        # ax1.set_ylabel('$R_{1/2,\mathrm{dust}}/ [arcsecond]$')
+
+        ax.text(0.95, 0.05, f'$z={z}$',
+                bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                          ec="k", lw=1, alpha=0.8),
+                transform=ax.transAxes, horizontalalignment='right',
+                fontsize=8)
+
+        # Label axes
+        ax.set_xlabelax1.set_ylabel('$R_{1/2,\mathrm{intrinsic}}/ [arcsecond]$')
+        ax.set_ylabel('$R_{1/2, dust}/ [pkpc]$')
+
+        ax.tick_params(axis='x', which='minor', bottom=True)
+
+        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
+        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
+        cbaxes.xaxis.set_ticks_position("top")
+        cbar.ax.set_xlabel("$A$", labelpad=-30)
+
+        ax.set_xlim(10**27.9, 10**31.1)
+        ax.set_ylim(10**-1.2, 10**1.4)
+
+        fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_1to1'
+                                        '_Pixel_'
+                    + f + '_' + str(z) + '_' + orientation
+                    + "_" + extinction + "_"
+                    + '%d.png' % nlim,
+                    bbox_inches='tight')
+
+        plt.close(fig)
