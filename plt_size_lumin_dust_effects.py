@@ -100,7 +100,7 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
-    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, snap), "r")
+    hdf = h5py.File("data/flares_sizes_{}_{}_10th.hdf5".format(reg, snap), "r")
     type_group = hdf["Total"]
     orientation_group = type_group[orientation]
 
