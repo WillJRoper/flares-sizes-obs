@@ -409,7 +409,7 @@ for f in filters:
         cbaxes.xaxis.set_ticks_position("top")
         cbar.ax.set_xlabel("$A$", labelpad=-30)
 
-        ax.set_xlim(10**27.9, 10**31.1)
+        ax.set_xlim(10**-1.2, 10**1.4)
         ax.set_ylim(10**-1.2, 10**1.4)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_1to1'
