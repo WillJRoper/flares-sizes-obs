@@ -231,9 +231,9 @@ for reg, snap in reg_snaps:
     weight_dict.setdefault(snap, {})
 
     for f in filters:
-        hlr_dict[snap].setdefault(f, [])
-        hlr_app_dict[snap].setdefault(f, [])
-        hlr_pix_dict[snap].setdefault(f, [])
+        hlr_dict[snap].setdefault(f, {})
+        hlr_app_dict[snap].setdefault(f, {})
+        hlr_pix_dict[snap].setdefault(f, {})
         lumin_dict[snap].setdefault(f, [])
         weight_dict[snap].setdefault(f, [])
 
@@ -263,9 +263,9 @@ for reg, snap in reg_snaps:
     intr_weight_dict.setdefault(snap, {})
 
     for f in filters:
-        intr_hlr_dict[snap].setdefault(f, [])
-        intr_hlr_app_dict[snap].setdefault(f, [])
-        intr_hlr_pix_dict[snap].setdefault(f, [])
+        intr_hlr_dict[snap].setdefault(f, {})
+        intr_hlr_app_dict[snap].setdefault(f, {})
+        intr_hlr_pix_dict[snap].setdefault(f, {})
         intr_lumin_dict[snap].setdefault(f, [])
         intr_weight_dict[snap].setdefault(f, [])
 
