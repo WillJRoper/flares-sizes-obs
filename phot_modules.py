@@ -570,22 +570,27 @@ def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
             bins=np.arange(-24, -16, 0.5), inp='FLARES', LF=True,
             filters=('FAKE.TH.FUV', ), Type='Total', log10t_BC=7.,
             extinction='default', orientation="sim", masslim=None):
+    
+    Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
+               filters=filters, Type=Type, log10t_BC=log10t_BC,
+               extinction=extinction, orientation=orientation,
+               masslim=masslim)
 
-    try:
-        Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
-                   filters=filters, Type=Type, log10t_BC=log10t_BC,
-                   extinction=extinction, orientation=orientation,
-                   masslim=masslim)
-
-    except Exception as e:
-        Lums = {f: np.array([], dtype=np.float64) for f in filters}
-        Lums["coords"] = np.array([], dtype=np.float64)
-        Lums["smls"] = np.array([], dtype=np.float64)
-        Lums["masses"] = np.array([], dtype=np.float64)
-        Lums["nstar"] = np.array([], dtype=np.float64)
-        Lums["begin"] = np.array([], dtype=np.float64)
-        Lums["end"] = np.array([], dtype=np.float64)
-        print(e)
+    # try:
+    #     Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
+    #                filters=filters, Type=Type, log10t_BC=log10t_BC,
+    #                extinction=extinction, orientation=orientation,
+    #                masslim=masslim)
+    #
+    # except Exception as e:
+    #     Lums = {f: np.array([], dtype=np.float64) for f in filters}
+    #     Lums["coords"] = np.array([], dtype=np.float64)
+    #     Lums["smls"] = np.array([], dtype=np.float64)
+    #     Lums["masses"] = np.array([], dtype=np.float64)
+    #     Lums["nstar"] = np.array([], dtype=np.float64)
+    #     Lums["begin"] = np.array([], dtype=np.float64)
+    #     Lums["end"] = np.array([], dtype=np.float64)
+    #     print(e)
 
     if LF:
         tmp, edges = np.histogram(lum_to_M(Lums), bins=bins)
