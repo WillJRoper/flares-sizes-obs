@@ -304,6 +304,8 @@ if run:
             #             % np.log10(np.sum(this_lumin)))
             # plt.close(fig)
 
+        print("There are", len(img_dict[tag][f]), "images")
+
     try:
         hdf = h5py.File("data/flares_sizes_{}_{}_10th.hdf5".format(reg, tag), "r+")
     except OSError:
