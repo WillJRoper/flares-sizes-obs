@@ -149,7 +149,9 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     cops = cops / (1 + z)
 
     # --- create rest-frame luminosities
+    print("WHY CANT WE GET HERE")
     F = flare.filters.add_filters(filters, new_lam=model.lam)
+    print("WHY CANT WE GET HERE")
     print(F.filters)
     model.create_Lnu_grid(F)  # --- create new L grid for each filter. In units of erg/s/Hz
     print("WHY CANT WE GET HERE")
