@@ -162,7 +162,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         gasMasses = G_mass[gbegin[jj]: gend[jj]]
 
         if masslim != None:
-            if S_len[jj] < masslim:
+            if np.sum(Masses) < masslim:
                 for f in filters:
                     Lums[f][begin[jj]: end[jj]] = np.nan
                 continue

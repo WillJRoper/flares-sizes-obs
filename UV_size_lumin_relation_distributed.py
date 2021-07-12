@@ -112,7 +112,7 @@ filters = (filters[int(sys.argv[4])], )
 run = False
 
 try:
-    hdf = h5py.File("data/flares_sizes_{}_{}_10th.hdf5".format(reg, tag), "r")
+    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "r")
     x = hdf[Type][orientation][filters[int(sys.argv[4])]]["nStar"]
     hdf.close()
 except OSError:
@@ -138,7 +138,7 @@ if run:
     img_dict = {}
 
     # Set mass limit
-    masslim = 700
+    masslim = 10**8
 
     z_str = tag.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
