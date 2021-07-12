@@ -150,7 +150,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     F = flare.filters.add_filters(filters, new_lam=model.lam)
     model.create_Lnu_grid(
         F)  # --- create new L grid for each filter. In units of erg/s/Hz
-
+    print(begin)
     for jj in range(len(begin)):
         print(jj)
 
