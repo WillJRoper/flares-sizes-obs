@@ -365,6 +365,67 @@ def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth, numThreads=1):
     return gsmooth_img
 
 
+def quartic_spline(q):
+
+    w = np.zeros_like(q)
+    okinds1 = q < 1 / 2
+    okinds2 = np.logical_and(1 / 2 <= q, q < 3 / 2)
+    okinds3 = np.logical_and(3 / 2 <= q, q < 5 / 2)
+
+    w[okinds1] = (5 / 2 - q[okinds1])**4 \
+                 - 5 * (3 / 2 - q[okinds1])**4 \
+                 + 10 * (1 / 2 - q[okinds1])**4
+    w[okinds2] = (5 / 2 - q[okinds2]) ** 4 \
+                 - 5 * (3 / 2 - q[okinds2]) ** 4
+    w[okinds3] = (5 / 2 - q[okinds3]) ** 4
+
+    return w
+
+
+def make_spline_img(pos, Ndim, i, j, tree, ls, smooth,
+                    spline_func=quartic_spline, spline_cut_off=5/2):
+
+    # Define 2D projected particle position array
+    part_pos = pos[:, (i, j)]
+
+    # Initialise the image array
+    smooth_img = np.zeros((Ndim, Ndim))
+
+    # Define x and y positions of pixels
+    X, Y = np.meshgrid(np.arange(0, Ndim, 1),
+                       np.arange(0, Ndim, 1))
+
+    # Define pixel position array for the KDTree
+    pix_pos = np.zeros((X.size, 2), dtype=int)
+    pix_pos[:, 0] = X.ravel()
+    pix_pos[:, 1] = Y.ravel()
+
+    # Define k constant for 3 dimensions
+    k3 = 7 / (478 * np.pi)
+    for ipos, l, sml in zip(part_pos, ls, smooth):
+
+        # Query the tree for this particle
+        dist, inds = tree.query(ipos, k=pos.shape[0],
+                                distance_upper_bound=spline_cut_off * sml)
+
+        if type(dist) is float:
+            continue
+
+        okinds = dist < spline_cut_off * sml
+        dist = dist[okinds]
+        inds = inds[okinds]
+
+        # Get the kernel
+        w = spline_func(dist / sml)
+
+        # Place the kernel for this particle within the img
+        kernel = k3 * w / sml**3
+        norm_kernel = kernel / np.sum(kernel)
+        smooth_img[pix_pos[inds, 0], pix_pos[inds, 1]] += l * norm_kernel
+
+    return smooth_img
+
+
 @nb.jit(nogil=True, parallel=True)
 def get_img_hlr(img, apertures, app_rs, res, csoft, radii_frac=0.5):
     # Apply the apertures

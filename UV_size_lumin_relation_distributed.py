@@ -17,7 +17,8 @@ import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 import phot_modules as phot
 import utilities as util
-from FLARE.photom import lum_to_M, M_to_lum
+from flare.photom import lum_to_M, M_to_lum
+from scipy.spatial import cKDTree
 import h5py
 import sys
 import time
@@ -168,7 +169,7 @@ if run:
     ini_width = 60
 
     # Compute the resolution
-    ini_res = ini_width / (csoft / 10)
+    ini_res = ini_width / csoft
     res = int(np.ceil(ini_res))
 
     # Compute the new width
@@ -181,6 +182,20 @@ if run:
     # Define range and extent for the images
     imgrange = ((-width / 2, width / 2), (-width / 2, width / 2))
     imgextent = [-width / 2, width / 2, -width / 2, width / 2]
+
+    # Define x and y positions of pixels
+    X, Y = np.meshgrid(np.linspace(imgrange[0][0], imgrange[0][1], res),
+                       np.linspace(imgrange[1][0], imgrange[1][1], res))
+
+    # Define pixel position array for the KDTree
+    pix_pos = np.zeros((X.size, 2))
+    pix_pos[:, 0] = X.ravel()
+    pix_pos[:, 1] = Y.ravel()
+
+    # Build KDTree
+    tree = cKDTree(pix_pos)
+
+    print("Pixel tree built")
 
     # Set up aperture objects
     positions = [(res / 2, res / 2)]
@@ -237,9 +252,8 @@ if run:
 
                 this_radii = util.calc_rad(this_pos, i=0, j=1)
 
-                img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
-                                         this_lumin,
-                                         this_smls)
+                img = util.make_spline_img(this_pos, res, 0, 1, tree,
+                                       this_lumin, this_smls)
 
             else:
 
@@ -251,9 +265,8 @@ if run:
 
                 this_radii = util.calc_rad(this_pos, i=2, j=0)
 
-                img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
-                                         this_lumin,
-                                         this_smls)
+                img = util.make_spline_img(this_pos, res, 2, 0, tree,
+                                           this_lumin, this_smls)
 
             for r in radii_fracs:
 
