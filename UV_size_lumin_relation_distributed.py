@@ -107,8 +107,6 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
-filters = (filters[int(sys.argv[4])], )
-print(filters)
 
 run = False
 
