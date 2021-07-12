@@ -163,6 +163,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
         if masslim != None:
             if np.sum(Masses) < masslim:
+                print(jj)
                 for f in filters:
                     Lums[f][begin[jj]: end[jj]] = np.nan
                 continue

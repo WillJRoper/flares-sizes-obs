@@ -152,7 +152,6 @@ if run:
     nstar_dict.setdefault(tag, {})
     img_dict.setdefault(tag, {})
 
-
     # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
     reg_dict = phot.get_lum(reg, kappa=0.0795, tag=tag, BC_fac=1,
                             IMF='Chabrier_300', bins=np.arange(-24, -16, 0.5),
