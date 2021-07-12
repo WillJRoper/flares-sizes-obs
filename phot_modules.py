@@ -115,6 +115,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     S_vels, G_vels, S_mass, cops, \
     begin, end, gbegin, gend = get_data(sim, tag, inp)
 
+    print("Got data, there are ", len(begin), "galaxies")
+
     Lums = {f: np.zeros(len(S_mass), dtype=np.float64) for f in filters}
 
     model = models.define_model(
@@ -568,7 +570,6 @@ def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
             extinction='default', orientation="sim", masslim=None):
 
     try:
-        print(filters)
         Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
                    filters=filters, Type=Type, log10t_BC=log10t_BC,
                    extinction=extinction, orientation=orientation,

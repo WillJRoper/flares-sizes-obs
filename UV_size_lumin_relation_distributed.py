@@ -159,6 +159,7 @@ if run:
                             inp='FLARES', LF=False, filters=filters, Type=Type,
                             log10t_BC=7., extinction=extinction,
                             orientation=orientation, masslim=masslim)
+    print("Got luminosities")
 
     if z <= 2.8:
         csoft = 0.000474390 / 0.6777 * 1e3
