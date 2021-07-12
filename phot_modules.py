@@ -118,7 +118,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     print("Got data, there are ", len(begin), "galaxies")
 
     Lums = {f: np.zeros(len(S_mass), dtype=np.float64) for f in filters}
-    print(begin)
+
     model = models.define_model(
         F'BPASSv2.2.1.binary/{IMF}')  # DEFINE SED GRID -
     if extinction == 'default':
@@ -142,16 +142,17 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         ValueError("Extinction type not recognised")
 
     z = float(tag[5:].replace('p', '.'))
-    print(begin)
+
     # Convert coordinates to physical
     S_coords = S_coords / (1 + z)
     G_coords = G_coords / (1 + z)
     cops = cops / (1 + z)
-    print(begin)
+
     # --- create rest-frame luminosities
     F = flare.filters.add_filters(filters, new_lam=model.lam)
+    print(F.filters)
     model.create_Lnu_grid(F)  # --- create new L grid for each filter. In units of erg/s/Hz
-    print(begin)
+
     for jj in range(len(begin)):
         print(jj)
 
