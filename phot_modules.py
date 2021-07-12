@@ -149,7 +149,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     cops = cops / (1 + z)
 
     # --- create rest-frame luminosities
-    print("WHY CANT WE GET HERE")
+    print("WHY CANT WE GET HERE", filters)
     F = flare.filters.add_filters(filters, new_lam=model.lam)
     print("WHY CANT WE GET HERE")
     print(F.filters)
