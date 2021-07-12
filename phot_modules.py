@@ -152,6 +152,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         F)  # --- create new L grid for each filter. In units of erg/s/Hz
 
     for jj in range(len(begin)):
+        print(jj)
 
         # Extract values for this galaxy
         Masses = S_mass_ini[begin[jj]: end[jj]]
