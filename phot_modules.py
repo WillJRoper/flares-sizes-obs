@@ -147,7 +147,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     cops = cops / (1 + z)
 
     # --- create rest-frame luminosities
-    F = FLARE.filters.add_filters(filters, new_lam=model.lam)
+    F = flare.filters.add_filters(filters, new_lam=model.lam)
     model.create_Lnu_grid(
         F)  # --- create new L grid for each filter. In units of erg/s/Hz
 
@@ -271,7 +271,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
 
 def flux(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300',
-         filters=FLARE.filters.NIRCam_W, Type='Total', log10t_BC=7.,
+         filters=flare.filters.NIRCam_W, Type='Total', log10t_BC=7.,
          extinction='default', orientation="sim"):
     kinp = np.load('/cosma/home/dp004/dc-rope1/cosma7/FLARES/'
                    'flares/los_extinction/kernel_sph-anarchy.npz',
@@ -310,9 +310,9 @@ def flux(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300',
         ValueError("Extinction type not recognised")
 
     z = float(tag[5:].replace('p', '.'))
-    F = FLARE.filters.add_filters(filters, new_lam=model.lam * (1. + z))
+    F = flare.filters.add_filters(filters, new_lam=model.lam * (1. + z))
 
-    cosmo = FLARE.default_cosmo()
+    cosmo = flare.default_cosmo()
 
     # --- create new Fnu grid for each filter. In units of nJy/M_sol
     model.create_Fnu_grid(F, z, cosmo)
@@ -634,7 +634,7 @@ def get_lum_all(kappa, tag, BC_fac, IMF='Chabrier_300',
 
 
 def get_flux(sim, kappa, tag, BC_fac, IMF='Chabrier_300', inp='FLARES',
-             filters=FLARE.filters.NIRCam, Type='Total', log10t_BC=7.,
+             filters=flare.filters.NIRCam, Type='Total', log10t_BC=7.,
              extinction='default', orientation="sim"):
     try:
         Fnus = flux(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp,
@@ -649,7 +649,7 @@ def get_flux(sim, kappa, tag, BC_fac, IMF='Chabrier_300', inp='FLARES',
 
 
 def get_flux_all(kappa, tag, BC_fac, IMF='Chabrier_300', inp='FLARES',
-                 filters=FLARE.filters.NIRCam, Type='Total', log10t_BC=7.,
+                 filters=flare.filters.NIRCam, Type='Total', log10t_BC=7.,
                  extinction='default', orientation="sim", numThreads=8):
     print(f"Getting fluxes for tag {tag} with kappa={kappa}")
 
