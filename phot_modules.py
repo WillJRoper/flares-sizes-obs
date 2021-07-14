@@ -154,7 +154,6 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     F = flare.filters.add_filters(filters, new_lam=model.lam)
     model.create_Lnu_grid(F)  # --- create new L grid for each filter. In units of erg/s/Hz
     for jj in range(len(begin)):
-        print(jj)
 
         # Extract values for this galaxy
         Masses = S_mass_ini[begin[jj]: end[jj]]
@@ -166,7 +165,6 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
         if masslim != None:
             if np.sum(Masses) < masslim:
-                print(jj)
                 for f in filters:
                     Lums[f][begin[jj]: end[jj]] = np.nan
                 continue
