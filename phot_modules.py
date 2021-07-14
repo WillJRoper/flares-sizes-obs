@@ -9,6 +9,8 @@ import sys
 import numpy as np
 import pandas as pd
 
+os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
+
 sys.path.insert(0, os.path.abspath(
     os.path.join(os.path.dirname("__file__"), '..')))
 from functools import partial
@@ -570,7 +572,7 @@ def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
             bins=np.arange(-24, -16, 0.5), inp='FLARES', LF=True,
             filters=('FAKE.TH.FUV', ), Type='Total', log10t_BC=7.,
             extinction='default', orientation="sim", masslim=None):
-    
+
     Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
                filters=filters, Type=Type, log10t_BC=log10t_BC,
                extinction=extinction, orientation=orientation,
