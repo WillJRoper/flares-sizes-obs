@@ -99,7 +99,7 @@ for num, (reg, snap) in enumerate(reg_snaps):
         type_group = hdf[Type]
         orientation_group = type_group[orientation]
     except KeyError as e:
-        print(e)
+        print(reg, snap, e)
         continue
 
     hlr_dict.setdefault(snap, {})
@@ -152,12 +152,14 @@ for f in filters:
 
         z_str = snap.split('z')[1].split('p')
         z = float(z_str[0] + '.' + z_str[1])
-
-        hlrs = np.array(hlr_dict[snap][f])
-        hlrs_app = np.array(hlr_app_dict[snap][f])
-        hlrs_pix = np.array(hlr_pix_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
-        mass = np.array(mass_dict[snap][f])
+        if snap in hlr_dict:
+            hlrs = np.array(hlr_dict[snap][f])
+            hlrs_app = np.array(hlr_app_dict[snap][f])
+            hlrs_pix = np.array(hlr_pix_dict[snap][f])
+            lumins = np.array(lumin_dict[snap][f])
+            mass = np.array(mass_dict[snap][f])
+        else:
+            continue
 
         okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
                                 np.logical_and(lumins > M_to_lum(-12),
