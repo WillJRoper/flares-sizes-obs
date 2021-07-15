@@ -1,19 +1,10 @@
 #!/cosma/home/dp004/dc-rope1/.conda/envs/flares-env/bin/python
 import os
 import warnings
-
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 from photutils import CircularAperture
-
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
-
-matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
-from matplotlib.colors import LogNorm
-import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 import phot_modules as phot
 import utilities as util
@@ -21,10 +12,6 @@ from flare.photom import lum_to_M, M_to_lum
 from scipy.spatial import cKDTree
 import h5py
 import sys
-import time
-
-sns.set_context("paper")
-sns.set_style('whitegrid')
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
@@ -109,9 +96,13 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 run = False
+hdf = h5py.File("mock_data/flares_segm_{}_{}_{}_{}_{}.hdf5"
+                .format(reg, tag, Type, orientation, f), "w")
+print("Creating File...")
 
 try:
-    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "r")
+    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(
+        reg, tag, Type, orientation), "r")
     x = hdf[Type][orientation][filters[int(sys.argv[4])]]["nStar"]
     hdf.close()
 except OSError:
@@ -305,22 +296,9 @@ if run:
 
         print("There are", len(img_dict[tag][f]), "images")
 
-    try:
-        hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "r+")
-    except OSError:
-        hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, tag), "w")
-
-    try:
-        type_group = hdf[Type]
-    except KeyError:
-        print(Type, "Doesn't exists: Creating...")
-        type_group = hdf.create_group(Type)
-
-    try:
-        orientation_group = type_group[orientation]
-    except KeyError:
-        print(orientation, "Doesn't exists: Creating...")
-        orientation_group = type_group.create_group(orientation)
+    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
+                                                                orientation),
+                    "w")
 
     for f in filters:
 
@@ -332,11 +310,7 @@ if run:
 
         print(imgs.shape)
 
-        try:
-            f_group = orientation_group[f]
-        except KeyError:
-            print(f, "Doesn't exists: Creating...")
-            f_group = orientation_group.create_group(f)
+        f_group = hdf.create_group(f)
 
         try:
             dset = f_group.create_dataset("Luminosity", data=lumins,
