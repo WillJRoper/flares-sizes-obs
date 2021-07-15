@@ -23,8 +23,8 @@ i=$(($SLURM_ARRAY_TASK_ID - 1))
 # Run the program
 ./UV_size_lumin_relation_distributed.py $i sim Total
 ./UV_size_lumin_relation_distributed.py $i sim Intrinsic
-./UV_size_lumin_relation_distributed.py $i face-on Total
-./UV_size_lumin_relation_distributed.py $i face-on Intrinsic
+#./UV_size_lumin_relation_distributed.py $i face-on Total
+#./UV_size_lumin_relation_distributed.py $i face-on Intrinsic
 
 source deactivate
 
