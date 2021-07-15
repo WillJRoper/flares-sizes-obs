@@ -12,7 +12,7 @@ matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
 from matplotlib.colors import LogNorm
-from FLARE.photom import M_to_lum
+from flare.photom import M_to_lum
 import h5py
 import sys
 import pandas as pd

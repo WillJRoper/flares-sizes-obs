@@ -16,8 +16,8 @@ import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
-from FLARE.photom import lum_to_M, M_to_lum
-import FLARE.photom as photconv
+from flare.photom import lum_to_M, M_to_lum
+import flare.photom as photconv
 import h5py
 import sys
 import pandas as pd
