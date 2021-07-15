@@ -96,9 +96,6 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 run = False
-hdf = h5py.File("mock_data/flares_segm_{}_{}_{}_{}_{}.hdf5"
-                .format(reg, tag, Type, orientation, f), "w")
-print("Creating File...")
 
 try:
     hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(
