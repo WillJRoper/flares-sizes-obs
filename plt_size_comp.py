@@ -95,8 +95,12 @@ for reg in reversed(regions):
 for num, (reg, snap) in enumerate(reg_snaps):
 
     hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, snap), "r")
-    type_group = hdf[Type]
-    orientation_group = type_group[orientation]
+    try:
+        type_group = hdf[Type]
+        orientation_group = type_group[orientation]
+    except KeyError as e:
+        print(e)
+        continue
 
     hlr_dict.setdefault(snap, {})
     hlr_app_dict.setdefault(snap, {})
