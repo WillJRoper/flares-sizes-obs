@@ -174,7 +174,7 @@ snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
          '009_z006p000', '010_z005p000', '011_z004p770']
 
 # Define filter
-filters = ('FAKE.TH.FUV', )
+filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -530,7 +530,7 @@ for f in filters:
         ax.fill_between(plt_z, intr_hlr_16_pix, intr_hlr_84_pix, color="r", alpha=0.4)
         ax.plot(plt_z, intr_hlr_med_pix, color="r", marker="D", linestyle="--")
         legend_elements.append(
-            Line2D([0], [0], color="B", linestyle="--", label="Intrinsic"))
+            Line2D([0], [0], color="b", linestyle="--", label="Intrinsic"))
 
         ax.fill_between(plt_z, hlr_16_pix, hlr_84_pix, color="g", alpha=0.4)
         ax.plot(plt_z, hlr_med_pix, color="g", marker="^", linestyle="-")

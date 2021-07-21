@@ -56,7 +56,7 @@ else:
     snaps = sys.argv[3]
 
 # Define filter
-filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
+filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
