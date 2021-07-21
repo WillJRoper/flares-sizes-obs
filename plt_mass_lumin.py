@@ -111,7 +111,7 @@ for reg, snap in reg_snaps:
     hdf.close()
 
 # Set mass limit
-masslim = 10 ** 8
+masslim = 10 ** 9
 
 for f in filters:
 
