@@ -94,7 +94,6 @@ for reg, snap in reg_snaps:
         weight_dict[snap].setdefault(f, [])
 
         masses = hdf[f]["Mass"][...]
-        print(masses.size)
         okinds = masses > masslim
 
         print(reg, snap, f, masses[okinds].size)
@@ -138,6 +137,8 @@ for f in filters:
         fig = plt.figure()
         ax = fig.add_subplot(111)
         try:
+            print(len(mass[okinds1]), len(lumins[okinds1]), len(w[okinds1]))
+            print(len(mass[okinds2]), len(lumins[okinds2]), len(w[okinds2]))
             cbar = ax.hexbin(mass[okinds1], lumins[okinds1],
                              gridsize=50, mincnt=1, C=w[okinds1],
                              reduce_C_function=np.sum,
