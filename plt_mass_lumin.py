@@ -94,6 +94,7 @@ for reg, snap in reg_snaps:
         weight_dict[snap].setdefault(f, [])
 
         masses = hdf[f]["Mass"][...]
+        print(masses.size)
         okinds = masses > masslim
 
         print(reg, snap, f, masses[okinds].size)
@@ -129,6 +130,7 @@ for f in filters:
         lumins = np.array(lumin_dict[snap][f])
         nstar = np.array(nstar_dict[snap][f])
         w = np.array(weight_dict[snap][f])
+        print(len(mass), len(lumins), len(w))
 
         okinds1 = mass < masslim
         okinds2 = mass >= masslim
