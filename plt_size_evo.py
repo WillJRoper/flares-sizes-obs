@@ -220,9 +220,9 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
-    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, snap), "r")
-    type_group = hdf["Total"]
-    orientation_group = type_group[orientation]
+    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
+                                                                orientation),
+                    "r")
 
     hlr_dict.setdefault(snap, {})
     hlr_app_dict.setdefault(snap, {})
@@ -237,23 +237,24 @@ for reg, snap in reg_snaps:
         lumin_dict[snap].setdefault(f, [])
         weight_dict[snap].setdefault(f, [])
 
-        masses = orientation_group[f]["Mass"][...]
-        okinds = orientation_group[f]["nStar"][...] > nlim
+        masses = hdf[f]["Mass"][...]
+        okinds = hdf[f]["nStar"][...] > nlim
 
         print(reg, snap, f, masses[okinds].size)
 
-        hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...][okinds])
-        hlr_app_dict[snap][f].extend(
-            orientation_group[f]["HLR_Aperture_0.5"][...][okinds])
-        hlr_pix_dict[snap][f].extend(
-            orientation_group[f]["HLR_Pixel_0.5"][...][okinds])
-        lumin_dict[snap][f].extend(
-            orientation_group[f]["Luminosity"][...][okinds])
+        hlr_dict[snap][f].extend(hdf[f]["HLR_0.5"][...][okinds])
+        hlr_app_dict[snap][f].extend(hdf[f]["HLR_Aperture_0.5"][...][okinds])
+        hlr_pix_dict[snap][f].extend(hdf[f]["HLR_Pixel_0.5"][...][okinds])
+        lumin_dict[snap][f].extend(hdf[f]["Luminosity"][...][okinds])
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 
-    type_group = hdf["Intrinsic"]
-    orientation_group = type_group[orientation]
+    hdf.close()
+
+    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap,
+                                                                "Intrinsic",
+                                                                orientation),
+                    "r")
 
     intr_hlr_dict.setdefault(snap, {})
     intr_hlr_app_dict.setdefault(snap, {})
@@ -268,18 +269,18 @@ for reg, snap in reg_snaps:
         intr_lumin_dict[snap].setdefault(f, [])
         intr_weight_dict[snap].setdefault(f, [])
 
-        masses = orientation_group[f]["Mass"][...]
-        okinds = orientation_group[f]["nStar"][...] > nlim
+        masses = hdf[f]["Mass"][...]
+        okinds = hdf[f]["nStar"][...] > nlim
 
         print(reg, snap, f, masses[okinds].size)
 
-        intr_hlr_dict[snap][f].extend(orientation_group[f]["HLR_0.5"][...][okinds])
+        intr_hlr_dict[snap][f].extend(hdf[f]["HLR_0.5"][...][okinds])
         intr_hlr_app_dict[snap][f].extend(
-            orientation_group[f]["HLR_Aperture_0.5"][...][okinds])
+            hdf[f]["HLR_Aperture_0.5"][...][okinds])
         intr_hlr_pix_dict[snap][f].extend(
-            orientation_group[f]["HLR_Pixel_0.5"][...][okinds])
+            hdf[f]["HLR_Pixel_0.5"][...][okinds])
         intr_lumin_dict[snap][f].extend(
-            orientation_group[f]["Luminosity"][...][okinds])
+            hdf[f]["Luminosity"][...][okinds])
         intr_weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 

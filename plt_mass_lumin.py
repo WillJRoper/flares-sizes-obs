@@ -78,9 +78,9 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
-    hdf = h5py.File("data/flares_sizes_{}_{}.hdf5".format(reg, snap), "r")
-    type_group = hdf[Type]
-    orientation_group = type_group[orientation]
+    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
+                                                                orientation),
+                    "r")
 
     lumin_dict.setdefault(snap, {})
     mass_dict.setdefault(snap, {})
@@ -94,16 +94,16 @@ for reg, snap in reg_snaps:
         nstar_dict[snap].setdefault(f, [])
         weight_dict[snap].setdefault(f, [])
 
-        masses = orientation_group[f]["Mass"][...]
+        masses = hdf[f]["Mass"][...]
         okinds = masses > masslim
 
         print(reg, snap, f, masses[okinds].size)
 
         lumin_dict[snap][f].extend(
-            orientation_group[f]["Luminosity"][...][okinds])
+            hdf[f]["Luminosity"][...][okinds])
         mass_dict[snap][f].extend(masses[okinds])
         try:
-            nstar_dict[snap][f].extend(orientation_group[f]["nStar"][...])
+            nstar_dict[snap][f].extend(hdf[f]["nStar"][...])
         except KeyError:
             continue
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
