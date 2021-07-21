@@ -35,8 +35,7 @@ else:
     snaps = sys.argv[3]
 
 # Define filter
-# filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV')
-filters = ('FAKE.TH.FUV',)
+filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -111,7 +110,8 @@ for reg, snap in reg_snaps:
 
     hdf.close()
 
-nlim = 700
+# Set mass limit
+masslim = 10 ** 8
 
 for f in filters:
 
@@ -130,8 +130,8 @@ for f in filters:
         nstar = np.array(nstar_dict[snap][f])
         w = np.array(weight_dict[snap][f])
 
-        okinds1 = nstar < nlim
-        okinds2 = nstar >= nlim
+        okinds1 = mass < masslim
+        okinds2 = mass >= masslim
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
