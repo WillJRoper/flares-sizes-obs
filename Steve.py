@@ -59,6 +59,9 @@ for ax in [ax1, ax2, ax3, ax4]:
     ax.set_ylim(0.5, 10 ** 4)
     ax.set_xlim(0.5, 10 ** 4)
 
+    ax.set_ylabel("$SFR_{\mathrm{inst}} / [M_\odot / \mathrm{yr}]$")
+    ax.set_xlabel("$SFR_{10} / [M_\odot / \mathrm{yr}]$")
+
 sinds = np.argsort(smass)
 im = ax1.scatter(sfr_10[sinds], sfr_inst[sinds], c=smass[sinds], marker="o", s=4, cmap=cmr.apple,
             norm=LogNorm())
