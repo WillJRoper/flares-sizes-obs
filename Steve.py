@@ -88,13 +88,13 @@ cbaxes = ax3.inset_axes([0.05, 0.95, 0.25, 0.015])
 cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
 cbar.ax.set_xlabel(r"$Z_\star$")
 
-sinds = np.argsort(gasZ)
-im = ax4.scatter(sfr_10[sinds], sfr_inst[sinds], c=gasZ[sinds], marker="o", s=4, cmap=cmr.cosmic,
+sinds = np.argsort(starZ / gasZ)
+im = ax4.scatter(sfr_10[sinds], sfr_inst[sinds], c=(starZ / gasZ)[sinds], marker="o", s=4, cmap=cmr.cosmic,
             norm=LogNorm())
 
 cbaxes = ax4.inset_axes([0.05, 0.95, 0.25, 0.015])
 cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
-cbar.ax.set_xlabel(r"$Z_\mathrm{Gas}$")
+cbar.ax.set_xlabel(r"$Z_\star / Z_\mathrm{Gas}$")
 
 fig.savefig("plots/sfr_comp.png", bbox_inches="tight")
 
