@@ -78,14 +78,16 @@ labels = ["Central", "Satellite"]
 cbar.ax.set_xticklabels(labels)
 
 sinds = np.argsort(starZ)
-im = ax3.scatter(sfr_10[sinds], sfr_inst[sinds], c=starZ[sinds], marker="o", s=4, cmap=cmr.amethyst)
+im = ax3.scatter(sfr_10[sinds], sfr_inst[sinds], c=starZ[sinds], marker="o", s=4, cmap=cmr.amethyst,
+            norm=LogNorm())
 
 cbaxes = ax3.inset_axes([0.05, 0.95, 0.25, 0.015])
 cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
 cbar.ax.set_xlabel(r"$Z_\star$")
 
 sinds = np.argsort(gasZ)
-im = ax4.scatter(sfr_10[sinds], sfr_inst[sinds], c=gasZ[sinds], marker="o", s=4, cmap=cmr.cosmic)
+im = ax4.scatter(sfr_10[sinds], sfr_inst[sinds], c=gasZ[sinds], marker="o", s=4, cmap=cmr.cosmic,
+            norm=LogNorm())
 
 cbaxes = ax4.inset_axes([0.05, 0.95, 0.25, 0.015])
 cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
