@@ -60,15 +60,36 @@ for ax in [ax1, ax2, ax3, ax4]:
     ax.set_xlim(1, 10 ** 4)
 
 sinds = np.argsort(smass)
-ax1.scatter(sfr_10[sinds], sfr_inst[sinds], c=smass[sinds], marker="o", s=4, cmap=cmr.apple,
+im = ax1.scatter(sfr_10[sinds], sfr_inst[sinds], c=smass[sinds], marker="o", s=4, cmap=cmr.apple,
             norm=LogNorm())
+
+cbaxes = ax1.inset_axes([0.05, 0.95, 0.25, 0.015])
+cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
+cbar.ax.set_xlabel(r"$ M_\star/ M_\odot$")
+
 sinds = np.argsort(cent_sat)
 ax2.scatter(sfr_10[sinds], sfr_inst[sinds], c=cent_sat[sinds], marker="o", s=4, cmap="bwr",
             vmin=0, vmax=1)
+
+cbaxes = ax1.inset_axes([0.05, 0.95, 0.25, 0.015])
+cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
+cbar.set_ticks([0, 1])
+labels = ["Central", "Satellite"]
+cbar.ax.set_xticklabels(labels)
+
 sinds = np.argsort(starZ)
 ax3.scatter(sfr_10[sinds], sfr_inst[sinds], c=starZ[sinds], marker="o", s=4, cmap=cmr.amethyst)
+
+cbaxes = ax1.inset_axes([0.05, 0.95, 0.25, 0.015])
+cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
+cbar.ax.set_xlabel(r"$Z_\star$")
+
 sinds = np.argsort(gasZ)
 ax4.scatter(sfr_10[sinds], sfr_inst[sinds], c=gasZ[sinds], marker="o", s=4, cmap=cmr.cosmic)
+
+cbaxes = ax1.inset_axes([0.05, 0.95, 0.25, 0.015])
+cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
+cbar.ax.set_xlabel(r"$Z_\mathrm{Gas}$")
 
 fig.savefig("plots/sfr_comp.png", bbox_inches="tight")
 
