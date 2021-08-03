@@ -37,7 +37,7 @@ for reg in hdf.keys():
         sfr_inst.extend(hdf[reg][snap]["Galaxy"]["SFR_inst_30"][...])
         cent_sat.extend(hdf[reg][snap]["Galaxy"]["SubGroupNumber"][...])
         smass.extend(hdf[reg][snap]["Galaxy"]["Mstar_30"][...] * 10**10)
-        starZ.extend(hdf[reg][snap]["Galaxy"]["Metallicity"]["MassWeightedStellarZ "][...])
+        starZ.extend(hdf[reg][snap]["Galaxy"]["Metallicity"]["MassWeightedStellarZ"][...])
         gasZ.extend(hdf[reg][snap]["Galaxy"]["Metallicity"]["MassWeightedGasZ"][...])
 
 cent_sat = np.array(cent_sat)
