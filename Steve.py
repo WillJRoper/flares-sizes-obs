@@ -51,8 +51,8 @@ ax4 = fig.add_subplot(224)
 
 for ax in [ax1, ax2, ax3, ax4]:
     ax.loglog()
-    ax1.set_ylim(1, 10**3.1)
-    ax1.set_xlim(1, 10 ** 3.1)
+    ax.set_ylim(1, 10 ** 4)
+    ax.set_xlim(1, 10 ** 4)
 
 ax1.scatter(sfr_10, sfr_inst, c=smass, marker="o", cmap=cmr.apple,
             norm=LogNorm())
