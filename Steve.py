@@ -56,8 +56,8 @@ ax4 = fig.add_subplot(224)
 
 for ax in [ax1, ax2, ax3, ax4]:
     ax.loglog()
-    ax.set_ylim(1, 10 ** 4)
-    ax.set_xlim(1, 10 ** 4)
+    ax.set_ylim(0.5, 10 ** 4)
+    ax.set_xlim(0.5, 10 ** 4)
 
 sinds = np.argsort(smass)
 im = ax1.scatter(sfr_10[sinds], sfr_inst[sinds], c=smass[sinds], marker="o", s=4, cmap=cmr.apple,
@@ -68,7 +68,7 @@ cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
 cbar.ax.set_xlabel(r"$ M_\star/ M_\odot$")
 
 sinds = np.argsort(cent_sat)
-ax2.scatter(sfr_10[sinds], sfr_inst[sinds], c=cent_sat[sinds], marker="o", s=4, cmap="bwr",
+im = ax2.scatter(sfr_10[sinds], sfr_inst[sinds], c=cent_sat[sinds], marker="o", s=4, cmap="bwr",
             vmin=0, vmax=1)
 
 cbaxes = ax2.inset_axes([0.05, 0.95, 0.25, 0.015])
@@ -78,14 +78,14 @@ labels = ["Central", "Satellite"]
 cbar.ax.set_xticklabels(labels)
 
 sinds = np.argsort(starZ)
-ax3.scatter(sfr_10[sinds], sfr_inst[sinds], c=starZ[sinds], marker="o", s=4, cmap=cmr.amethyst)
+im = ax3.scatter(sfr_10[sinds], sfr_inst[sinds], c=starZ[sinds], marker="o", s=4, cmap=cmr.amethyst)
 
 cbaxes = ax3.inset_axes([0.05, 0.95, 0.25, 0.015])
 cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
 cbar.ax.set_xlabel(r"$Z_\star$")
 
 sinds = np.argsort(gasZ)
-ax4.scatter(sfr_10[sinds], sfr_inst[sinds], c=gasZ[sinds], marker="o", s=4, cmap=cmr.cosmic)
+im = ax4.scatter(sfr_10[sinds], sfr_inst[sinds], c=gasZ[sinds], marker="o", s=4, cmap=cmr.cosmic)
 
 cbaxes = ax4.inset_axes([0.05, 0.95, 0.25, 0.015])
 cbar = plt.colorbar(im, cax=cbaxes, orientation="horizontal")
