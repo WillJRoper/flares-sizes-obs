@@ -53,7 +53,7 @@ for ax in [ax1, ax2, ax3, ax4]:
     ax.loglog()
 
 ax1.scatter(sfr_10, sfr_inst, c=smass, marker="o", cmap=cmr.apple,
-            norm=LogNorm)
+            norm=LogNorm())
 ax2.scatter(sfr_10, sfr_inst, c=cent_sat, marker="o", cmap="bwr",
             vmin=0, vmax=1)
 ax3.scatter(sfr_10, sfr_inst, c=starZ, marker="o", cmap=cmr.amethyst)
