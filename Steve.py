@@ -54,12 +54,16 @@ for ax in [ax1, ax2, ax3, ax4]:
     ax.set_ylim(1, 10 ** 4)
     ax.set_xlim(1, 10 ** 4)
 
-ax1.scatter(sfr_10, sfr_inst, c=smass, marker="o", cmap=cmr.apple,
+sinds = np.argsort(smass)
+ax1.scatter(sfr_10[sinds], sfr_inst[sinds], c=smass[sinds], marker="o", s=4, cmap=cmr.apple,
             norm=LogNorm())
-ax2.scatter(sfr_10, sfr_inst, c=cent_sat, marker="o", cmap="bwr",
+sinds = np.argsort(cent_sat)
+ax2.scatter(sfr_10[sinds], sfr_inst[sinds], c=cent_sat[sinds], marker="o", s=4, cmap="bwr",
             vmin=0, vmax=1)
-ax3.scatter(sfr_10, sfr_inst, c=starZ, marker="o", cmap=cmr.amethyst)
-ax4.scatter(sfr_10, sfr_inst, c=gasZ, marker="o", cmap=cmr.cosmic)
+sinds = np.argsort(starZ)
+ax3.scatter(sfr_10[sinds], sfr_inst[sinds], c=starZ[sinds], marker="o", s=4, cmap=cmr.amethyst)
+sinds = np.argsort(gasZ)
+ax4.scatter(sfr_10[sinds], sfr_inst[sinds], c=gasZ[sinds], marker="o", s=4, cmap=cmr.cosmic)
 
 fig.savefig("plots/sfr_comp.png", bbox_inches="tight")
 
