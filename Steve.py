@@ -40,7 +40,12 @@ for reg in hdf.keys():
         starZ.extend(hdf[reg][snap]["Galaxy"]["Metallicity"]["MassWeightedStellarZ"][...])
         gasZ.extend(hdf[reg][snap]["Galaxy"]["Metallicity"]["MassWeightedGasZ"][...])
 
+sfr_10 = np.array(sfr_10)
+sfr_inst = np.array(sfr_inst)
 cent_sat = np.array(cent_sat)
+smass = np.array(smass)
+starZ = np.array(starZ)
+gasZ = np.array(gasZ)
 cent_sat[cent_sat > 0] = 1
 
 fig = plt.figure()
