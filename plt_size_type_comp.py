@@ -247,7 +247,7 @@ for f in filters:
 
         # Label axes
         ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
-        ax.set_ylabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
+        ax.set_ylabel('$R_{1/2, \mathrm{pix}}/ [pkpc]$')
 
         fig.savefig(
             'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
