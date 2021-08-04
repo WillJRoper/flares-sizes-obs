@@ -149,7 +149,7 @@ for reg in regions:
                     if ind > -1:
                         axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic, norm=norm)
                     else:
-                        axes[i, j].imshow(np.zeros_like(this_imgs[0, :, :]),
+                        axes[i, j].imshow(np.zeros_like(imgs[0, :, :]),
                                           cmap=cmr.cosmic, norm=norm)
 
                     string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(this_mass[ind]) + "\n" \
