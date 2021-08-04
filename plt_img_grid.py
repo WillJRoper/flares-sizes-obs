@@ -100,7 +100,7 @@ for f in filters:
     norm = cm.Normalize(vmin=np.percentile(imgs, 33.175),
                         vmax=np.percentile(imgs, 99))
 
-    print(np.percentile(imgs, 33.175), np.percentile(imgs, 99))
+    print(np.percentile(imgs, 50), np.percentile(imgs, 99))
 
     dpi = 1080
     fig = plt.figure(figsize=(4, 4), dpi=dpi)
