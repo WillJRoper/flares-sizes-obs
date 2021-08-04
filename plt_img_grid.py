@@ -97,7 +97,8 @@ for f in filters:
     lumins = np.array(lumin_dict[f])
     mass = np.array(mass_dict[f])
 
-    fig = plt.figure(figsize=(6, 6))
+    dpi = imgs.shape[-1]
+    fig = plt.figure(figsize=(4, 4), dpi=dpi)
     gs = gridspec.GridSpec(4, 4)
     gs.update(wspace=0.0, hspace=0.0)
     axes = np.empty((4, 4), dtype=object)
@@ -136,5 +137,5 @@ for f in filters:
     fig.savefig(
         'plots/' + str(z) + '/ImgGrid_' + f + '_' + str(z) + '_'
         + orientation + '_' + Type + "_" + extinction + ".png",
-        bbox_inches='tight')
+        bbox_inches='tight', dpi=fig.dpi)
     plt.close(fig)
