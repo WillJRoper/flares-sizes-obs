@@ -239,7 +239,7 @@ for f in filters:
         axis_to_data = ax.transAxes + ax.transData.inverted()
         left = axis_to_data.transform((0, 0))
         right = axis_to_data.transform((1, 1))
-        ax.plot((left[0], right[0]), (left[1], right[1]),
+        ax.plot((np.min(left), np.max(right)), (np.min(left), np.max(right)),
                 color="k", linestyle="--")
 
         # Label axes
