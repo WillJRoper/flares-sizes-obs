@@ -114,13 +114,13 @@ for f in filters:
             axes[i, j].tick_params(axis='y', left=False, right=False,
                                    labelleft=False, labelright=False)
 
-    for i in range(4):
+    for j in range(4):
         okinds = np.logical_and(mass >= bins[i], mass < bins[i + 1])
         this_imgs = imgs[okinds, :, :]
         this_mass = mass[okinds]
         this_lumin = lumins[okinds]
         this_hlrs = hlrs_pix[okinds]
-        for j in range(4):
+        for i in range(4):
             ind = np.random.choice(this_mass.size)
 
             axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic)
@@ -129,9 +129,9 @@ for f in filters:
                      + r"$\log_{10}\left(L_{"+ f.split(".")[-1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f" % np.log10(this_lumin[ind]) + "\n" \
                      + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
 
-            axes[i, j].text(0.1, 0.065, string,
+            axes[i, j].text(0.1, 0.3, string,
                             transform=axes[i, j].transAxes, verticalalignment="top",
-                            horizontalalignment='center', fontsize=5, color="w")
+                            horizontalalignment='center', fontsize=1, color="w")
 
 
     fig.savefig(
