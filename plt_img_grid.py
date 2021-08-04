@@ -97,8 +97,8 @@ for f in filters:
     lumins = np.array(lumin_dict[f])
     mass = np.array(mass_dict[f])
 
-    norm = cm.Normalize(vmin=np.percentile(imgs, 33.175),
-                        vmax=1e+26)
+    norm = cm.Normalize(vmin=np.percentile(imgs[imgs > 0], 33.175),
+                        vmax=np.percentile(imgs[imgs > 0], 99))
 
     print(np.min(imgs[imgs > 0]), np.percentile(imgs[imgs > 0], 33.175), np.percentile(imgs[imgs > 0], 50), np.percentile(imgs[imgs > 0], 99))
 
