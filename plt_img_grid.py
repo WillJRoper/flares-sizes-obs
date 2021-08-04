@@ -98,7 +98,8 @@ for f in filters:
     mass = np.array(mass_dict[f])
 
     norm = cm.Normalize(vmin=np.percentile(imgs[imgs > 0], 33.175),
-                        vmax=np.percentile(imgs[imgs > 0], 99))
+                        vmax=np.percentile(imgs[imgs > 0], 99),
+                        clip=True)
 
     print(np.min(imgs[imgs > 0]), np.percentile(imgs[imgs > 0], 33.175), np.percentile(imgs[imgs > 0], 50), np.percentile(imgs[imgs > 0], 99))
 
