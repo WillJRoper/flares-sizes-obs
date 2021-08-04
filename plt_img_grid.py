@@ -125,13 +125,13 @@ for f in filters:
 
             axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic)
 
-            string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f \n" % np.log10(this_mass[ind]) \
-                     + r"$\log_{10}\left(L_{"+ f.split(".")[-1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f \n" % np.log10(this_lumin[ind]) \
+            string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(this_mass[ind]) + "\n" \
+                     + r"$\log_{10}\left(L_{"+ f.split(".")[-1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f" % np.log10(this_lumin[ind]) + "\n" \
                      + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
 
             axes[i, j].text(0.1, 0.065, string,
                             transform=axes[i, j].transAxes, verticalalignment="top",
-                            horizontalalignment='center', fontsize=1, color="w")
+                            horizontalalignment='center', fontsize=5, color="w")
 
 
     fig.savefig(
