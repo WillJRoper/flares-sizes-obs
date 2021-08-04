@@ -148,17 +148,23 @@ for reg in regions:
                     # pltimg[this_imgs[ind, :, :] > 0] = np.log10(this_imgs[ind, :, :][this_imgs[ind, :, :] > 0])
                     if ind > -1:
                         axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic, norm=norm)
+
+                        string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(
+                            this_mass[ind]) + "\n" \
+                                 + r"$\log_{10}\left(L_{" + f.split(".")[
+                                     -1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f" % np.log10(
+                            this_lumin[ind]) + "\n" \
+                                 + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % \
+                                 this_hlrs[ind]
+
+                        axes[i, j].text(0.05, 0.95, string,
+                                        transform=axes[i, j].transAxes,
+                                        verticalalignment="top",
+                                        horizontalalignment='left', fontsize=2,
+                                        color="w")
                     else:
                         axes[i, j].imshow(np.zeros_like(imgs[0, :, :]),
                                           cmap=cmr.cosmic, norm=norm)
-
-                    string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(this_mass[ind]) + "\n" \
-                             + r"$\log_{10}\left(L_{"+ f.split(".")[-1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f" % np.log10(this_lumin[ind]) + "\n" \
-                             + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
-
-                    axes[i, j].text(0.05, 0.95, string,
-                                    transform=axes[i, j].transAxes, verticalalignment="top",
-                                    horizontalalignment='left', fontsize=2, color="w")
 
 
             fig.savefig(
