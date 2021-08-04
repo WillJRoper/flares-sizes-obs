@@ -239,9 +239,11 @@ for f in filters:
         min = np.min((ax.get_xlim(), ax.get_ylim()))
         max = np.max((ax.get_xlim(), ax.get_ylim()))
 
-
         ax.plot([min, max], [min, max], color='k', linestyle="--",
                 transform=ax.transAxes)
+        
+        ax.set_xlim([min, max])
+        ax.set_ylim([min, max])
 
         # Label axes
         ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
