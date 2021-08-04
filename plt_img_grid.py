@@ -117,7 +117,7 @@ for reg in regions:
             gs = gridspec.GridSpec(4, 4)
             gs.update(wspace=0.0, hspace=0.0)
             axes = np.empty((4, 4), dtype=object)
-            bins = [10**8, 10**9, 10**9.5, 10**10, np.inf]
+            bins = [10**9, 10**9.5, 10**10, 10**10.5, np.inf]
             for i in range(4):
                 for j in range(4):
                     axes[i, j] = fig.add_subplot(gs[i, j])
@@ -158,6 +158,6 @@ for reg in regions:
             fig.savefig(
                 'plots/Image_grids/ImgGrid_' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + '_' + Type
-                + "_" + extinction + ".png",
+                + "_" + extinction + ".png".replace(".", "p"),
                 bbox_inches='tight', dpi=fig.dpi)
             plt.close(fig)
