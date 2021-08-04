@@ -49,19 +49,10 @@ orientation = sys.argv[1]
 Type = sys.argv[2]
 extinction = 'default'
 
-if sys.argv[3] == "All":
-    snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
-             '006_z009p000', '007_z008p000', '008_z007p000',
-             '009_z006p000', '010_z005p000', '011_z004p770']
-else:
-    snaps = sys.argv[3]
-
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 csoft = 0.001802390 / (0.6777) * 1e3
-
-masslim = 10 ** float(sys.argv[4])
 
 imgs_dict = {}
 hlr_pix_dict = {}
