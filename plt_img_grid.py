@@ -135,9 +135,10 @@ for reg in regions:
                 this_mass = mass[okinds]
                 this_lumin = lumins[okinds]
                 this_hlrs = hlrs_pix[okinds]
-                inds = np.random.choice(this_mass.size, size=4)
-                sinds = np.argsort(this_lumin[inds])
-                inds = inds[sinds]
+                try:
+                    inds = np.random.choice(this_mass.size, size=4)
+                    sinds = np.argsort(this_lumin[inds])
+                    inds = inds[sinds]
                 for i in range(4):
                     ind = inds[i]
 
