@@ -102,7 +102,7 @@ for reg, snap in reg_snaps:
                     "r")
 
     hlr_dict.setdefault(snap, {})
-    hlr_app_dict.setdefault(snap, {})
+    # hlr_app_dict.setdefault(snap, {})
     hlr_pix_dict.setdefault(snap, {})
     lumin_dict.setdefault(snap, {})
     mass_dict.setdefault(snap, {})
@@ -110,7 +110,7 @@ for reg, snap in reg_snaps:
 
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
-        hlr_app_dict[snap].setdefault(f, [])
+        # hlr_app_dict[snap].setdefault(f, [])
         hlr_pix_dict[snap].setdefault(f, [])
         lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
@@ -120,8 +120,8 @@ for reg, snap in reg_snaps:
         okinds = masses > masslim
 
         hlr_dict[snap][f].extend(hdf[f]["HLR_0.5"][...][okinds])
-        hlr_app_dict[snap][f].extend(
-            hdf[f]["HLR_Aperture_0.5"][...][okinds])
+        # hlr_app_dict[snap][f].extend(
+        #     hdf[f]["HLR_Aperture_0.5"][...][okinds])
         hlr_pix_dict[snap][f].extend(
             hdf[f]["HLR_Pixel_0.5"][...][okinds])
         lumin_dict[snap][f].extend(
@@ -151,7 +151,7 @@ for f in filters:
         z = float(z_str[0] + '.' + z_str[1])
 
         hlrs = np.array(hlr_dict[snap][f])
-        hlrs_app = np.array(hlr_app_dict[snap][f])
+        # hlrs_app = np.array(hlr_app_dict[snap][f])
         hlrs_pix = np.array(hlr_pix_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
         mass = np.array(mass_dict[snap][f])
@@ -161,53 +161,90 @@ for f in filters:
                                                lumins < 10 ** 50))
         lumins = lumins[okinds]
         hlrs = hlrs[okinds]
-        hlrs_app = hlrs_app[okinds]
+        # hlrs_app = hlrs_app[okinds]
         hlrs_pix = hlrs_pix[okinds]
         mass = mass[okinds]
 
-        fig = plt.figure(figsize=(6, 6))
-        gs = gridspec.GridSpec(2, 2)
-        gs.update(wspace=0.0, hspace=0.0)
-        ax1 = fig.add_subplot(gs[0, 0])
-        ax2 = fig.add_subplot(gs[1, 0])
-        ax3 = fig.add_subplot(gs[1, 1])
+        # fig = plt.figure(figsize=(6, 6))
+        # gs = gridspec.GridSpec(2, 2)
+        # gs.update(wspace=0.0, hspace=0.0)
+        # ax1 = fig.add_subplot(gs[0, 0])
+        # ax2 = fig.add_subplot(gs[1, 0])
+        # ax3 = fig.add_subplot(gs[1, 1])
+        # try:
+        #     cbar = ax1.hexbin(hlrs, hlrs_app, gridsize=50, mincnt=1,
+        #                       xscale='log', yscale='log',
+        #                       norm=LogNorm(), linewidths=0.2,
+        #                       cmap='viridis')
+        #     cbar = ax2.hexbin(hlrs, hlrs_pix, gridsize=50, mincnt=1,
+        #                       xscale='log', yscale='log',
+        #                       norm=LogNorm(), linewidths=0.2,
+        #                       cmap='viridis')
+        #     cbar = ax3.hexbin(hlrs_app, hlrs_pix, gridsize=50, mincnt=1,
+        #                       xscale='log', yscale='log',
+        #                       norm=LogNorm(), linewidths=0.2,
+        #                       cmap='viridis')
+        # except ValueError as e:
+        #     print(e)
+        #     continue
+        #
+        # for ax in [ax1, ax2, ax3]:
+        #     axis_to_data = ax.transAxes + ax.transData.inverted()
+        #     left = axis_to_data.transform((0, 0))
+        #     right = axis_to_data.transform((1, 1))
+        #     ax.plot((left[0], right[0]), (left[1], right[1]),
+        #             color="k", linestyle="--")
+        #
+        # # Label axes
+        # ax1.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+        # ax2.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+        # ax3.set_xlabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
+        # ax1.set_ylabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
+        # ax2.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
+        # ax3.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
+        #
+        # # Remove axis labels
+        # ax1.tick_params(axis='x', top=False, bottom=False,
+        #                 labeltop=False, labelbottom=False)
+        # ax3.tick_params(axis='y', left=False, right=False,
+        #                 labelleft=False, labelright=False)
+        #
+        # fig.savefig(
+        #     'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
+        #         z) + '_'
+        #     + orientation + '_' + Type + "_" + extinction + "_"
+        #     + '%.1f.png' % np.log10(masslim),
+        #     bbox_inches='tight')
+        # plt.close(fig)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
         try:
-            cbar = ax1.hexbin(hlrs, hlrs_app, gridsize=50, mincnt=1,
+            # cbar = ax1.hexbin(hlrs, hlrs_app, gridsize=50, mincnt=1,
+            #                   xscale='log', yscale='log',
+            #                   norm=LogNorm(), linewidths=0.2,
+            #                   cmap='viridis')
+            cbar = ax.hexbin(hlrs, hlrs_pix, gridsize=50, mincnt=1,
                               xscale='log', yscale='log',
                               norm=LogNorm(), linewidths=0.2,
                               cmap='viridis')
-            cbar = ax2.hexbin(hlrs, hlrs_pix, gridsize=50, mincnt=1,
-                              xscale='log', yscale='log',
-                              norm=LogNorm(), linewidths=0.2,
-                              cmap='viridis')
-            cbar = ax3.hexbin(hlrs_app, hlrs_pix, gridsize=50, mincnt=1,
-                              xscale='log', yscale='log',
-                              norm=LogNorm(), linewidths=0.2,
-                              cmap='viridis')
+            # cbar = ax3.hexbin(hlrs_app, hlrs_pix, gridsize=50, mincnt=1,
+            #                   xscale='log', yscale='log',
+            #                   norm=LogNorm(), linewidths=0.2,
+            #                   cmap='viridis')
         except ValueError as e:
             print(e)
             continue
 
-        for ax in [ax1, ax2, ax3]:
-            axis_to_data = ax.transAxes + ax.transData.inverted()
-            left = axis_to_data.transform((0, 0))
-            right = axis_to_data.transform((1, 1))
-            ax.plot((left[0], right[0]), (left[1], right[1]),
-                    color="k", linestyle="--")
+        axis_to_data = ax.transAxes + ax.transData.inverted()
+        left = axis_to_data.transform((0, 0))
+        right = axis_to_data.transform((1, 1))
+        ax.plot((left[0], right[0]), (left[1], right[1]),
+                color="k", linestyle="--")
 
         # Label axes
-        ax1.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
-        ax2.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
-        ax3.set_xlabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
-        ax1.set_ylabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
-        ax2.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
-        ax3.set_ylabel('$R_{1/2, \mathrm{pixel}}/ [pkpc]$')
-
-        # Remove axis labels
-        ax1.tick_params(axis='x', top=False, bottom=False,
-                        labeltop=False, labelbottom=False)
-        ax3.tick_params(axis='y', left=False, right=False,
-                        labelleft=False, labelright=False)
+        ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+        ax.set_ylabel('$R_{1/2, \mathrm{app}}/ [pkpc]$')
 
         fig.savefig(
             'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
@@ -215,5 +252,3 @@ for f in filters:
             + orientation + '_' + Type + "_" + extinction + "_"
             + '%.1f.png' % np.log10(masslim),
             bbox_inches='tight')
-
-        plt.close(fig)
