@@ -25,7 +25,7 @@ import utilities as util
 import cmasher as cmr
 
 sns.set_context("paper")
-sns.set_style('whitegrid')
+sns.set_style('white')
 
 
 def m_to_M(m, cosmo, z):
@@ -122,10 +122,10 @@ for f in filters:
         for j in range(4):
             ind = np.random.choice(this_mass.size)
 
-            axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.chroma)
+            axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic)
 
-            string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f \n" % np.log10(this_mass[ind])
-                     # + r"$\log_{10}\left(L_{%s} / [$erg $/$ s $/$ Hz$]\right) =$ %.2f \n" % (f.split(".")[-1], this_lumin[ind]) \
+            string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f \n" % np.log10(this_mass[ind]) \
+                     + r"$\log_{10}\left(L_{%s} / [$erg $/$ s $/$ Hz$]\right) =$ %.2f \n" % (f.split(".")[-1], this_lumin[ind]) \
                      # + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
 
             axes[i, j].text(0.1, 0.065, string,
