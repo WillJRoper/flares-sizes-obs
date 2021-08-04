@@ -97,7 +97,7 @@ for f in filters:
     lumins = np.array(lumin_dict[f])
     mass = np.array(mass_dict[f])
 
-    dpi = imgs.shape[-1]
+    dpi = 1080
     fig = plt.figure(figsize=(4, 4), dpi=dpi)
     gs = gridspec.GridSpec(4, 4)
     gs.update(wspace=0.0, hspace=0.0)
@@ -129,7 +129,7 @@ for f in filters:
                      + r"$\log_{10}\left(L_{"+ f.split(".")[-1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f" % np.log10(this_lumin[ind]) + "\n" \
                      + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
 
-            axes[i, j].text(0.05, 0.35, string,
+            axes[i, j].text(0.05, 0.95, string,
                             transform=axes[i, j].transAxes, verticalalignment="top",
                             horizontalalignment='left', fontsize=2, color="w")
 
