@@ -236,11 +236,12 @@ for f in filters:
             print(e)
             continue
 
-        axis_to_data = ax.transAxes + ax.transData.inverted()
-        left = axis_to_data.transform((0, 0))
-        right = axis_to_data.transform((1, 1))
-        ax.loglog((np.min(left), np.max(right)), (np.min(left), np.max(right)),
-                  color="k", linestyle="--")
+        min = np.min((ax.get_xlim(), ax.get_ylim()))
+        max = np.max((ax.get_xlim(), ax.get_ylim()))
+
+
+        ax.plot([min, max], [min, max], color='k', linestyle="--",
+                transform=ax.transAxes)
 
         # Label axes
         ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
