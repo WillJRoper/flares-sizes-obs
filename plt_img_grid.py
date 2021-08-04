@@ -125,8 +125,8 @@ for f in filters:
             axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic)
 
             string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f \n" % np.log10(this_mass[ind]) \
-                     + r"$\log_{10}\left(L_{%s} / [$erg $/$ s $/$ Hz$]\right) =$ %.2f \n" % (f.split(".")[-1], this_lumin[ind]) \
-                     # + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
+                     + r"$\log_{10}\left(L_{"+ f.split(".")[-1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f \n" % np.log10(this_lumin[ind]) \
+                     + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
 
             axes[i, j].text(0.1, 0.065, string,
                             transform=axes[i, j].transAxes, verticalalignment="top",
