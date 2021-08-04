@@ -139,13 +139,18 @@ for reg in regions:
                     inds = np.random.choice(this_mass.size, size=4)
                     sinds = np.argsort(this_lumin[inds])
                     inds = inds[sinds]
+                except ValueError:
+                    inds = [-1, -1, -1, -1]
                 for i in range(4):
                     ind = inds[i]
 
                     # pltimg = np.zeros_like(this_imgs[ind, :, :])
                     # pltimg[this_imgs[ind, :, :] > 0] = np.log10(this_imgs[ind, :, :][this_imgs[ind, :, :] > 0])
-
-                    axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic, norm=norm)
+                    if ind > -1:
+                        axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic, norm=norm)
+                    else:
+                        axes[i, j].imshow(np.zeros_like(this_imgs[0, :, :]),
+                                          cmap=cmr.cosmic, norm=norm)
 
                     string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(this_mass[ind]) + "\n" \
                              + r"$\log_{10}\left(L_{"+ f.split(".")[-1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f" % np.log10(this_lumin[ind]) + "\n" \
