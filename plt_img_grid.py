@@ -98,9 +98,9 @@ for f in filters:
     mass = np.array(mass_dict[f])
 
     norm = cm.Normalize(vmin=np.percentile(imgs, 33.175),
-                        vmax=np.percentile(imgs, 99))
+                        vmax=1e+26)
 
-    print(np.percentile(imgs, 50), np.percentile(imgs, 99))
+    print(np.min(imgs[imgs > 0]), np.percentile(imgs[imgs > 0], 33.175), np.percentile(imgs[imgs > 0], 50), np.percentile(imgs[imgs > 0], 99))
 
     dpi = 1080
     fig = plt.figure(figsize=(4, 4), dpi=dpi)
