@@ -11,7 +11,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
-from matplotlib.colors import LogNorm
+import matplotlib.colors as cm
 import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
@@ -97,6 +97,11 @@ for f in filters:
     lumins = np.array(lumin_dict[f])
     mass = np.array(mass_dict[f])
 
+    norm = cm.Normalize(vmin=np.percentile(imgs, 33.175),
+                        vmax=np.percentile(imgs, 99))
+
+    print(np.percentile(imgs, 33.175), np.percentile(imgs, 99))
+
     dpi = 1080
     fig = plt.figure(figsize=(4, 4), dpi=dpi)
     gs = gridspec.GridSpec(4, 4)
@@ -123,10 +128,10 @@ for f in filters:
         for i in range(4):
             ind = np.random.choice(this_mass.size)
 
-            pltimg = np.zeros_like(this_imgs[ind, :, :])
-            pltimg[this_imgs[ind, :, :] > 0] = np.log10(this_imgs[ind, :, :][this_imgs[ind, :, :] > 0])
+            # pltimg = np.zeros_like(this_imgs[ind, :, :])
+            # pltimg[this_imgs[ind, :, :] > 0] = np.log10(this_imgs[ind, :, :][this_imgs[ind, :, :] > 0])
 
-            axes[i, j].imshow(pltimg, cmap=cmr.cosmic)
+            axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic, norm=norm)
 
             string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(this_mass[ind]) + "\n" \
                      + r"$\log_{10}\left(L_{"+ f.split(".")[-1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f" % np.log10(this_lumin[ind]) + "\n" \
