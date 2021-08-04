@@ -66,6 +66,10 @@ for reg in range(0, 40):
     else:
         regions.append(str(reg))
 
+snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
+         '006_z009p000', '007_z008p000', '008_z007p000',
+         '009_z006p000', '010_z005p000', '011_z004p770']
+
 reg, snap = regions[0], '010_z005p000'
 
 hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
@@ -80,71 +84,78 @@ for f in filters:
 
 hdf.close()
 
-for f in filters:
+for reg in regions:
+    for snap in snaps:
 
-    print("Plotting for:")
-    print("Orientation =", orientation)
-    print("Type =", Type)
-    print("Filter =", f)
+    for f in filters:
 
-    legend_elements = []
+        print("Plotting for:")
+        print("Orientation =", orientation)
+        print("Type =", Type)
+        print("Filter =", f)
 
-    z_str = snap.split('z')[1].split('p')
-    z = float(z_str[0] + '.' + z_str[1])
+        legend_elements = []
 
-    imgs = np.array(imgs_dict[f])
-    hlrs_pix = np.array(hlr_pix_dict[f])
-    lumins = np.array(lumin_dict[f])
-    mass = np.array(mass_dict[f])
+        z_str = snap.split('z')[1].split('p')
+        z = float(z_str[0] + '.' + z_str[1])
 
-    norm = cm.Normalize(vmin=np.percentile(imgs[imgs > 0], 33.175),
-                        vmax=np.percentile(imgs[imgs > 0], 99.999),
-                        clip=True)
+        imgs = np.array(imgs_dict[f])
+        hlrs_pix = np.array(hlr_pix_dict[f])
+        lumins = np.array(lumin_dict[f])
+        mass = np.array(mass_dict[f])
 
-    print(np.min(imgs[imgs > 0]), np.percentile(imgs[imgs > 0], 33.175), np.percentile(imgs[imgs > 0], 50), np.percentile(imgs[imgs > 0], 99))
+        norm = cm.Normalize(vmin=np.percentile(imgs[imgs > 0], 50 - 34),
+                            vmax=np.percentile(imgs[imgs > 0], 99.9),
+                            clip=True)
 
-    dpi = 1080
-    fig = plt.figure(figsize=(4, 4), dpi=dpi)
-    gs = gridspec.GridSpec(4, 4)
-    gs.update(wspace=0.0, hspace=0.0)
-    axes = np.empty((4, 4), dtype=object)
-    bins = [10**8, 10**9, 10**9.5, 10**10, np.inf]
-    for i in range(4):
-        for j in range(4):
-            axes[i, j] = fig.add_subplot(gs[i, j])
+        print(np.min(imgs[imgs > 0]), np.percentile(imgs[imgs > 0], 33.175), np.percentile(imgs[imgs > 0], 50), np.percentile(imgs[imgs > 0], 99))
 
-            # Remove axis labels and ticks
-            axes[i, j].tick_params(axis='x', top=False, bottom=False,
-                                   labeltop=False, labelbottom=False)
-
-            axes[i, j].tick_params(axis='y', left=False, right=False,
-                                   labelleft=False, labelright=False)
-
-    for j in range(4):
-        okinds = np.logical_and(mass >= bins[j], mass < bins[j + 1])
-        this_imgs = imgs[okinds, :, :]
-        this_mass = mass[okinds]
-        this_lumin = lumins[okinds]
-        this_hlrs = hlrs_pix[okinds]
+        dpi = 1080
+        fig = plt.figure(figsize=(4, 4), dpi=dpi)
+        gs = gridspec.GridSpec(4, 4)
+        gs.update(wspace=0.0, hspace=0.0)
+        axes = np.empty((4, 4), dtype=object)
+        bins = [10**8, 10**9, 10**9.5, 10**10, np.inf]
         for i in range(4):
-            ind = np.random.choice(this_mass.size)
+            for j in range(4):
+                axes[i, j] = fig.add_subplot(gs[i, j])
 
-            # pltimg = np.zeros_like(this_imgs[ind, :, :])
-            # pltimg[this_imgs[ind, :, :] > 0] = np.log10(this_imgs[ind, :, :][this_imgs[ind, :, :] > 0])
+                # Remove axis labels and ticks
+                axes[i, j].tick_params(axis='x', top=False, bottom=False,
+                                       labeltop=False, labelbottom=False)
 
-            axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic, norm=norm)
+                axes[i, j].tick_params(axis='y', left=False, right=False,
+                                       labelleft=False, labelright=False)
 
-            string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(this_mass[ind]) + "\n" \
-                     + r"$\log_{10}\left(L_{"+ f.split(".")[-1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f" % np.log10(this_lumin[ind]) + "\n" \
-                     + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
+        for j in range(4):
+            okinds = np.logical_and(mass >= bins[j], mass < bins[j + 1])
+            this_imgs = imgs[okinds, :, :]
+            this_mass = mass[okinds]
+            this_lumin = lumins[okinds]
+            this_hlrs = hlrs_pix[okinds]
+            inds = np.random.choice(this_mass.size, size=4)
+            sinds = np.argsort(this_lumin[inds])
+            inds = inds[sinds]
+            for i in range(4):
+                ind = inds[i]
 
-            axes[i, j].text(0.05, 0.95, string,
-                            transform=axes[i, j].transAxes, verticalalignment="top",
-                            horizontalalignment='left', fontsize=2, color="w")
+                # pltimg = np.zeros_like(this_imgs[ind, :, :])
+                # pltimg[this_imgs[ind, :, :] > 0] = np.log10(this_imgs[ind, :, :][this_imgs[ind, :, :] > 0])
+
+                axes[i, j].imshow(this_imgs[ind, :, :], cmap=cmr.cosmic, norm=norm)
+
+                string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(this_mass[ind]) + "\n" \
+                         + r"$\log_{10}\left(L_{"+ f.split(".")[-1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f" % np.log10(this_lumin[ind]) + "\n" \
+                         + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
+
+                axes[i, j].text(0.05, 0.95, string,
+                                transform=axes[i, j].transAxes, verticalalignment="top",
+                                horizontalalignment='left', fontsize=2, color="w")
 
 
-    fig.savefig(
-        'plots/' + str(z) + '/ImgGrid_' + f + '_' + str(z) + '_'
-        + orientation + '_' + Type + "_" + extinction + ".png",
-        bbox_inches='tight', dpi=fig.dpi)
-    plt.close(fig)
+        fig.savefig(
+            'plots/Image_grids/ImgGrid_' + f + '_' + str(z) + '_' + reg
+            + '_' + snap + '_' + orientation + '_' + Type
+            + "_" + extinction + ".png",
+            bbox_inches='tight', dpi=fig.dpi)
+        plt.close(fig)
