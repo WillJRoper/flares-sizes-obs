@@ -66,26 +66,26 @@ for reg in range(0, 40):
     else:
         regions.append(str(reg))
 
-snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
-         '006_z009p000', '007_z008p000', '008_z007p000',
-         '009_z006p000', '010_z005p000', '011_z004p770']
+snaps = ['005_z010p000', '007_z008p000', '008_z007p000',
+         '009_z006p000', '010_z005p000']
 
-reg, snap = regions[0], '010_z005p000'
-
-hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
-                                                            orientation),
-                "r")
-
-for f in filters:
-    imgs_dict[f] = hdf[f]["Images"][...]
-    mass_dict[f] = hdf[f]["Mass"][...]
-    hlr_pix_dict[f] = hdf[f]["HLR_Pixel_0.5"][...]
-    lumin_dict[f] = hdf[f]["Luminosity"][...]
-
-hdf.close()
+# reg, snap = regions[0], '010_z005p000'
 
 for reg in regions:
     for snap in snaps:
+
+        hdf = h5py.File(
+            "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
+                                                        orientation),
+            "r")
+
+        for f in filters:
+            imgs_dict[f] = hdf[f]["Images"][...]
+            mass_dict[f] = hdf[f]["Mass"][...]
+            hlr_pix_dict[f] = hdf[f]["HLR_Pixel_0.5"][...]
+            lumin_dict[f] = hdf[f]["Luminosity"][...]
+
+        hdf.close()
 
         for f in filters:
 
