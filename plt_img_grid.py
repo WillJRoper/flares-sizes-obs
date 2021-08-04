@@ -97,7 +97,7 @@ for f in filters:
     lumins = np.array(lumin_dict[f])
     mass = np.array(mass_dict[f])
 
-    fig = plt.figure(figsize=(10, 10))
+    fig = plt.figure(figsize=(6, 6))
     gs = gridspec.GridSpec(4, 4)
     gs.update(wspace=0.0, hspace=0.0)
     axes = np.empty((4, 4), dtype=object)
