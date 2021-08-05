@@ -141,13 +141,20 @@ for reg in regions:
                     inds = inds[sinds]
                 except ValueError:
                     inds = [-1, -1, -1, -1]
+                done_inds = set()
                 for i in range(4):
                     ind = inds[i]
+                    if ind in done_inds:
+                        ind = -1
+                    else:
+                        done_inds.update(ind)
 
-                    # pltimg = np.zeros_like(this_imgs[ind, :, :])
-                    # pltimg[this_imgs[ind, :, :] > 0] = np.log10(this_imgs[ind, :, :][this_imgs[ind, :, :] > 0])
                     if ind > -1:
-                        axes[i, j].imshow(this_imgs[ind, 10:-10, 10:-10], cmap=cmr.cosmic, norm=norm)
+                        size = this_imgs.shape[-1]
+                        axes[i, j].imshow(this_imgs[ind,
+                                          0.1 * size:-0.1 * size,
+                                          0.1 * size:-0.1 * size],
+                                          cmap=cmr.cosmic, norm=norm)
 
                         string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(
                             this_mass[ind]) + "\n" \
