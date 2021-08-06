@@ -122,7 +122,7 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
     if mags[ind] < 0:
         mags[ind] = M_to_m(mags[ind], cosmo, z)
 
-cmap = mpl.cm.get_cmap("brg")
+cmap = mpl.cm.get_cmap("winter")
 norm = plt.Normalize(vmin=0, vmax=1)
 
 labels = {"G11": "Grazian+2011",
@@ -343,7 +343,7 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=10,
+                           marker=markers[p], label=labels[p], s=20,
                            color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
@@ -506,7 +506,7 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=10,
+                           marker=markers[p], label=labels[p], s=20,
                            color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
@@ -681,7 +681,7 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=10,
+                           marker=markers[p], label=labels[p], s=20,
                            color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
