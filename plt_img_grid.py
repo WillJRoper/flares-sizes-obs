@@ -131,20 +131,23 @@ for reg in regions:
 
             for j in range(4):
                 okinds = np.logical_and(mass >= bins[j], mass < bins[j + 1])
-                this_imgs = imgs[okinds, :, :]
-                this_mass = mass[okinds]
-                this_lumin = lumins[okinds]
-                this_hlrs = hlrs_pix[okinds]
+                j_imgs = imgs[okinds, :, :]
+                j_mass = mass[okinds]
+                j_lumin = lumins[okinds]
+                j_hlrs = hlrs_pix[okinds]
                 done_inds = set()
-                rbins = np.linspace(np.min(this_hlrs), np.max(this_hlrs), 5)
-                rbins[-1] = np.inf
+                if j_hlrs.size != 0:
+                    rbins = np.linspace(np.min(j_hlrs), np.max(j_hlrs), 5)
+                    rbins[-1] = np.inf
+                else:
+                    rbins = [0, 1, 2, 3, 4]
                 for i in range(4):
-                    okinds = np.logical_and(this_hlrs >= rbins[i],
-                                            this_hlrs < rbins[i + 1])
-                    this_imgs = this_imgs[okinds, :, :]
-                    this_mass = this_mass[okinds]
-                    this_lumin = this_lumin[okinds]
-                    this_hlrs = this_hlrs[okinds]
+                    okinds = np.logical_and(j_hlrs >= rbins[i],
+                                            j_hlrs < rbins[i + 1])
+                    this_imgs = j_imgs[okinds, :, :]
+                    this_mass = j_mass[okinds]
+                    this_lumin = j_lumin[okinds]
+                    this_hlrs = j_hlrs[okinds]
 
                     try:
                         ind = np.random.choice(this_mass.size)
