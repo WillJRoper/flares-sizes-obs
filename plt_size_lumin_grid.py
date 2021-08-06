@@ -343,7 +343,7 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=10,
+                           marker=markers[p], label=labels[p], s=5,
                            color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
@@ -506,7 +506,7 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=10,
+                           marker=markers[p], label=labels[p], s=5,
                            color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
@@ -681,7 +681,7 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=10,
+                           marker=markers[p], label=labels[p], s=5,
                            color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
