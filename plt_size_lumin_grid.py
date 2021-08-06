@@ -410,7 +410,7 @@ for f in filters:
             included.append((l.get_label(), l.get_marker()))
 
     axes[2].legend(handles=uni_legend_elements, loc='upper center',
-              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
+              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=len(uni_legend_elements))
 
     fig.savefig(
         'plots/HalfLightRadius_' + f + '_' + str(
@@ -574,7 +574,7 @@ for f in filters:
             included.append((l.get_label(), l.get_marker()))
 
     axes[2].legend(handles=uni_legend_elements, loc='upper center',
-              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
+              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=len(uni_legend_elements))
 
     fig.savefig('plots/HalfLightRadiusAperture_'
                 + f + '_' + str(z) + '_' + orientation
@@ -750,7 +750,7 @@ for f in filters:
             included.append((l.get_label(), l.get_marker()))
 
     axes[2].legend(handles=uni_legend_elements, loc='upper center',
-              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
+              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=len(uni_legend_elements))
 
     fig.savefig('plots/HalfLightRadiusPixel_'
                 + f + '_' + str(z) + '_' + orientation
