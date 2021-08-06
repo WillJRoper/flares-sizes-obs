@@ -89,8 +89,6 @@ for reg in range(0, 40):
     else:
         regions.append(str(reg))
 
-csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
-
 reg_snaps = []
 for reg in reversed(regions):
 
@@ -151,6 +149,8 @@ for f in filters:
 
         z_str = snap.split('z')[1].split('p')
         z = float(z_str[0] + '.' + z_str[1])
+
+        csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
 
         hlrs = np.array(hlr_dict[snap][f])
         # hlrs_app = np.array(hlr_app_dict[snap][f])
