@@ -89,6 +89,8 @@ for reg in range(0, 40):
     else:
         regions.append(str(reg))
 
+csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
+
 reg_snaps = []
 for reg in reversed(regions):
 
@@ -242,8 +244,11 @@ for f in filters:
         ax.set_xlim([min, max])
         ax.set_ylim([min, max])
 
-        ax.plot([min, max], [min, max], color='k', linestyle="--",
-                transform=ax.transAxes)
+        ax.plot([min, max], [min, max], color='k', linestyle="--")
+        ax.plot([min, max], [min + csoft, max + csoft], color='k',
+                linestyle="--", alpha=0.6)
+        ax.plot([min, max], [min - csoft, max - csoft], color='k',
+                linestyle="--", alpha=0.6)
 
         # Label axes
         ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
