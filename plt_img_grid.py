@@ -150,10 +150,10 @@ for reg in regions:
                     except ValueError:
                         ind = -1
 
-                    if ind in done_inds:
-                        ind = -1
-                    else:
-                        done_inds.update({ind})
+                    # if ind in done_inds:
+                    #     ind = -1
+                    # else:
+                    #     done_inds.update({ind})
 
                     if ind > -1:
                         size = this_imgs.shape[-1]
