@@ -82,7 +82,7 @@ for reg in regions:
         for f in filters:
             imgs_dict[f] = hdf[f]["Images"][...]
             mass_dict[f] = hdf[f]["Mass"][...]
-            hlr_pix_dict[f] = hdf[f]["HLR_Pixel_0.5"][...]
+            hlr_pix_dict[f] = hdf[f]["HLR_0.5"][...]
             lumin_dict[f] = hdf[f]["Luminosity"][...]
 
         hdf.close()
@@ -118,6 +118,7 @@ for reg in regions:
             gs.update(wspace=0.0, hspace=0.0)
             axes = np.empty((4, 4), dtype=object)
             bins = [10**9, 10**9.25, 10**9.5, 10**10, np.inf]
+            rbins = [0, 0.5, 1, 2, np.inf]
             for i in range(4):
                 for j in range(4):
                     axes[i, j] = fig.add_subplot(gs[i, j])
@@ -135,15 +136,20 @@ for reg in regions:
                 this_mass = mass[okinds]
                 this_lumin = lumins[okinds]
                 this_hlrs = hlrs_pix[okinds]
-                try:
-                    inds = np.random.choice(this_mass.size, size=4)
-                    sinds = np.argsort(this_lumin[inds])
-                    inds = inds[sinds]
-                except ValueError:
-                    inds = [-1, -1, -1, -1]
                 done_inds = set()
                 for i in range(4):
-                    ind = inds[i]
+                    okinds = np.logical_and(this_hlrs >= rbins[i],
+                                            this_hlrs < rbins[i + 1])
+                    this_imgs = this_imgs[okinds, :, :]
+                    this_mass = this_mass[okinds]
+                    this_lumin = this_lumin[okinds]
+                    this_hlrs = this_hlrs[okinds]
+
+                    try:
+                        ind = np.random.choice(this_mass.size)
+                    except ValueError:
+                        ind = -1
+
                     if ind in done_inds:
                         ind = -1
                     else:
