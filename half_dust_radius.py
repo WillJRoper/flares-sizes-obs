@@ -84,7 +84,7 @@ mass_dict = {}
 hdr_dict = {}
 
 # Set mass limit
-masslim = 100
+masslim = 10**9
 
 for reg, tag in reg_snaps:
 
