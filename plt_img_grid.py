@@ -138,6 +138,7 @@ for reg in regions:
                 this_hlrs = hlrs_pix[okinds]
                 done_inds = set()
                 for i in range(4):
+                    print(np.min(this_hlrs), np.max(this_hlrs))
                     okinds = np.logical_and(this_hlrs >= rbins[i],
                                             this_hlrs < rbins[i + 1])
                     this_imgs = this_imgs[okinds, :, :]
