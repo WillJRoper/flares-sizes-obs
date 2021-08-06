@@ -118,7 +118,6 @@ for reg in regions:
             gs.update(wspace=0.0, hspace=0.0)
             axes = np.empty((4, 4), dtype=object)
             bins = [10**9, 10**9.25, 10**9.5, 10**10, np.inf]
-            rbins = [0, 0.5, 1, 2, np.inf]
             for i in range(4):
                 for j in range(4):
                     axes[i, j] = fig.add_subplot(gs[i, j])
@@ -137,8 +136,9 @@ for reg in regions:
                 this_lumin = lumins[okinds]
                 this_hlrs = hlrs_pix[okinds]
                 done_inds = set()
+                rbins = np.linspace(np.min(this_hlrs), np.max(this_hlrs), 5)
+                rbins[-1] = np.inf
                 for i in range(4):
-                    print(np.min(this_hlrs), np.max(this_hlrs))
                     okinds = np.logical_and(this_hlrs >= rbins[i],
                                             this_hlrs < rbins[i + 1])
                     this_imgs = this_imgs[okinds, :, :]
@@ -150,11 +150,6 @@ for reg in regions:
                         ind = np.random.choice(this_mass.size)
                     except ValueError:
                         ind = -1
-
-                    # if ind in done_inds:
-                    #     ind = -1
-                    # else:
-                    #     done_inds.update({ind})
 
                     if ind > -1:
                         size = this_imgs.shape[-1]
