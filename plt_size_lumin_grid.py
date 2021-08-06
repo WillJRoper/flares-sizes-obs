@@ -257,11 +257,13 @@ for f in filters:
     print("Type =", Type)
     print("Filter =", f)
 
-    fig = plt.figure(figsize=(10,3))
+    fig = plt.figure(figsize=(14,4))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
     axes_twin = []
+    ylims = []
+    ylims_twin = []
     i = 0
     while i < len(snaps):
         axes.append(fig.add_subplot(gs[0, i]))
@@ -384,10 +386,17 @@ for f in filters:
 
         axes[i].tick_params(axis='x', which='minor', bottom=True)
 
+        ylims.append(axes[i].get_ylim())
+        ylims_twin.append(axes_twin[i].get_ylim())
+
         # Label axes
         axes[i].set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
 
         axes[i].set_xlim(10 ** 27.9, 10 ** 30.5)
+
+    for i in range(len(axes)):
+        axes[i].set_ylim(np.min(ylims), np.max(ylims))
+        axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
 
     axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
@@ -412,11 +421,13 @@ for f in filters:
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(10,3))
+    fig = plt.figure(figsize=(14,4))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
     axes_twin = []
+    ylims = []
+    ylims_twin = []
     i = 0
     while i < len(snaps):
         axes.append(fig.add_subplot(gs[0, i]))
@@ -539,10 +550,17 @@ for f in filters:
 
         axes[i].tick_params(axis='x', which='minor', bottom=True)
 
+        ylims.append(axes[i].get_ylim())
+        ylims_twin.append(axes_twin[i].get_ylim())
+
         # Label axes
         axes[i].set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
 
         axes[i].set_xlim(10 ** 27.9, 10 ** 30.5)
+
+    for i in range(len(axes)):
+        axes[i].set_ylim(np.min(ylims), np.max(ylims))
+        axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
 
     axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
@@ -566,11 +584,13 @@ for f in filters:
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(10,3))
+    fig = plt.figure(figsize=(14,4))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
     axes_twin = []
+    ylims = []
+    ylims_twin = []
     i = 0
     while i < len(snaps):
         axes.append(fig.add_subplot(gs[0, i]))
@@ -706,10 +726,17 @@ for f in filters:
 
         axes[i].tick_params(axis='x', which='minor', bottom=True)
 
+        ylims.append(axes[i].get_ylim())
+        ylims_twin.append(axes_twin[i].get_ylim())
+
         # Label axes
         axes[i].set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
 
         axes[i].set_xlim(10 ** 27.9, 10 ** 30.5)
+
+    for i in range(len(axes)):
+        axes[i].set_ylim(np.min(ylims), np.max(ylims))
+        axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
 
     axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
