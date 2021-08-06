@@ -245,10 +245,6 @@ for f in filters:
         ax.set_ylim([min, max])
 
         ax.plot([min, max], [min, max], color='k', linestyle="--")
-        ax.plot([min, max], [min + csoft, max + csoft], color='k',
-                linestyle="--", alpha=0.6)
-        ax.plot([min, max], [min - csoft, max - csoft], color='k',
-                linestyle="--", alpha=0.6)
 
         # Label axes
         ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
