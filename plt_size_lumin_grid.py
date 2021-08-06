@@ -122,7 +122,7 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
     if mags[ind] < 0:
         mags[ind] = M_to_m(mags[ind], cosmo, z)
 
-cmap = mpl.cm.get_cmap("magma")
+cmap = mpl.cm.get_cmap("viridis")
 norm = plt.Normalize(vmin=0, vmax=1)
 
 labels = {"G11": "Grazian+2011",
@@ -301,13 +301,13 @@ for f in filters:
                              reduce_C_function=np.sum,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
-                             cmap='viridis')
+                             cmap='magma')
             axes_twin[i].hexbin(lumins, hlrs 
                                 * cosmo.arcsec_per_kpc_proper(z).value,
                        gridsize=50, mincnt=1, C=w,
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='viridis', alpha=0)
+                       cmap='magma', alpha=0)
             # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
             # axes[i].plot(lumin_bin_cents, med, color="r")
             # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
@@ -417,7 +417,7 @@ for f in filters:
             z) + '_'
         + orientation + '_' + Type + "_" + extinction + "_"
         + '%d.png' % nlim,
-        bbox_inches='tight')
+        bbox_inches='tight', dpi=300)
 
     plt.close(fig)
 
@@ -436,7 +436,7 @@ for f in filters:
         if i > 0:
             axes[-1].tick_params(axis='y', left=False, right=False,
                                  labelleft=False, labelright=False)
-        if i < len(snaps):
+        if i < len(snaps) - 1:
             axes_twin[-1].tick_params(axis='y', left=False, right=False,
                                       labelleft=False, labelright=False)
         i += 1
@@ -465,12 +465,12 @@ for f in filters:
                              reduce_C_function=np.sum,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
-                             cmap='viridis')
+                             cmap='magma')
             axes_twin[i].hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
                        gridsize=50, mincnt=1, C=w,
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='viridis', alpha=0)
+                       cmap='magma', alpha=0)
             # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
             # axes[i].plot(lumin_bin_cents, med, color="r")
             # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
@@ -580,7 +580,7 @@ for f in filters:
                 + f + '_' + str(z) + '_' + orientation
                 + '_' + Type + "_" + extinction + "_"
                 + '%d.png' % nlim,
-                bbox_inches='tight')
+                bbox_inches='tight', dpi=300)
 
     plt.close(fig)
 
@@ -628,12 +628,12 @@ for f in filters:
                              reduce_C_function=np.sum,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
-                             cmap='viridis')
+                             cmap='magma')
             axes_twin[i].hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
                        gridsize=50, mincnt=1, C=w,
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='viridis', alpha=0)
+                       cmap='magma', alpha=0)
             # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
             # axes[i].plot(lumin_bin_cents, med, color="r")
             # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
@@ -756,6 +756,6 @@ for f in filters:
                 + f + '_' + str(z) + '_' + orientation
                 + '_' + Type + "_" + extinction + "_"
                 + '%d.png' % nlim,
-                bbox_inches='tight')
+                bbox_inches='tight', dpi=300)
 
     plt.close(fig)
