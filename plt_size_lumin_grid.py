@@ -257,7 +257,7 @@ for f in filters:
     print("Type =", Type)
     print("Filter =", f)
 
-    fig = plt.figure(figsize=(1, 5))
+    fig = plt.figure(figsize=(5, 1))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
@@ -393,9 +393,12 @@ for f in filters:
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
     uni_legend_elements = []
+    included = []
     for l in legend_elements:
-        if l not in uni_legend_elements:
+        print((l.get_label(), l.get_marker()))
+        if (l.get_label(), l.get_marker()) not in included:
             uni_legend_elements.append(l)
+            included.append((l.get_label(), l.get_marker()))
 
     axes[2].legend(handles=uni_legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
@@ -409,7 +412,7 @@ for f in filters:
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(1, 5))
+    fig = plt.figure(figsize=(5, 1))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
@@ -545,9 +548,12 @@ for f in filters:
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
     uni_legend_elements = []
+    included = []
     for l in legend_elements:
-        if l not in uni_legend_elements:
+        print((l.get_label(), l.get_marker()))
+        if (l.get_label(), l.get_marker()) not in included:
             uni_legend_elements.append(l)
+            included.append((l.get_label(), l.get_marker()))
 
     axes[2].legend(handles=uni_legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
@@ -560,7 +566,7 @@ for f in filters:
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(1, 5))
+    fig = plt.figure(figsize=(5, 1))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
@@ -709,9 +715,12 @@ for f in filters:
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
     uni_legend_elements = []
+    included = []
     for l in legend_elements:
-        if l not in uni_legend_elements:
+        print((l.get_label(), l.get_marker()))
+        if (l.get_label(), l.get_marker()) not in included:
             uni_legend_elements.append(l)
+            included.append((l.get_label(), l.get_marker()))
 
     axes[2].legend(handles=uni_legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
