@@ -372,9 +372,6 @@ for f in filters:
                 axes[i].plot(fit_lumins, fit,
                         linestyle='dashed', color=colors["K18"], alpha=0.9, zorder=2,
                         label="Kawamata+18")
-                legend_elements.append(
-                    Line2D([0], [0], color=colors["K18"], linestyle="--",
-                           label=labels["K18"]))
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -402,10 +399,13 @@ for f in filters:
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
     uni_legend_elements = []
+    uni_legend_elements.append(
+        Line2D([0], [0], color=colors["K18"], linestyle="--",
+               label=labels["K18"]))
     included = []
     for l in legend_elements:
-        print((l.get_label(), l.get_marker()))
         if (l.get_label(), l.get_marker()) not in included:
+            print((l.get_label(), l.get_marker()))
             uni_legend_elements.append(l)
             included.append((l.get_label(), l.get_marker()))
 
@@ -536,9 +536,6 @@ for f in filters:
                         linestyle='dashed', color=colors["K18"], alpha=0.9,
                         zorder=2,
                         label="Kawamata+18")
-                legend_elements.append(
-                    Line2D([0], [0], color=colors["K18"], linestyle="--",
-                           label=labels["K18"]))
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -566,10 +563,13 @@ for f in filters:
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
     uni_legend_elements = []
+    uni_legend_elements.append(
+        Line2D([0], [0], color=colors["K18"], linestyle="--",
+               label=labels["K18"]))
     included = []
     for l in legend_elements:
-        print((l.get_label(), l.get_marker()))
         if (l.get_label(), l.get_marker()) not in included:
+            print((l.get_label(), l.get_marker()))
             uni_legend_elements.append(l)
             included.append((l.get_label(), l.get_marker()))
 
@@ -711,9 +711,6 @@ for f in filters:
                         linestyle='dashed', color=colors["K18"], alpha=0.9,
                         zorder=2,
                         label="Kawamata+18")
-                legend_elements.append(
-                    Line2D([0], [0], color=colors["K18"], linestyle="--",
-                           label=labels["K18"]))
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -742,10 +739,13 @@ for f in filters:
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
     uni_legend_elements = []
+    uni_legend_elements.append(
+        Line2D([0], [0], color=colors["K18"], linestyle="--",
+               label=labels["K18"]))
     included = []
     for l in legend_elements:
-        print((l.get_label(), l.get_marker()))
         if (l.get_label(), l.get_marker()) not in included:
+            print((l.get_label(), l.get_marker()))
             uni_legend_elements.append(l)
             included.append((l.get_label(), l.get_marker()))
 
