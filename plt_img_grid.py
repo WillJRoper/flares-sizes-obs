@@ -152,8 +152,8 @@ for reg in regions:
                     if ind > -1:
                         size = this_imgs.shape[-1]
                         axes[i, j].imshow(this_imgs[ind,
-                                          int(0.1 * size):-int(0.1 * size),
-                                          int(0.1 * size):-int(0.1 * size)],
+                                          int(0.2 * size):-int(0.2 * size),
+                                          int(0.2 * size):-int(0.2 * size)],
                                           cmap=cmr.cosmic, norm=norm)
 
                         string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(
