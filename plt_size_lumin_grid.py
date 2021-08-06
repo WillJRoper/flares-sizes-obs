@@ -257,7 +257,7 @@ for f in filters:
     print("Type =", Type)
     print("Filter =", f)
 
-    fig = plt.figure(figsize=(16,5))
+    fig = plt.figure(figsize=(12, 3))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
@@ -343,7 +343,7 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=25,
+                           marker=markers[p], label=labels[p], s=10,
                            color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
@@ -421,7 +421,7 @@ for f in filters:
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(16,5))
+    fig = plt.figure(figsize=(12, 3))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
@@ -506,7 +506,7 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=25,
+                           marker=markers[p], label=labels[p], s=10,
                            color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
@@ -584,7 +584,7 @@ for f in filters:
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(16,5))
+    fig = plt.figure(figsize=(12, 3))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
@@ -681,7 +681,7 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=25,
+                           marker=markers[p], label=labels[p], s=10,
                            color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
