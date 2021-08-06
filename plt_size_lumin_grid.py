@@ -257,7 +257,7 @@ for f in filters:
     print("Type =", Type)
     print("Filter =", f)
 
-    fig = plt.figure(figsize=(12, 3))
+    fig = plt.figure(figsize=(18, 5))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
@@ -421,7 +421,7 @@ for f in filters:
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(12, 3))
+    fig = plt.figure(figsize=(18, 5))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
@@ -584,7 +584,7 @@ for f in filters:
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(12, 3))
+    fig = plt.figure(figsize=(18, 5))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
