@@ -59,8 +59,8 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 100
-nlim_plot = 700
+nlim = 10**9
+nlim_plot = 100
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -120,7 +120,7 @@ for reg, snap in reg_snaps:
         weight_dict[snap].setdefault(f, [])
 
         masses = hdf[f]["Mass"][...]
-        okinds = hdf[f]["nStar"][...] > nlim
+        okinds = masses > nlim
 
         print(reg, snap, f, masses[okinds].size)
 
