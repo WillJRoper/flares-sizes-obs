@@ -95,19 +95,7 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
-run = False
-
-try:
-    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(
-        reg, tag, Type, orientation), "r")
-    x = hdf[Type][orientation][filters[int(sys.argv[4])]]["nStar"]
-    hdf.close()
-except OSError:
-    run = True
-except KeyError:
-    run = True
-except ValueError:
-    run = True
+run = True
 
 if run:
 
