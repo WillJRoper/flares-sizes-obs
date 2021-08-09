@@ -247,6 +247,7 @@ if run:
                 # this_pos[:, (0, 1)] -= lumin_cent
 
                 this_radii = util.calc_rad(this_pos, i=0, j=1)
+                this_gradii = util.calc_rad(this_gpos, i=0, j=1)
 
                 img = util.make_spline_img(this_pos, res, 0, 1, tree,
                                        this_lumin, this_smls)
@@ -260,11 +261,12 @@ if run:
                 # this_pos[:, (2, 0)] -= lumin_cent
 
                 this_radii = util.calc_rad(this_pos, i=2, j=0)
+                this_gradii = util.calc_rad(this_gpos, i=0, j=1)
 
                 img = util.make_spline_img(this_pos, res, 2, 0, tree,
                                            this_lumin, this_smls)
 
-            hdr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
+            hdr_dict[tag][f].append(util.calc_light_mass_rad(this_gradii,
                                                              this_metals))
 
             for r in radii_fracs:
