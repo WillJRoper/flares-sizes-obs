@@ -227,16 +227,17 @@ if run:
             b, e = begin[ind], end[ind]
             gb, ge = gbegin[ind], gend[ind]
 
-            print(b, e, gb, ge)
-
             this_pos = poss[:, b: e].T
             this_gpos = gposs[:, gb: ge].T
             this_lumin = reg_dict[f][b: e]
             this_smls = smls[b: e]
             this_mass = np.nansum(masses[b: e])
             this_gmass = np.nansum(gas_masses[b: e])
-            print(gas_Z[gb: ge].shape, gas_masses[gb: ge].shape)
             this_metals = np.nansum(gas_Z[gb: ge] * gas_masses[gb: ge])
+            print(gas_Z[gb: ge].shape, gas_masses[gb: ge].shape, this_metals.shape)
+            print(gas_Z[gb: ge])
+            print(gas_masses[gb: ge])
+            print(this_metals)
             this_nstar = nstars[ind]
 
             if np.nansum(this_lumin) == 0:
