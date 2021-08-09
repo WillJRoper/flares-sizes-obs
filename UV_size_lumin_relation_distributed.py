@@ -261,11 +261,11 @@ if run:
                 # this_pos[:, (2, 0)] -= lumin_cent
 
                 this_radii = util.calc_rad(this_pos, i=2, j=0)
-                this_gradii = util.calc_rad(this_gpos, i=0, j=1)
+                this_gradii = util.calc_rad(this_gpos, i=2, j=0)
 
                 img = util.make_spline_img(this_pos, res, 2, 0, tree,
                                            this_lumin, this_smls)
-
+            print(this_gradii.shape, this_metals.shape)
             hdr_dict[tag][f].append(util.calc_light_mass_rad(this_gradii,
                                                              this_metals))
 
