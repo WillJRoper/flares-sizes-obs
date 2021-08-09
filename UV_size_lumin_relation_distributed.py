@@ -233,11 +233,7 @@ if run:
             this_smls = smls[b: e]
             this_mass = np.nansum(masses[b: e])
             this_gmass = np.nansum(gas_masses[b: e])
-            this_metals = np.nansum(gas_Z[gb: ge] * gas_masses[gb: ge])
-            print(gas_Z[gb: ge].shape, gas_masses[gb: ge].shape, this_metals.shape)
-            print(gas_Z[gb: ge])
-            print(gas_masses[gb: ge])
-            print(this_metals)
+            this_metals = gas_Z[gb: ge] * gas_masses[gb: ge]
             this_nstar = nstars[ind]
 
             if np.nansum(this_lumin) == 0:
@@ -272,7 +268,7 @@ if run:
 
                 img = util.make_spline_img(this_pos, res, 2, 0, tree,
                                            this_lumin, this_smls)
-            print(this_gradii.shape, this_metals.shape)
+
             hdr_dict[tag][f].append(util.calc_light_mass_rad(this_gradii,
                                                              this_metals))
 
