@@ -198,7 +198,6 @@ if run:
     masses = reg_dict["masses"]
     gas_masses = reg_dict["gmasses"]
     gas_Z = reg_dict["G_Z"]
-    print(gas_Z.shape, gas_masses.shape)
     nstars = reg_dict["nstar"]
     begin = reg_dict["begin"]
     end = reg_dict["end"]
@@ -228,12 +227,15 @@ if run:
             b, e = begin[ind], end[ind]
             gb, ge = gbegin[ind], gend[ind]
 
+            print(b, e, gb, ge)
+
             this_pos = poss[:, b: e].T
             this_gpos = gposs[:, gb: ge].T
             this_lumin = reg_dict[f][b: e]
             this_smls = smls[b: e]
             this_mass = np.nansum(masses[b: e])
             this_gmass = np.nansum(gas_masses[b: e])
+            print(gas_Z[gb: ge].shape, gas_masses[gb: ge].shape)
             this_metals = np.nansum(gas_Z[gb: ge] * gas_masses[gb: ge])
             this_nstar = nstars[ind]
 
