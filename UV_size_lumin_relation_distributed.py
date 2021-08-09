@@ -198,6 +198,7 @@ if run:
     masses = reg_dict["masses"]
     gas_masses = reg_dict["gmasses"]
     gas_Z = reg_dict["G_Z"]
+    print(gas_Z.shape, gas_masses.shape)
     nstars = reg_dict["nstar"]
     begin = reg_dict["begin"]
     end = reg_dict["end"]
