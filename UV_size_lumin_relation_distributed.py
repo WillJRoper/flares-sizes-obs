@@ -201,6 +201,8 @@ if run:
     nstars = reg_dict["nstar"]
     begin = reg_dict["begin"]
     end = reg_dict["end"]
+    gbegin = reg_dict["gbegin"]
+    gend = reg_dict["gend"]
 
     for f in filters:
 
@@ -223,14 +225,15 @@ if run:
         for ind in range(len(begin)):
 
             b, e = begin[ind], end[ind]
+            gb, ge = gbegin[ind], gend[ind]
 
             this_pos = poss[:, b: e].T
-            this_gpos = gposs[:, b: e].T
+            this_gpos = gposs[:, gb: ge].T
             this_lumin = reg_dict[f][b: e]
             this_smls = smls[b: e]
             this_mass = np.nansum(masses[b: e])
             this_gmass = np.nansum(gas_masses[b: e])
-            this_metals = np.nansum(gas_Z[b: e] * gas_masses[b: e])
+            this_metals = np.nansum(gas_Z[gb: ge] * gas_masses[gb: ge])
             this_nstar = nstars[ind]
 
             if np.nansum(this_lumin) == 0:

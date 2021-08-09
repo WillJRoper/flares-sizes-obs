@@ -272,6 +272,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     Lums["nstar"] = S_len
     Lums["begin"] = begin
     Lums["end"] = end
+    Lums["gbegin"] = gbegin
+    Lums["gend"] = gend
 
     return Lums  # , S_len + G_len
 
