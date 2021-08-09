@@ -204,7 +204,7 @@ if run:
 
     for f in filters:
 
-        hdr_dict[tag].setdefault(f, {})
+        hdr_dict[tag].setdefault(f, [])
         hlr_dict[tag].setdefault(f, {})
         hlr_app_dict[tag].setdefault(f, {})
         hlr_pix_dict[tag].setdefault(f, {})
@@ -264,8 +264,8 @@ if run:
                 img = util.make_spline_img(this_pos, res, 2, 0, tree,
                                            this_lumin, this_smls)
 
-            hdr_dict[tag].append(util.calc_light_mass_rad(this_radii,
-                                                          this_metals))
+            hdr_dict[tag][f].append(util.calc_light_mass_rad(this_radii,
+                                                             this_metals))
 
             for r in radii_fracs:
 
