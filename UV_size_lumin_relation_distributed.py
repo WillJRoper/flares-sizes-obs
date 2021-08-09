@@ -115,6 +115,7 @@ if run:
     radii_fracs = (0.2, 0.5, 0.8)
 
     # Define dictionaries for results
+    hdr_dict = {}
     hlr_dict = {}
     hlr_app_dict = {}
     hlr_pix_dict = {}
@@ -130,6 +131,7 @@ if run:
     z_str = tag.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
+    hdr_dict.setdefault(tag, {})
     hlr_dict.setdefault(tag, {})
     hlr_app_dict.setdefault(tag, {})
     hlr_pix_dict.setdefault(tag, {})
@@ -191,14 +193,18 @@ if run:
     app_radii *= csoft
 
     poss = reg_dict["coords"] * 10 ** 3
+    gposs = reg_dict["gcoords"] * 10 ** 3
     smls = reg_dict["smls"] * 10 ** 3
     masses = reg_dict["masses"]
+    gas_masses = reg_dict["gmasses"]
+    gas_Z = reg_dict["G_Z"]
     nstars = reg_dict["nstar"]
     begin = reg_dict["begin"]
     end = reg_dict["end"]
 
     for f in filters:
 
+        hdr_dict[tag].setdefault(f, {})
         hlr_dict[tag].setdefault(f, {})
         hlr_app_dict[tag].setdefault(f, {})
         hlr_pix_dict[tag].setdefault(f, {})
@@ -219,9 +225,12 @@ if run:
             b, e = begin[ind], end[ind]
 
             this_pos = poss[:, b: e].T
+            this_gpos = gposs[:, b: e].T
             this_lumin = reg_dict[f][b: e]
             this_smls = smls[b: e]
             this_mass = np.nansum(masses[b: e])
+            this_gmass = np.nansum(gas_masses[b: e])
+            this_metals = np.nansum(gas_Z[b: e] * gas_masses[b: e])
             this_nstar = nstars[ind]
 
             if np.nansum(this_lumin) == 0:
@@ -254,6 +263,9 @@ if run:
 
                 img = util.make_spline_img(this_pos, res, 2, 0, tree,
                                            this_lumin, this_smls)
+
+            hdr_dict[tag].append(util.calc_light_mass_rad(this_radii,
+                                                          this_metals))
 
             for r in radii_fracs:
 
@@ -299,6 +311,7 @@ if run:
 
     for f in filters:
 
+        hdr = np.array(hdr_dict[tag][f])
         lumins = np.array(lumin_dict[tag][f])
         img_lumins = np.array(img_lumin_dict[tag][f])
         mass = np.array(mass_dict[tag][f])
@@ -308,6 +321,21 @@ if run:
         print(imgs.shape)
 
         f_group = hdf.create_group(f)
+
+        try:
+            dset = f_group.create_dataset("HDR", data=hdr,
+                                          dtype=hdr.dtype,
+                                          shape=hdr.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "pkpc"
+        except RuntimeError:
+            print("HDR already exists: Overwriting...")
+            del f_group["HDR"]
+            dset = f_group.create_dataset("HDR", data=hdr,
+                                          dtype=hdr.dtype,
+                                          shape=hdr.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "pkpc"
 
         try:
             dset = f_group.create_dataset("Luminosity", data=lumins,

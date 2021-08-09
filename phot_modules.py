@@ -180,6 +180,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
                                                  lkernel, kbins)
 
             S_coords[:, begin[jj]: end[jj]] = (starCoords - cops[:, jj]).T
+            G_coords[:, begin[jj]: end[jj]] = (gasCoords - cops[:, jj]).T
 
         elif orientation == "face-on":
 
@@ -263,8 +264,11 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             Lums[f][begin[jj]: end[jj]] = Lnu
 
     Lums["coords"] = S_coords
+    Lums["gcoords"] = G_coords
     Lums["smls"] = S_sml
     Lums["masses"] = S_mass
+    Lums["gmasses"] = G_mass
+    Lums["G_Z"] = G_Z
     Lums["nstar"] = S_len
     Lums["begin"] = begin
     Lums["end"] = end
