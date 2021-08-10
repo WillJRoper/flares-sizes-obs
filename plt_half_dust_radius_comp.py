@@ -119,7 +119,7 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        bins = np.linspace(0.08, 30, 50)
+        bins = np.linspace(np.log10(0.08), np.log10(30), 50)
 
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
@@ -173,7 +173,7 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.linspace(0.08, 30, 50)
+        bins = np.linspace(np.log10(0.08), np.log10(30), 50)
         ratio_bins = np.linspace(np.min(ratio[okinds2]),
                                  np.max(ratio[okinds2]), 50)
 
@@ -205,7 +205,7 @@ for snap in snaps:
         ax.set_xlim([0.08, max])
         ax.set_ylim([0.08, max])
 
-        ax.plot([min, max], [min, max], color='k', linestyle="--")
+        ax.plot([min, max], [1, 1], color='k', linestyle="--")
 
         ax.text(0.95, 0.05, f'$z={z}$',
                 bbox=dict(boxstyle="round,pad=0.3", fc='w',
