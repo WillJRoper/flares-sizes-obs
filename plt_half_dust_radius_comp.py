@@ -60,9 +60,12 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
-    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
-                                                                orientation),
-                    "r")
+    try:
+        hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
+                                                                    orientation),
+                        "r")
+    except OSError:
+        continue
 
     hdr_dict.setdefault(snap, {})
     hlr_dict.setdefault(snap, {})
@@ -88,6 +91,11 @@ for reg, snap in reg_snaps:
 for snap in snaps:
 
     for f in filters:
+
+        print("Plotting for:")
+        print("Orientation =", orientation)
+        print("Filter =", f)
+        print("Snapshot =", snap)
 
         z_str = snap.split('z')[1].split('p')
         z = float(z_str[0] + '.' + z_str[1])
