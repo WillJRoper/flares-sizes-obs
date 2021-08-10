@@ -118,12 +118,12 @@ for snap in snaps:
         fig = plt.figure()
         ax = fig.add_subplot(111)
         try:
-            cbar = ax.hexbin(hlrs[okinds2], hdrs[okinds2], gridsize=50,
+            cbar = ax.hexbin(hdrs[okinds2], hlrs[okinds2], gridsize=50,
                              mincnt=1, C=w, reduce_C_function=np.sum,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='Greys')
-            ax.hexbin(hlrs[okinds1], hdrs[okinds1], gridsize=50, mincnt=1, C=w,
+            ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w,
                       reduce_C_function=np.sum, xscale='log', yscale='log',
                       norm=LogNorm(), linewidths=0.2, cmap='viridis')
         except ValueError as e:
@@ -145,8 +145,8 @@ for snap in snaps:
                 fontsize=8)
 
         # Label axes
-        ax.set_xlabel("$R_{1/2," + f.split(".")[-1] + "}/ [pkpc]$")
-        ax.set_ylabel('$R_{1/2, dust}/ [pkpc]$')
+        ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ [pkpc]$")
+        ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
         fig.savefig('plots/' + str(z) + '/HalfDustRadius_' + f + '_'
                     + str(z) + '_' + Type + '_' + orientation + "_"
