@@ -130,11 +130,13 @@ for snap in snaps:
         xbin_cents = xbins[1:] - (bin_wid / 2)
         ybin_cents = ybins[1:] - (bin_wid / 2)
 
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
         # ax.loglog()
         try:
-            cbar = ax.contour((xbin_cents, ybin_cents), Z=H, levels=10,
+            cbar = ax.contourf(xbin_cents, ybin_cents, Z=H, levels=10,
                                norm=LogNorm(), cmap='Greys')
             # ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w,
             #           reduce_C_function=np.sum, xscale='log', yscale='log',
