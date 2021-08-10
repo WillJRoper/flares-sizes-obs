@@ -23,7 +23,10 @@ sns.set_style('whitegrid')
 
 regions = []
 for reg in range(0, 40):
-    regions.append(reg)
+    if reg < 10:
+        regions.append('0' + str(reg))
+    else:
+        regions.append(str(reg))
 
 # Set orientation
 orientation = sys.argv[1]
