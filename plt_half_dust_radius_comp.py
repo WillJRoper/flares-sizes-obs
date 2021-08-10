@@ -121,18 +121,16 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(0.08, 30, 50)
-        print(bins)
-        H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
-                                         bins=bins, weights=w[okinds2])
-
-        print(H)
-
-        bin_wid = bins[1] - bins[0]
-        xbin_cents = xbins[1:] - (bin_wid / 2)
-        ybin_cents = ybins[1:] - (bin_wid / 2)
-
-        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+        # bins = np.logspace(0.08, 30, 50)
+        # print(bins)
+        # H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
+        #                                  bins=bins, weights=w[okinds2])
+        #
+        # bin_wid = bins[1] - bins[0]
+        # xbin_cents = xbins[1:] - (bin_wid / 2)
+        # ybin_cents = ybins[1:] - (bin_wid / 2)
+        #
+        # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
         percentiles = [np.percentile(weights, 15.9), np.percentile(weights, 50), np.percentile(weights, 84.1), np.percentile(weights, 99.9)]
 
@@ -187,17 +185,17 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.logspace(0.08, 30, 50)
-        ratio_bins = np.linspace(np.min(ratio[okinds2]),
-                                 np.max(ratio[okinds2]), 50)
-
-        H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
-                                         bins=(bins, ratio_bins),
-                                         weights=w[okinds2])
-
-        bin_wid = bins[1] - bins[0]
-        xbin_cents = xbins[1:] - (bin_wid / 2)
-        ybin_cents = ybins[1:] - (bin_wid / 2)
+        # bins = np.logspace(0.08, 30, 50)
+        # ratio_bins = np.linspace(np.min(ratio[okinds2]),
+        #                          np.max(ratio[okinds2]), 50)
+        #
+        # H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
+        #                                  bins=(bins, ratio_bins),
+        #                                  weights=w[okinds2])
+        #
+        # bin_wid = bins[1] - bins[0]
+        # xbin_cents = xbins[1:] - (bin_wid / 2)
+        # ybin_cents = ybins[1:] - (bin_wid / 2)
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
