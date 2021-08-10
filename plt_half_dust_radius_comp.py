@@ -148,9 +148,9 @@ for snap in snaps:
             cbar = ax.contourf(XX, YY, H, levels=3,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys', alpha=0.8)
-            # ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
-            #           reduce_C_function=np.sum, xscale='log', yscale='log',
-            #           norm=LogNorm(), linewidths=0.2, cmap='viridis')
+            ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
+                      reduce_C_function=np.sum, xscale='log', yscale='log',
+                      norm=LogNorm(), linewidths=0.2, cmap='viridis')
         except ValueError as e:
             print(e)
             continue
@@ -185,24 +185,27 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        # bins = np.logspace(0.08, 30, 50)
-        # ratio_bins = np.linspace(np.min(ratio[okinds2]),
-        #                          np.max(ratio[okinds2]), 50)
-        #
-        # H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
-        #                                  bins=(bins, ratio_bins),
-        #                                  weights=w[okinds2])
-        #
-        # bin_wid = bins[1] - bins[0]
-        # xbin_cents = xbins[1:] - (bin_wid / 2)
-        # ybin_cents = ybins[1:] - (bin_wid / 2)
+        bins = np.logspace(np.log10(0.08), np.log10(30), 50)
+        ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
+                                 np.log10(np.max(ratio[okinds2])), 50)
+
+        H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
+                                         bins=(bins, ratio_bins),
+                                         weights=w[okinds2])
+
+        bin_wid = bins[1] - bins[0]
+        xbin_cents = xbins[1:] - (bin_wid / 2)
+        ybin_cents = ybins[1:] - (bin_wid / 2)
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        # ax.loglog()
+        ax.loglog()
         try:
-            # cbar = ax.contourf((xbin_cents, ybin_cents), Z=H, levels=5,
-            #                    norm=LogNorm(), cmap='Greys')
+            cbar = ax.contourf(XX, YY, H, levels=3,
+                               locator=ticker.LogLocator(),
+                               norm=LogNorm(), cmap='Greys', alpha=0.8)
             ax.hexbin(hlrs[okinds1], ratio[okinds1], gridsize=50, mincnt=1,
                       C=w[okinds1], reduce_C_function=np.sum,
                       xscale='log', yscale='log', norm=LogNorm(),
