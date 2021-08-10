@@ -114,6 +114,7 @@ for snap in snaps:
         hdrs = hdrs[okinds]
         hlrs = hlrs[okinds]
         masses = masses[okinds]
+        w = w[okinds]
 
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
