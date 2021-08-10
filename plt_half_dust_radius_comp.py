@@ -131,12 +131,11 @@ for snap in snaps:
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
-        percentiles = [np.percentile(weights, 2.3),
-                       np.percentile(weights, 15.9),
-                       np.percentile(weights, 50),
-                       np.percentile(weights, 84.1),
-                       np.percentile(weights, 97.7),
-                       np.percentile(weights, 99.9)]
+        percentiles = [10**-4,
+                       10**-3,
+                       10**-2,
+                       10**-1,
+                       1]
 
         print(percentiles)
 
@@ -178,7 +177,7 @@ for snap in snaps:
         ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
         plt.axis('scaled')
-        
+
         fig.colorbar(cbar)
 
         fig.savefig('plots/' + str(z) + '/HalfDustRadius_' + f + '_'
