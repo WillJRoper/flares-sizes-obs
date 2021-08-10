@@ -145,7 +145,7 @@ for snap in snaps:
             #           C=w[okinds2], reduce_C_function=np.sum,
             #           xscale='log', yscale='log',
             #           norm=LogNorm(), linewidths=0.2, cmap='jet')
-            cbar = ax.contourf(XX, YY, H, levels=3,
+            cbar = ax.contourf(XX, YY, H, levels=7,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys', alpha=0.8)
             ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
@@ -203,7 +203,7 @@ for snap in snaps:
         ax = fig.add_subplot(111)
         ax.loglog()
         try:
-            cbar = ax.contourf(XX, YY, H, levels=3,
+            cbar = ax.contourf(XX, YY, H, levels=7,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys', alpha=0.8)
             ax.hexbin(hlrs[okinds1], ratio[okinds1], gridsize=50, mincnt=1,
@@ -229,7 +229,7 @@ for snap in snaps:
                 fontsize=8)
 
         # Label axes
-        ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ [pkpc]$")
+        ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ R_{1/2, dust}$")
         ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
         fig.savefig('plots/' + str(z) + '/HalfDustRadius_ratio_' + f + '_'
