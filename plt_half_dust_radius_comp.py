@@ -132,7 +132,7 @@ for snap in snaps:
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.loglog()
+        # ax.loglog()
         try:
             cbar = ax.contourf((xbin_cents, ybin_cents), Z=H, levels=5,
                                norm=LogNorm(), cmap='Greys')
@@ -187,7 +187,7 @@ for snap in snaps:
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.loglog()
+        # ax.loglog()
         try:
             cbar = ax.contourf((xbin_cents, ybin_cents), Z=H, levels=5,
                                norm=LogNorm(), cmap='Greys')
