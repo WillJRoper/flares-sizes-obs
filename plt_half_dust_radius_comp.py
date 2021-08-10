@@ -139,7 +139,7 @@ for snap in snaps:
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        # ax.loglog()
+        ax.loglog()
         try:
             # ax.hexbin(hdrs[okinds2], hlrs[okinds2], gridsize=50, mincnt=1,
             #           C=w[okinds2], reduce_C_function=np.sum,
