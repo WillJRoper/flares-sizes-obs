@@ -182,6 +182,6 @@ for reg in regions:
             fig.savefig(
                 'plots/Image_grids/ImgGrid_' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + '_' + Type
-                + "_" + extinction +"".replace(".", "p") + ".png",
+                + "_" + extinction + "".replace(".", "p") + ".png",
                 bbox_inches='tight', dpi=fig.dpi)
             plt.close(fig)
