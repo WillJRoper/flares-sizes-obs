@@ -106,7 +106,7 @@ for snap in snaps:
         masses = np.array(mass_dict[snap][f])
         w = np.array(weight_dict[snap][f])
 
-        okinds = np.logical_and(hdrs > 0, masses > 0)
+        okinds = np.logical_and(np.logical_and(hdrs > 0, hlrs > 0), masses > 0)
 
         hdrs = hdrs[okinds]
         hlrs = hlrs[okinds]
