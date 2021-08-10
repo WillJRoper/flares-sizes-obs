@@ -134,6 +134,10 @@ for snap in snaps:
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
+        percentiles = [np.percentiles(weights, 15.9), np.percentiles(weights, 50), np.percentiles(weights, 84.1), np.percentiles(weights, 99.9)]
+        
+        print(percentiles)
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.loglog()
@@ -141,11 +145,11 @@ for snap in snaps:
             ax.hexbin(hdrs[okinds2], hlrs[okinds2], gridsize=50, mincnt=1,
                       C=w[okinds2], reduce_C_function=np.sum,
                       xscale='log', yscale='log',
-                      norm=LogNorm(), linewidths=0.2, cmap='Greys')
+                      norm=LogNorm(), linewidths=0.2, cmap='jet')
             # cbar = ax.contourf(XX, YY, H, levels=10,
             #                    locator=ticker.LogLocator(),
             #                    norm=LogNorm(), cmap='Greys', alpha=0.8)
-            cbar = ax.tricontour(hdrs[okinds2], hlrs[okinds2], w[okinds2], 5, linewidths=0.5, cmap='Greys', alpha=0.8, norm=LogNorm())
+            cbar = ax.tricontour(hdrs[okinds2], hlrs[okinds2], w[okinds2], percentiles, linewidths=0.5, cmap='Greys', alpha=0.8)
             # ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
             #           reduce_C_function=np.sum, xscale='log', yscale='log',
             #           norm=LogNorm(), linewidths=0.2, cmap='viridis')
