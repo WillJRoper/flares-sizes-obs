@@ -121,16 +121,15 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        # bins = np.logspace(0.08, 30, 50)
-        # print(bins)
-        # H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
-        #                                  bins=bins, weights=w[okinds2])
-        #
-        # bin_wid = bins[1] - bins[0]
-        # xbin_cents = xbins[1:] - (bin_wid / 2)
-        # ybin_cents = ybins[1:] - (bin_wid / 2)
-        #
-        # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+        bins = np.logspace(0.08, 30, 50)
+        H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
+                                         bins=bins, weights=w[okinds2])
+
+        bin_wid = bins[1] - bins[0]
+        xbin_cents = xbins[1:] - (bin_wid / 2)
+        ybin_cents = ybins[1:] - (bin_wid / 2)
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
         percentiles = [np.percentile(w, 15.9),
                        np.percentile(w, 50),
@@ -146,10 +145,9 @@ for snap in snaps:
             #           C=w[okinds2], reduce_C_function=np.sum,
             #           xscale='log', yscale='log',
             #           norm=LogNorm(), linewidths=0.2, cmap='jet')
-            # cbar = ax.contourf(XX, YY, H, levels=10,
-            #                    locator=ticker.LogLocator(),
-            #                    norm=LogNorm(), cmap='Greys', alpha=0.8)
-            cbar = ax.tricontour(hdrs[okinds2], hlrs[okinds2], w[okinds2], percentiles, linewidths=0.5, cmap='Greys', alpha=0.8, norm=LogNorm())
+            cbar = ax.contourf(XX, YY, H, levels=percentiles,
+                               locator=ticker.LogLocator(),
+                               norm=LogNorm(), cmap='Greys', alpha=0.8)
             # ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
             #           reduce_C_function=np.sum, xscale='log', yscale='log',
             #           norm=LogNorm(), linewidths=0.2, cmap='viridis')
