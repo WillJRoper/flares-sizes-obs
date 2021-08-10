@@ -118,14 +118,21 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
+        bins = np.linspace(0.08, 30, 50)
+
+        H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
+                                         bins=bins, weights=w[okinds2])
+
+        bin_wid = bins[1] - bins[0]
+        xbin_cents = xbins[1:] - (bin_wid / 2)
+        ybin_cents = ybins[1:] - (bin_wid / 2)
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
+        ax.loglog()
         try:
-            cbar = ax.hexbin(hdrs[okinds2], hlrs[okinds2], gridsize=50,
-                             mincnt=1, C=w, reduce_C_function=np.sum,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2,
-                             cmap='Greys')
+            cbar = ax.contourf(xbin_cents, ybin_cents, Z=H, levels=5,
+                               norm=LogNorm(), cmap='Greys')
             ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w,
                       reduce_C_function=np.sum, xscale='log', yscale='log',
                       norm=LogNorm(), linewidths=0.2, cmap='viridis')
@@ -136,8 +143,8 @@ for snap in snaps:
         min = np.min((ax.get_xlim(), ax.get_ylim()))
         max = np.max((ax.get_xlim(), ax.get_ylim()))
 
-        ax.set_xlim([min, max])
-        ax.set_ylim([min, max])
+        ax.set_xlim([0.08, max])
+        ax.set_ylim([0.08, max])
 
         ax.plot([min, max], [min, max], color='k', linestyle="--")
 
@@ -151,7 +158,65 @@ for snap in snaps:
         ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ [pkpc]$")
         ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
+        plt.axis('scaled')
+
         fig.savefig('plots/' + str(z) + '/HalfDustRadius_' + f + '_'
+                    + str(z) + '_' + Type + '_' + orientation + "_"
+                    + extinction + "_" + '%d' % masslim
+                    + "".replace(".", "p") + ".png",
+                    bbox_inches='tight')
+
+        plt.close(fig)
+
+        ratio = hlrs / hdrs
+
+        bins = np.linspace(0.08, 30, 50)
+        ratio_bins = np.linspace(np.min(ratio[okinds2]),
+                                 np.max(ratio[okinds2]), 50)
+
+        H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
+                                         bins=(bins, ratio_bins),
+                                         weights=w[okinds2])
+
+        bin_wid = bins[1] - bins[0]
+        xbin_cents = xbins[1:] - (bin_wid / 2)
+        ybin_cents = ybins[1:] - (bin_wid / 2)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.loglog()
+        try:
+            cbar = ax.contourf(xbin_cents, ybin_cents, Z=H, levels=5,
+                               norm=LogNorm(), cmap='Greys')
+            ax.hexbin(hlrs[okinds1], ratio[okinds1], gridsize=50, mincnt=1,
+                      C=w[okinds1], reduce_C_function=np.sum,
+                      xscale='log', yscale='log', norm=LogNorm(),
+                      linewidths=0.2, cmap='viridis')
+        except ValueError as e:
+            print(e)
+            continue
+
+        min = np.min((ax.get_xlim(), ax.get_ylim()))
+        max = np.max((ax.get_xlim(), ax.get_ylim()))
+
+        ax.set_xlim([0.08, max])
+        ax.set_ylim([0.08, max])
+
+        ax.plot([min, max], [min, max], color='k', linestyle="--")
+
+        ax.text(0.95, 0.05, f'$z={z}$',
+                bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                          ec="k", lw=1, alpha=0.8),
+                transform=ax.transAxes, horizontalalignment='right',
+                fontsize=8)
+
+        # Label axes
+        ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ [pkpc]$")
+        ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
+
+        plt.axis('scaled')
+
+        fig.savefig('plots/' + str(z) + '/HalfDustRadius_ratio_' + f + '_'
                     + str(z) + '_' + Type + '_' + orientation + "_"
                     + extinction + "_" + '%d' % masslim
                     + "".replace(".", "p") + ".png",
