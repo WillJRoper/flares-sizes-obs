@@ -124,20 +124,17 @@ for snap in snaps:
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
-        print(H.shape)
+        print(H)
 
         bin_wid = bins[1] - bins[0]
         xbin_cents = xbins[1:] - (bin_wid / 2)
         ybin_cents = ybins[1:] - (bin_wid / 2)
 
-        print(xbin_cents)
-        print(ybin_cents)
-
         fig = plt.figure()
         ax = fig.add_subplot(111)
         # ax.loglog()
         try:
-            cbar = ax.pcolormesh((xbin_cents, ybin_cents), C=H,
+            cbar = ax.contour((xbin_cents, ybin_cents), Z=H, levels=10,
                                norm=LogNorm(), cmap='Greys')
             # ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w,
             #           reduce_C_function=np.sum, xscale='log', yscale='log',
