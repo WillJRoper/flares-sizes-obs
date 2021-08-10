@@ -145,7 +145,7 @@ for snap in snaps:
             #           C=w[okinds2], reduce_C_function=np.sum,
             #           xscale='log', yscale='log',
             #           norm=LogNorm(), linewidths=0.2, cmap='jet')
-            cbar = ax.contourf(XX, YY, H, levels=5,
+            cbar = ax.contourf(XX, YY, H, levels=3,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys', alpha=0.8)
             # ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
