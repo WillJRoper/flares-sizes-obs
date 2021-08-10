@@ -137,7 +137,7 @@ for snap in snaps:
         ax = fig.add_subplot(111)
         # ax.loglog()
         try:
-            cbar = ax.pcolormesh((xbin_cents, ybin_cents), Z=H,
+            cbar = ax.pcolormesh((xbin_cents, ybin_cents), C=H,
                                norm=LogNorm(), cmap='Greys')
             # ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w,
             #           reduce_C_function=np.sum, xscale='log', yscale='log',
