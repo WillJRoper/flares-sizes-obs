@@ -136,9 +136,9 @@ for snap in snaps:
         try:
             cbar = ax.contourf((xbin_cents, ybin_cents), Z=H, levels=5,
                                norm=LogNorm(), cmap='Greys')
-            ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w,
-                      reduce_C_function=np.sum, xscale='log', yscale='log',
-                      norm=LogNorm(), linewidths=0.2, cmap='viridis')
+            # ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w,
+            #           reduce_C_function=np.sum, xscale='log', yscale='log',
+            #           norm=LogNorm(), linewidths=0.2, cmap='viridis')
         except ValueError as e:
             print(e)
             continue
@@ -191,10 +191,10 @@ for snap in snaps:
         try:
             cbar = ax.contourf((xbin_cents, ybin_cents), Z=H, levels=5,
                                norm=LogNorm(), cmap='Greys')
-            ax.hexbin(hlrs[okinds1], ratio[okinds1], gridsize=50, mincnt=1,
-                      C=w[okinds1], reduce_C_function=np.sum,
-                      xscale='log', yscale='log', norm=LogNorm(),
-                      linewidths=0.2, cmap='viridis')
+            # ax.hexbin(hlrs[okinds1], ratio[okinds1], gridsize=50, mincnt=1,
+            #           C=w[okinds1], reduce_C_function=np.sum,
+            #           xscale='log', yscale='log', norm=LogNorm(),
+            #           linewidths=0.2, cmap='viridis')
         except ValueError as e:
             print(e)
             continue
