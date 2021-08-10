@@ -132,7 +132,9 @@ for snap in snaps:
         #
         # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
-        percentiles = [np.percentile(weights, 15.9), np.percentile(weights, 50), np.percentile(weights, 84.1), np.percentile(weights, 99.9)]
+        percentiles = [np.percentile(weights, 15.9),
+                       np.percentile(weights, 50),
+                       np.percentile(weights, 84.1)]
 
         print(percentiles)
 
