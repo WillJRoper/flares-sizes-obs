@@ -121,7 +121,7 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), np.sqrt(hdrs[okinds2].size))
+        bins = np.logspace(np.log10(0.08), np.log10(30), int(np.sqrt(hdrs[okinds2].size)))
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
@@ -190,9 +190,9 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), np.sqrt(hdrs[okinds2].size))
+        bins = np.logspace(np.log10(0.08), np.log10(30), int(np.sqrt(hdrs[okinds2].size)))
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
-                                 np.log10(np.max(ratio[okinds2])), np.sqrt(hdrs[okinds2].size))
+                                 np.log10(np.max(ratio[okinds2])), int(np.sqrt(hdrs[okinds2].size)))
 
         H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
                                          bins=(bins, ratio_bins),
