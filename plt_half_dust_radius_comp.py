@@ -124,6 +124,8 @@ for snap in snaps:
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
+        print(H.shape)
+
         bin_wid = bins[1] - bins[0]
         xbin_cents = xbins[1:] - (bin_wid / 2)
         ybin_cents = ybins[1:] - (bin_wid / 2)
