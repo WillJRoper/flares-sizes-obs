@@ -121,7 +121,7 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 50)
+        bins = np.logspace(np.log10(0.08), np.log10(30), 100)
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
@@ -135,7 +135,7 @@ for snap in snaps:
                        10**-3,
                        10**-2,
                        10**-1,
-                       1]
+                       1, H.max()]
 
         print(percentiles)
 
