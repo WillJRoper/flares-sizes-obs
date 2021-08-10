@@ -119,7 +119,7 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(0.08, 30, 50)
+        bins = np.linspace(0.08, 30, 50)
 
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
