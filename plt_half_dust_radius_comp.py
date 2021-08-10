@@ -143,14 +143,14 @@ for snap in snaps:
         ax = fig.add_subplot(111)
         ax.loglog()
         try:
-            cbar = ax.hexbin(hdrs[okinds2], hlrs[okinds2], gridsize=50,
-                             mincnt=1,
-                             C=w[okinds2], reduce_C_function=np.sum,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2, cmap='Greys')
-            # cbar = ax.contourf(XX, YY, H, levels=percentiles,
-            #                    locator=ticker.LogLocator(),
-            #                    norm=LogNorm(), cmap='Greys', alpha=0.8)
+            # cbar = ax.hexbin(hdrs[okinds2], hlrs[okinds2], gridsize=50,
+            #                  mincnt=1,
+            #                  C=w[okinds2], reduce_C_function=np.sum,
+            #                  xscale='log', yscale='log',
+            #                  norm=LogNorm(), linewidths=0.2, cmap='Greys')
+            cbar = ax.contourf(XX, YY, H, levels=percentiles,
+                               locator=ticker.LogLocator(),
+                               norm=LogNorm(), cmap='Greys', alpha=0.8)
             ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
                       reduce_C_function=np.sum, xscale='log', yscale='log',
                       norm=LogNorm(), linewidths=0.2, cmap='viridis')
@@ -178,7 +178,7 @@ for snap in snaps:
 
         plt.axis('scaled')
 
-        fig.colorbar(cbar)
+        # fig.colorbar(cbar)
 
         fig.savefig('plots/' + str(z) + '/HalfDustRadius_' + f + '_'
                     + str(z) + '_' + Type + '_' + orientation + "_"
