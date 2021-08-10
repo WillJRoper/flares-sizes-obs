@@ -120,7 +120,7 @@ for snap in snaps:
         okinds2 = masses < 10 ** 9
 
         bins = np.linspace(0.08, 30, 50)
-
+        print(bins)
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
@@ -129,6 +129,9 @@ for snap in snaps:
         bin_wid = bins[1] - bins[0]
         xbin_cents = xbins[1:] - (bin_wid / 2)
         ybin_cents = ybins[1:] - (bin_wid / 2)
+
+        print(xbin_cents)
+        print(ybin_cents)
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
@@ -216,8 +219,6 @@ for snap in snaps:
         # Label axes
         ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ [pkpc]$")
         ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
-
-        plt.axis('scaled')
 
         fig.savefig('plots/' + str(z) + '/HalfDustRadius_ratio_' + f + '_'
                     + str(z) + '_' + Type + '_' + orientation + "_"
