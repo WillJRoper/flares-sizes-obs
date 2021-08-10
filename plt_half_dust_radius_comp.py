@@ -131,9 +131,12 @@ for snap in snaps:
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
-        percentiles = [np.percentile(H, 15.9),
-                       np.percentile(H, 50),
-                       np.percentile(H, 84.1)]
+        percentiles = [np.percentile(weights, 2.3),
+                       np.percentile(weights, 15.9),
+                       np.percentile(weights, 50),
+                       np.percentile(weights, 84.1),
+                       np.percentile(weights, 97.7),
+                       np.percentile(weights, 99.9)]
 
         print(percentiles)
 
@@ -145,7 +148,7 @@ for snap in snaps:
             #           C=w[okinds2], reduce_C_function=np.sum,
             #           xscale='log', yscale='log',
             #           norm=LogNorm(), linewidths=0.2, cmap='jet')
-            cbar = ax.contourf(XX, YY, H, levels=weights,
+            cbar = ax.contourf(XX, YY, H, levels=percentiles,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys', alpha=0.8)
             ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
