@@ -64,7 +64,8 @@ for reg, snap in reg_snaps:
         hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
                                                                     orientation),
                         "r")
-    except OSError:
+    except OSError as e:
+        print(e)
         continue
 
     hdr_dict.setdefault(snap, {})
@@ -125,7 +126,8 @@ for snap in snaps:
             ax.hexbin(hlrs[okinds1], hdrs[okinds1], gridsize=50, mincnt=1, C=w,
                       reduce_C_function=np.sum, xscale='log', yscale='log',
                       norm=LogNorm(), linewidths=0.2, cmap='viridis')
-        except ValueError:
+        except ValueError as e:
+            print(e)
             continue
 
         min = np.min((ax.get_xlim(), ax.get_ylim()))
