@@ -136,7 +136,7 @@ for snap in snaps:
         ax = fig.add_subplot(111)
         # ax.loglog()
         try:
-            cbar = ax.contourf(xbin_cents, ybin_cents, Z=H, levels=10,
+            cbar = ax.contourf(XX, YY, Z=H, levels=10,
                                norm=LogNorm(), cmap='Greys')
             # ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w,
             #           reduce_C_function=np.sum, xscale='log', yscale='log',
