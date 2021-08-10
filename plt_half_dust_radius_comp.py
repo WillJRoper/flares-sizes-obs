@@ -135,7 +135,7 @@ for snap in snaps:
                        10**-3,
                        10**-2,
                        10**-1,
-                       1, H.max()]
+                       1]
 
         print(percentiles)
 
@@ -190,9 +190,9 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 50)
+        bins = np.logspace(np.log10(0.08), np.log10(30), 100)
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
-                                 np.log10(np.max(ratio[okinds2])), 50)
+                                 np.log10(np.max(ratio[okinds2])), 100)
 
         H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
                                          bins=(bins, ratio_bins),
@@ -208,7 +208,7 @@ for snap in snaps:
         ax = fig.add_subplot(111)
         ax.loglog()
         try:
-            cbar = ax.contourf(XX, YY, H, levels=7,
+            cbar = ax.contourf(XX, YY, H, levels=percentiles,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys', alpha=0.8)
             ax.hexbin(hlrs[okinds1], ratio[okinds1], gridsize=50, mincnt=1,
