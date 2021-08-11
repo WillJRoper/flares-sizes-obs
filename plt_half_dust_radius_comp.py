@@ -134,10 +134,11 @@ for snap in snaps:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H, 50),
-                       np.percentile(H, 68),
+        percentiles = [np.percentile(H, 68),
                        np.percentile(H, 95),
-                       np.percentile(H, 99)]
+                       np.percentile(H, 97.7),
+                       np.percentile(H, 99.9),
+                       np.percentile(H, 99.99)]
 
         bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
 
@@ -160,7 +161,7 @@ for snap in snaps:
             ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
                       reduce_C_function=np.sum, xscale='log', yscale='log',
                       norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(XX, YY, H.T, levels=5,
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
@@ -215,10 +216,11 @@ for snap in snaps:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H, 50),
-                       np.percentile(H, 68),
+        percentiles = [np.percentile(H, 68),
                        np.percentile(H, 95),
-                       np.percentile(H, 99)]
+                       np.percentile(H, 97.7),
+                       np.percentile(H, 99.9), 
+                       np.percentile(H, 99.99)]
 
         bins = np.logspace(np.log10(0.08), np.log10(30), H.shape[0] + 1)
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
@@ -237,7 +239,7 @@ for snap in snaps:
                       C=w[okinds1], reduce_C_function=np.sum,
                       xscale='log', yscale='log', norm=LogNorm(),
                       linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(XX, YY, H.T, levels=5,
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                               locator=ticker.LogLocator(),
                               norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
