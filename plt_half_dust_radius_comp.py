@@ -137,7 +137,7 @@ for snap in snaps:
                        10**-1,
                        1]
 
-        print(percentiles)
+        print(percentiles, np.percentile(H, 15.9), np.percentile(H, 50), np.percentile(H, 84.1),  np.percentile(H, 99.9))
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
