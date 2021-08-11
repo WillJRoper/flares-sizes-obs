@@ -306,13 +306,13 @@ for f in filters:
                                   reduce_C_function=np.sum,
                                   xscale='log', yscale='log',
                                   norm=LogNorm(), linewidths=0.2,
-                                  cmap='plasma')
+                                  cmap='Greys')
             axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
                            C=w[okinds1],
                            reduce_C_function=np.sum,
                            xscale='log', yscale='log',
                            norm=LogNorm(), linewidths=0.2,
-                           cmap='Greys')
+                           cmap='plasma')
             axes_twin[i].hexbin(lumins, hlrs 
                                 * cosmo.arcsec_per_kpc_proper(z).value,
                        gridsize=50, mincnt=1, C=w,
@@ -467,11 +467,21 @@ for f in filters:
                                                lumins < 10 ** 50))
         lumins = lumins[okinds]
         hlrs = hlrs[okinds]
+        masses = masses[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
+
+        okinds1 = masses >= 10**9
+        okinds2 = masses < 10 ** 9
 
         try:
             sden_lumins = np.logspace(27, 29.8)
-            cbar = axes[i].hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+            axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
+                           mincnt=1, C=w[okinds2],
+                           reduce_C_function=np.sum,
+                           xscale='log', yscale='log',
+                           norm=LogNorm(), linewidths=0.2,
+                           cmap='Greys')
+            cbar = axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
                              C=w,
                              reduce_C_function=np.sum,
                              xscale='log', yscale='log',
@@ -630,11 +640,21 @@ for f in filters:
                                                lumins < 10 ** 50))
         lumins = lumins[okinds]
         hlrs = hlrs[okinds]
+        masses = masses[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
+
+        okinds1 = masses >= 10**9
+        okinds2 = masses < 10 ** 9
 
         try:
             sden_lumins = np.logspace(28, 29.8)
-            cbar = axes[i].hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+            axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
+                           mincnt=1, C=w[okinds2],
+                           reduce_C_function=np.sum,
+                           xscale='log', yscale='log',
+                           norm=LogNorm(), linewidths=0.2,
+                           cmap='Greys')
+            cbar = axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
                              C=w,
                              reduce_C_function=np.sum,
                              xscale='log', yscale='log',
