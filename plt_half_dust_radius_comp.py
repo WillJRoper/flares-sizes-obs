@@ -238,8 +238,8 @@ for snap in snaps:
                       xscale='log', yscale='log', norm=LogNorm(),
                       linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=5,
-                               locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap='Greys', linewidth=2)
+                              locator=ticker.LogLocator(),
+                              norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
             print(e)
             continue
