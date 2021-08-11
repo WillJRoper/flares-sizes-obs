@@ -131,10 +131,14 @@ for snap in snaps:
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
-        percentiles = [np.min(w),
-                       10**-3,
-                       10**-1,
-                       1, 2, 5]
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
+
+        percentiles = [np.percentile(H, 68),
+                       np.percentile(H, 95),
+                       np.percentile(H, 99)]
 
         print(percentiles)
 
