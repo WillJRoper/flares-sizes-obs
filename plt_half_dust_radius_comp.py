@@ -135,8 +135,7 @@ for snap in snaps:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H, 70),
-                       np.percentile(H, 80),
+        percentiles = [np.percentile(H, 80),
                        np.percentile(H, 90),
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
@@ -217,8 +216,7 @@ for snap in snaps:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H, 70),
-                       np.percentile(H, 80),
+        percentiles = [np.percentile(H, 80),
                        np.percentile(H, 90),
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
