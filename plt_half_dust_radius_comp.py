@@ -135,11 +135,11 @@ for snap in snaps:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H, 68),
+        percentiles = [np.percentile(H, 70),
+                       np.percentile(H, 80),
+                       np.percentile(H, 90),
                        np.percentile(H, 95),
-                       np.percentile(H, 97.7),
-                       np.percentile(H, 99.9),
-                       np.percentile(H, 99.99)]
+                       np.percentile(H, 99)]
 
         bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
 
@@ -164,7 +164,7 @@ for snap in snaps:
                       norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                                locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap=cmr.neutral, linewidth=2)
+                               norm=LogNorm(), cmap=cmr.neutral_r, linewidth=2)
         except ValueError as e:
             print(e)
             continue
@@ -217,11 +217,11 @@ for snap in snaps:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H, 68),
+        percentiles = [np.percentile(H, 70),
+                       np.percentile(H, 80),
+                       np.percentile(H, 90),
                        np.percentile(H, 95),
-                       np.percentile(H, 97.7),
-                       np.percentile(H, 99.9), 
-                       np.percentile(H, 99.99)]
+                       np.percentile(H, 99)]
 
         bins = np.logspace(np.log10(0.08), np.log10(30), H.shape[0] + 1)
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
@@ -242,7 +242,7 @@ for snap in snaps:
                       linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                               locator=ticker.LogLocator(),
-                              norm=LogNorm(), cmap=cmr.neutral, linewidth=2)
+                              norm=LogNorm(), cmap=cmr.neutral_r, linewidth=2)
         except ValueError as e:
             print(e)
             continue
