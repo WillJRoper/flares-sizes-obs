@@ -60,7 +60,7 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-masslim = 10 ** float(sys.argv[4])
+masslim = 10 ** 8
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -156,7 +156,7 @@ for f in filters:
         # hlrs_app = np.array(hlr_app_dict[snap][f])
         hlrs_pix = np.array(hlr_pix_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
-        mass = np.array(mass_dict[snap][f])
+        masses = np.array(mass_dict[snap][f])
 
         okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
                                 np.logical_and(lumins > M_to_lum(-12),
@@ -165,7 +165,10 @@ for f in filters:
         hlrs = hlrs[okinds]
         # hlrs_app = hlrs_app[okinds]
         hlrs_pix = hlrs_pix[okinds]
-        mass = mass[okinds]
+        masses = masses[okinds]
+
+        okinds1 = masses >= 10**9
+        okinds2 = masses < 10 ** 9
 
         # fig = plt.figure(figsize=(6, 6))
         # gs = gridspec.GridSpec(2, 2)
@@ -222,18 +225,16 @@ for f in filters:
         fig = plt.figure()
         ax = fig.add_subplot(111)
         try:
-            # cbar = ax1.hexbin(hlrs, hlrs_app, gridsize=50, mincnt=1,
-            #                   xscale='log', yscale='log',
-            #                   norm=LogNorm(), linewidths=0.2,
-            #                   cmap='viridis')
-            cbar = ax.hexbin(hlrs, hlrs_pix, gridsize=50, mincnt=1,
+            cbar = ax.hexbin(hlrs[okinds2], hlrs_pix[okinds2],
+                             gridsize=50, mincnt=1,
+                              xscale='log', yscale='log',
+                              norm=LogNorm(), linewidths=0.2,
+                              cmap='Greys')
+            cbar = ax.hexbin(hlrs[okinds1], hlrs_pix[okinds1],
+                             gridsize=50, mincnt=1,
                               xscale='log', yscale='log',
                               norm=LogNorm(), linewidths=0.2,
                               cmap='viridis')
-            # cbar = ax3.hexbin(hlrs_app, hlrs_pix, gridsize=50, mincnt=1,
-            #                   xscale='log', yscale='log',
-            #                   norm=LogNorm(), linewidths=0.2,
-            #                   cmap='viridis')
         except ValueError as e:
             print(e)
             continue

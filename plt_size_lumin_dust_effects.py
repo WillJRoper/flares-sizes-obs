@@ -58,7 +58,7 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 10**9
+nlim = 10**8
 
 hlr_dict = {}
 hlr_app_dict = {}
