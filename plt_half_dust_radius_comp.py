@@ -121,7 +121,7 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 30)
+        bins = np.logspace(np.log10(0.08), np.log10(30), 50)
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
@@ -152,7 +152,7 @@ for snap in snaps:
                       norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=7,
                                locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap='Greys', linewidth=1.5)
+                               norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
             print(e)
             continue
@@ -189,9 +189,9 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 30)
+        bins = np.logspace(np.log10(0.08), np.log10(30), 50)
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
-                                 np.log10(np.max(ratio[okinds2])), 30)
+                                 np.log10(np.max(ratio[okinds2])), 50)
 
         H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
                                          bins=(bins, ratio_bins),
@@ -213,7 +213,7 @@ for snap in snaps:
                       linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H, levels=7,
                                locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap='Greys')
+                               norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
             print(e)
             continue
