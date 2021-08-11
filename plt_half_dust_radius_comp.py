@@ -127,7 +127,7 @@ for snap in snaps:
                                          bins=bins, weights=w[okinds2])
 
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
-        H = scipy.ndimage.zoom(H, 3)
+        H = scipy.ndimage.zoom(H, 5)
 
         # percentiles = [np.min(w),
         #                10**-3,
@@ -207,7 +207,7 @@ for snap in snaps:
                                          weights=w[okinds2])
 
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
-        H = scipy.ndimage.zoom(H, 3)
+        H = scipy.ndimage.zoom(H, 5)
 
         # percentiles = [np.min(w),
         #                10**-3,
