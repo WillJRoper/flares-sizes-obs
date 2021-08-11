@@ -134,7 +134,8 @@ for snap in snaps:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H, 68),
+        percentiles = [np.percentile(H, 50),
+                       np.percentile(H, 68)
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
 
@@ -161,7 +162,7 @@ for snap in snaps:
                       norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                                locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap='Greys', linewidth=2)
+                               norm=LogNorm(), cmap='Greys_r', linewidth=2)
         except ValueError as e:
             print(e)
             continue
@@ -237,7 +238,7 @@ for snap in snaps:
                       linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                                locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap='Greys', linewidth=2)
+                               norm=LogNorm(), cmap='Greys_r', linewidth=2)
         except ValueError as e:
             print(e)
             continue
