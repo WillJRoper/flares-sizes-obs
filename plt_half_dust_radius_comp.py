@@ -211,7 +211,7 @@ for snap in snaps:
                       C=w[okinds1], reduce_C_function=np.sum,
                       xscale='log', yscale='log', norm=LogNorm(),
                       linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(XX, YY, H, levels=7,
+            cbar = ax.contour(XX, YY, H.T, levels=7,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
