@@ -159,7 +159,7 @@ for snap in snaps:
             ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
                       reduce_C_function=np.sum, xscale='log', yscale='log',
                       norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(XX, YY, H.T, levels=7,
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
@@ -235,7 +235,7 @@ for snap in snaps:
                       C=w[okinds1], reduce_C_function=np.sum,
                       xscale='log', yscale='log', norm=LogNorm(),
                       linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(XX, YY, H.T, levels=7,
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
