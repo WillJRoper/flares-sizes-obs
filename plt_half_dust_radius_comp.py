@@ -121,7 +121,7 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 15)
+        bins = np.logspace(np.log10(0.08), np.log10(30), 50)
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
@@ -134,7 +134,7 @@ for snap in snaps:
         percentiles = [np.min(w),
                        10**-3,
                        10**-1,
-                       1, 2, 5]
+                       1]
 
         print(percentiles)
 
@@ -142,17 +142,12 @@ for snap in snaps:
         ax = fig.add_subplot(111)
         ax.loglog()
         try:
-            # cbar = ax.hexbin(hdrs[okinds2], hlrs[okinds2], gridsize=50,
-            #                  mincnt=1,
-            #                  C=w[okinds2], reduce_C_function=np.sum,
-            #                  xscale='log', yscale='log',
-            #                  norm=LogNorm(), linewidths=0.2, cmap='Greys')
-            cbar = ax.contourf(XX, YY, H, levels=7,
-                               locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap='Greys', alpha=0.8)
             ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
                       reduce_C_function=np.sum, xscale='log', yscale='log',
                       norm=LogNorm(), linewidths=0.2, cmap='viridis')
+            cbar = ax.contour(XX, YY, H, levels=7,
+                               locator=ticker.LogLocator(),
+                               norm=LogNorm(), cmap='Greys', alpha=0.8)
         except ValueError as e:
             print(e)
             continue
@@ -189,9 +184,9 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 15)
+        bins = np.logspace(np.log10(0.08), np.log10(30), 50)
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
-                                 np.log10(np.max(ratio[okinds2])), 15)
+                                 np.log10(np.max(ratio[okinds2])), 50)
 
         H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
                                          bins=(bins, ratio_bins),
@@ -207,13 +202,13 @@ for snap in snaps:
         ax = fig.add_subplot(111)
         ax.loglog()
         try:
-            cbar = ax.contourf(XX, YY, H, levels=7,
-                               locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap='Greys', alpha=0.8)
             ax.hexbin(hlrs[okinds1], ratio[okinds1], gridsize=50, mincnt=1,
                       C=w[okinds1], reduce_C_function=np.sum,
                       xscale='log', yscale='log', norm=LogNorm(),
                       linewidths=0.2, cmap='viridis')
+            cbar = ax.contour(XX, YY, H, levels=7,
+                               locator=ticker.LogLocator(),
+                               norm=LogNorm(), cmap='Greys', alpha=0.8)
         except ValueError as e:
             print(e)
             continue
