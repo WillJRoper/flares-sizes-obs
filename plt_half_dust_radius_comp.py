@@ -121,7 +121,7 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 20)
+        bins = np.logspace(np.log10(0.08), np.log10(30), 30)
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
@@ -131,11 +131,10 @@ for snap in snaps:
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
-        percentiles = [10**-4,
+        percentiles = [10**-5,
                        10**-3,
-                       10**-2,
                        10**-1,
-                       1]
+                       1, 2]
 
         print(percentiles, np.percentile(H, 15.9), np.percentile(H, 50), np.percentile(H, 84.1),  np.percentile(H, 99.9))
 
@@ -190,9 +189,9 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 20)
+        bins = np.logspace(np.log10(0.08), np.log10(30), 30)
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
-                                 np.log10(np.max(ratio[okinds2])), 20)
+                                 np.log10(np.max(ratio[okinds2])), 30)
 
         H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
                                          bins=(bins, ratio_bins),
