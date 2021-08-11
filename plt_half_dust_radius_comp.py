@@ -142,14 +142,14 @@ for snap in snaps:
         ax = fig.add_subplot(111)
         ax.loglog()
         try:
-            # cbar = ax.hexbin(hdrs[okinds2], hlrs[okinds2], gridsize=50,
-            #                  mincnt=1,
-            #                  C=w[okinds2], reduce_C_function=np.sum,
-            #                  xscale='log', yscale='log',
-            #                  norm=LogNorm(), linewidths=0.2, cmap='Greys')
-            ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
-                      reduce_C_function=np.sum, xscale='log', yscale='log',
-                      norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
+            cbar = ax.hexbin(hdrs[okinds2], hlrs[okinds2], gridsize=50,
+                             mincnt=1,
+                             C=w[okinds2], reduce_C_function=np.sum,
+                             xscale='log', yscale='log',
+                             norm=LogNorm(), linewidths=0.2, cmap='Greys')
+            # ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
+            #           reduce_C_function=np.sum, xscale='log', yscale='log',
+            #           norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=7,
                                locator=ticker.LogLocator(),
                                norm=LogNorm(), cmap='Greys')
