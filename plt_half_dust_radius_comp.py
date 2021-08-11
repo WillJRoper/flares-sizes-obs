@@ -12,6 +12,7 @@ matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
 from matplotlib.colors import LogNorm
+import scipy.ndimage
 import matplotlib.tri as tri
 from matplotlib import ticker, cm
 import utilities as util
@@ -131,6 +132,9 @@ for snap in snaps:
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
         # percentiles = [np.min(w),
         #                10**-3,
         #                10**-1,
@@ -206,6 +210,19 @@ for snap in snaps:
         ybin_cents = ybins[1:] - (bin_wid / 2)
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+
+
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
+
+        percentiles = [np.percentile(H, 68),
+                       np.percentile(H, 95),
+                       np.percentile(H, 99)]
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
