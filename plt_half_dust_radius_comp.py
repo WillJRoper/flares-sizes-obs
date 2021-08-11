@@ -126,12 +126,6 @@ for snap in snaps:
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
-        bin_wid = bins[1] - bins[0]
-        xbin_cents = xbins[1:] - (bin_wid / 2)
-        ybin_cents = ybins[1:] - (bin_wid / 2)
-
-        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
-
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
         H = scipy.ndimage.zoom(H, 3)
 
@@ -143,6 +137,13 @@ for snap in snaps:
         percentiles = [np.percentile(H, 68),
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
+
+        bins = np.logspace(np.log10(0.08), np.log10(30), H.shape[0])
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
         print(percentiles)
 
@@ -158,10 +159,9 @@ for snap in snaps:
             ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
                       reduce_C_function=np.sum, xscale='log', yscale='log',
                       norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(H.T, levels=7, locator=ticker.LogLocator(),
-                              extent=[bins[0], bins[-1], bins[0], bins[-1]],
-                              norm=LogNorm(), cmap='Greys', linewidth=2,
-                              origin="lower")
+            cbar = ax.contour(XX, YY, H.T, levels=7,
+                               locator=ticker.LogLocator(),
+                               norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
             print(e)
             continue
@@ -206,13 +206,6 @@ for snap in snaps:
                                          bins=(bins, ratio_bins),
                                          weights=w[okinds2])
 
-        bin_wid = bins[1] - bins[0]
-        xbin_cents = xbins[1:] - (bin_wid / 2)
-        ybin_cents = ybins[1:] - (bin_wid / 2)
-
-        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
-
-
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
         H = scipy.ndimage.zoom(H, 3)
 
@@ -225,6 +218,15 @@ for snap in snaps:
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
 
+        bins = np.logspace(np.log10(0.08), np.log10(30), H.shape[0])
+        ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
+                                 np.log10(np.max(ratio[okinds2])), H.shape[1])
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (ratio_bins[1:] + ratio_bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.loglog()
@@ -233,12 +235,9 @@ for snap in snaps:
                       C=w[okinds1], reduce_C_function=np.sum,
                       xscale='log', yscale='log', norm=LogNorm(),
                       linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(H.T, levels=7,
+            cbar = ax.contour(XX, YY, H.T, levels=7,
                                locator=ticker.LogLocator(),
-                              extent=[bins[0], bins[-1],
-                                      ratio_bins[0], ratio_bins[-1]],
-                               norm=LogNorm(), cmap='Greys', linewidth=2,
-                              origin="lower")
+                               norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
             print(e)
             continue
