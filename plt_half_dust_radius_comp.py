@@ -122,7 +122,7 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 50)
+        bins = np.logspace(np.log10(0.08), np.log10(20), 30)
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
@@ -160,9 +160,9 @@ for snap in snaps:
             ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
                       reduce_C_function=np.sum, xscale='log', yscale='log',
                       norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+            cbar = ax.contour(XX, YY, H.T, levels=5,
                                locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap='Greys_r', linewidth=2)
+                               norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
             print(e)
             continue
@@ -199,9 +199,9 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.logspace(np.log10(0.08), np.log10(20), 50)
+        bins = np.logspace(np.log10(0.08), np.log10(20), 30)
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
-                                 np.log10(np.max(ratio[okinds2])), 50)
+                                 np.log10(np.max(ratio[okinds2])), 30)
 
         H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
                                          bins=(bins, ratio_bins),
@@ -237,9 +237,9 @@ for snap in snaps:
                       C=w[okinds1], reduce_C_function=np.sum,
                       xscale='log', yscale='log', norm=LogNorm(),
                       linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+            cbar = ax.contour(XX, YY, H.T, levels=5,
                                locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap='Greys_r', linewidth=2)
+                               norm=LogNorm(), cmap='Greys', linewidth=2)
         except ValueError as e:
             print(e)
             continue
