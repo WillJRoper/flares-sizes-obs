@@ -160,7 +160,8 @@ for snap in snaps:
                       norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(H.T, levels=7, locator=ticker.LogLocator(),
                               extent=[bins[0], bins[-1], bins[0], bins[-1]],
-                              norm=LogNorm(), cmap='Greys', linewidth=2)
+                              norm=LogNorm(), cmap='Greys', linewidth=2,
+                              origin="lower")
         except ValueError as e:
             print(e)
             continue
@@ -236,7 +237,8 @@ for snap in snaps:
                                locator=ticker.LogLocator(),
                               extent=[bins[0], bins[-1],
                                       ratio_bins[0], ratio_bins[-1]],
-                               norm=LogNorm(), cmap='Greys', linewidth=2)
+                               norm=LogNorm(), cmap='Greys', linewidth=2,
+                              origin="lower")
         except ValueError as e:
             print(e)
             continue
