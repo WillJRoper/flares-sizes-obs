@@ -122,12 +122,12 @@ for snap in snaps:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 100)
+        bins = np.logspace(np.log10(0.08), np.log10(30), 50)
         H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=w[okinds2])
 
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
-        H = scipy.ndimage.zoom(H, 5)
+        H = scipy.ndimage.zoom(H, 3)
 
         # percentiles = [np.min(w),
         #                10**-3,
@@ -138,7 +138,7 @@ for snap in snaps:
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), H.shape[0] + 1)
+        bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
 
         xbin_cents = (bins[1:] + bins[:-1]) / 2
         ybin_cents = (bins[1:] + bins[:-1]) / 2
@@ -198,16 +198,16 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), 100)
+        bins = np.logspace(np.log10(0.08), np.log10(20), 50)
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
-                                 np.log10(np.max(ratio[okinds2])), 100)
+                                 np.log10(np.max(ratio[okinds2])), 50)
 
         H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
                                          bins=(bins, ratio_bins),
                                          weights=w[okinds2])
 
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
-        H = scipy.ndimage.zoom(H, 5)
+        H = scipy.ndimage.zoom(H, 3)
 
         # percentiles = [np.min(w),
         #                10**-3,
