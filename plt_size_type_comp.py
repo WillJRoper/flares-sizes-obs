@@ -249,19 +249,19 @@ for f in filters:
         fig = plt.figure()
         ax = fig.add_subplot(111)
         try:
-            cbar = ax.hexbin(hlrs[okinds2], hlrs_pix[okinds2],
-                             C=w[okinds2], gridsize=50, mincnt=1,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2,
-                             cmap='Greys')
-            cbar = ax.hexbin(hlrs[okinds1], hlrs_pix[okinds1],
-                             C=w[okinds1], gridsize=50, mincnt=1,
+            # cbar = ax.hexbin(hlrs[okinds2], hlrs_pix[okinds2],
+            #                  C=w[okinds2], gridsize=50, mincnt=1,
+            #                  xscale='log', yscale='log',
+            #                  norm=LogNorm(), linewidths=0.2,
+            #                  cmap='Greys')
+            cbar = ax.hexbin(hlrs, hlrs_pix,
+                             C=w, gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='viridis')
-            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
-                              norm=LogNorm(), cmap=cmr.bubblegum_r,
-                              linewidth=2)
+            # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+            #                   norm=LogNorm(), cmap=cmr.bubblegum_r,
+            #                   linewidth=2)
         except ValueError as e:
             print(e)
             continue
