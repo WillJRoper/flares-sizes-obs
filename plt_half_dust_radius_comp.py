@@ -203,7 +203,7 @@ for snap in snaps:
 
         bins = np.logspace(np.log10(0.08), np.log10(40), 40)
 
-        H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
+        H, xbins, ybins = np.histogram2d(hdrs[okinds2], ratio[okinds2],
                                          bins=bins,
                                          weights=w[okinds2])
 
@@ -231,13 +231,13 @@ for snap in snaps:
         ax = fig.add_subplot(111)
         ax.loglog()
         try:
-            cbar = ax.hexbin(hlrs[okinds2], ratio[okinds2], gridsize=50,
+            cbar = ax.hexbin(hdrs[okinds2], ratio[okinds2], gridsize=50,
                              mincnt=1,
                              C=w[okinds2], reduce_C_function=np.sum,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2, cmap='Greys',
                              alpha=0.7)
-            ax.hexbin(hlrs[okinds1], ratio[okinds1], gridsize=50, mincnt=1,
+            ax.hexbin(hdrs[okinds1], ratio[okinds1], gridsize=50, mincnt=1,
                       C=w[okinds1], reduce_C_function=np.sum,
                       xscale='log', yscale='log', norm=LogNorm(),
                       linewidths=0.2, cmap='viridis', alpha=0.8)
