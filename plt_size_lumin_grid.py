@@ -416,7 +416,7 @@ for f in filters:
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dashed', color="g",
                              alpha=0.9, zorder=2,
-                             label="Kawamata+18", linewidth=2.0)
+                             label="Kawamata+18", linewidth=4)
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -628,7 +628,7 @@ for f in filters:
                              linestyle='dashed', color="g",
                              alpha=0.9,
                              zorder=2,
-                             label="Kawamata+18", linewidth=2.0)
+                             label="Kawamata+18", linewidth=4)
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -851,7 +851,7 @@ for f in filters:
                              linestyle='dashed', color="g",
                              alpha=0.9,
                              zorder=2,
-                             label="Kawamata+18", linewidth=2.0)
+                             label="Kawamata+18", linewidth=4)
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
