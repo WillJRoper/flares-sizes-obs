@@ -231,7 +231,7 @@ for snap in snaps:
         ax = fig.add_subplot(111)
         ax.loglog()
         try:
-            cbar = ax.hexbin(hdrs[okinds2], ratio[okinds2], gridsize=50,
+            cbar = ax.hexbin(hlrs[okinds2], ratio[okinds2], gridsize=50,
                              mincnt=1,
                              C=w[okinds2], reduce_C_function=np.sum,
                              xscale='log', yscale='log',
