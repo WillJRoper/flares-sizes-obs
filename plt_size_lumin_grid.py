@@ -24,6 +24,8 @@ import h5py
 import sys
 import pandas as pd
 import utilities as util
+import scipy.ndimage
+import cmasher as cmr
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -299,6 +301,36 @@ for f in filters:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
+        bins = np.logspace(np.log10(0.08), np.log10(20), 40)
+        lumin_bins = np.logspace(np.log10(10 ** 27.9),
+                                 np.log10(10 ** 30.5),
+                                 40)
+        H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
+                                         bins=(lumin_bins, bins),
+                                         weights=w[okinds2])
+
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
+
+        percentiles = [np.percentile(H, 80),
+                       np.percentile(H, 90),
+                       np.percentile(H, 95),
+                       np.percentile(H, 99)]
+
+        bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
+        lumin_bins = np.logspace(np.log10(10 ** 27.9), np.log10(10 ** 30.5),
+                                 H.shape[0] + 1)
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+
         try:
             sden_lumins = np.logspace(27, 29.8)
             cbar = axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
@@ -306,7 +338,7 @@ for f in filters:
                                   reduce_C_function=np.sum,
                                   xscale='log', yscale='log',
                                   norm=LogNorm(), linewidths=0.2,
-                                  cmap='Greys')
+                                  cmap='Greys', alpha=0.7)
             axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
                            C=w[okinds1],
                            reduce_C_function=np.sum,
@@ -319,6 +351,9 @@ for f in filters:
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
                        cmap='plasma', alpha=0)
+            cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
+                                   norm=LogNorm(), cmap=cmr.bubblegum_r,
+                                   linewidth=2)
             # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
             # axes[i].plot(lumin_bin_cents, med, color="r")
             # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
@@ -474,6 +509,36 @@ for f in filters:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
+        bins = np.logspace(np.log10(0.08), np.log10(20), 40)
+        lumin_bins = np.logspace(np.log10(10 ** 27.9),
+                                 np.log10(10 ** 30.5),
+                                 40)
+        H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
+                                         bins=(lumin_bins, bins),
+                                         weights=w[okinds2])
+
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
+
+        percentiles = [np.percentile(H, 80),
+                       np.percentile(H, 90),
+                       np.percentile(H, 95),
+                       np.percentile(H, 99)]
+
+        bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
+        lumin_bins = np.logspace(np.log10(10 ** 27.9), np.log10(10 ** 30.5),
+                                 H.shape[0] + 1)
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+
         try:
             sden_lumins = np.logspace(27, 29.8)
             cbar = axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
@@ -481,7 +546,7 @@ for f in filters:
                                   reduce_C_function=np.sum,
                                   xscale='log', yscale='log',
                                   norm=LogNorm(), linewidths=0.2,
-                                  cmap='Greys')
+                                  cmap='Greys', alpha=0.7)
             axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
                            C=w[okinds1],
                            reduce_C_function=np.sum,
@@ -493,6 +558,9 @@ for f in filters:
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
                        cmap='plasma', alpha=0)
+            cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
+                                   norm=LogNorm(), cmap=cmr.bubblegum_r,
+                                   linewidth=2)
             # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
             # axes[i].plot(lumin_bin_cents, med, color="r")
             # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
@@ -648,6 +716,36 @@ for f in filters:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
+        bins = np.logspace(np.log10(0.08), np.log10(20), 40)
+        lumin_bins = np.logspace(np.log10(10 ** 27.9),
+                                 np.log10(10 ** 30.5),
+                                 40)
+        H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
+                                         bins=(lumin_bins, bins),
+                                         weights=w[okinds2])
+
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
+
+        percentiles = [np.percentile(H, 80),
+                       np.percentile(H, 90),
+                       np.percentile(H, 95),
+                       np.percentile(H, 99)]
+
+        bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
+        lumin_bins = np.logspace(np.log10(10 ** 27.9), np.log10(10 ** 30.5),
+                                 H.shape[0] + 1)
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+
         try:
             sden_lumins = np.logspace(28, 29.8)
             cbar = axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
@@ -655,7 +753,7 @@ for f in filters:
                                   reduce_C_function=np.sum,
                                   xscale='log', yscale='log',
                                   norm=LogNorm(), linewidths=0.2,
-                                  cmap='Greys')
+                                  cmap='Greys', alpha=0.7)
             axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
                            C=w[okinds1],
                            reduce_C_function=np.sum,
@@ -667,6 +765,9 @@ for f in filters:
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
                        cmap='plasma', alpha=0)
+            cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
+                                   norm=LogNorm(), cmap=cmr.bubblegum_r,
+                                   linewidth=2)
             # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
             # axes[i].plot(lumin_bin_cents, med, color="r")
             # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))

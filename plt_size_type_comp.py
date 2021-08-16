@@ -21,7 +21,9 @@ import flare.photom as photconv
 import h5py
 import sys
 import pandas as pd
+import cmasher as cmr
 import utilities as util
+import scipy.ndimage
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -170,6 +172,30 @@ for f in filters:
         okinds1 = masses >= 10**9
         okinds2 = masses < 10 ** 9
 
+        bins = np.logspace(np.log10(0.08), np.log10(20), 40)
+        H, xbins, ybins = np.histogram2d(hlrs[okinds2], hlrs_pix[okinds2],
+                                         bins=bins, weights=w[okinds2])
+
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
+
+        percentiles = [np.percentile(H, 80),
+                       np.percentile(H, 90),
+                       np.percentile(H, 95),
+                       np.percentile(H, 99)]
+
+        bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+
         # fig = plt.figure(figsize=(6, 6))
         # gs = gridspec.GridSpec(2, 2)
         # gs.update(wspace=0.0, hspace=0.0)
@@ -235,6 +261,9 @@ for f in filters:
                               xscale='log', yscale='log',
                               norm=LogNorm(), linewidths=0.2,
                               cmap='viridis')
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              linewidth=2)
         except ValueError as e:
             print(e)
             continue
