@@ -349,9 +349,9 @@ for f in filters:
                                 reduce_C_function=np.sum, xscale='log',
                                 yscale='log', norm=LogNorm(), linewidths=0.2,
                                 cmap='plasma', alpha=0)
-            cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
-                                   norm=LogNorm(), cmap=cmr.bubblegum_r,
-                                   linewidth=2)
+            # cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
+            #                        norm=LogNorm(), cmap=cmr.bubblegum_r,
+            #                        linewidth=2)
             # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
             # axes[i].plot(lumin_bin_cents, med, color="r")
             # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
@@ -416,7 +416,7 @@ for f in filters:
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dashed', color=colors["K18"],
                              alpha=0.9, zorder=2,
-                             label="Kawamata+18")
+                             label="Kawamata+18", linewidth=2.0)
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -560,9 +560,9 @@ for f in filters:
                                 reduce_C_function=np.sum, xscale='log',
                                 yscale='log', norm=LogNorm(), linewidths=0.2,
                                 cmap='plasma', alpha=0)
-            cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
-                                   norm=LogNorm(), cmap=cmr.bubblegum_r,
-                                   linewidth=2)
+            # cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
+            #                        norm=LogNorm(), cmap=cmr.bubblegum_r,
+            #                        linewidth=2)
             # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
             # axes[i].plot(lumin_bin_cents, med, color="r")
             # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
@@ -628,7 +628,7 @@ for f in filters:
                              linestyle='dashed', color=colors["K18"],
                              alpha=0.9,
                              zorder=2,
-                             label="Kawamata+18")
+                             label="Kawamata+18", linewidth=2.0)
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -771,9 +771,9 @@ for f in filters:
                                 reduce_C_function=np.sum, xscale='log',
                                 yscale='log', norm=LogNorm(), linewidths=0.2,
                                 cmap='plasma', alpha=0)
-            cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
-                                   norm=LogNorm(), cmap=cmr.bubblegum_r,
-                                   linewidth=2)
+            # cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
+            #                        norm=LogNorm(), cmap=cmr.bubblegum_r,
+            #                        linewidth=2)
             # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
             # axes[i].plot(lumin_bin_cents, med, color="r")
             # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
@@ -851,7 +851,7 @@ for f in filters:
                              linestyle='dashed', color=colors["K18"],
                              alpha=0.9,
                              zorder=2,
-                             label="Kawamata+18")
+                             label="Kawamata+18", linewidth=2.0)
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
