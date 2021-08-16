@@ -414,7 +414,7 @@ for f in filters:
                                    kawa_low_params['beta'][int(z)],
                                    uplow="low")
                 axes[i].plot(fit_lumins, fit,
-                             linestyle='dashed', color=colors["K18"],
+                             linestyle='dashed', color="g",
                              alpha=0.9, zorder=2,
                              label="Kawamata+18", linewidth=2.0)
                 # axes[i].fill_between(fit_lumins, low, up,
@@ -445,7 +445,7 @@ for f in filters:
 
     uni_legend_elements = []
     uni_legend_elements.append(
-        Line2D([0], [0], color=colors["K18"], linestyle="--",
+        Line2D([0], [0], color="g", linestyle="--",
                label=labels["K18"]))
     included = []
     for l in legend_elements:
@@ -625,7 +625,7 @@ for f in filters:
                                    kawa_low_params['beta'][int(z)],
                                    uplow="low")
                 axes[i].plot(fit_lumins, fit,
-                             linestyle='dashed', color=colors["K18"],
+                             linestyle='dashed', color="g",
                              alpha=0.9,
                              zorder=2,
                              label="Kawamata+18", linewidth=2.0)
@@ -657,7 +657,7 @@ for f in filters:
 
     uni_legend_elements = []
     uni_legend_elements.append(
-        Line2D([0], [0], color=colors["K18"], linestyle="--",
+        Line2D([0], [0], color="g", linestyle="--",
                label=labels["K18"]))
     included = []
     for l in legend_elements:
@@ -848,7 +848,7 @@ for f in filters:
                                    kawa_low_params['beta'][int(z)],
                                    uplow="low")
                 axes[i].plot(fit_lumins, fit,
-                             linestyle='dashed', color=colors["K18"],
+                             linestyle='dashed', color="g",
                              alpha=0.9,
                              zorder=2,
                              label="Kawamata+18", linewidth=2.0)
@@ -881,7 +881,7 @@ for f in filters:
 
     uni_legend_elements = []
     uni_legend_elements.append(
-        Line2D([0], [0], color=colors["K18"], linestyle="--",
+        Line2D([0], [0], color="g", linestyle="--",
                label=labels["K18"]))
     included = []
     for l in legend_elements:
