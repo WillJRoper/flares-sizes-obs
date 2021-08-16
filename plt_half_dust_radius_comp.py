@@ -201,7 +201,7 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.logspace(np.log10(0.05), np.log10(50), 40)
+        bins = np.logspace(np.log10(0.08), np.log10(40), 40)
 
         H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
                                          bins=bins,
@@ -220,7 +220,7 @@ for snap in snaps:
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
 
-        bins = np.logspace(np.log10(0.05), np.log10(50), H.shape[0] + 1)
+        bins = np.logspace(np.log10(0.08), np.log10(40), H.shape[0] + 1)
 
         xbin_cents = (bins[1:] + bins[:-1]) / 2
         ybin_cents = (bins[1:] + bins[:-1]) / 2
@@ -264,7 +264,7 @@ for snap in snaps:
         ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
         ax.set_xlim([0.08, 20])
-        ax.set_ylim([0.05, 50])
+        ax.set_ylim([0.08, 50])
 
         plt.axis('scaled')
 
