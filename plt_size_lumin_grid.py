@@ -476,18 +476,18 @@ for f in filters:
 
         try:
             sden_lumins = np.logspace(27, 29.8)
-            axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
-                           mincnt=1, C=w[okinds2],
+            cbar = axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
+                                  mincnt=1, C=w[okinds2],
+                                  reduce_C_function=np.sum,
+                                  xscale='log', yscale='log',
+                                  norm=LogNorm(), linewidths=0.2,
+                                  cmap='Greys')
+            axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
+                           C=w[okinds1],
                            reduce_C_function=np.sum,
                            xscale='log', yscale='log',
                            norm=LogNorm(), linewidths=0.2,
-                           cmap='Greys')
-            cbar = axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
-                             C=w,
-                             reduce_C_function=np.sum,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2,
-                             cmap='plasma')
+                           cmap='plasma')
             axes_twin[i].hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
                        gridsize=50, mincnt=1, C=w,
                        reduce_C_function=np.sum, xscale='log',
@@ -636,7 +636,7 @@ for f in filters:
         hlrs = np.array(hlr_pix_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
         masses = np.array(mass_dict[snap][f])
-        
+
         okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
                                 np.logical_and(lumins > M_to_lum(-12),
                                                lumins < 10 ** 50))
@@ -650,18 +650,18 @@ for f in filters:
 
         try:
             sden_lumins = np.logspace(28, 29.8)
-            axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
-                           mincnt=1, C=w[okinds2],
+            cbar = axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
+                                  mincnt=1, C=w[okinds2],
+                                  reduce_C_function=np.sum,
+                                  xscale='log', yscale='log',
+                                  norm=LogNorm(), linewidths=0.2,
+                                  cmap='Greys')
+            axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
+                           C=w[okinds1],
                            reduce_C_function=np.sum,
                            xscale='log', yscale='log',
                            norm=LogNorm(), linewidths=0.2,
-                           cmap='Greys')
-            cbar = axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
-                             C=w,
-                             reduce_C_function=np.sum,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2,
-                             cmap='plasma')
+                           cmap='plasma')
             axes_twin[i].hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
                        gridsize=50, mincnt=1, C=w,
                        reduce_C_function=np.sum, xscale='log',
