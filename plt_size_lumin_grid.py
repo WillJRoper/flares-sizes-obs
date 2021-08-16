@@ -317,6 +317,7 @@ for f in filters:
                        np.percentile(H, 90),
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
+        print(percentiles)
 
         bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
         lumin_bins = np.logspace(np.log10(10 ** 27.9), np.log10(10 ** 30.5),
