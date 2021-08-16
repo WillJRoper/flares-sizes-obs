@@ -246,7 +246,7 @@ for snap in snaps:
                       C=w[okinds1], reduce_C_function=np.sum,
                       xscale='log', yscale='log', norm=LogNorm(),
                       linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+            cbar = ax.contour(XX, YY, H, levels=percentiles,
                               locator=ticker.LogLocator(),
                               norm=LogNorm(), cmap=cmr.bubblegum_r,
                               linewidth=2)
