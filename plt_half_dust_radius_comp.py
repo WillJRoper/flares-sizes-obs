@@ -201,12 +201,10 @@ for snap in snaps:
 
         ratio = hlrs / hdrs
 
-        bins = np.logspace(np.log10(0.08), np.log10(20), 40)
-        ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
-                                 np.log10(np.max(ratio[okinds2])), 40)
+        bins = np.logspace(np.log10(0.05), np.log10(50), 40)
 
         H, xbins, ybins = np.histogram2d(hlrs[okinds2], ratio[okinds2],
-                                         bins=(bins, ratio_bins),
+                                         bins=bins,
                                          weights=w[okinds2])
 
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
@@ -222,13 +220,10 @@ for snap in snaps:
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
 
-        bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
-        ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
-                                 np.log10(np.max(ratio[okinds2])),
-                                 H.shape[1] + 1)
+        bins = np.logspace(np.log10(0.05), np.log10(50), H.shape[0] + 1)
 
         xbin_cents = (bins[1:] + bins[:-1]) / 2
-        ybin_cents = (ratio_bins[1:] + ratio_bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
@@ -269,7 +264,9 @@ for snap in snaps:
         ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
         ax.set_xlim([0.08, 20])
-        ax.set_ylim([0.08, 30])
+        ax.set_ylim([0.05, 50])
+
+        plt.axis('scaled')
 
         fig.savefig('plots/' + str(z) + '/HalfDustRadius_ratio_' + f + '_'
                     + str(z) + '_' + Type + '_' + orientation + "_"
