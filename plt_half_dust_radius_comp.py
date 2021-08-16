@@ -172,9 +172,6 @@ for snap in snaps:
         min = np.min((ax.get_xlim(), ax.get_ylim()))
         max = np.max((ax.get_xlim(), ax.get_ylim()))
 
-        ax.set_xlim([0.08, max])
-        ax.set_ylim([0.08, max])
-
         ax.plot([min, max], [min, max], color='k', linestyle="--")
 
         ax.text(0.95, 0.05, f'$z={z}$',
@@ -188,6 +185,9 @@ for snap in snaps:
         ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
         plt.axis('scaled')
+
+        ax.set_xlim([0.08, 20])
+        ax.set_ylim([0.08, 20])
 
         # fig.colorbar(cbar)
 
@@ -222,7 +222,7 @@ for snap in snaps:
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
 
-        bins = np.logspace(np.log10(0.08), np.log10(30), H.shape[0] + 1)
+        bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
                                  np.log10(np.max(ratio[okinds2])),
                                  H.shape[1] + 1)
@@ -257,9 +257,6 @@ for snap in snaps:
         min = np.min((ax.get_xlim(), ax.get_ylim()))
         max = np.max((ax.get_xlim(), ax.get_ylim()))
 
-        ax.set_xlim([0.08, max])
-        ax.set_ylim([0.08, max])
-
         ax.plot([min, max], [1, 1], color='k', linestyle="--")
 
         ax.text(0.95, 0.05, f'$z={z}$',
@@ -271,6 +268,9 @@ for snap in snaps:
         # Label axes
         ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ R_{1/2, dust}$")
         ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
+
+        ax.set_xlim([0.08, 20])
+        ax.set_ylim([0.08, 30])
 
         fig.savefig('plots/' + str(z) + '/HalfDustRadius_ratio_' + f + '_'
                     + str(z) + '_' + Type + '_' + orientation + "_"
