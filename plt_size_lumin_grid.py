@@ -17,19 +17,16 @@ import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
-import astropy.units as u
-from flare.photom import lum_to_M, M_to_lum, lum_to_flux, m_to_flux
+from flare.photom import M_to_lum
 import flare.photom as photconv
 import h5py
 import sys
 import pandas as pd
-import utilities as util
 import scipy.ndimage
 import cmasher as cmr
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
-
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
@@ -87,17 +84,15 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
     okinds = np.logical_and(~np.isnan(bin_cents), ~np.isnan(y_stat))
 
     axes[i].plot(bin_cents[okinds], y_stat[okinds], color=color, linestyle=ls,
-            label=lab)
+                 label=lab)
 
 
 def r_from_surf_den(lum, s_den):
-
     return np.sqrt(lum / (s_den * np.pi))
 
 
 def lum_from_surf_den_R(r, s_den):
-
-    return s_den * np.pi * r**2
+    return s_den * np.pi * r ** 2
 
 
 df = pd.read_csv("HighzSizes/All.csv")
@@ -143,7 +138,6 @@ colors = {}
 for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
     colors[key] = cmap(norm(col))
 
-
 # Set orientation
 orientation = sys.argv[1]
 
@@ -151,14 +145,15 @@ orientation = sys.argv[1]
 Type = "Total"
 extinction = 'default'
 
-snaps = ['006_z009p000', '007_z008p000', '008_z007p000', '009_z006p000', '010_z005p000']
+snaps = ['006_z009p000', '007_z008p000', '008_z007p000', '009_z006p000',
+         '010_z005p000']
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 10**8
+nlim = 10 ** 8
 
 hlr_dict = {}
 hlr_app_dict = {}
@@ -195,9 +190,10 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
-    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
-                                                                orientation),
-                    "r")
+    hdf = h5py.File(
+        "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
+                                                    orientation),
+        "r")
 
     hlr_dict.setdefault(snap, {})
     hlr_app_dict.setdefault(snap, {})
@@ -298,7 +294,7 @@ for f in filters:
         masses = masses[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
 
-        okinds1 = masses >= 10**9
+        okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
         bins = np.logspace(np.log10(0.08), np.log10(20), 40)
@@ -339,18 +335,19 @@ for f in filters:
                                   xscale='log', yscale='log',
                                   norm=LogNorm(), linewidths=0.2,
                                   cmap='Greys', alpha=0.7)
-            axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
+            axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50,
+                           mincnt=1,
                            C=w[okinds1],
                            reduce_C_function=np.sum,
                            xscale='log', yscale='log',
                            norm=LogNorm(), linewidths=0.2,
                            cmap='plasma')
-            axes_twin[i].hexbin(lumins, hlrs 
+            axes_twin[i].hexbin(lumins, hlrs
                                 * cosmo.arcsec_per_kpc_proper(z).value,
-                       gridsize=50, mincnt=1, C=w,
-                       reduce_C_function=np.sum, xscale='log',
-                       yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='plasma', alpha=0)
+                                gridsize=50, mincnt=1, C=w,
+                                reduce_C_function=np.sum, xscale='log',
+                                yscale='log', norm=LogNorm(), linewidths=0.2,
+                                cmap='plasma', alpha=0)
             cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
                                    norm=LogNorm(), cmap=cmr.bubblegum_r,
                                    linewidth=2)
@@ -389,8 +386,8 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=20,
-                           color=colors[p], alpha=0.7)
+                                marker=markers[p], label=labels[p], s=20,
+                                color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
 
@@ -416,16 +413,17 @@ for f in filters:
                                    kawa_low_params['beta'][int(z)],
                                    uplow="low")
                 axes[i].plot(fit_lumins, fit,
-                        linestyle='dashed', color=colors["K18"], alpha=0.9, zorder=2,
-                        label="Kawamata+18")
+                             linestyle='dashed', color=colors["K18"],
+                             alpha=0.9, zorder=2,
+                             label="Kawamata+18")
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
         axes[i].text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=axes[i].transAxes, horizontalalignment='right',
-                fontsize=8)
+                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                               ec="k", lw=1, alpha=0.8),
+                     transform=axes[i].transAxes, horizontalalignment='right',
+                     fontsize=8)
 
         axes[i].tick_params(axis='x', which='minor', bottom=True)
 
@@ -456,7 +454,8 @@ for f in filters:
             included.append((l.get_label(), l.get_marker()))
 
     axes[2].legend(handles=uni_legend_elements, loc='upper center',
-              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=len(uni_legend_elements))
+                   bbox_to_anchor=(0.5, -0.15), fancybox=True,
+                   ncol=len(uni_legend_elements))
 
     fig.savefig(
         'plots/HalfLightRadius_' + f + '_' + str(
@@ -506,7 +505,7 @@ for f in filters:
         masses = masses[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
 
-        okinds1 = masses >= 10**9
+        okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
         bins = np.logspace(np.log10(0.08), np.log10(20), 40)
@@ -547,17 +546,19 @@ for f in filters:
                                   xscale='log', yscale='log',
                                   norm=LogNorm(), linewidths=0.2,
                                   cmap='Greys', alpha=0.7)
-            axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
+            axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50,
+                           mincnt=1,
                            C=w[okinds1],
                            reduce_C_function=np.sum,
                            xscale='log', yscale='log',
                            norm=LogNorm(), linewidths=0.2,
                            cmap='plasma')
-            axes_twin[i].hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
-                       gridsize=50, mincnt=1, C=w,
-                       reduce_C_function=np.sum, xscale='log',
-                       yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='plasma', alpha=0)
+            axes_twin[i].hexbin(lumins,
+                                hlrs * cosmo.arcsec_per_kpc_proper(z).value,
+                                gridsize=50, mincnt=1, C=w,
+                                reduce_C_function=np.sum, xscale='log',
+                                yscale='log', norm=LogNorm(), linewidths=0.2,
+                                cmap='plasma', alpha=0)
             cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
                                    norm=LogNorm(), cmap=cmr.bubblegum_r,
                                    linewidth=2)
@@ -596,8 +597,8 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=20,
-                           color=colors[p], alpha=0.7)
+                                marker=markers[p], label=labels[p], s=20,
+                                color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
 
@@ -623,17 +624,18 @@ for f in filters:
                                    kawa_low_params['beta'][int(z)],
                                    uplow="low")
                 axes[i].plot(fit_lumins, fit,
-                        linestyle='dashed', color=colors["K18"], alpha=0.9,
-                        zorder=2,
-                        label="Kawamata+18")
+                             linestyle='dashed', color=colors["K18"],
+                             alpha=0.9,
+                             zorder=2,
+                             label="Kawamata+18")
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
         axes[i].text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=axes[i].transAxes, horizontalalignment='right',
-                fontsize=8)
+                     bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                               ec="k", lw=1, alpha=0.8),
+                     transform=axes[i].transAxes, horizontalalignment='right',
+                     fontsize=8)
 
         axes[i].tick_params(axis='x', which='minor', bottom=True)
 
@@ -664,7 +666,8 @@ for f in filters:
             included.append((l.get_label(), l.get_marker()))
 
     axes[2].legend(handles=uni_legend_elements, loc='upper center',
-              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=len(uni_legend_elements))
+                   bbox_to_anchor=(0.5, -0.15), fancybox=True,
+                   ncol=len(uni_legend_elements))
 
     fig.savefig('plots/HalfLightRadiusAperture_'
                 + f + '_' + str(z) + '_' + orientation
@@ -713,7 +716,7 @@ for f in filters:
         masses = masses[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
 
-        okinds1 = masses >= 10**9
+        okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
         bins = np.logspace(np.log10(0.08), np.log10(20), 40)
@@ -754,17 +757,19 @@ for f in filters:
                                   xscale='log', yscale='log',
                                   norm=LogNorm(), linewidths=0.2,
                                   cmap='Greys', alpha=0.7)
-            axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
+            axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50,
+                           mincnt=1,
                            C=w[okinds1],
                            reduce_C_function=np.sum,
                            xscale='log', yscale='log',
                            norm=LogNorm(), linewidths=0.2,
                            cmap='plasma')
-            axes_twin[i].hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
-                       gridsize=50, mincnt=1, C=w,
-                       reduce_C_function=np.sum, xscale='log',
-                       yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='plasma', alpha=0)
+            axes_twin[i].hexbin(lumins,
+                                hlrs * cosmo.arcsec_per_kpc_proper(z).value,
+                                gridsize=50, mincnt=1, C=w,
+                                reduce_C_function=np.sum, xscale='log',
+                                yscale='log', norm=LogNorm(), linewidths=0.2,
+                                cmap='plasma', alpha=0)
             cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
                                    norm=LogNorm(), cmap=cmr.bubblegum_r,
                                    linewidth=2)
@@ -815,8 +820,8 @@ for f in filters:
                            markersize=8, alpha=0.7))
 
                 axes[i].scatter(plt_lumins, plt_r_es,
-                           marker=markers[p], label=labels[p], s=20,
-                           color=colors[p], alpha=0.7)
+                                marker=markers[p], label=labels[p], s=20,
+                                color=colors[p], alpha=0.7)
 
             if int(z) in [6, 7, 8, 9]:
 
@@ -842,9 +847,10 @@ for f in filters:
                                    kawa_low_params['beta'][int(z)],
                                    uplow="low")
                 axes[i].plot(fit_lumins, fit,
-                        linestyle='dashed', color=colors["K18"], alpha=0.9,
-                        zorder=2,
-                        label="Kawamata+18")
+                             linestyle='dashed', color=colors["K18"],
+                             alpha=0.9,
+                             zorder=2,
+                             label="Kawamata+18")
                 # axes[i].fill_between(fit_lumins, low, up,
                 #                 color='k', alpha=0.4, zorder=1)
 
@@ -884,7 +890,8 @@ for f in filters:
             included.append((l.get_label(), l.get_marker()))
 
     axes[2].legend(handles=uni_legend_elements, loc='upper center',
-              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=len(uni_legend_elements))
+                   bbox_to_anchor=(0.5, -0.15), fancybox=True,
+                   ncol=len(uni_legend_elements))
 
     fig.savefig('plots/HalfLightRadiusPixel_'
                 + f + '_' + str(z) + '_' + orientation

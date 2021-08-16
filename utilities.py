@@ -1,6 +1,6 @@
 import os
 import warnings
-from scipy.interpolate import interp1d
+
 import astropy.units as u
 import matplotlib
 import numba as nb
@@ -8,9 +8,6 @@ import numpy as np
 from astropy.cosmology import Planck13 as cosmo
 from photutils import aperture_photometry
 from scipy.interpolate import interp1d
-import schwimmbad
-from functools import partial
-import time
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
@@ -83,7 +80,7 @@ def get_Z_LOS(s_cood, g_cood, g_mass, g_Z, g_sml, dimens, lkernel, kbins):
 
     """
 
-    conv = (u.solMass/u.Mpc**2).to(u.solMass/u.pc**2)
+    conv = (u.solMass / u.Mpc ** 2).to(u.solMass / u.pc ** 2)
 
     n = s_cood.shape[0]
     Z_los_SD = np.zeros(n)
@@ -107,8 +104,8 @@ def get_Z_LOS(s_cood, g_cood, g_mass, g_Z, g_sml, dimens, lkernel, kbins):
         kernel_vals = np.array([lkernel[int(kbins * ll)] for ll in boverh[ok]])
 
         Z_los_SD[ii] = np.sum((thisgmass[ok] * thisgZ[ok] / (
-                    thisgsml[ok] * thisgsml[
-                ok])) * kernel_vals) * conv  # in units of Msun/pc^2
+                thisgsml[ok] * thisgsml[
+            ok])) * kernel_vals) * conv  # in units of Msun/pc^2
 
     return Z_los_SD
 
@@ -276,7 +273,6 @@ def calc_eigenvec(coods):
 
 
 def img_loop(star_tup, imgrange, Ndim):
-
     # Extract star data
     x, y, l, sml = star_tup
 
@@ -301,7 +297,6 @@ def img_loop(star_tup, imgrange, Ndim):
 
 
 def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth, numThreads=1):
-
     # if numThreads != 1:
     #     pool = schwimmbad.MultiPool(processes=numThreads)
     #
@@ -366,15 +361,14 @@ def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth, numThreads=1):
 
 
 def quartic_spline(q):
-
     w = np.zeros_like(q)
     okinds1 = q < 1 / 2
     okinds2 = np.logical_and(1 / 2 <= q, q < 3 / 2)
     okinds3 = np.logical_and(3 / 2 <= q, q < 5 / 2)
 
-    w[okinds1] = (5 / 2 - q[okinds1])**4 \
-                 - 5 * (3 / 2 - q[okinds1])**4 \
-                 + 10 * (1 / 2 - q[okinds1])**4
+    w[okinds1] = (5 / 2 - q[okinds1]) ** 4 \
+                 - 5 * (3 / 2 - q[okinds1]) ** 4 \
+                 + 10 * (1 / 2 - q[okinds1]) ** 4
     w[okinds2] = (5 / 2 - q[okinds2]) ** 4 \
                  - 5 * (3 / 2 - q[okinds2]) ** 4
     w[okinds3] = (5 / 2 - q[okinds3]) ** 4
@@ -383,8 +377,7 @@ def quartic_spline(q):
 
 
 def make_spline_img(pos, Ndim, i, j, tree, ls, smooth,
-                    spline_func=quartic_spline, spline_cut_off=5/2):
-
+                    spline_func=quartic_spline, spline_cut_off=5 / 2):
     # Define 2D projected particle position array
     part_pos = pos[:, (i, j)]
 
@@ -419,7 +412,7 @@ def make_spline_img(pos, Ndim, i, j, tree, ls, smooth,
         w = spline_func(dist / sml)
 
         # Place the kernel for this particle within the img
-        kernel = k3 * w / sml**3
+        kernel = k3 * w / sml ** 3
         norm_kernel = kernel / np.sum(kernel)
         smooth_img[pix_pos[inds, 0], pix_pos[inds, 1]] += l * norm_kernel
 
@@ -453,14 +446,13 @@ def get_img_hlr(img, apertures, app_rs, res, csoft, radii_frac=0.5):
 
 
 def get_pixel_hlr(img, single_pix_area, radii_frac=0.5):
-
     # Get half the total luminosity
     half_l = np.sum(img) * radii_frac
 
     # Sort pixels into 1D array ordered by decreasing intensity
     sort_1d_img = np.sort(img.flatten())[::-1]
     sum_1d_img = np.cumsum(sort_1d_img)
-    cumal_area = np.full_like(sum_1d_img, single_pix_area)\
+    cumal_area = np.full_like(sum_1d_img, single_pix_area) \
                  * np.arange(1, sum_1d_img.size + 1, 1)
 
     npix = np.argmin(np.abs(sum_1d_img - half_l))
@@ -471,7 +463,8 @@ def get_pixel_hlr(img, single_pix_area, radii_frac=0.5):
 
     # Interpolate the arrays for better resolution
     interp_func = interp1d(cumal_area_cutout, sum_1d_img_cutout, kind="linear")
-    interp_areas = np.linspace(cumal_area_cutout.min(), cumal_area_cutout.max(),
+    interp_areas = np.linspace(cumal_area_cutout.min(),
+                               cumal_area_cutout.max(),
                                500)
     interp_1d_img = interp_func(interp_areas)
 
@@ -505,7 +498,6 @@ def lumin_weighted_centre(poss, ls, i, j):
 
 
 def calc_light_mass_rad(rs, ls, radii_frac=0.5):
-
     if ls.size < 100:
         return 0.0
 
@@ -536,7 +528,7 @@ def calc_light_mass_rad(rs, ls, radii_frac=0.5):
 
     # Interpolate the arrays for better resolution
     interp_func = interp1d(rs_cutout, l_profile_cutout, kind="linear")
-    interp_rs = np.linspace(rs_cutout.min(),  rs_cutout.max(), 500)
+    interp_rs = np.linspace(rs_cutout.min(), rs_cutout.max(), 500)
     interp_1d_ls = interp_func(interp_rs)
 
     new_hmr_ind = np.argmin(np.abs(interp_1d_ls - half_l))

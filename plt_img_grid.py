@@ -13,15 +13,9 @@ warnings.filterwarnings('ignore')
 import seaborn as sns
 import matplotlib.colors as cm
 import matplotlib.gridspec as gridspec
-from scipy.stats import binned_statistic
-from matplotlib.lines import Line2D
-from astropy.cosmology import Planck13 as cosmo
-from flare.photom import lum_to_M, M_to_lum
 import flare.photom as photconv
 import h5py
 import sys
-import pandas as pd
-import utilities as util
 import cmasher as cmr
 
 sns.set_context("paper")
@@ -110,14 +104,17 @@ for reg in regions:
                                 vmax=np.percentile(imgs[imgs > 0], 99.99),
                                 clip=True)
 
-            print(np.min(imgs[imgs > 0]), np.percentile(imgs[imgs > 0], 33.175), np.percentile(imgs[imgs > 0], 50), np.percentile(imgs[imgs > 0], 99))
+            print(np.min(imgs[imgs > 0]),
+                  np.percentile(imgs[imgs > 0], 33.175),
+                  np.percentile(imgs[imgs > 0], 50),
+                  np.percentile(imgs[imgs > 0], 99))
 
             dpi = 1080
             fig = plt.figure(figsize=(4, 4), dpi=dpi)
             gs = gridspec.GridSpec(4, 4)
             gs.update(wspace=0.0, hspace=0.0)
             axes = np.empty((4, 4), dtype=object)
-            bins = [10**8, 10**9, 10**9.5, 10**10, np.inf]
+            bins = [10 ** 8, 10 ** 9, 10 ** 9.5, 10 ** 10, np.inf]
             for i in range(4):
                 for j in range(4):
                     axes[i, j] = fig.add_subplot(gs[i, j])
@@ -177,7 +174,6 @@ for reg in regions:
                     else:
                         axes[i, j].imshow(np.zeros_like(imgs[0, :, :]),
                                           cmap=cmr.cosmic, norm=norm)
-
 
             fig.savefig(
                 'plots/Image_grids/ImgGrid_' + f + '_' + str(z) + '_' + reg

@@ -12,17 +12,12 @@ matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
 from matplotlib.colors import LogNorm
-import matplotlib.gridspec as gridspec
-from scipy.stats import binned_statistic
-from matplotlib.lines import Line2D
-from astropy.cosmology import Planck13 as cosmo
-from flare.photom import lum_to_M, M_to_lum
+from flare.photom import M_to_lum
 import flare.photom as photconv
 import h5py
 import sys
 import pandas as pd
 import cmasher as cmr
-import utilities as util
 import scipy.ndimage
 
 sns.set_context("paper")
@@ -99,9 +94,10 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
-    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
-                                                                orientation),
-                    "r")
+    hdf = h5py.File(
+        "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
+                                                    orientation),
+        "r")
 
     hlr_dict.setdefault(snap, {})
     # hlr_app_dict.setdefault(snap, {})
@@ -168,8 +164,9 @@ for f in filters:
         # hlrs_app = hlrs_app[okinds]
         hlrs_pix = hlrs_pix[okinds]
         masses = masses[okinds]
+        w = np.array(weight_dict[snap][f])[okinds]
 
-        okinds1 = masses >= 10**9
+        okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
         bins = np.logspace(np.log10(0.08), np.log10(20), 40)
@@ -252,15 +249,15 @@ for f in filters:
         ax = fig.add_subplot(111)
         try:
             cbar = ax.hexbin(hlrs[okinds2], hlrs_pix[okinds2],
-                             gridsize=50, mincnt=1,
-                              xscale='log', yscale='log',
-                              norm=LogNorm(), linewidths=0.2,
-                              cmap='Greys')
+                             C=w[okinds2], gridsize=50, mincnt=1,
+                             xscale='log', yscale='log',
+                             norm=LogNorm(), linewidths=0.2,
+                             cmap='Greys')
             cbar = ax.hexbin(hlrs[okinds1], hlrs_pix[okinds1],
-                             gridsize=50, mincnt=1,
-                              xscale='log', yscale='log',
-                              norm=LogNorm(), linewidths=0.2,
-                              cmap='viridis')
+                             C=w[okinds1], gridsize=50, mincnt=1,
+                             xscale='log', yscale='log',
+                             norm=LogNorm(), linewidths=0.2,
+                             cmap='viridis')
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                               norm=LogNorm(), cmap=cmr.bubblegum_r,
                               linewidth=2)

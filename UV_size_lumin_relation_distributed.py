@@ -1,14 +1,16 @@
 #!/cosma/home/dp004/dc-rope1/.conda/envs/flares-env/bin/python
 import os
 import warnings
+
 import numpy as np
 from photutils import CircularAperture
+
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 warnings.filterwarnings('ignore')
 from scipy.stats import binned_statistic
 import phot_modules as phot
 import utilities as util
-from flare.photom import lum_to_M, M_to_lum
+from flare.photom import M_to_lum
 from scipy.spatial import cKDTree
 import h5py
 import sys
@@ -74,9 +76,7 @@ reg_snaps = []
 for reg in reversed(regions):
 
     for snap in snaps:
-
         reg_snaps.append((reg, snap))
-
 
 ind = int(sys.argv[1])
 
@@ -114,7 +114,7 @@ if run:
     img_dict = {}
 
     # Set mass limit
-    masslim = 10**8
+    masslim = 10 ** 8
 
     z_str = tag.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
@@ -241,7 +241,7 @@ if run:
                 this_gradii = util.calc_rad(this_gpos, i=0, j=1)
 
                 img = util.make_spline_img(this_pos, res, 0, 1, tree,
-                                       this_lumin, this_smls)
+                                           this_lumin, this_smls)
 
             else:
 
@@ -261,7 +261,6 @@ if run:
                                                              this_metals))
 
             for r in radii_fracs:
-
                 hlr_app_dict[tag][f][r].append(util.get_img_hlr(img,
                                                                 apertures,
                                                                 app_radii, res,
@@ -418,7 +417,7 @@ if run:
                                               compression="gzip")
                 dset.attrs["units"] = "$\mathrm{pkpc}$"
             except RuntimeError:
-                print("HLR_%.1f" % r,"already exists: Overwriting...")
+                print("HLR_%.1f" % r, "already exists: Overwriting...")
                 del f_group["HLR_%.1f" % r]
                 dset = f_group.create_dataset("HLR_%.1f" % r, data=hlrs,
                                               dtype=hlrs.dtype,
@@ -434,7 +433,8 @@ if run:
                                               compression="gzip")
                 dset.attrs["units"] = "$\mathrm{pkpc}$"
             except RuntimeError:
-                print("HLR_Aperture_%.1f" % r, "already exists: Overwriting...")
+                print("HLR_Aperture_%.1f" % r,
+                      "already exists: Overwriting...")
                 del f_group["HLR_Aperture_%.1f" % r]
                 dset = f_group.create_dataset("HLR_Aperture_%.1f" % r,
                                               data=hlrs_app,

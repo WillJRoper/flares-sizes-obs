@@ -60,7 +60,7 @@ def get_data(ii, tag, inp='FLARES'):
         cops = np.array(hf[tag + '/Galaxy'].get("COP"),
                         dtype=np.float64)
         S_mass_ini = np.array(hf[tag + '/Particle'].get('S_MassInitial'),
-                          dtype=np.float64) * 10 ** 10
+                              dtype=np.float64) * 10 ** 10
         S_mass = np.array(hf[tag + '/Particle'].get('S_Mass'),
                           dtype=np.float64) * 10 ** 10
         S_Z = np.array(hf[tag + '/Particle'].get('S_Z_smooth'),
@@ -152,7 +152,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
     # --- create rest-frame luminosities
     F = flare.filters.add_filters(filters, new_lam=model.lam)
-    model.create_Lnu_grid(F)  # --- create new L grid for each filter. In units of erg/s/Hz
+    model.create_Lnu_grid(
+        F)  # --- create new L grid for each filter. In units of erg/s/Hz
     for jj in range(len(begin)):
 
         # Extract values for this galaxy
@@ -570,9 +571,8 @@ def get_lines(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300',
 
 def get_lum(sim, kappa, tag, BC_fac, IMF='Chabrier_300',
             bins=np.arange(-24, -16, 0.5), inp='FLARES', LF=True,
-            filters=('FAKE.TH.FUV', ), Type='Total', log10t_BC=7.,
+            filters=('FAKE.TH.FUV',), Type='Total', log10t_BC=7.,
             extinction='default', orientation="sim", masslim=None):
-
     Lums = lum(sim, kappa, tag, BC_fac=BC_fac, IMF=IMF, inp=inp, LF=LF,
                filters=filters, Type=Type, log10t_BC=log10t_BC,
                extinction=extinction, orientation=orientation,

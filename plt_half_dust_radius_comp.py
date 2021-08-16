@@ -13,9 +13,7 @@ warnings.filterwarnings('ignore')
 import seaborn as sns
 from matplotlib.colors import LogNorm
 import scipy.ndimage
-import matplotlib.tri as tri
-from matplotlib import ticker, cm
-import utilities as util
+from matplotlib import ticker
 import sys
 import h5py
 import pandas as pd
@@ -23,7 +21,6 @@ import cmasher as cmr
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
-
 
 regions = []
 for reg in range(0, 40):
@@ -53,7 +50,7 @@ mass_dict = {}
 weight_dict = {}
 
 # Set mass limit
-masslim = 10**8
+masslim = 10 ** 8
 
 # Load weights
 df = pd.read_csv('../weight_files/weights_grid.txt')
@@ -68,9 +65,10 @@ for reg in reversed(regions):
 for reg, snap in reg_snaps:
 
     try:
-        hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
-                                                                    orientation),
-                        "r")
+        hdf = h5py.File(
+            "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
+                                                        orientation),
+            "r")
     except OSError as e:
         print(e)
         continue
@@ -81,7 +79,6 @@ for reg, snap in reg_snaps:
     weight_dict.setdefault(snap, {})
 
     for f in filters:
-
         hlr_dict[snap].setdefault(f, [])
         hdr_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
@@ -120,7 +117,7 @@ for snap in snaps:
         masses = masses[okinds]
         w = w[okinds]
 
-        okinds1 = masses >= 10**9
+        okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
         bins = np.logspace(np.log10(0.08), np.log10(20), 40)
@@ -158,12 +155,15 @@ for snap in snaps:
             #                  C=w[okinds2], reduce_C_function=np.sum,
             #                  xscale='log', yscale='log',
             #                  norm=LogNorm(), linewidths=0.2, cmap='jet')
-            ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1, C=w[okinds1],
+            ax.hexbin(hdrs[okinds1], hlrs[okinds1], gridsize=50, mincnt=1,
+                      C=w[okinds1],
                       reduce_C_function=np.sum, xscale='log', yscale='log',
-                      norm=LogNorm(), linewidths=0.2, cmap='viridis', alpha=0.8)
+                      norm=LogNorm(), linewidths=0.2, cmap='viridis',
+                      alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
-                               locator=ticker.LogLocator(),
-                               norm=LogNorm(), cmap=cmr.bubblegum_r, linewidth=2)
+                              locator=ticker.LogLocator(),
+                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              linewidth=2)
         except ValueError as e:
             print(e)
             continue
@@ -223,7 +223,8 @@ for snap in snaps:
 
         bins = np.logspace(np.log10(0.08), np.log10(30), H.shape[0] + 1)
         ratio_bins = np.logspace(np.log10(np.min(ratio[okinds2])),
-                                 np.log10(np.max(ratio[okinds2])), H.shape[1] + 1)
+                                 np.log10(np.max(ratio[okinds2])),
+                                 H.shape[1] + 1)
 
         xbin_cents = (bins[1:] + bins[:-1]) / 2
         ybin_cents = (ratio_bins[1:] + ratio_bins[:-1]) / 2
@@ -240,7 +241,8 @@ for snap in snaps:
                       linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                               locator=ticker.LogLocator(),
-                              norm=LogNorm(), cmap=cmr.bubblegum_r, linewidth=2)
+                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              linewidth=2)
         except ValueError as e:
             print(e)
             continue
