@@ -169,7 +169,7 @@ for f in filters:
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(0.08), np.log10(20), 40)
+        bins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.min(hlrs_pix)), 40)
         H, xbins, ybins = np.histogram2d(hlrs[okinds2], hlrs_pix[okinds2],
                                          bins=bins, weights=w[okinds2])
 
@@ -186,7 +186,8 @@ for f in filters:
                        np.percentile(H, 95),
                        np.percentile(H, 99)]
 
-        bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
+        bins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.min(hlrs_pix)),
+                           H.shape[0] + 1)
 
         xbin_cents = (bins[1:] + bins[:-1]) / 2
         ybin_cents = (bins[1:] + bins[:-1]) / 2
