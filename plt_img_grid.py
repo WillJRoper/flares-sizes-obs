@@ -100,7 +100,7 @@ for reg in regions:
             lumins = np.array(lumin_dict[f])
             mass = np.array(mass_dict[f])
 
-            norm = cm.Normalize(vmin=np.percentile(imgs[imgs > 0], 50 - 34),
+            norm = cm.Normalize(vmin=0,
                                 vmax=np.percentile(imgs[imgs > 0], 99.99),
                                 clip=True)
 
