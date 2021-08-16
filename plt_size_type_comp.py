@@ -278,6 +278,8 @@ for f in filters:
         ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
         ax.set_ylabel('$R_{1/2, \mathrm{pix}}/ [pkpc]$')
 
+        plt.axis('scaled')
+
         fig.savefig(
             'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
                 z) + '_'
