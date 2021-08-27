@@ -121,8 +121,9 @@ for reg in regions:
             imgint = np.array(imgint_dict[f])
             masses = np.array(mass_dict[f])
 
-            fig = plt.figure(figsize=(4, 6))
+            fig = plt.figure(figsize=(8, 3))
             ax = fig.add_subplot(111)
+            ax.loglog()
 
             ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.5,
                        color='cyan')
