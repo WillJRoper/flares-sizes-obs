@@ -48,7 +48,7 @@ extinction = 'default'
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
-cmap = cm.get_cmap('jet', len(filters))
+cmap = mpl.cm.get_cmap('jet', len(filters))
 
 trans = {}
 plt_lams = []
