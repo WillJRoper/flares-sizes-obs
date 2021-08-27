@@ -134,20 +134,20 @@ for reg in regions:
             ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.7,
                        color='cyan')
 
-            i = 0
-            done = set()
-            while i < lim:
-                ind = np.random.choice(len(masses))
-                j = 0
-                while ind in done:
-                    ind = np.random.choice(len(masses))
-                    j += 1
-                    if j > lim:
-                        i = lim + 1
-                        break
-                ax.plot(sedlam[ind, :], sedtot[ind, :], color="r", alpha=0.1)
-                ax.plot(sedlam[ind, :], sedint[ind, :], color="g", alpha=0.1)
-                done.update({ind})
+            # i = 0
+            # done = set()
+            # while i < lim:
+            #     ind = np.random.choice(len(masses))
+            #     j = 0
+            #     while ind in done:
+            #         ind = np.random.choice(len(masses))
+            #         j += 1
+            #         if j > lim:
+            #             i = lim + 1
+            #             break
+            #     ax.plot(sedlam[ind, :], sedtot[ind, :], color="r", alpha=0.1)
+            #     ax.plot(sedlam[ind, :], sedint[ind, :], color="g", alpha=0.1)
+            #     done.update({ind})
 
             max_ind = np.argmax(masses)
             ax.plot(sedlam[max_ind, :], sedtot[max_ind, :], color="r",
@@ -193,5 +193,5 @@ for reg in regions:
                 'plots/SED/SED' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + "_"
                 + extinction + "".replace(".", "p") + ".png",
-                bbox_inches='tight', dpi=150)
+                bbox_inches='tight', dpi=50)
             plt.close(fig)
