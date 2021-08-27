@@ -193,5 +193,5 @@ for reg in regions:
                 'plots/SED/SED' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + "_"
                 + extinction + "".replace(".", "p") + ".png",
-                bbox_inches='tight', dpi=50)
+                bbox_inches='tight', dpi=100)
             plt.close(fig)
