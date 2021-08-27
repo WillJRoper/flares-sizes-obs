@@ -144,7 +144,7 @@ for reg in regions:
             ax.loglog()
 
             ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.6,
-                       color='k')
+                       color='k', label=f.split(".")[-1] + " filter")
 
             # i = 0
             # done = set()
