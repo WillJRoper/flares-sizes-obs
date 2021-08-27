@@ -154,7 +154,7 @@ for reg in regions:
             ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g")
 
             ax.set_xlim(10, None)
-            ax.set_ylim(10**-1, 10**35)
+            ax.set_ylim(10**-1, None)
 
             # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
             # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
