@@ -106,7 +106,6 @@ for reg in regions:
             print("Filter =", f)
 
             l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt', skiprows=1).T
-            l *= 1E4
 
             print(np.min(l[t > 0]), np.max(l[t > 0]))
 
@@ -148,7 +147,7 @@ for reg in regions:
             ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g")
 
             fig.savefig(
-                'plots/SED' + f + '_' + str(z) + '_' + reg
+                'plots/SED/SED' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + "_"
                 + extinction + "".replace(".", "p") + ".png",
                 bbox_inches='tight', dpi=fig.dpi)
