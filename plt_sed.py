@@ -154,32 +154,36 @@ for reg in regions:
             ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g")
 
             ax.set_xlim(10, None)
-            ax.set_ylim(10**-1, None)
+            ax.set_ylim(10**-1, 10**35)
 
-            ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
-            xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
+            # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
+            # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
+            #
+            # y_low = ax.get_ylim()[1] - ywidth
+            # x_low = ax.get_xlim()[0]
+            #
+            # axin1 = ax.inset_axes([x_low, y_low, xwidth, ywidth],
+            #                       transform=ax.transData)
+            # axin2 = ax.inset_axes([x_low + xwidth, y_low, xwidth, ywidth],
+            #                       transform=ax.transData)
 
-            y_low = ax.get_ylim()[1] - ywidth
-            x_low = ax.get_xlim()[0]
+            # for axi in [axin1, axin2]:
+            #
+            #     axi.grid(False)
+            #
+            #     # Remove axis labels and ticks
+            #     axi.tick_params(axis='x', top=False, bottom=False,
+            #                     labeltop=False, labelbottom=False)
+            #
+            #     axi.tick_params(axis='y', left=False, right=False,
+            #                     labelleft=False, labelright=False)
+            #
+            # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
+            # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
-            axin1 = ax.inset_axes([x_low, y_low, xwidth, ywidth],
-                                  transform=ax.transData)
-            axin2 = ax.inset_axes([x_low + xwidth, y_low, xwidth, ywidth],
-                                  transform=ax.transData)
-
-            for axi in [axin1, axin2]:
-
-                axi.grid(False)
-
-                # Remove axis labels and ticks
-                axi.tick_params(axis='x', top=False, bottom=False,
-                                labeltop=False, labelbottom=False)
-
-                axi.tick_params(axis='y', left=False, right=False,
-                                labelleft=False, labelright=False)
-
-            axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
-            axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
+            ax.set_xlabel("$\lambda / [\mathrm{microns}]$")
+            ax.set_ylabel("$L_{" + f.split(".")[-1]
+                          + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
 
             fig.savefig(
                 'plots/SED/SED' + f + '_' + str(z) + '_' + reg
