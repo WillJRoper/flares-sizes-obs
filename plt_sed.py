@@ -19,7 +19,7 @@ import sys
 import cmasher as cmr
 
 sns.set_context("paper")
-sns.set_style('white')
+sns.set_style('whitegrid')
 
 filter_path = "/cosma7/data/dp004/dc-wilk2/flare/data/filters/"
 
@@ -121,8 +121,23 @@ for reg in regions:
             imgint = np.array(imgint_dict[f])
             masses = np.array(mass_dict[f])
 
+            print(imgtot.shape, imgint.shape)
+
             fig = plt.figure(figsize=(8, 3))
             ax = fig.add_subplot(111)
+            axin1 = ax.inset_axes([0, 0.9, 0.1, 0.1])
+            axin2 = ax.inset_axes([0.1, 0.9, 0.1, 0.1])
+
+            for axi in [axin1, axin2]:
+
+                axi.grid(False)
+
+                # Remove axis labels and ticks
+                axi.tick_params(axis='x', top=False, bottom=False,
+                                labeltop=False, labelbottom=False)
+
+                axi.tick_params(axis='y', left=False, right=False,
+                                labelleft=False, labelright=False)
             ax.loglog()
 
             ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.5,
@@ -146,6 +161,12 @@ for reg in regions:
             max_ind = np.argmax(masses)
             ax.plot(sedlam[max_ind, :], sedtot[max_ind, :], color="r")
             ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g")
+
+            axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
+            axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
+
+            ax.set_xlim(10, None)
+            ax.set_ylim(10**-1, None)
 
             fig.savefig(
                 'plots/SED/SED' + f + '_' + str(z) + '_' + reg
