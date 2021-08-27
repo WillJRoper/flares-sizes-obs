@@ -121,6 +121,11 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
     Lums = {f: np.zeros(len(S_mass), dtype=np.float64) for f in filters}
 
+    for f in filters:
+        Lums[f + "tauVs_ISM"] = np.zeros(len(begin), dtype=np.float64)
+        Lums[f + "tauVs_BC"] = np.zeros(len(begin), dtype=np.float64)
+        Lums[f + "log10t_BC"] = np.zeros(len(begin), dtype=np.float64)
+
     model = models.define_model(
         F'BPASSv2.2.1.binary/{IMF}')  # DEFINE SED GRID -
     if extinction == 'default':
@@ -263,12 +268,17 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
                                             tauVs_ISM, tauVs_BC, F, f,
                                             fesc=fesc, log10t_BC=log10t_BC)
             Lums[f][begin[jj]: end[jj]] = Lnu
+            Lums[f + "tauVs_ISM"][jj] = tauVs_ISM
+            Lums[f + "tauVs_BC"][jj] = tauVs_BC
+            Lums[f + "log10t_BC"][jj] = log10t_BC
 
     Lums["coords"] = S_coords
     Lums["gcoords"] = G_coords
     Lums["smls"] = S_sml
     Lums["masses"] = S_mass
     Lums["gmasses"] = G_mass
+    Lums["S_age"] = S_age
+    Lums["S_Z"] = S_Z
     Lums["G_Z"] = G_Z
     Lums["nstar"] = S_len
     Lums["begin"] = begin

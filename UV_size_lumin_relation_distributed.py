@@ -14,6 +14,10 @@ from flare.photom import M_to_lum
 from scipy.spatial import cKDTree
 import h5py
 import sys
+from synthobs.sed import models
+import flare
+import flare.filters
+from flare.photom import lum_to_M
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
@@ -97,6 +101,13 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 run = True
 
+model = models.define_model(
+    F'BPASSv2.2.1.binary/{IMF}')  # DEFINE SED GRID -
+
+# --- create rest-frame luminosities
+F = flare.filters.add_filters(filters, new_lam=model.lam)
+model.create_Lnu_grid(F)  # --- create new L grid for each filter. In units of erg/s/Hz
+
 if run:
 
     # Define radii
@@ -112,6 +123,9 @@ if run:
     mass_dict = {}
     nstar_dict = {}
     img_dict = {}
+    sed_int = {}
+    sed_tot = {}
+    sed_lam = {}
 
     # Set mass limit
     masslim = 10 ** 8
@@ -128,6 +142,9 @@ if run:
     mass_dict.setdefault(tag, {})
     nstar_dict.setdefault(tag, {})
     img_dict.setdefault(tag, {})
+    sed_int.setdefault(tag, {})
+    sed_tot.setdefault(tag, {})
+    sed_lam.setdefault(tag, {})
 
     # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
     reg_dict = phot.get_lum(reg, kappa=0.0795, tag=tag, BC_fac=1,
@@ -209,6 +226,9 @@ if run:
         mass_dict[tag].setdefault(f, [])
         nstar_dict[tag].setdefault(f, [])
         img_dict[tag].setdefault(f, [])
+        sed_int[tag].setdefault(f, [])
+        sed_tot[tag].setdefault(f, [])
+        sed_lam[tag].setdefault(f, [])
 
         for ind in range(len(begin)):
 
@@ -223,6 +243,8 @@ if run:
             this_gmass = np.nansum(gas_masses[b: e])
             this_metals = gas_Z[gb: ge] * gas_masses[gb: ge]
             this_nstar = nstars[ind]
+            this_age = reg_dict["S_age"][b: e]
+            this_Sz = reg_dict["S_Z"][b: e]
 
             if np.nansum(this_lumin) == 0:
                 continue
@@ -273,6 +295,17 @@ if run:
                                                                     this_lumin,
                                                                     r))
 
+            # Generate SED
+            sed = models.generate_SED(model, this_mass, this_age, this_Sz,
+                                      tauVs_ISM=reg_dict[f + "tauVs_ISM"][ind],
+                                      tauVs_BC=reg_dict[f + "tauVs_BC"][ind],
+                                      fesc=0.0,
+                                      log10t_BC=reg_dict[f + "log10t_BC"][ind])
+
+            sed_int[tag][f].append(sed.intrinsic.lnu)
+            sed_tot[tag][f].append(sed.total.lnu)
+            sed_lam[tag][f].append(sed.lam)
+
             lumin_dict[tag][f].append(tot_l)
             img_lumin_dict[tag][f].append(np.sum(img))
             mass_dict[tag][f].append(this_mass)
@@ -309,8 +342,14 @@ if run:
         mass = np.array(mass_dict[tag][f])
         nstar = np.array(nstar_dict[tag][f])
         imgs = np.array(img_dict[tag][f])
+        sed_ints = np.array(sed_int[tag][f])
+        sed_tots = np.array(sed_tot[tag][f])
+        sed_lams = np.array(sed_lam[tag][f])
 
         print(imgs.shape)
+        print(sed_ints.shape)
+        print(sed_tots.shape)
+        print(sed_lams.shape)
 
         f_group = hdf.create_group(f)
 
