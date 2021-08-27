@@ -73,6 +73,7 @@ for f in filters:
     print(f.split(".")[-1], np.min(l[t > 0]), np.max(l[t > 0]))
     if np.max(l[t > 0]) > lam_max:
         lam_max = np.max(l[t > 0])
+    i += 1
 
 bounds.append(i + 0.5)
 
