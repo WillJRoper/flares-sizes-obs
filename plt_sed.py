@@ -66,7 +66,7 @@ for reg in range(35, 40):
 snaps = ['005_z010p000', '007_z008p000', '008_z007p000',
          '009_z006p000', '010_z005p000']
 
-lim = 100
+lim = 20
 
 np.random.seed(100)
 
@@ -121,6 +121,10 @@ for reg in regions:
             imgint = np.array(imgint_dict[f])
             masses = np.array(mass_dict[f])
 
+            norm = cm.Normalize(vmin=0,
+                                vmax=np.percentile(imgtot[imgtot > 0], 99.99),
+                                clip=True)
+
             print(imgtot.shape, imgint.shape)
 
             fig = plt.figure(figsize=(8, 3))
@@ -149,8 +153,19 @@ for reg in regions:
             ax.plot(sedlam[max_ind, :], sedtot[max_ind, :], color="r")
             ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g")
 
-            axin1 = ax.inset_axes([0, 0.8, 0.2, 0.2])
-            axin2 = ax.inset_axes([0.2, 0.8, 0.2, 0.2])
+            ax.set_xlim(10, None)
+            ax.set_ylim(10**-1, None)
+
+            ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
+            xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
+
+            y_low = ax.get_ylim()[1] - ywidth
+            x_low = ax.get_xlim()[0]
+
+            axin1 = ax.inset_axes([x_low, y_low, xwidth, ywidth],
+                                  transform=ax.transData)
+            axin2 = ax.inset_axes([x_low + xwidth, y_low, xwidth, ywidth],
+                                  transform=ax.transData)
 
             for axi in [axin1, axin2]:
 
@@ -165,9 +180,6 @@ for reg in regions:
 
             axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
             axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
-
-            ax.set_xlim(10, None)
-            ax.set_ylim(10**-1, None)
 
             fig.savefig(
                 'plots/SED/SED' + f + '_' + str(z) + '_' + reg
