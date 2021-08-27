@@ -122,11 +122,15 @@ for reg in regions:
                 "r")
 
             for f in filters:
-                sedint_dict[f] = hdf[f]["SED_intrinsic"][...]
-                sedtot_dict[f] = hdf[f]["SED_total"][...]
-                sedlam_dict[f] = hdf[f]["SED_lambda"][...]
-                imgtot_dict[f] = hdf[f]["Images"][...]
-                mass_dict[f] = hdf[f]["Mass"][...]
+                try:
+                    sedint_dict[f] = hdf[f]["SED_intrinsic"][...]
+                    sedtot_dict[f] = hdf[f]["SED_total"][...]
+                    sedlam_dict[f] = hdf[f]["SED_lambda"][...]
+                    imgtot_dict[f] = hdf[f]["Images"][...]
+                    mass_dict[f] = hdf[f]["Mass"][...]
+                except KeyError as e:
+                    print(e)
+                    continue
 
             hdf.close()
 
@@ -137,7 +141,11 @@ for reg in regions:
                 "r")
 
             for f in filters:
-                imgint_dict[f] = hdf[f]["Images"][...]
+                try:
+                    imgint_dict[f] = hdf[f]["Images"][...]
+                except KeyError as e:
+                    print(e)
+                    continue
 
             hdf.close()
 
