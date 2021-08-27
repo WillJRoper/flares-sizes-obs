@@ -102,7 +102,7 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 run = True
 
 model = models.define_model(
-    F'BPASSv2.2.1.binary/{IMF}')  # DEFINE SED GRID -
+    F'BPASSv2.2.1.binary/Chabrier_300')  # DEFINE SED GRID -
 
 # --- create rest-frame luminosities
 F = flare.filters.add_filters(filters, new_lam=model.lam)
