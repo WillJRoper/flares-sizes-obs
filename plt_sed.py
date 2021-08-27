@@ -53,6 +53,7 @@ cmap = mpl.cm.get_cmap('jet', len(filters))
 trans = {}
 plt_lams = []
 bounds = []
+lam_max = 0
 for f in filters:
     l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt',
                       skiprows=1).T
@@ -64,6 +65,10 @@ for f in filters:
     plt_lams.append(np.max(l[t > 0]) - (wid / 2))
     bounds.append(np.min(l[t > 0]))
     print(np.min(l[t > 0]), np.max(l[t > 0]))
+    if np.max(l[t > 0]) > lam_max:
+        lam_max = np.max(l[t > 0])
+
+bounds.append(lam_max)
 
 bounds = list(sorted(bounds))
 
