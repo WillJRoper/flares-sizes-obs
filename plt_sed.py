@@ -67,8 +67,8 @@ for f in filters:
 
 bounds = list(sorted(bounds))
 
-norm = cm.Normalize(vmin=plt_lams.min(),
-                    vmax=plt_lams.max(),
+norm = cm.Normalize(vmin=min(plt_lams),
+                    vmax=max(plt_lams),
                     clip=True)
 
 csoft = 0.001802390 / (0.6777) * 1e3
