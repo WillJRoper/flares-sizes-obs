@@ -143,7 +143,7 @@ for reg in regions:
             ax = fig.add_subplot(111)
             ax.loglog()
 
-            ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.6,
+            ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.4,
                        color='k', label=f.split(".")[-1] + " filter")
 
             # i = 0
