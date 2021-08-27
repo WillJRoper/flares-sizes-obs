@@ -105,30 +105,34 @@ np.random.seed(100)
 
 for reg in regions:
     for snap in snaps:
+        try:
+            hdf = h5py.File(
+                "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
+                                                            orientation),
+                "r")
 
-        hdf = h5py.File(
-            "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
-                                                        orientation),
-            "r")
+            for f in filters:
+                sedint_dict[f] = hdf[f]["SED_intrinsic"][...]
+                sedtot_dict[f] = hdf[f]["SED_total"][...]
+                sedlam_dict[f] = hdf[f]["SED_lambda"][...]
+                imgtot_dict[f] = hdf[f]["Images"][...]
+                mass_dict[f] = hdf[f]["Mass"][...]
 
-        for f in filters:
-            sedint_dict[f] = hdf[f]["SED_intrinsic"][...]
-            sedtot_dict[f] = hdf[f]["SED_total"][...]
-            sedlam_dict[f] = hdf[f]["SED_lambda"][...]
-            imgtot_dict[f] = hdf[f]["Images"][...]
-            mass_dict[f] = hdf[f]["Mass"][...]
+            hdf.close()
 
-        hdf.close()
+            hdf = h5py.File(
+                "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap,
+                                                            "Intrinsic",
+                                                            orientation),
+                "r")
 
-        hdf = h5py.File(
-            "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Intrinsic",
-                                                        orientation),
-            "r")
+            for f in filters:
+                imgint_dict[f] = hdf[f]["Images"][...]
 
-        for f in filters:
-            imgint_dict[f] = hdf[f]["Images"][...]
+            hdf.close()
 
-        hdf.close()
+        except OSError:
+            continue
 
         f = filters[0]
 
@@ -232,7 +236,7 @@ for reg in regions:
         cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
                                        spacing='proportional', ticks=plt_lams,
                                        boundaries=bounds, format='%1i')
-        cb.set_tick_labels(filters)
+        cb.set_ticklabels(filters)
 
         string = 'plots/SED/SED' + "_" + str(z) + '_' + reg \
                  + '_' + snap + '_' + orientation + "_" + extinction
