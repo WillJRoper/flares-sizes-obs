@@ -46,7 +46,10 @@ orientation = "sim"
 extinction = 'default'
 
 # Define filter
-filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
+# filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
+filters = ['FAKE.TH.'+ f
+           for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
+                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
 
 cmap = mpl.cm.get_cmap('jet', len(filters))
 
@@ -64,7 +67,7 @@ for f in filters:
     trans[f].append(np.max(l[t > 0]))
     plt_lams.append(np.max(l[t > 0]) - (wid / 2))
     bounds.append(np.min(l[t > 0]))
-    print(np.min(l[t > 0]), np.max(l[t > 0]))
+    print(f.split(".")[-1], np.min(l[t > 0]), np.max(l[t > 0]))
     if np.max(l[t > 0]) > lam_max:
         lam_max = np.max(l[t > 0])
 
@@ -74,7 +77,14 @@ sinds = np.argsort(plt_lams)
 plt_lams = np.array(plt_lams)[sinds]
 filters = np.array(filters)[sinds]
 
+filter_labels = [f.split(".")[-1] for f in filters]
+
 bounds = list(sorted(bounds))
+
+cents = []
+for i in range(len(bounds) - 1):
+    wid = bounds[i + 1] - bounds[i]
+    cents.append(bounds[i] + (wid / 2))
 
 norm = cm.Normalize(vmin=min(plt_lams),
                     vmax=max(plt_lams),
@@ -234,7 +244,7 @@ for reg in regions:
         # create a second axes for the colorbar
         ax2 = fig.add_axes([0.95, 0.1, 0.015, 0.8])
         cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
-                                       spacing='proportional', ticks=plt_lams,
+                                       spacing='proportional', ticks=cents,
                                        boundaries=bounds, format='%1i')
         cb.set_ticklabels(filters)
 
