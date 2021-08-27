@@ -70,6 +70,10 @@ for f in filters:
 
 bounds.append(lam_max)
 
+sinds = np.argsort(plt_lams)
+plt_lams = np.array(plt_lams)[sinds]
+filters = np.array(filters)[sinds]
+
 bounds = list(sorted(bounds))
 
 norm = cm.Normalize(vmin=min(plt_lams),
@@ -224,10 +228,11 @@ for reg in regions:
         ax.legend()
 
         # create a second axes for the colorbar
-        ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
+        ax2 = fig.add_axes([0.95, 0.1, 0.015, 0.8])
         cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
                                        spacing='proportional', ticks=plt_lams,
                                        boundaries=bounds, format='%1i')
+        cb.set_tick_labels(filters)
 
         string = 'plots/SED/SED' + "_" + str(z) + '_' + reg \
                  + '_' + snap + '_' + orientation + "_" + extinction
