@@ -144,7 +144,7 @@ for reg in regions:
         except OSError:
             continue
 
-        f = filters[0]
+        f = "FAKE.TH.FUV"
 
         print("Plotting for:")
         print("Region = ", reg)
