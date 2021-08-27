@@ -387,6 +387,51 @@ if run:
                                           shape=lumins.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+            
+        try:
+            dset = f_group.create_dataset("SED_intrinsic", data=sed_ints,
+                                          dtype=sed_ints.dtype,
+                                          shape=sed_ints.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+        except RuntimeError:
+            print("SED_intrinsic already exists: Overwriting...")
+            del f_group["SED_intrinsic"]
+            dset = f_group.create_dataset("SED_intrinsic", data=sed_ints,
+                                          dtype=sed_ints.dtype,
+                                          shape=sed_ints.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+            
+        try:
+            dset = f_group.create_dataset("SED_total", data=sed_tots,
+                                          dtype=sed_tots.dtype,
+                                          shape=sed_tots.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+        except RuntimeError:
+            print("SED_total already exists: Overwriting...")
+            del f_group["SED_total"]
+            dset = f_group.create_dataset("SED_total", data=sed_tots,
+                                          dtype=sed_tots.dtype,
+                                          shape=sed_tots.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+            
+        try:
+            dset = f_group.create_dataset("SED_lambda", data=sed_lams,
+                                          dtype=sed_lams.dtype,
+                                          shape=sed_lams.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+        except RuntimeError:
+            print("SED_lambda already exists: Overwriting...")
+            del f_group["SED_lambda"]
+            dset = f_group.create_dataset("SED_lambda", data=sed_lams,
+                                          dtype=sed_lams.dtype,
+                                          shape=sed_lams.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
 
         try:
             dset = f_group.create_dataset("Image_Luminosity", data=img_lumins,
