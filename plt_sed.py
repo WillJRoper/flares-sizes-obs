@@ -55,23 +55,26 @@ cmap = mpl.cm.get_cmap('jet', len(filters))
 
 trans = {}
 plt_lams = []
+cents = []
 bounds = []
 lam_max = 0
+i = 1
 for f in filters:
     l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt',
                       skiprows=1).T
     wid = np.max(l[t > 0]) - np.min(l[t > 0])
     trans[f] = []
     trans[f].append(np.min(l[t > 0]))
-    trans[f].append(np.max(l[t > 0]) - (wid / 2))
+    trans[f].append(i)
     trans[f].append(np.max(l[t > 0]))
     plt_lams.append(np.max(l[t > 0]) - (wid / 2))
-    bounds.append(np.min(l[t > 0]))
+    cents.append(i)
+    bounds.append(i - 0.5)
     print(f.split(".")[-1], np.min(l[t > 0]), np.max(l[t > 0]))
     if np.max(l[t > 0]) > lam_max:
         lam_max = np.max(l[t > 0])
 
-bounds.append(lam_max)
+bounds.append(i + 0.5)
 
 sinds = np.argsort(plt_lams)
 plt_lams = np.array(plt_lams)[sinds]
@@ -81,13 +84,8 @@ filter_labels = [f.split(".")[-1] for f in filters]
 
 bounds = list(sorted(bounds))
 
-cents = []
-for i in range(len(bounds) - 1):
-    wid = bounds[i + 1] - bounds[i]
-    cents.append(bounds[i] + (wid / 2))
-
-norm = cm.Normalize(vmin=min(plt_lams),
-                    vmax=max(plt_lams),
+norm = cm.Normalize(vmin=min(bounds),
+                    vmax=max(bounds),
                     clip=True)
 
 csoft = 0.001802390 / (0.6777) * 1e3
