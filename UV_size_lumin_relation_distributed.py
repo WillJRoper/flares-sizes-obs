@@ -296,7 +296,7 @@ if run:
                                                                     r))
 
             # Generate SED
-            sed = models.generate_SED(model, this_mass, this_age, this_Sz,
+            sed = models.generate_SED(model, masses[b: e], this_age, this_Sz,
                                       tauVs_ISM=reg_dict[f + "tauVs_ISM"][b : e],
                                       tauVs_BC=reg_dict[f + "tauVs_BC"][b : e],
                                       fesc=0.0,
