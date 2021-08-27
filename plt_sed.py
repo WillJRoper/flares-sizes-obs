@@ -57,7 +57,7 @@ imgint_dict = {}
 mass_dict = {}
 
 regions = []
-for reg in range(35, 40):
+for reg in range(15, 40):
     if reg < 10:
         regions.append('0' + str(reg))
     else:
@@ -66,7 +66,7 @@ for reg in range(35, 40):
 snaps = ['005_z010p000', '007_z008p000', '008_z007p000',
          '009_z006p000', '010_z005p000']
 
-lim = 20
+lim = 5
 
 np.random.seed(100)
 
@@ -131,7 +131,7 @@ for reg in regions:
             ax = fig.add_subplot(111)
             ax.loglog()
 
-            ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.5,
+            ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.7,
                        color='cyan')
 
             i = 0
@@ -145,16 +145,18 @@ for reg in regions:
                     if j > lim:
                         i = lim + 1
                         break
-                ax.plot(sedlam[ind, :], sedtot[ind, :], color="r", alpha=0.05)
-                ax.plot(sedlam[ind, :], sedint[ind, :], color="g", alpha=0.05)
+                ax.plot(sedlam[ind, :], sedtot[ind, :], color="r", alpha=0.1)
+                ax.plot(sedlam[ind, :], sedint[ind, :], color="g", alpha=0.1)
                 done.update({ind})
 
             max_ind = np.argmax(masses)
-            ax.plot(sedlam[max_ind, :], sedtot[max_ind, :], color="r")
-            ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g")
+            ax.plot(sedlam[max_ind, :], sedtot[max_ind, :], color="r",
+                    label="Attenuated")
+            ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g",
+                    label="Intrinsic")
 
-            ax.set_xlim(10, None)
-            ax.set_ylim(10**-1, None)
+            ax.set_xlim(100, None)
+            ax.set_ylim(10**3, None)
 
             # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
             # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
@@ -185,9 +187,11 @@ for reg in regions:
             ax.set_ylabel("$L_{" + f.split(".")[-1]
                           + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
 
+            ax.legend()
+
             fig.savefig(
                 'plots/SED/SED' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + "_"
                 + extinction + "".replace(".", "p") + ".png",
-                bbox_inches='tight', dpi=fig.dpi)
+                bbox_inches='tight', dpi=150)
             plt.close(fig)
