@@ -229,9 +229,8 @@ for reg in regions:
                                        spacing='proportional', ticks=plt_lams,
                                        boundaries=bounds, format='%1i')
 
-        fig.savefig(
-            'plots/SED/SED' + str(z) + '_' + reg
-            + '_' + snap + '_' + orientation + "_"
-            + extinction + "".replace(".", "p") + ".png",
-            bbox_inches='tight', dpi=100)
+        string = 'plots/SED/SED' + "_" + str(z) + '_' + reg \
+                 + '_' + snap + '_' + orientation + "_" + extinction
+        fig.savefig( string.replace(".", "p") + ".png",
+                     bbox_inches='tight', dpi=100)
         plt.close(fig)
