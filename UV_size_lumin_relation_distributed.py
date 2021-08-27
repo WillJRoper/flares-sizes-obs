@@ -297,8 +297,8 @@ if run:
 
             # Generate SED
             sed = models.generate_SED(model, this_mass, this_age, this_Sz,
-                                      tauVs_ISM=reg_dict[f + "tauVs_ISM"][ind],
-                                      tauVs_BC=reg_dict[f + "tauVs_BC"][ind],
+                                      tauVs_ISM=reg_dict[f + "tauVs_ISM"][b : e],
+                                      tauVs_BC=reg_dict[f + "tauVs_BC"][b : e],
                                       fesc=0.0,
                                       log10t_BC=reg_dict[f + "log10t_BC"][ind])
 
