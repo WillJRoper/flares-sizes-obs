@@ -220,7 +220,7 @@ for reg in regions:
 
         # create a second axes for the colorbar
         ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
-        cb = plt.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
+        cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
                                        spacing='proportional', ticks=plt_lams,
                                        boundaries=bounds, format='%1i')
 
