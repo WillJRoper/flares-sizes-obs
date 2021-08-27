@@ -104,6 +104,11 @@ run = True
 model = models.define_model(
     F'BPASSv2.2.1.binary/Chabrier_300')  # DEFINE SED GRID -
 
+model.dust_ISM = (
+    'simple', {'slope': -1.})  # Define dust curve for ISM
+model.dust_BC = ('simple', {
+    'slope': -1.})  # Define dust curve for birth cloud component
+
 # --- create rest-frame luminosities
 F = flare.filters.add_filters(filters, new_lam=model.lam)
 model.create_Lnu_grid(F)  # --- create new L grid for each filter. In units of erg/s/Hz
