@@ -12,6 +12,7 @@ matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
 import matplotlib.colors as cm
+import matplotlib as mpl
 import matplotlib.gridspec as gridspec
 import flare.photom as photconv
 import h5py
@@ -46,6 +47,29 @@ extinction = 'default'
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
+
+cmap = cm.get_cmap('jet', len(filters))
+
+trans = {}
+plt_lams = []
+bounds = []
+for f in filters:
+    l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt',
+                      skiprows=1).T
+    wid = np.max(l[t > 0]) - np.min(l[t > 0])
+    trans[f] = []
+    trans[f].append(np.min(l[t > 0]))
+    trans[f].append(np.max(l[t > 0]) - (wid / 2))
+    trans[f].append(np.max(l[t > 0]))
+    plt_lams.append(np.max(l[t > 0]) - (wid / 2))
+    bounds.append(np.min(l[t > 0]))
+    print(np.min(l[t > 0]), np.max(l[t > 0]))
+
+bounds = list(sorted(bounds))
+
+norm = cm.Normalize(vmin=plt_lams.min(),
+                    vmax=plt_lams.max(),
+                    clip=True)
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -97,113 +121,112 @@ for reg in regions:
 
         hdf.close()
 
+        f = filters[0]
+
+        print("Plotting for:")
+        print("Region = ", reg)
+        print("Snapshot = ", snap)
+        print("Orientation =", orientation)
+        print("Filter =", f)
+
+        legend_elements = []
+
+        z_str = snap.split('z')[1].split('p')
+        z = float(z_str[0] + '.' + z_str[1])
+
+        sedint = np.array(sedint_dict[f])
+        sedtot = np.array(sedtot_dict[f])
+        sedlam = np.array(sedlam_dict[f])
+        imgtot = np.array(imgtot_dict[f])
+        imgint = np.array(imgint_dict[f])
+        masses = np.array(mass_dict[f])
+
+        okinds = masses > 10**10
+
+        sedint = sedint[okinds]
+        sedtot = sedtot[okinds]
+        sedlam = sedlam[okinds]
+        imgtot = imgtot[okinds]
+        imgint = imgint[okinds]
+        masses = masses[okinds]
+
+        if masses.size == 0:
+            continue
+
+        print(imgtot.shape, imgint.shape)
+
+        fig = plt.figure(figsize=(8, 3))
+        ax = fig.add_subplot(111)
+        ax.loglog()
+
         for f in filters:
+            ax.axvspan(trans[f][0], trans[f][2], alpha=0.4,
+                       color=cmap(norm(trans[f][1])))
 
-            print("Plotting for:")
-            print("Region = ", reg)
-            print("Snapshot = ", snap)
-            print("Orientation =", orientation)
-            print("Filter =", f)
+        # i = 0
+        # done = set()
+        # while i < lim:
+        #     ind = np.random.choice(len(masses))
+        #     j = 0
+        #     while ind in done:
+        #         ind = np.random.choice(len(masses))
+        #         j += 1
+        #         if j > lim:
+        #             i = lim + 1
+        #             break
+        #     ax.plot(sedlam[ind, :], sedtot[ind, :], color="r", alpha=0.1)
+        #     ax.plot(sedlam[ind, :], sedint[ind, :], color="g", alpha=0.1)
+        #     done.update({ind})
 
-            l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt', skiprows=1).T
+        max_ind = np.argmax(masses)
+        ax.plot(sedlam[max_ind, :], sedtot[max_ind, :], color="r",
+                label="Attenuated")
+        ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g",
+                label="Intrinsic")
 
-            print(np.min(l[t > 0]), np.max(l[t > 0]))
+        ax.set_xlim(100, None)
+        ax.set_ylim(10**3, None)
 
-            legend_elements = []
+        # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
+        # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
+        #
+        # y_low = ax.get_ylim()[1] - ywidth
+        # x_low = ax.get_xlim()[0]
+        #
+        # axin1 = ax.inset_axes([x_low, y_low, xwidth, ywidth],
+        #                       transform=ax.transData)
+        # axin2 = ax.inset_axes([x_low + xwidth, y_low, xwidth, ywidth],
+        #                       transform=ax.transData)
 
-            z_str = snap.split('z')[1].split('p')
-            z = float(z_str[0] + '.' + z_str[1])
+        # for axi in [axin1, axin2]:
+        #
+        #     axi.grid(False)
+        #
+        #     # Remove axis labels and ticks
+        #     axi.tick_params(axis='x', top=False, bottom=False,
+        #                     labeltop=False, labelbottom=False)
+        #
+        #     axi.tick_params(axis='y', left=False, right=False,
+        #                     labelleft=False, labelright=False)
+        #
+        # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
+        # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
-            sedint = np.array(sedint_dict[f])
-            sedtot = np.array(sedtot_dict[f])
-            sedlam = np.array(sedlam_dict[f])
-            imgtot = np.array(imgtot_dict[f])
-            imgint = np.array(imgint_dict[f])
-            masses = np.array(mass_dict[f])
+        ax.set_xlabel("$\lambda / [\mathrm{microns}]$")
+        ax.set_ylabel("$L_{" + f.split(".")[-1]
+                      + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
 
-            okinds = masses > 10**10
+        ax.legend()
 
-            sedint = sedint[okinds]
-            sedtot = sedtot[okinds]
-            sedlam = sedlam[okinds]
-            imgtot = imgtot[okinds]
-            imgint = imgint[okinds]
-            masses = masses[okinds]
+        # create a second axes for the colorbar
+        ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
+        cb = plt.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
+                                       spacing='proportional', ticks=plt_lams,
+                                       boundaries=bounds, format='%1i')
 
-            if masses.size == 0:
-                continue
-
-            norm = cm.Normalize(vmin=0,
-                                vmax=np.percentile(imgtot[imgtot > 0], 99.99),
-                                clip=True)
-
-            print(imgtot.shape, imgint.shape)
-
-            fig = plt.figure(figsize=(8, 3))
-            ax = fig.add_subplot(111)
-            ax.loglog()
-
-            ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.4,
-                       color='k', label=f.split(".")[-1] + " filter")
-
-            # i = 0
-            # done = set()
-            # while i < lim:
-            #     ind = np.random.choice(len(masses))
-            #     j = 0
-            #     while ind in done:
-            #         ind = np.random.choice(len(masses))
-            #         j += 1
-            #         if j > lim:
-            #             i = lim + 1
-            #             break
-            #     ax.plot(sedlam[ind, :], sedtot[ind, :], color="r", alpha=0.1)
-            #     ax.plot(sedlam[ind, :], sedint[ind, :], color="g", alpha=0.1)
-            #     done.update({ind})
-
-            max_ind = np.argmax(masses)
-            ax.plot(sedlam[max_ind, :], sedtot[max_ind, :], color="r",
-                    label="Attenuated")
-            ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g",
-                    label="Intrinsic")
-
-            ax.set_xlim(100, None)
-            ax.set_ylim(10**3, None)
-
-            # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
-            # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
-            #
-            # y_low = ax.get_ylim()[1] - ywidth
-            # x_low = ax.get_xlim()[0]
-            #
-            # axin1 = ax.inset_axes([x_low, y_low, xwidth, ywidth],
-            #                       transform=ax.transData)
-            # axin2 = ax.inset_axes([x_low + xwidth, y_low, xwidth, ywidth],
-            #                       transform=ax.transData)
-
-            # for axi in [axin1, axin2]:
-            #
-            #     axi.grid(False)
-            #
-            #     # Remove axis labels and ticks
-            #     axi.tick_params(axis='x', top=False, bottom=False,
-            #                     labeltop=False, labelbottom=False)
-            #
-            #     axi.tick_params(axis='y', left=False, right=False,
-            #                     labelleft=False, labelright=False)
-            #
-            # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
-            # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
-
-            ax.set_xlabel("$\lambda / [\mathrm{microns}]$")
-            ax.set_ylabel("$L_{" + f.split(".")[-1]
-                          + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
-
-            ax.legend()
-
-            fig.savefig(
-                'plots/SED/SED' + f + '_' + str(z) + '_' + reg
-                + '_' + snap + '_' + orientation + "_"
-                + extinction + "".replace(".", "p") + ".png",
-                bbox_inches='tight', dpi=100)
-            plt.close(fig)
+        fig.savefig(
+            'plots/SED/SED' + str(z) + '_' + reg
+            + '_' + snap + '_' + orientation + "_"
+            + extinction + "".replace(".", "p") + ".png",
+            bbox_inches='tight', dpi=100)
+        plt.close(fig)
