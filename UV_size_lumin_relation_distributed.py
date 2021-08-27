@@ -15,9 +15,7 @@ from scipy.spatial import cKDTree
 import h5py
 import sys
 from synthobs.sed import models
-import flare
 import flare.filters
-from flare.photom import lum_to_M
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
@@ -97,10 +95,10 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
                                                e=extinction, x=reg, u=tag))
 
 # Define filter
-filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
-# filters = ['FAKE.TH.'+ f
-#            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
-#                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
+# filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
+filters = ['FAKE.TH.'+ f
+           for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
+                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
 
 run = True
 
@@ -114,7 +112,8 @@ model.dust_BC = ('simple', {
 
 # --- create rest-frame luminosities
 F = flare.filters.add_filters(filters, new_lam=model.lam)
-model.create_Lnu_grid(F)  # --- create new L grid for each filter. In units of erg/s/Hz
+model.create_Lnu_grid(
+    F)  # --- create new L grid for each filter. In units of erg/s/Hz
 
 if run:
 
@@ -304,15 +303,20 @@ if run:
                                                                     r))
 
             # Generate SED
-            sed = models.generate_SED(model, masses[b: e], this_age, this_Sz,
-                                      tauVs_ISM=reg_dict[f + "tauVs_ISM"][b : e],
-                                      tauVs_BC=reg_dict[f + "tauVs_BC"][b : e],
-                                      fesc=0.0,
-                                      log10t_BC=reg_dict[f + "log10t_BC"][ind])
+            if this_mass > 10 ** 10:
+                sed = models.generate_SED(model, masses[b: e], this_age,
+                                          this_Sz,
+                                          tauVs_ISM=reg_dict[f + "tauVs_ISM"][
+                                                    b: e],
+                                          tauVs_BC=reg_dict[f + "tauVs_BC"][
+                                                   b: e],
+                                          fesc=0.0,
+                                          log10t_BC=reg_dict[f + "log10t_BC"][
+                                              ind])
 
-            sed_int[tag][f].append(sed.intrinsic.lnu)
-            sed_tot[tag][f].append(sed.total.lnu)
-            sed_lam[tag][f].append(sed.lam)
+                sed_int[tag][f].append(sed.intrinsic.lnu)
+                sed_tot[tag][f].append(sed.total.lnu)
+                sed_lam[tag][f].append(sed.lam)
 
             lumin_dict[tag][f].append(tot_l)
             img_lumin_dict[tag][f].append(np.sum(img))
@@ -356,8 +360,6 @@ if run:
 
         print(imgs.shape)
         print(sed_ints.shape)
-        print(sed_tots.shape)
-        print(sed_lams.shape)
 
         f_group = hdf.create_group(f)
 
@@ -390,7 +392,7 @@ if run:
                                           shape=lumins.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
-            
+
         try:
             dset = f_group.create_dataset("SED_intrinsic", data=sed_ints,
                                           dtype=sed_ints.dtype,
@@ -405,7 +407,7 @@ if run:
                                           shape=sed_ints.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
-            
+
         try:
             dset = f_group.create_dataset("SED_total", data=sed_tots,
                                           dtype=sed_tots.dtype,
@@ -420,7 +422,7 @@ if run:
                                           shape=sed_tots.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
-            
+
         try:
             dset = f_group.create_dataset("SED_lambda", data=sed_lams,
                                           dtype=sed_lams.dtype,

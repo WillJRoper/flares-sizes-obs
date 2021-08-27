@@ -121,6 +121,18 @@ for reg in regions:
             imgint = np.array(imgint_dict[f])
             masses = np.array(mass_dict[f])
 
+            okinds = masses > 10**10
+
+            sedint = sedint[okinds]
+            sedtot = sedtot[okinds]
+            sedlam = sedlam[okinds]
+            imgtot = imgtot[okinds]
+            imgint = imgint[okinds]
+            masses = masses[okinds]
+
+            if masses.size == 0:
+                continue
+
             norm = cm.Normalize(vmin=0,
                                 vmax=np.percentile(imgtot[imgtot > 0], 99.99),
                                 clip=True)
@@ -131,8 +143,8 @@ for reg in regions:
             ax = fig.add_subplot(111)
             ax.loglog()
 
-            ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.7,
-                       color='cyan')
+            ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.6,
+                       color='k')
 
             # i = 0
             # done = set()
