@@ -98,6 +98,9 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
 
 # Define filter
 filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
+# filters = ['FAKE.TH.'+ f
+#            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
+#                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
 
 run = True
 

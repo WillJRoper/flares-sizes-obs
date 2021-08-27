@@ -66,7 +66,7 @@ for reg in range(35, 40):
 snaps = ['005_z010p000', '007_z008p000', '008_z007p000',
          '009_z006p000', '010_z005p000']
 
-lim = 100
+lim = 10
 
 np.random.seed(100)
 
@@ -106,9 +106,8 @@ for reg in regions:
             print("Filter =", f)
 
             l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt', skiprows=1).T
+            l *= 1E4
 
-            print(l, t)
-            print(l[t > 0])
             print(np.min(l[t > 0]), np.max(l[t > 0]))
 
             legend_elements = []
@@ -126,19 +125,27 @@ for reg in regions:
             fig = plt.figure(figsize=(4, 6))
             ax = fig.add_subplot(111)
 
+            ax.axvspan(np.min(l[t > 0]), np.max(l[t > 0]), alpha=0.5,
+                       color='cyan')
+
             i = 0
             done = set()
             while i < lim:
                 ind = np.random.choice(len(masses))
+                j = 0
                 while ind in done:
                     ind = np.random.choice(len(masses))
+                    j += 1
+                    if j > lim:
+                        i = lim + 1
+                        break
                 ax.plot(sedlam[ind, :], sedtot[ind, :], color="r", alpha=0.05)
-                ax.plot(sedlam[ind, :], sedint[ind, :], color="b", alpha=0.05)
+                ax.plot(sedlam[ind, :], sedint[ind, :], color="g", alpha=0.05)
                 done.update({ind})
 
             max_ind = np.argmax(masses)
             ax.plot(sedlam[max_ind, :], sedtot[max_ind, :], color="r")
-            ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="b")
+            ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g")
 
             fig.savefig(
                 'plots/SED' + f + '_' + str(z) + '_' + reg
