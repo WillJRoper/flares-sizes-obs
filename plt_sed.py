@@ -190,7 +190,7 @@ for reg in regions:
         ax.loglog()
 
         for f in filters:
-            ax.axvspan(trans[f][0], trans[f][2], alpha=0.4,
+            ax.axvspan(trans[f][0], trans[f][2], alpha=0.5,
                        color=cmap(norm(trans[f][1])))
 
         # i = 0
@@ -251,7 +251,7 @@ for reg in regions:
         # create a second axes for the colorbar
         ax2 = fig.add_axes([0.95, 0.1, 0.015, 0.8])
         cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
-                                       spacing='proportional', ticks=cents,
+                                       spacing='uniform', ticks=cents,
                                        boundaries=bounds, format='%1i')
         cb.set_ticklabels(filters)
 
