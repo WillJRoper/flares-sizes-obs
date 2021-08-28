@@ -173,9 +173,6 @@ for reg in regions:
 
         okinds = masses > 10**10
 
-        sedint = sedint[okinds]
-        sedtot = sedtot[okinds]
-        sedlam = sedlam[okinds]
         imgtot = imgtot[okinds]
         imgint = imgint[okinds]
         masses = masses[okinds]
