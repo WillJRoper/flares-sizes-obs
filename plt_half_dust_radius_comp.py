@@ -168,10 +168,13 @@ for snap in snaps:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H[H > 0], 80),
-                       np.percentile(H[H > 0], 90),
-                       np.percentile(H[H > 0], 95),
-                       np.percentile(H[H > 0], 99)]
+        try:
+            percentiles = [np.percentile(H[H > 0], 80),
+                           np.percentile(H[H > 0], 90),
+                           np.percentile(H[H > 0], 95),
+                           np.percentile(H[H > 0], 99)]
+        except IndexError:
+            continue
 
         bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
 
@@ -251,10 +254,13 @@ for snap in snaps:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H[H > 0], 80),
-                       np.percentile(H[H > 0], 90),
-                       np.percentile(H[H > 0], 95),
-                       np.percentile(H[H > 0], 99)]
+        try:
+            percentiles = [np.percentile(H[H > 0], 80),
+                           np.percentile(H[H > 0], 90),
+                           np.percentile(H[H > 0], 95),
+                           np.percentile(H[H > 0], 99)]
+        except IndexError:
+            continue
 
         bins = np.logspace(np.log10(0.08), np.log10(40), H.shape[0] + 1)
 
@@ -353,10 +359,13 @@ for snap in snaps:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H[H > 0], 80),
-                       np.percentile(H[H > 0], 90),
-                       np.percentile(H[H > 0], 95),
-                       np.percentile(H[H > 0], 99)]
+        try:
+            percentiles = [np.percentile(H[H > 0], 80),
+                           np.percentile(H[H > 0], 90),
+                           np.percentile(H[H > 0], 95),
+                           np.percentile(H[H > 0], 99)]
+        except IndexError:
+            continue
 
         bins = np.logspace(np.log10(0.08), np.log10(40), H.shape[0] + 1)
 
