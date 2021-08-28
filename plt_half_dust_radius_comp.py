@@ -67,6 +67,26 @@ for reg, snap in reg_snaps:
 
     try:
         hdf = h5py.File(
+            "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Intrinsic",
+                                                        orientation),
+            "r")
+    except OSError as e:
+        print(e)
+        continue
+
+    int_hlr_temp = {}
+    for f in filters:
+        hlr_dict[snap].setdefault(f, [])
+        try:
+            int_hlr_temp[f] = hdf[f]["HLR_0.5"][...]
+        except KeyError as e:
+            print(e)
+            continue
+
+    hdf.close()
+
+    try:
+        hdf = h5py.File(
             "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
                                                         orientation),
             "r")
@@ -86,23 +106,17 @@ for reg, snap in reg_snaps:
         mass_dict[snap].setdefault(f, [])
         weight_dict[snap].setdefault(f, [])
 
+        try:
+            hlrint_dict[snap][f].extend(int_hlr_temp[f])
+        except KeyError:
+            continue
+
         masses = hdf[f]["Mass"][...]
         mass_dict[snap][f].extend(masses)
 
         hlr_dict[snap][f].extend(hdf[f]["HLR_0.5"][...])
         hdr_dict[snap][f].extend(hdf[f]["HDR"][...])
         weight_dict[snap][f].extend(np.full(masses.size, weights[int(reg)]))
-
-    hdf.close()
-
-    hdf = h5py.File(
-        "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Intrinsic",
-                                                    orientation),
-        "r")
-
-    for f in filters:
-        hlr_dict[snap].setdefault(f, [])
-        hlrint_dict[snap][f].extend(hdf[f]["HLR_0.5"][...])
 
     hdf.close()
 
