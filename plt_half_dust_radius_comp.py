@@ -82,6 +82,9 @@ for reg, snap in reg_snaps:
         print(e)
         continue
     print("Intrinsic:", list(hdf.keys()))
+    for f in hdf.keys():
+        for key in hdf[f].keys():
+            print("Intrinsic:", reg, snap, key, hdf[f][key].size)
     int_hlr_temp = {}
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
@@ -104,7 +107,7 @@ for reg, snap in reg_snaps:
     print("Total:", list(hdf.keys()))
     for f in hdf.keys():
         for key in hdf[f].keys():
-            print(key, hdf[f][key].size)
+            print("Total", reg, snap, key, hdf[f][key].size)
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
         hdr_dict[snap].setdefault(f, [])
