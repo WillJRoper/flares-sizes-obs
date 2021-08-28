@@ -292,6 +292,8 @@ for snap in snaps:
         plt.close(fig)
 
         # ==================================================================
+        if Type == "Intrinsic":
+            continue
 
         ratio = hlrs / hlrints
 
