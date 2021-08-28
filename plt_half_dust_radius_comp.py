@@ -45,6 +45,7 @@ filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 
 # Define dictionaries for results
 hlr_dict = {}
+hlrint_dict = {}
 hdr_dict = {}
 mass_dict = {}
 weight_dict = {}
@@ -75,6 +76,7 @@ for reg, snap in reg_snaps:
 
     hdr_dict.setdefault(snap, {})
     hlr_dict.setdefault(snap, {})
+    hlrint_dict.setdefault(snap, {})
     mass_dict.setdefault(snap, {})
     weight_dict.setdefault(snap, {})
 
@@ -93,6 +95,17 @@ for reg, snap in reg_snaps:
 
     hdf.close()
 
+    hdf = h5py.File(
+        "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Intrinsic",
+                                                    orientation),
+        "r")
+
+    for f in filters:
+        hlr_dict[snap].setdefault(f, [])
+        hlrint_dict[snap][f].extend(hdf[f]["HLR_0.5"][...])
+
+    hdf.close()
+
 for snap in snaps:
 
     for f in filters:
@@ -107,6 +120,7 @@ for snap in snaps:
 
         hdrs = np.array(hdr_dict[snap][f])
         hlrs = np.array(hlr_dict[snap][f])
+        hlrints = np.array(hlrint_dict[snap][f])
         masses = np.array(mass_dict[snap][f])
         w = np.array(weight_dict[snap][f])
 
@@ -114,6 +128,7 @@ for snap in snaps:
 
         hdrs = hdrs[okinds]
         hlrs = hlrs[okinds]
+        hlrints = hlrints[okinds]
         masses = masses[okinds]
         w = w[okinds]
 
@@ -269,6 +284,88 @@ for snap in snaps:
         plt.axis('scaled')
 
         fig.savefig('plots/' + str(z) + '/HalfDustRadius_ratio_' + f + '_'
+                    + str(z) + '_' + Type + '_' + orientation + "_"
+                    + extinction + "_" + '%d' % masslim
+                    + "".replace(".", "p") + ".png",
+                    bbox_inches='tight')
+
+        plt.close(fig)
+
+        # ==================================================================
+
+        ratio = hlrs / hlrints
+
+        bins = np.logspace(np.log10(0.08), np.log10(40), 40)
+
+        H, xbins, ybins = np.histogram2d(hdrs[okinds2], ratio[okinds2],
+                                         bins=bins,
+                                         weights=w[okinds2])
+
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
+
+        percentiles = [np.percentile(H, 80),
+                       np.percentile(H, 90),
+                       np.percentile(H, 95),
+                       np.percentile(H, 99)]
+
+        bins = np.logspace(np.log10(0.08), np.log10(40), H.shape[0] + 1)
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.loglog()
+        try:
+            cbar = ax.hexbin(hdrs[okinds2], ratio[okinds2], gridsize=50,
+                             mincnt=1,
+                             C=w[okinds2], reduce_C_function=np.sum,
+                             xscale='log', yscale='log',
+                             norm=LogNorm(), linewidths=0.2, cmap='Greys',
+                             alpha=0.7)
+            ax.hexbin(hdrs[okinds1], ratio[okinds1], gridsize=50, mincnt=1,
+                      C=w[okinds1], reduce_C_function=np.sum,
+                      xscale='log', yscale='log', norm=LogNorm(),
+                      linewidths=0.2, cmap='viridis', alpha=0.8)
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              linewidth=2)
+        except ValueError as e:
+            print(e)
+            continue
+
+        min = np.min((ax.get_xlim(), ax.get_ylim()))
+        max = np.max((ax.get_xlim(), ax.get_ylim()))
+
+        ax.plot([min, max], [1, 1], color='k', linestyle="--")
+
+        ax.text(0.95, 0.05, f'$z={z}$',
+                bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                          ec="k", lw=1, alpha=0.8),
+                transform=ax.transAxes, horizontalalignment='right',
+                fontsize=8)
+
+        # Label axes
+        ax.set_ylabel("$R_{1/2,"
+                      + f.split(".")[-1]
+                      + ", \mathrm{Attenuated}}/ R_{1/2,"
+                      + f.split(".")[-1] + ", \mathrm{Intrinsic}}$")
+        ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
+
+        ax.set_xlim([0.08, 20])
+        ax.set_ylim([0.08, 50])
+
+        plt.axis('scaled')
+
+        fig.savefig('plots/' + str(z) + '/HalfDustRadius_hlrratio_' + f + '_'
                     + str(z) + '_' + Type + '_' + orientation + "_"
                     + extinction + "_" + '%d' % masslim
                     + "".replace(".", "p") + ".png",

@@ -149,7 +149,9 @@ snaps = ['006_z009p000', '007_z008p000', '008_z007p000', '009_z006p000',
          '010_z005p000']
 
 # Define filter
-filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
+filters = ['FAKE.TH.'+ f
+           for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
+                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
