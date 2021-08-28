@@ -104,7 +104,7 @@ for reg, snap in reg_snaps:
     print("Total:", list(hdf.keys()))
     for f in hdf.keys():
         for key in hdf[f].keys():
-            print(key)
+            print(key, hdf[f][key].size)
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
         hdr_dict[snap].setdefault(f, [])
