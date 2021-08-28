@@ -65,6 +65,12 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
+    hdr_dict.setdefault(snap, {})
+    hlr_dict.setdefault(snap, {})
+    hlrint_dict.setdefault(snap, {})
+    mass_dict.setdefault(snap, {})
+    weight_dict.setdefault(snap, {})
+
     try:
         hdf = h5py.File(
             "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Intrinsic",
@@ -93,12 +99,6 @@ for reg, snap in reg_snaps:
     except OSError as e:
         print(e)
         continue
-
-    hdr_dict.setdefault(snap, {})
-    hlr_dict.setdefault(snap, {})
-    hlrint_dict.setdefault(snap, {})
-    mass_dict.setdefault(snap, {})
-    weight_dict.setdefault(snap, {})
 
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
