@@ -137,7 +137,6 @@ for snap in snaps:
         try:
             hdrs = np.array(hdr_dict[snap][f])
             hlrs = np.array(hlr_dict[snap][f])
-            hlrints = np.array(hlrint_dict[snap][f])
             masses = np.array(mass_dict[snap][f])
             w = np.array(weight_dict[snap][f])
         except KeyError as e:
@@ -148,7 +147,6 @@ for snap in snaps:
 
         hdrs = hdrs[okinds]
         hlrs = hlrs[okinds]
-        hlrints = hlrints[okinds]
         masses = masses[okinds]
         w = w[okinds]
 
@@ -314,6 +312,27 @@ for snap in snaps:
         # ==================================================================
         if Type == "Intrinsic":
             continue
+
+        try:
+            hdrs = np.array(hdr_dict[snap][f])
+            hlrs = np.array(hlr_dict[snap][f])
+            hlrints = np.array(hlrint_dict[snap][f])
+            masses = np.array(mass_dict[snap][f])
+            w = np.array(weight_dict[snap][f])
+        except KeyError as e:
+            print(e)
+            continue
+
+        okinds = np.logical_and(np.logical_and(hdrs > 0, hlrs > 0), masses > 0)
+
+        hdrs = hdrs[okinds]
+        hlrs = hlrs[okinds]
+        hlrints = hlrints[okinds]
+        masses = masses[okinds]
+        w = w[okinds]
+
+        okinds1 = masses >= 10 ** 9
+        okinds2 = masses < 10 ** 9
 
         ratio = hlrs / hlrints
 
