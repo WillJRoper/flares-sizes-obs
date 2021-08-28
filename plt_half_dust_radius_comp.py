@@ -132,11 +132,15 @@ for snap in snaps:
         z_str = snap.split('z')[1].split('p')
         z = float(z_str[0] + '.' + z_str[1])
 
-        hdrs = np.array(hdr_dict[snap][f])
-        hlrs = np.array(hlr_dict[snap][f])
-        hlrints = np.array(hlrint_dict[snap][f])
-        masses = np.array(mass_dict[snap][f])
-        w = np.array(weight_dict[snap][f])
+        try:
+            hdrs = np.array(hdr_dict[snap][f])
+            hlrs = np.array(hlr_dict[snap][f])
+            hlrints = np.array(hlrint_dict[snap][f])
+            masses = np.array(mass_dict[snap][f])
+            w = np.array(weight_dict[snap][f])
+        except KeyError as e:
+            print(e)
+            continue
 
         okinds = np.logical_and(np.logical_and(hdrs > 0, hlrs > 0), masses > 0)
 
