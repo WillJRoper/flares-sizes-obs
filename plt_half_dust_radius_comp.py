@@ -81,13 +81,9 @@ for reg, snap in reg_snaps:
     except OSError as e:
         print(e)
         continue
-    print("Intrinsic:", list(hdf.keys()))
-    for f in hdf.keys():
-        for key in hdf[f].keys():
-            print("Intrinsic:", reg, snap, key, hdf[f][key].size)
+        
     int_hlr_temp = {}
     for f in filters:
-        hlr_dict[snap].setdefault(f, [])
         try:
             int_hlr_temp[f] = hdf[f]["HLR_0.5"][...]
         except KeyError as e:
@@ -104,12 +100,10 @@ for reg, snap in reg_snaps:
     except OSError as e:
         print(e)
         continue
-    print("Total:", list(hdf.keys()))
-    for f in hdf.keys():
-        for key in hdf[f].keys():
-            print("Total", reg, snap, key, hdf[f][key].size)
+
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
+        hlrint_dict[snap].setdefault(f, [])
         hdr_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
         weight_dict[snap].setdefault(f, [])
