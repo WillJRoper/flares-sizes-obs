@@ -81,7 +81,7 @@ for reg, snap in reg_snaps:
     except OSError as e:
         print(e)
         continue
-
+    print("Intrinsic:", list(hdf.keys()))
     int_hlr_temp = {}
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
@@ -101,7 +101,7 @@ for reg, snap in reg_snaps:
     except OSError as e:
         print(e)
         continue
-
+    print("Total:", list(hdf.keys()))
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
         hdr_dict[snap].setdefault(f, [])
