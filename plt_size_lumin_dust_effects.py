@@ -457,10 +457,10 @@ for f in filters:
         cbar.ax.set_xlabel("$A_\mathrm{" + f.split(".")[-1] + "}$",
                            labelpad=-40)
 
-        ax1.set_xlim(10 ** -0.9, 10 ** 1.1)
-        ax2.set_xlim(10 ** -0.9, 10 ** 1.1)
-        ax1.set_ylim(10 ** -0.9, 10 ** 1.1)
-        ax2.set_ylim(10 ** -0.9, 10 ** 1.1)
+        ax1.set_xlim(10 ** -0.4, 10 ** 1.6)
+        ax2.set_xlim(10 ** -0.4, 10 ** 1.6)
+        ax1.set_ylim(10 ** -0.4, 10 ** 1.6)
+        ax2.set_ylim(10 ** -0.4, 10 ** 1.6)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_1to1'
                                         '_Pixel_'
