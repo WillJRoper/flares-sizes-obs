@@ -52,7 +52,7 @@ snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
 # Define filter
 filters = ['FAKE.TH.'+ f
            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
-                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
+                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -130,7 +130,7 @@ for reg, snap in reg_snaps:
             hdf[f]["HLR_Pixel_0.5"][...][okinds])
         lumin_dict[snap][f].extend(
             hdf[f]["Luminosity"][...][okinds])
-        mass_dict[snap][f].extend(masses)
+        mass_dict[snap][f].extend(masses[okinds])
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 
