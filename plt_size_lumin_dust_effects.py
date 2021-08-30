@@ -396,8 +396,8 @@ for f in filters:
         fig = plt.figure()
         gs = gridspec.GridSpec(1, 2)
         gs.update(wspace=0.0, hspace=0.0)
-        ax1 = fig.add_subplot(gs[0, 1], aspect='equal')
-        ax2 = fig.add_subplot(gs[0, 0], aspect='equal')
+        ax1 = fig.add_subplot(gs[0, 0], aspect='equal')
+        ax2 = fig.add_subplot(gs[0, 1], aspect='equal')
         ax1.loglog()
         ax2.loglog()
 
@@ -412,7 +412,7 @@ for f in filters:
         extinc = lum_to_M(intr_lumins) - lum_to_M(lumins)
 
         try:
-            im2 = ax2.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
+            im1 = ax1.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
                              gridsize=50, mincnt=np.min(extinc[okinds2]),
                              C=extinc[okinds2], reduce_C_function=np.mean,
                              xscale='log', yscale='log',
@@ -420,7 +420,7 @@ for f in filters:
                              vmin=np.min(extinc), vmax=np.max(extinc),
                              alpha=0.8)
 
-            im1 = ax1.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
+            im2 = ax2.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
                              gridsize=50, mincnt=np.min(extinc[okinds1]),
                              C=extinc[okinds1], reduce_C_function=np.mean,
                              xscale='log', yscale='log',
