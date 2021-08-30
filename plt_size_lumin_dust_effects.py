@@ -409,19 +409,13 @@ for f in filters:
         H1, xbins, ybins = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=extinc)
         H2, _, _ = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
-                                         bins=bins)
-
-        print(H1.shape, H2.shape)
+                                  bins=bins)
 
         H = H1 / H2
-
-        print(H.shape)
 
         # Resample your data grid by a factor of 3 using
         # cubic spline interpolation.
         H = scipy.ndimage.zoom(H, 3)
-
-        print(H.shape, H[H != np.nan].shape)
 
         try:
             percentiles = [np.percentile(H[H != np.nan], 50),
@@ -443,19 +437,19 @@ for f in filters:
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
         try:
-            cbar = ax.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
-                             gridsize=50, mincnt=np.min(extinc),
-                             C=extinc, reduce_C_function=np.mean,
-                             xscale='log', yscale='log',
-                             linewidths=0.2, cmap='Greys',
-                             alpha=0.7)
+            # cbar = ax.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
+            #                  gridsize=50, mincnt=np.min(extinc),
+            #                  C=extinc, reduce_C_function=np.mean,
+            #                  xscale='log', yscale='log',
+            #                  linewidths=0.2, cmap='Greys',
+            #                  alpha=0.7)
 
             extinc = lum_to_M(intr_lumins[okinds1]) - lum_to_M(lumins[okinds1])
-            im = ax.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
-                           gridsize=50, mincnt=np.min(extinc),
-                           C=extinc, reduce_C_function=np.mean,
-                           xscale='log', yscale='log',
-                           linewidths=0.2, cmap='viridis', alpha=0.8)
+            # im = ax.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
+            #                gridsize=50, mincnt=np.min(extinc),
+            #                C=extinc, reduce_C_function=np.mean,
+            #                xscale='log', yscale='log',
+            #                linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                               cmap=cmr.bubblegum_r,
                               linewidth=2)
@@ -472,8 +466,8 @@ for f in filters:
                 fontsize=8)
 
         # Label axes
-        ax.set_xlabel('$R_{1/2,\mathrm{intrinsic}}/ [pkpc]$')
-        ax.set_ylabel('$R_{1/2, mathrm{dust}}/ [pkpc]$')
+        ax.set_xlabel('$R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
+        ax.set_ylabel('$R_{1/2,\mathrm{Attenuated}}/ [pkpc]$')
 
         ax.tick_params(axis='x', which='minor', bottom=True)
 
