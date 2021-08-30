@@ -169,7 +169,8 @@ for snap in snaps:
         #                1, 2, 5]
 
         try:
-            percentiles = [np.percentile(H[H > 0], 80),
+            percentiles = [np.percentile(H[H > 0], 50),
+                           np.percentile(H[H > 0], 80),
                            np.percentile(H[H > 0], 90),
                            np.percentile(H[H > 0], 95),
                            np.percentile(H[H > 0], 99)]
@@ -255,7 +256,8 @@ for snap in snaps:
         #                1, 2, 5]
 
         try:
-            percentiles = [np.percentile(H[H > 0], 80),
+            percentiles = [np.percentile(H[H > 0], 50),
+                           np.percentile(H[H > 0], 80),
                            np.percentile(H[H > 0], 90),
                            np.percentile(H[H > 0], 95),
                            np.percentile(H[H > 0], 99)]
@@ -360,7 +362,8 @@ for snap in snaps:
         #                1, 2, 5]
 
         try:
-            percentiles = [np.percentile(H[H > 0], 80),
+            percentiles = [np.percentile(H[H > 0], 50),
+                           np.percentile(H[H > 0], 80),
                            np.percentile(H[H > 0], 90),
                            np.percentile(H[H > 0], 95),
                            np.percentile(H[H > 0], 99)]

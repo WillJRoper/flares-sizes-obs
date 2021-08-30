@@ -53,7 +53,9 @@ else:
     snaps = sys.argv[3]
 
 # Define filter
-filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
+filters = ['FAKE.TH.'+ f
+           for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
+                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -181,10 +183,14 @@ for f in filters:
         #                10**-1,
         #                1, 2, 5]
 
-        percentiles = [np.percentile(H, 80),
-                       np.percentile(H, 90),
-                       np.percentile(H, 95),
-                       np.percentile(H, 99)]
+        try:
+            percentiles = [np.percentile(H[H > 0], 50),
+                           np.percentile(H[H > 0], 80),
+                           np.percentile(H[H > 0], 90),
+                           np.percentile(H[H > 0], 95),
+                           np.percentile(H[H > 0], 99)]
+        except IndexError:
+            continue
 
         bins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.min(hlrs_pix)),
                            H.shape[0] + 1)
@@ -249,19 +255,19 @@ for f in filters:
         fig = plt.figure()
         ax = fig.add_subplot(111)
         try:
-            # cbar = ax.hexbin(hlrs[okinds2], hlrs_pix[okinds2],
-            #                  C=w[okinds2], gridsize=50, mincnt=1,
-            #                  xscale='log', yscale='log',
-            #                  norm=LogNorm(), linewidths=0.2,
-            #                  cmap='Greys')
-            cbar = ax.hexbin(hlrs, hlrs_pix,
-                             C=w, gridsize=50, mincnt=1,
+            cbar = ax.hexbin(hlrs[okinds2], hlrs_pix[okinds2],
+                             C=w[okinds2], gridsize=50, mincnt=1,
+                             xscale='log', yscale='log',
+                             norm=LogNorm(), linewidths=0.2,
+                             cmap='Greys')
+            cbar = ax.hexbin(hlrs[okinds1], hlrs_pix[okinds1],
+                             C=w[okinds1], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='viridis')
-            # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
-            #                   norm=LogNorm(), cmap=cmr.bubblegum_r,
-            #                   linewidth=2)
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              linewidth=2)
         except ValueError as e:
             print(e)
             continue

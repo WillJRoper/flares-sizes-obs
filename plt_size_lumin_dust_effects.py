@@ -18,6 +18,8 @@ import flare.photom as photconv
 import h5py
 import sys
 import pandas as pd
+import cmasher as cmr
+import scipy.ndimage
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -59,6 +61,7 @@ hlr_app_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
 weight_dict = {}
+mass_dict = {}
 
 intr_hlr_dict = {}
 intr_hlr_app_dict = {}
@@ -102,6 +105,7 @@ for reg, snap in reg_snaps:
     hlr_app_dict.setdefault(snap, {})
     hlr_pix_dict.setdefault(snap, {})
     lumin_dict.setdefault(snap, {})
+    mass_dict.setdefault(snap, {})
     weight_dict.setdefault(snap, {})
 
     for f in filters:
@@ -109,6 +113,7 @@ for reg, snap in reg_snaps:
         hlr_app_dict[snap].setdefault(f, [])
         hlr_pix_dict[snap].setdefault(f, [])
         lumin_dict[snap].setdefault(f, [])
+        mass_dict[snap].setdefault(f, [])
         weight_dict[snap].setdefault(f, [])
 
         masses = hdf[f]["Mass"][...]
@@ -123,6 +128,7 @@ for reg, snap in reg_snaps:
             hdf[f]["HLR_Pixel_0.5"][...][okinds])
         lumin_dict[snap][f].extend(
             hdf[f]["Luminosity"][...][okinds])
+        mass_dict[snap][f].extend(masses)
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 
@@ -373,19 +379,62 @@ for f in filters:
 
         plt.close(fig)
 
+        masses = np.array(mass_dict[snap][f])
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        # ax1 = ax.twinx()
-        # ax1.grid(False)
         ax.loglog()
-        # ax1.loglog()
+
+        okinds1 = masses >= 10 ** 9
+        okinds2 = masses < 10 ** 9
+        extinc = lum_to_M(intr_lumins[okinds2]) - lum_to_M(lumins[okinds2])
+        bins = np.logspace(np.log10(np.min(intr_hlrs[okinds2])),
+                           np.log10(np.min(hlrs[okinds2])), 
+                           40)
+        H1, xbins, ybins = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
+                                         bins=bins, weights=extinc)
+        H2, xbins, ybins = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
+                                         bins=bins)
+
+        H = H1 / H2
+
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
         try:
-            extinc = lum_to_M(intr_lumins) - lum_to_M(lumins)
-            sinds = np.argsort(extinc)[::-1]
-            im = ax.scatter(intr_hlrs[sinds], hlrs[sinds],
-                            c=extinc[sinds],
-                            marker="D",
-                            cmap="viridis")
+            percentiles = [np.percentile(H[H > 0], 50),
+                           np.percentile(H[H > 0], 80),
+                           np.percentile(H[H > 0], 90),
+                           np.percentile(H[H > 0], 95),
+                           np.percentile(H[H > 0], 99)]
+        except IndexError:
+            continue
+
+        bins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.min(hlrs_pix)),
+                           H.shape[0] + 1)
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+
+        try:
+            cbar = ax.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
+                             gridsize=50, mincnt=np.min(extinc),
+                             C=extinc, reduce_C_function=np.mean,
+                             xscale='log', yscale='log',
+                             norm=LogNorm(), linewidths=0.2, cmap='Greys',
+                             alpha=0.7)
+
+            extinc = lum_to_M(intr_lumins[okinds1]) - lum_to_M(lumins[okinds1])
+            ax.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
+                      gridsize=50, mincnt=np.min(extinc),
+                      C=extinc, reduce_C_function=np.mean,
+                      xscale='log', yscale='log', norm=LogNorm(),
+                      linewidths=0.2, cmap='viridis', alpha=0.8)
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              linewidth=2)
         except ValueError as e:
             print(e)
             continue
