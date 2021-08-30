@@ -427,6 +427,8 @@ for f in filters:
             print(e)
             continue
 
+        print(percentiles)
+
         bins = np.logspace(np.log10(np.min((np.min(hlrs), np.min(intr_hlrs)))),
                            np.log10(np.max((np.max(hlrs), np.max(intr_hlrs)))),
                            H.shape[0] + 1)
@@ -437,22 +439,21 @@ for f in filters:
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
         try:
-            # cbar = ax.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
-            #                  gridsize=50, mincnt=np.min(extinc),
-            #                  C=extinc, reduce_C_function=np.mean,
-            #                  xscale='log', yscale='log',
-            #                  linewidths=0.2, cmap='Greys',
-            #                  alpha=0.7)
+            cbar = ax.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
+                             gridsize=50, mincnt=np.min(extinc),
+                             C=extinc, reduce_C_function=np.mean,
+                             xscale='log', yscale='log',
+                             linewidths=0.2, cmap='Greys',
+                             alpha=0.8)
 
-            extinc = lum_to_M(intr_lumins[okinds1]) - lum_to_M(lumins[okinds1])
-            # im = ax.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
-            #                gridsize=50, mincnt=np.min(extinc),
-            #                C=extinc, reduce_C_function=np.mean,
-            #                xscale='log', yscale='log',
-            #                linewidths=0.2, cmap='viridis', alpha=0.8)
-            im = ax.contour(XX, YY, H.T, levels=percentiles,
-                              cmap=cmr.bubblegum_r,
-                              linewidth=2)
+            extinc = intr_lumins[okinds1] / lumins[okinds1]
+            im = ax.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
+                           gridsize=50, mincnt=np.min(extinc),
+                           C=extinc, reduce_C_function=np.mean,
+                           xscale='log', yscale='log',
+                           linewidths=0.2, cmap='viridis', alpha=0.9)
+            ax.contour(XX, YY, H.T, levels=percentiles, cmap=cmr.bubblegum_r,
+                       linewidth=2)
         except ValueError as e:
             print(e)
             continue
@@ -474,7 +475,8 @@ for f in filters:
         cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
         cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
         cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-50)
+        cbar.ax.set_xlabel("$L_{\mathrm{Intrinsic}} / L_{\mathrm{Attenuated}}$",
+                           labelpad=-50)
 
         ax.set_xlim(10**-1.2, 10**1.4)
         ax.set_ylim(10**-1.2, 10**1.4)
