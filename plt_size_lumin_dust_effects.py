@@ -412,7 +412,8 @@ for f in filters:
         extinc = -2.5 * np.log10(lumins / intr_lumins)
 
         try:
-            im1 = ax1.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
+            im1 = ax1.hexbin(intr_hlrs[okinds2],
+                             hlrs[okinds2] / intr_hlrs[okinds2],
                              gridsize=50, mincnt=np.min(extinc[okinds2]),
                              C=extinc[okinds2], reduce_C_function=np.mean,
                              xscale='log', yscale='log',
@@ -420,7 +421,8 @@ for f in filters:
                              vmin=np.min(extinc), vmax=np.max(extinc),
                              alpha=0.8)
 
-            im2 = ax2.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
+            im2 = ax2.hexbin(intr_hlrs[okinds1],
+                             hlrs[okinds1] / intr_hlrs[okinds1],
                              gridsize=50, mincnt=np.min(extinc[okinds1]),
                              C=extinc[okinds1], reduce_C_function=np.mean,
                              xscale='log', yscale='log',
@@ -436,7 +438,8 @@ for f in filters:
         # Label axes
         ax1.set_xlabel('$R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
         ax2.set_xlabel('$R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
-        ax1.set_ylabel('$R_{1/2,\mathrm{Attenuated}}/ [pkpc]$')
+        ax1.set_ylabel('$R_{1/2,\mathrm{Attenuated}}/ [pkpc] '
+                       '/ R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
 
         ax1.tick_params(axis='x', which='minor', bottom=True)
         ax2.tick_params(axis='x', which='minor', bottom=True)
