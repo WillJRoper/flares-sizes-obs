@@ -411,6 +411,7 @@ for f in filters:
         H2, _, _ = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
                                   bins=bins)
 
+        print(H1[H1 > 0].shape, H2[H2 > 0].shape)
         H = H1 / H2
 
         # Resample your data grid by a factor of 3 using
