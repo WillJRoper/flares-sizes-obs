@@ -414,7 +414,7 @@ for f in filters:
         try:
             im2 = ax2.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
                              gridsize=50, mincnt=np.min(extinc[okinds2]),
-                             C=extinc, reduce_C_function=np.mean,
+                             C=extinc[okinds2], reduce_C_function=np.mean,
                              xscale='log', yscale='log',
                              linewidths=0.2, cmap='Greys',
                              vmin=np.min(extinc), vmax=np.max(extinc),
@@ -422,7 +422,7 @@ for f in filters:
 
             im1 = ax1.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
                              gridsize=50, mincnt=np.min(extinc[okinds1]),
-                             C=extinc, reduce_C_function=np.mean,
+                             C=extinc[okinds1], reduce_C_function=np.mean,
                              xscale='log', yscale='log',
                              linewidths=0.2, cmap='viridis',
                              vmin=np.min(extinc), vmax=np.max(extinc),
