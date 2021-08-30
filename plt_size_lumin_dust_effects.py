@@ -13,6 +13,7 @@ warnings.filterwarnings('ignore')
 import seaborn as sns
 from matplotlib.colors import LogNorm
 from astropy.cosmology import Planck13 as cosmo
+import matplotlib.gridspec as gridspec
 from flare.photom import lum_to_M, M_to_lum
 import flare.photom as photconv
 import h5py
@@ -393,95 +394,61 @@ for f in filters:
         # plt.close(fig)
 
         fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax.loglog()
+        gs = gridspec.GridSpec(1, 2)
+        gs.update(wspace=0.0, hspace=0.0)
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[0, 1])
+        ax1.loglog()
+        ax2.loglog()
 
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
         print(intr_hlrs[okinds2].size, hlrs[okinds2].size)
 
-        extinc = intr_lumins / lumins
-        bins = np.logspace(np.log10(np.min((np.min(hlrs), np.min(intr_hlrs)))),
-                           np.log10(np.max((np.max(hlrs), np.max(intr_hlrs)))),
-                           40)
-
-        H1, xbins, ybins = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
-                                         bins=bins, weights=extinc[okinds2])
-        H2, _, _ = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
-                                  bins=bins)
-
-        # Resample your data grid by a factor of 3 using
-        # cubic spline interpolation.
-        H1 = scipy.ndimage.zoom(H1, 3)
-        H2 = scipy.ndimage.zoom(H2, 3)
-
-        H = H1 / H2
-
-        print(H[~np.isnan(H)])
+        extinc = lum_to_M(intr_lumins) - lum_to_M(lumins)
 
         try:
-            percentiles = [np.percentile(H[~np.isnan(H)], 50),
-                           np.percentile(H[~np.isnan(H)], 80),
-                           np.percentile(H[~np.isnan(H)], 90),
-                           np.percentile(H[~np.isnan(H)], 95),
-                           np.percentile(H[~np.isnan(H)], 99)]
-        except IndexError as e:
-            print(e)
-            continue
-
-        print(percentiles)
-
-        bins = np.logspace(np.log10(np.min((np.min(hlrs), np.min(intr_hlrs)))),
-                           np.log10(np.max((np.max(hlrs), np.max(intr_hlrs)))),
-                           H.shape[0] + 1)
-
-        xbin_cents = (bins[1:] + bins[:-1]) / 2
-        ybin_cents = (bins[1:] + bins[:-1]) / 2
-
-        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
-
-        try:
-            cbar = ax.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
+            im2 = ax2.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
                              gridsize=50, mincnt=np.min(extinc[okinds2]),
                              C=extinc, reduce_C_function=np.mean,
                              xscale='log', yscale='log',
                              linewidths=0.2, cmap='Greys',
                              alpha=0.8)
 
-            im = ax.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
+            im1 = ax1.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
                            gridsize=50, mincnt=np.min(extinc[okinds1]),
                            C=extinc, reduce_C_function=np.mean,
                            xscale='log', yscale='log',
                            linewidths=0.2, cmap='viridis', alpha=0.9)
-            ax.contour(XX, YY, H.T, levels=percentiles, cmap=cmr.bubblegum_r,
-                       linewidth=2)
         except ValueError as e:
             print(e)
             continue
 
         # ax1.set_ylabel('$R_{1/2,\mathrm{dust}}/ [arcsecond]$')
 
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
         # Label axes
-        ax.set_xlabel('$R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
-        ax.set_ylabel('$R_{1/2,\mathrm{Attenuated}}/ [pkpc]$')
+        ax1.set_xlabel('$R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
+        ax2.set_xlabel('$R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
+        ax1.set_ylabel('$R_{1/2,\mathrm{Attenuated}}/ [pkpc]$')
 
-        ax.tick_params(axis='x', which='minor', bottom=True)
+        ax1.tick_params(axis='x', which='minor', bottom=True)
+        ax2.tick_params(axis='x', which='minor', bottom=True)
+        ax1.tick_params(axis='y', which='minor', left=True)
 
-        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
-        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
+        cbaxes = ax1.inset_axes([0.0, 1.0, 1.0, 0.04])
+        cbar = fig.colorbar(im1, cax=cbaxes, orientation="horizontal")
         cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$L_{\mathrm{Intrinsic}} / L_{\mathrm{Attenuated}}$",
-                           labelpad=-50)
+        cbar.ax.set_xlabel("$A$", labelpad=-50)
 
-        ax.set_xlim(10**-1.2, 10**1.4)
-        ax.set_ylim(10**-1.2, 10**1.4)
+        cbaxes = ax2.inset_axes([0.0, 1.0, 1.0, 0.04])
+        cbar = fig.colorbar(im2, cax=cbaxes, orientation="horizontal")
+        cbaxes.xaxis.set_ticks_position("top")
+        cbar.ax.set_xlabel("$A$", labelpad=-50)
+
+        ax1.set_xlim(10**-1.2, 10**1.4)
+        ax2.set_xlim(10 ** -1.2, 10 ** 1.4)
+        ax1.set_ylim(10**-1.2, 10**1.4)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_1to1'
                                         '_Pixel_'
