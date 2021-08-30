@@ -406,10 +406,12 @@ for f in filters:
                            np.log10(np.max((np.max(hlrs), np.max(intr_hlrs)))),
                            40)
 
-        H1, xbins, ybins = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
+        H1, xbins, ybins = np.histogram2d(np.log10(intr_hlrs[okinds2]),
+                                          np.log10(hlrs[okinds2]),
                                          bins=bins, weights=extinc)
-        H2, xbins, ybins = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
-                                         bins=bins)
+        H2, xbins, ybins = np.histogram2d(np.log10(intr_hlrs[okinds2]), 
+                                          np.log10(hlrs[okinds2]),
+                                          bins=bins)
 
         H = H1 / H2
 
