@@ -416,7 +416,7 @@ for f in filters:
                              gridsize=50, mincnt=np.min(extinc[okinds2]),
                              C=extinc[okinds2], reduce_C_function=np.mean,
                              xscale='log', yscale='log',
-                             linewidths=0.2, cmap='Greys',
+                             linewidths=0.2, cmap='Greys_r',
                              vmin=np.min(extinc), vmax=np.max(extinc),
                              alpha=0.8)
 
