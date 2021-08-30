@@ -401,6 +401,9 @@ for f in filters:
         ax1.loglog()
         ax2.loglog()
 
+        ax2.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
+
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
@@ -442,12 +445,12 @@ for f in filters:
         cbaxes = ax1.inset_axes([0.0, 1.0, 1.0, 0.04])
         cbar = fig.colorbar(im1, cax=cbaxes, orientation="horizontal")
         cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-50)
+        cbar.ax.set_xlabel("$A$", labelpad=-40)
 
         cbaxes = ax2.inset_axes([0.0, 1.0, 1.0, 0.04])
         cbar = fig.colorbar(im2, cax=cbaxes, orientation="horizontal")
         cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-50)
+        cbar.ax.set_xlabel("$A$", labelpad=-40)
 
         ax1.set_xlim(10 ** -0.9, 10 ** 1.1)
         ax2.set_xlim(10 ** -0.9, 10 ** 1.1)
@@ -459,7 +462,7 @@ for f in filters:
                     + f + '_' + str(z) + '_' + orientation
                     + "_" + extinction + "_"
                     + '%d.png' % nlim,
-                    bbox_inches='tight')
+                    bbox_inches='tight', dpi=100)
 
         plt.close(fig)
 
