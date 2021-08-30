@@ -451,11 +451,11 @@ for f in filters:
                              alpha=0.7)
 
             extinc = lum_to_M(intr_lumins[okinds1]) - lum_to_M(lumins[okinds1])
-            ax.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
-                      gridsize=50, mincnt=np.min(extinc),
-                      C=extinc, reduce_C_function=np.mean,
-                      xscale='log', yscale='log',
-                      linewidths=0.2, cmap='viridis', alpha=0.8)
+            im = ax.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
+                           gridsize=50, mincnt=np.min(extinc),
+                           C=extinc, reduce_C_function=np.mean,
+                           xscale='log', yscale='log',
+                           linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                               cmap=cmr.bubblegum_r,
                               linewidth=2)
