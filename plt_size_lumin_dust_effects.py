@@ -421,15 +421,14 @@ for f in filters:
         # cubic spline interpolation.
         H = scipy.ndimage.zoom(H, 3)
 
-        print(H.shape, H[H > 0].shape)
-        print(H)
+        print(H.shape, H[H != np.nan].shape)
 
         try:
-            percentiles = [np.percentile(H[H > 0], 50),
-                           np.percentile(H[H > 0], 80),
-                           np.percentile(H[H > 0], 90),
-                           np.percentile(H[H > 0], 95),
-                           np.percentile(H[H > 0], 99)]
+            percentiles = [np.percentile(H[H != np.nan], 50),
+                           np.percentile(H[H != np.nan], 80),
+                           np.percentile(H[H != np.nan], 90),
+                           np.percentile(H[H != np.nan], 95),
+                           np.percentile(H[H != np.nan], 99)]
         except IndexError as e:
             print(e)
             continue
