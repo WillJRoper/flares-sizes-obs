@@ -398,11 +398,14 @@ for f in filters:
 
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
-        extinc = lum_to_M(intr_lumins[okinds2]) - lum_to_M(lumins[okinds2])
-        bins = np.logspace(np.log10(np.min(intr_hlrs)),
-                           np.log10(np.min(hlrs)),
-                           40)
+
         print(intr_hlrs[okinds2].size, hlrs[okinds2].size)
+
+        extinc = lum_to_M(intr_lumins[okinds2]) - lum_to_M(lumins[okinds2])
+        bins = np.logspace(np.log10(np.min((np.min(hlrs), np.min(intr_hlrs)))),
+                           np.log10(np.max((np.max(hlrs), np.max(intr_hlrs)))),
+                           40)
+
         H1, xbins, ybins = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=extinc)
         H2, xbins, ybins = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
@@ -422,8 +425,8 @@ for f in filters:
         except IndexError:
             continue
 
-        bins = np.logspace(np.log10(np.min(intr_hlrs)),
-                           np.log10(np.min(hlrs)),
+        bins = np.logspace(np.log10(np.min((np.min(hlrs), np.min(intr_hlrs)))),
+                           np.log10(np.max((np.max(hlrs), np.max(intr_hlrs)))),
                            H.shape[0] + 1)
 
         xbin_cents = (bins[1:] + bins[:-1]) / 2
