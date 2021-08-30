@@ -396,8 +396,8 @@ for f in filters:
         fig = plt.figure()
         gs = gridspec.GridSpec(1, 2)
         gs.update(wspace=0.0, hspace=0.0)
-        ax1 = fig.add_subplot(gs[0, 0])
-        ax2 = fig.add_subplot(gs[0, 1])
+        ax1 = fig.add_subplot(gs[0, 0], aspect='equal')
+        ax2 = fig.add_subplot(gs[0, 1], aspect='equal')
         ax1.loglog()
         ax2.loglog()
 
@@ -414,13 +414,16 @@ for f in filters:
                              C=extinc, reduce_C_function=np.mean,
                              xscale='log', yscale='log',
                              linewidths=0.2, cmap='Greys',
+                             vmin=np.min(extinc), vmax=np.max(extinc),
                              alpha=0.8)
 
             im1 = ax1.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
-                           gridsize=50, mincnt=np.min(extinc[okinds1]),
-                           C=extinc, reduce_C_function=np.mean,
-                           xscale='log', yscale='log',
-                           linewidths=0.2, cmap='viridis', alpha=0.9)
+                             gridsize=50, mincnt=np.min(extinc[okinds1]),
+                             C=extinc, reduce_C_function=np.mean,
+                             xscale='log', yscale='log',
+                             linewidths=0.2, cmap='viridis',
+                             vmin=np.min(extinc), vmax=np.max(extinc),
+                             alpha=0.9)
         except ValueError as e:
             print(e)
             continue
@@ -446,9 +449,10 @@ for f in filters:
         cbaxes.xaxis.set_ticks_position("top")
         cbar.ax.set_xlabel("$A$", labelpad=-50)
 
-        ax1.set_xlim(10**-1.2, 10**1.4)
-        ax2.set_xlim(10 ** -1.2, 10 ** 1.4)
-        ax1.set_ylim(10**-1.2, 10**1.4)
+        ax1.set_xlim(10 ** -0.9, 10 ** 1.1)
+        ax2.set_xlim(10 ** -0.9, 10 ** 1.1)
+        ax1.set_ylim(10 ** -0.9, 10 ** 1.1)
+        ax2.set_ylim(10 ** -0.9, 10 ** 1.1)
 
         fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_1to1'
                                         '_Pixel_'
