@@ -323,9 +323,18 @@ for f in filters:
 
         hlrs = np.array(hlr_pix_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
+        masses = np.array(mass_dict[snap][f])
         intr_hlrs = np.array(intr_hlr_pix_dict[snap][f])
         intr_lumins = np.array(intr_lumin_dict[snap][f])
         w = np.array(weight_dict[snap][f])
+
+        okinds = np.logical_and(hlrs > 0, intr_hlrs > 0)
+        hlrs = hlrs[okinds]
+        intr_hlrs = intr_hlrs[okinds]
+        lumins = lumins[okinds]
+        intr_lumins = intr_lumins[okinds]
+        masses = masses[okinds]
+        w = w[okinds]
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
@@ -379,8 +388,6 @@ for f in filters:
 
         plt.close(fig)
 
-        masses = np.array(mass_dict[snap][f])
-
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.loglog()
@@ -389,7 +396,7 @@ for f in filters:
         okinds2 = masses < 10 ** 9
         extinc = lum_to_M(intr_lumins[okinds2]) - lum_to_M(lumins[okinds2])
         bins = np.logspace(np.log10(np.min(intr_hlrs[okinds2])),
-                           np.log10(np.min(hlrs[okinds2])), 
+                           np.log10(np.min(hlrs[okinds2])),
                            40)
         H1, xbins, ybins = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
                                          bins=bins, weights=extinc)
@@ -423,17 +430,17 @@ for f in filters:
                              gridsize=50, mincnt=np.min(extinc),
                              C=extinc, reduce_C_function=np.mean,
                              xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2, cmap='Greys',
+                             linewidths=0.2, cmap='Greys',
                              alpha=0.7)
 
             extinc = lum_to_M(intr_lumins[okinds1]) - lum_to_M(lumins[okinds1])
             ax.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
                       gridsize=50, mincnt=np.min(extinc),
                       C=extinc, reduce_C_function=np.mean,
-                      xscale='log', yscale='log', norm=LogNorm(),
+                      xscale='log', yscale='log',
                       linewidths=0.2, cmap='viridis', alpha=0.8)
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
-                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              cmap=cmr.bubblegum_r,
                               linewidth=2)
         except ValueError as e:
             print(e)
