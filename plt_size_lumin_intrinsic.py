@@ -24,6 +24,8 @@ import h5py
 import sys
 import pandas as pd
 import utilities as util
+import cmasher as cmr
+import scipy.ndimage
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -176,15 +178,48 @@ for f in filters:
 
         hlrs = np.array(hlr_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
-        nstars = np.array(nstar_dict[snap][f])
+        masses = np.array(mass_dict[snap][f])
 
         okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
                                 np.logical_and(lumins > M_to_lum(-12),
                                                lumins < 10 ** 50))
         lumins = lumins[okinds]
         hlrs = hlrs[okinds]
-        nstars = nstars[okinds]
+        masses = masses[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
+
+        okinds1 = masses >= 10 ** 9
+        okinds2 = masses < 10 ** 9
+
+        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
+                           40)
+        H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
+                                         bins=bins, weights=w[okinds2])
+
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
+
+        try:
+            percentiles = [np.percentile(H[H > 0], 50),
+                           np.percentile(H[H > 0], 80),
+                           np.percentile(H[H > 0], 90),
+                           np.percentile(H[H > 0], 95),
+                           np.percentile(H[H > 0], 99)]
+        except IndexError:
+            continue
+
+        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
+                           H.shape[0] + 1)
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
@@ -192,24 +227,29 @@ for f in filters:
         ax1.grid(False)
         try:
             sden_lumins = np.logspace(27, 29.8)
-            okinds = nstars < nlim_plot
-            cbar = ax.hexbin(lumins[okinds], hlrs[okinds], gridsize=50,
-                             mincnt=1, C=w[okinds],
-                             reduce_C_function=np.sum,
+            cbar = ax.hexbin(lumins[okinds2], hlrs[okinds2],
+                             C=w[okinds2], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='Greys')
+            cbar = ax.hexbin(lumins[okinds1], hlrs[okinds1],
+                             C=w[okinds1], gridsize=50, mincnt=1,
+                             xscale='log', yscale='log',
+                             norm=LogNorm(), linewidths=0.2,
+                             cmap='viridis')
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              linewidth=2)
         except ValueError as e:
             print(e)
 
         try:
-            okinds = nstars >= nlim_plot
-            ax1.hexbin(lumins[okinds],
-                       hlrs[okinds] * cosmo.arcsec_per_kpc_proper(z).value,
-                       gridsize=50, mincnt=1, C=w[okinds],
+            ax1.hexbin(lumins,
+                       hlrs * cosmo.arcsec_per_kpc_proper(z).value,
+                       gridsize=50, mincnt=1, C=w,
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='viridis')
+                       cmap='viridis', alpha=0)
         except ValueError as e:
             print(e)
             continue
@@ -244,33 +284,78 @@ for f in filters:
 
         hlrs = np.array(hlr_app_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
+        masses = np.array(mass_dict[snap][f])
 
         okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
                                 np.logical_and(lumins > M_to_lum(-12),
                                                lumins < 10 ** 50))
         lumins = lumins[okinds]
         hlrs = hlrs[okinds]
+        masses = masses[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
+
+        okinds1 = masses >= 10 ** 9
+        okinds2 = masses < 10 ** 9
+
+        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
+                           40)
+        H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
+                                         bins=bins, weights=w[okinds2])
+
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
+
+        try:
+            percentiles = [np.percentile(H[H > 0], 50),
+                           np.percentile(H[H > 0], 80),
+                           np.percentile(H[H > 0], 90),
+                           np.percentile(H[H > 0], 95),
+                           np.percentile(H[H > 0], 99)]
+        except IndexError:
+            continue
+
+        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
+                           H.shape[0] + 1)
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax1 = ax.twinx()
         ax1.grid(False)
         try:
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                             C=w,
-                             reduce_C_function=np.sum,
+            sden_lumins = np.logspace(27, 29.8)
+            cbar = ax.hexbin(lumins[okinds2], hlrs[okinds2],
+                             C=w[okinds2], gridsize=50, mincnt=1,
+                             xscale='log', yscale='log',
+                             norm=LogNorm(), linewidths=0.2,
+                             cmap='Greys')
+            cbar = ax.hexbin(lumins[okinds1], hlrs[okinds1],
+                             C=w[okinds1], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='viridis')
-            ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              linewidth=2)
+        except ValueError as e:
+            print(e)
+
+        try:
+            ax1.hexbin(lumins,
+                       hlrs * cosmo.arcsec_per_kpc_proper(z).value,
                        gridsize=50, mincnt=1, C=w,
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
                        cmap='viridis', alpha=0)
-            # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
-            # ax.plot(lumin_bin_cents, med, color="r")
-            # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
         except ValueError as e:
             print(e)
             continue
@@ -304,33 +389,78 @@ for f in filters:
 
         hlrs = np.array(hlr_pix_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
+        masses = np.array(mass_dict[snap][f])
 
         okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
                                 np.logical_and(lumins > M_to_lum(-12),
                                                lumins < 10 ** 50))
         lumins = lumins[okinds]
         hlrs = hlrs[okinds]
+        masses = masses[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
+
+        okinds1 = masses >= 10 ** 9
+        okinds2 = masses < 10 ** 9
+
+        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
+                           40)
+        H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
+                                         bins=bins, weights=w[okinds2])
+
+        # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        H = scipy.ndimage.zoom(H, 3)
+
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
+
+        try:
+            percentiles = [np.percentile(H[H > 0], 50),
+                           np.percentile(H[H > 0], 80),
+                           np.percentile(H[H > 0], 90),
+                           np.percentile(H[H > 0], 95),
+                           np.percentile(H[H > 0], 99)]
+        except IndexError:
+            continue
+
+        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
+                           H.shape[0] + 1)
+
+        xbin_cents = (bins[1:] + bins[:-1]) / 2
+        ybin_cents = (bins[1:] + bins[:-1]) / 2
+
+        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax1 = ax.twinx()
         ax1.grid(False)
         try:
-            cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
-                             C=w,
-                             reduce_C_function=np.sum,
+            sden_lumins = np.logspace(27, 29.8)
+            cbar = ax.hexbin(lumins[okinds2], hlrs[okinds2],
+                             C=w[okinds2], gridsize=50, mincnt=1,
+                             xscale='log', yscale='log',
+                             norm=LogNorm(), linewidths=0.2,
+                             cmap='Greys')
+            cbar = ax.hexbin(lumins[okinds1], hlrs[okinds1],
+                             C=w[okinds1], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='viridis')
-            ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              linewidth=2)
+        except ValueError as e:
+            print(e)
+
+        try:
+            ax1.hexbin(lumins,
+                       hlrs * cosmo.arcsec_per_kpc_proper(z).value,
                        gridsize=50, mincnt=1, C=w,
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
                        cmap='viridis', alpha=0)
-            # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
-            # ax.plot(lumin_bin_cents, med, color="r")
-            # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
         except ValueError as e:
             print(e)
             continue
