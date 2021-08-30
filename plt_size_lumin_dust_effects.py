@@ -450,7 +450,7 @@ for f in filters:
             #                C=extinc, reduce_C_function=np.mean,
             #                xscale='log', yscale='log',
             #                linewidths=0.2, cmap='viridis', alpha=0.8)
-            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+            im = ax.contour(XX, YY, H.T, levels=percentiles,
                               cmap=cmr.bubblegum_r,
                               linewidth=2)
         except ValueError as e:
