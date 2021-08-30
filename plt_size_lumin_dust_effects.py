@@ -50,7 +50,9 @@ snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
          '009_z006p000', '010_z005p000', '011_z004p770']
 
 # Define filter
-filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
+filters = ['FAKE.TH.'+ f
+           for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
+                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -193,65 +195,65 @@ for f in filters:
         intr_lumins = np.array(intr_lumin_dict[snap][f])
         w = np.array(weight_dict[snap][f])
 
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax1 = ax.twinx()
-        ax1.grid(False)
-        ax.loglog()
-        ax1.loglog()
-        try:
-            ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D",
-                       alpha=0.6)
-            ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
-                       gridsize=50, mincnt=1, xscale='log',
-                       yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='viridis', alpha=0)
-            sinds = np.argsort(lumins / intr_lumins)
-            # for intr_l, l, intr_r, r in zip(intr_lumins[sinds][-10:],
-            #                                 lumins[sinds][-10:],
-            #                                 intr_hlrs[sinds][-10:],
-            #                                 hlrs[sinds][-10:]):
-            #     ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
-            #             marker=None, alpha=0.6)
-            im = ax.scatter(lumins[sinds], hlrs[sinds],
-                            c=np.log10(lumins[sinds] / intr_lumins[sinds]),
-                            marker="D",
-                            cmap="viridis")
-        except ValueError as e:
-            print(e)
-            continue
-
-        ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
-
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
-        # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-
-        ax.tick_params(axis='x', which='minor', bottom=True)
-
-        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
-        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
-        cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$\log_{10}(L_{\mathrm{ex}}/L_{\mathrm{int}})$",
-                           labelpad=-40)
-
-        ax.set_xlim(10**27.9, 10**31.1)
-        ax.set_ylim(10**-1.2, 10**1.4)
-
-        fig.savefig(
-            'plots/' + str(z) + '/HalfLightRadius_dust_effects__' + f + '_' + str(
-                z) + '_'
-            + orientation + "_" + extinction + "_"
-            + '%d.png' % nlim,
-            bbox_inches='tight')
-
-        plt.close(fig)
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # ax1 = ax.twinx()
+        # ax1.grid(False)
+        # ax.loglog()
+        # ax1.loglog()
+        # try:
+        #     ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D",
+        #                alpha=0.6)
+        #     ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
+        #                gridsize=50, mincnt=1, xscale='log',
+        #                yscale='log', norm=LogNorm(), linewidths=0.2,
+        #                cmap='viridis', alpha=0)
+        #     sinds = np.argsort(lumins / intr_lumins)
+        #     # for intr_l, l, intr_r, r in zip(intr_lumins[sinds][-10:],
+        #     #                                 lumins[sinds][-10:],
+        #     #                                 intr_hlrs[sinds][-10:],
+        #     #                                 hlrs[sinds][-10:]):
+        #     #     ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
+        #     #             marker=None, alpha=0.6)
+        #     im = ax.scatter(lumins[sinds], hlrs[sinds],
+        #                     c=np.log10(lumins[sinds] / intr_lumins[sinds]),
+        #                     marker="D",
+        #                     cmap="viridis")
+        # except ValueError as e:
+        #     print(e)
+        #     continue
+        #
+        # ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
+        #
+        # ax.text(0.95, 0.05, f'$z={z}$',
+        #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
+        #                   ec="k", lw=1, alpha=0.8),
+        #         transform=ax.transAxes, horizontalalignment='right',
+        #         fontsize=8)
+        #
+        # # Label axes
+        # ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+        # ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+        #
+        # ax.tick_params(axis='x', which='minor', bottom=True)
+        #
+        # cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
+        # cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
+        # cbaxes.xaxis.set_ticks_position("top")
+        # cbar.ax.set_xlabel("$\log_{10}(L_{\mathrm{ex}}/L_{\mathrm{int}})$",
+        #                    labelpad=-40)
+        #
+        # ax.set_xlim(10**27.9, 10**31.1)
+        # ax.set_ylim(10**-1.2, 10**1.4)
+        #
+        # fig.savefig(
+        #     'plots/' + str(z) + '/HalfLightRadius_dust_effects__' + f + '_' + str(
+        #         z) + '_'
+        #     + orientation + "_" + extinction + "_"
+        #     + '%d.png' % nlim,
+        #     bbox_inches='tight')
+        #
+        # plt.close(fig)
 
         legend_elements = []
 
@@ -264,129 +266,129 @@ for f in filters:
         intr_lumins = np.array(intr_lumin_dict[snap][f])
         w = np.array(weight_dict[snap][f])
 
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax1 = ax.twinx()
-        ax1.grid(False)
-        ax.loglog()
-        ax1.loglog()
-        try:
-            ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D",
-                       alpha=0.6)
-            for intr_l, l, intr_r, r in zip(intr_lumins, lumins,
-                                            intr_hlrs, hlrs):
-                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
-                        alpha=0.3)
-            im = ax.scatter(lumins, hlrs,
-                            c=lum_to_M(intr_lumins) - lum_to_M(lumins),
-                            marker="D",
-                            alpha=0.7,
-                            cmap="viridis")
-        except ValueError as e:
-            print(e)
-            continue
-
-        ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
-
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
-        # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-
-        ax.tick_params(axis='x', which='minor', bottom=True)
-
-        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
-        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
-        cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-30)
-
-        ax.set_xlim(10**27.9, 10**31.1)
-        ax.set_ylim(10**-1.2, 10**1.4)
-
-        fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Aperture_'
-                    + f + '_' + str(z) + '_' + orientation
-                    + "_" + extinction + "_"
-                    + '%d.png' % nlim,
-                    bbox_inches='tight')
-
-        plt.close(fig)
-
-        legend_elements = []
-
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
-
-        hlrs = np.array(hlr_pix_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
-        masses = np.array(mass_dict[snap][f])
-        intr_hlrs = np.array(intr_hlr_pix_dict[snap][f])
-        intr_lumins = np.array(intr_lumin_dict[snap][f])
-        w = np.array(weight_dict[snap][f])
-
-        okinds = np.logical_and(hlrs > 0, intr_hlrs > 0)
-        hlrs = hlrs[okinds]
-        intr_hlrs = intr_hlrs[okinds]
-        lumins = lumins[okinds]
-        intr_lumins = intr_lumins[okinds]
-        masses = masses[okinds]
-        w = w[okinds]
-
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax1 = ax.twinx()
-        ax1.grid(False)
-        ax.loglog()
-        ax1.loglog()
-        try:
-            ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D", 
-                       alpha=0.6)
-            for intr_l, l, intr_r, r in zip(intr_lumins, lumins, 
-                                            intr_hlrs, hlrs):
-                ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
-                        alpha=0.3)
-            im = ax.scatter(lumins, hlrs, 
-                            c=lum_to_M(intr_lumins) - lum_to_M(lumins), 
-                            marker="D",
-                            alpha=0.7, 
-                            cmap="viridis")
-        except ValueError as e:
-            print(e)
-            continue
-
-        ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
-
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
-        # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
-        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-
-        ax.tick_params(axis='x', which='minor', bottom=True)
-
-        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
-        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
-        cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-30)
-
-        ax.set_xlim(10**27.9, 10**31.1)
-        ax.set_ylim(10**-1.2, 10**1.4)
-
-        fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Pixel_'
-                    + f + '_' + str(z) + '_' + orientation
-                    + "_" + extinction + "_"
-                    + '%d.png' % nlim,
-                    bbox_inches='tight')
-
-        plt.close(fig)
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # ax1 = ax.twinx()
+        # ax1.grid(False)
+        # ax.loglog()
+        # ax1.loglog()
+        # try:
+        #     ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D",
+        #                alpha=0.6)
+        #     for intr_l, l, intr_r, r in zip(intr_lumins, lumins,
+        #                                     intr_hlrs, hlrs):
+        #         ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
+        #                 alpha=0.3)
+        #     im = ax.scatter(lumins, hlrs,
+        #                     c=lum_to_M(intr_lumins) - lum_to_M(lumins),
+        #                     marker="D",
+        #                     alpha=0.7,
+        #                     cmap="viridis")
+        # except ValueError as e:
+        #     print(e)
+        #     continue
+        #
+        # ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
+        #
+        # ax.text(0.95, 0.05, f'$z={z}$',
+        #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
+        #                   ec="k", lw=1, alpha=0.8),
+        #         transform=ax.transAxes, horizontalalignment='right',
+        #         fontsize=8)
+        #
+        # # Label axes
+        # ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+        # ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+        #
+        # ax.tick_params(axis='x', which='minor', bottom=True)
+        #
+        # cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
+        # cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
+        # cbaxes.xaxis.set_ticks_position("top")
+        # cbar.ax.set_xlabel("$A$", labelpad=-30)
+        #
+        # ax.set_xlim(10**27.9, 10**31.1)
+        # ax.set_ylim(10**-1.2, 10**1.4)
+        #
+        # fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Aperture_'
+        #             + f + '_' + str(z) + '_' + orientation
+        #             + "_" + extinction + "_"
+        #             + '%d.png' % nlim,
+        #             bbox_inches='tight')
+        #
+        # plt.close(fig)
+        #
+        # legend_elements = []
+        #
+        # z_str = snap.split('z')[1].split('p')
+        # z = float(z_str[0] + '.' + z_str[1])
+        #
+        # hlrs = np.array(hlr_pix_dict[snap][f])
+        # lumins = np.array(lumin_dict[snap][f])
+        # masses = np.array(mass_dict[snap][f])
+        # intr_hlrs = np.array(intr_hlr_pix_dict[snap][f])
+        # intr_lumins = np.array(intr_lumin_dict[snap][f])
+        # w = np.array(weight_dict[snap][f])
+        #
+        # okinds = np.logical_and(hlrs > 0, intr_hlrs > 0)
+        # hlrs = hlrs[okinds]
+        # intr_hlrs = intr_hlrs[okinds]
+        # lumins = lumins[okinds]
+        # intr_lumins = intr_lumins[okinds]
+        # masses = masses[okinds]
+        # w = w[okinds]
+        #
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # ax1 = ax.twinx()
+        # ax1.grid(False)
+        # ax.loglog()
+        # ax1.loglog()
+        # try:
+        #     ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D",
+        #                alpha=0.6)
+        #     for intr_l, l, intr_r, r in zip(intr_lumins, lumins,
+        #                                     intr_hlrs, hlrs):
+        #         ax.plot((intr_l, l), (intr_r, r), linestyle="-", color="k",
+        #                 alpha=0.3)
+        #     im = ax.scatter(lumins, hlrs,
+        #                     c=lum_to_M(intr_lumins) - lum_to_M(lumins),
+        #                     marker="D",
+        #                     alpha=0.7,
+        #                     cmap="viridis")
+        # except ValueError as e:
+        #     print(e)
+        #     continue
+        #
+        # ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
+        #
+        # ax.text(0.95, 0.05, f'$z={z}$',
+        #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
+        #                   ec="k", lw=1, alpha=0.8),
+        #         transform=ax.transAxes, horizontalalignment='right',
+        #         fontsize=8)
+        #
+        # # Label axes
+        # ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+        # ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+        #
+        # ax.tick_params(axis='x', which='minor', bottom=True)
+        #
+        # cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
+        # cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
+        # cbaxes.xaxis.set_ticks_position("top")
+        # cbar.ax.set_xlabel("$A$", labelpad=-30)
+        #
+        # ax.set_xlim(10**27.9, 10**31.1)
+        # ax.set_ylim(10**-1.2, 10**1.4)
+        #
+        # fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_Pixel_'
+        #             + f + '_' + str(z) + '_' + orientation
+        #             + "_" + extinction + "_"
+        #             + '%d.png' % nlim,
+        #             bbox_inches='tight')
+        #
+        # plt.close(fig)
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
@@ -477,52 +479,52 @@ for f in filters:
 
         plt.close(fig)
 
-        hlrs = np.array(hlr_dict[snap][f])
-        intr_hlrs = np.array(intr_hlr_dict[snap][f])
+        # hlrs = np.array(hlr_dict[snap][f])
+        # intr_hlrs = np.array(intr_hlr_dict[snap][f])
 
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        # ax1 = ax.twinx()
-        # ax1.grid(False)
-        ax.loglog()
-        # ax1.loglog()
-        try:
-            extinc = lum_to_M(intr_lumins) - lum_to_M(lumins)
-            sinds = np.argsort(extinc)[::-1]
-            im = ax.scatter(intr_hlrs[sinds], hlrs[sinds],
-                            c=extinc[sinds],
-                            marker="D",
-                            cmap="viridis")
-        except ValueError as e:
-            print(e)
-            continue
-
-        # ax1.set_ylabel('$R_{1/2,\mathrm{dust}}/ [arcsecond]$')
-
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
-        # Label axes
-        ax.set_xlabel('$R_{1/2,\mathrm{intrinsic}}/ [pkpc]$')
-        ax.set_ylabel('$R_{1/2, mathrm{dust}}/ [pkpc]$')
-
-        ax.tick_params(axis='x', which='minor', bottom=True)
-
-        cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
-        cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
-        cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-50)
-
-        ax.set_xlim(10**-1.2, 10**1.4)
-        ax.set_ylim(10**-1.2, 10**1.4)
-
-        fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_1to1_'
-                    + f + '_' + str(z) + '_' + orientation
-                    + "_" + extinction + "_"
-                    + '%d.png' % nlim,
-                    bbox_inches='tight')
-
-        plt.close(fig)
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # # ax1 = ax.twinx()
+        # # ax1.grid(False)
+        # ax.loglog()
+        # # ax1.loglog()
+        # try:
+        #     extinc = lum_to_M(intr_lumins) - lum_to_M(lumins)
+        #     sinds = np.argsort(extinc)[::-1]
+        #     im = ax.scatter(intr_hlrs[sinds], hlrs[sinds],
+        #                     c=extinc[sinds],
+        #                     marker="D",
+        #                     cmap="viridis")
+        # except ValueError as e:
+        #     print(e)
+        #     continue
+        #
+        # # ax1.set_ylabel('$R_{1/2,\mathrm{dust}}/ [arcsecond]$')
+        #
+        # ax.text(0.95, 0.05, f'$z={z}$',
+        #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
+        #                   ec="k", lw=1, alpha=0.8),
+        #         transform=ax.transAxes, horizontalalignment='right',
+        #         fontsize=8)
+        #
+        # # Label axes
+        # ax.set_xlabel('$R_{1/2,\mathrm{intrinsic}}/ [pkpc]$')
+        # ax.set_ylabel('$R_{1/2, mathrm{dust}}/ [pkpc]$')
+        #
+        # ax.tick_params(axis='x', which='minor', bottom=True)
+        #
+        # cbaxes = ax.inset_axes([0.0, 1.0, 1.0, 0.04])
+        # cbar = fig.colorbar(im, cax=cbaxes, orientation="horizontal")
+        # cbaxes.xaxis.set_ticks_position("top")
+        # cbar.ax.set_xlabel("$A$", labelpad=-50)
+        #
+        # ax.set_xlim(10**-1.2, 10**1.4)
+        # ax.set_ylim(10**-1.2, 10**1.4)
+        #
+        # fig.savefig('plots/' + str(z) + '/HalfLightRadius_dust_effects_1to1_'
+        #             + f + '_' + str(z) + '_' + orientation
+        #             + "_" + extinction + "_"
+        #             + '%d.png' % nlim,
+        #             bbox_inches='tight')
+        #
+        # plt.close(fig)
