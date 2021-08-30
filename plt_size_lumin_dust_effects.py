@@ -409,7 +409,7 @@ for f in filters:
 
         print(intr_hlrs[okinds2].size, hlrs[okinds2].size)
 
-        extinc = lum_to_M(intr_lumins) - lum_to_M(lumins)
+        extinc = -2.5 * np.log10(lumins / intr_lumins)
 
         try:
             im1 = ax1.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
@@ -445,12 +445,14 @@ for f in filters:
         cbaxes = ax1.inset_axes([0.0, 1.0, 1.0, 0.04])
         cbar = fig.colorbar(im1, cax=cbaxes, orientation="horizontal")
         cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-40)
+        cbar.ax.set_xlabel("$A_\mathrm{" + f.split(".")[-1] + "}$",
+                           labelpad=-40)
 
         cbaxes = ax2.inset_axes([0.0, 1.0, 1.0, 0.04])
         cbar = fig.colorbar(im2, cax=cbaxes, orientation="horizontal")
         cbaxes.xaxis.set_ticks_position("top")
-        cbar.ax.set_xlabel("$A$", labelpad=-40)
+        cbar.ax.set_xlabel("$A_\mathrm{" + f.split(".")[-1] + "}$",
+                           labelpad=-40)
 
         ax1.set_xlim(10 ** -0.9, 10 ** 1.1)
         ax2.set_xlim(10 ** -0.9, 10 ** 1.1)
