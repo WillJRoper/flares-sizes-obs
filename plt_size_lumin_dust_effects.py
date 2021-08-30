@@ -188,12 +188,12 @@ for f in filters:
 
         z_str = snap.split('z')[1].split('p')
         z = float(z_str[0] + '.' + z_str[1])
-
-        hlrs = np.array(hlr_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
-        intr_hlrs = np.array(intr_hlr_dict[snap][f])
-        intr_lumins = np.array(intr_lumin_dict[snap][f])
-        w = np.array(weight_dict[snap][f])
+        #
+        # hlrs = np.array(hlr_dict[snap][f])
+        # lumins = np.array(lumin_dict[snap][f])
+        # intr_hlrs = np.array(intr_hlr_dict[snap][f])
+        # intr_lumins = np.array(intr_lumin_dict[snap][f])
+        # w = np.array(weight_dict[snap][f])
 
         # fig = plt.figure()
         # ax = fig.add_subplot(111)
@@ -254,17 +254,17 @@ for f in filters:
         #     bbox_inches='tight')
         #
         # plt.close(fig)
-
-        legend_elements = []
-
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
-
-        hlrs = np.array(hlr_app_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
-        intr_hlrs = np.array(intr_hlr_app_dict[snap][f])
-        intr_lumins = np.array(intr_lumin_dict[snap][f])
-        w = np.array(weight_dict[snap][f])
+        #
+        # legend_elements = []
+        #
+        # z_str = snap.split('z')[1].split('p')
+        # z = float(z_str[0] + '.' + z_str[1])
+        #
+        # hlrs = np.array(hlr_app_dict[snap][f])
+        # lumins = np.array(lumin_dict[snap][f])
+        # intr_hlrs = np.array(intr_hlr_app_dict[snap][f])
+        # intr_lumins = np.array(intr_lumin_dict[snap][f])
+        # w = np.array(weight_dict[snap][f])
 
         # fig = plt.figure()
         # ax = fig.add_subplot(111)
@@ -323,20 +323,22 @@ for f in filters:
         # z_str = snap.split('z')[1].split('p')
         # z = float(z_str[0] + '.' + z_str[1])
         #
-        # hlrs = np.array(hlr_pix_dict[snap][f])
-        # lumins = np.array(lumin_dict[snap][f])
-        # masses = np.array(mass_dict[snap][f])
-        # intr_hlrs = np.array(intr_hlr_pix_dict[snap][f])
-        # intr_lumins = np.array(intr_lumin_dict[snap][f])
-        # w = np.array(weight_dict[snap][f])
-        #
-        # okinds = np.logical_and(hlrs > 0, intr_hlrs > 0)
-        # hlrs = hlrs[okinds]
-        # intr_hlrs = intr_hlrs[okinds]
-        # lumins = lumins[okinds]
-        # intr_lumins = intr_lumins[okinds]
-        # masses = masses[okinds]
-        # w = w[okinds]
+        hlrs = np.array(hlr_pix_dict[snap][f])
+        lumins = np.array(lumin_dict[snap][f])
+        masses = np.array(mass_dict[snap][f])
+        intr_hlrs = np.array(intr_hlr_pix_dict[snap][f])
+        intr_lumins = np.array(intr_lumin_dict[snap][f])
+        w = np.array(weight_dict[snap][f])
+
+        okinds = np.logical_and(hlrs > 0, intr_hlrs > 0)
+        hlrs = hlrs[okinds]
+        intr_hlrs = intr_hlrs[okinds]
+        lumins = lumins[okinds]
+        intr_lumins = intr_lumins[okinds]
+        masses = masses[okinds]
+        w = w[okinds]
+        if masses.size == 0:
+            continue
         #
         # fig = plt.figure()
         # ax = fig.add_subplot(111)
@@ -419,7 +421,8 @@ for f in filters:
         except IndexError:
             continue
 
-        bins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.min(hlrs_pix)),
+        bins = np.logspace(np.log10(np.min(intr_hlrs[okinds2])),
+                           np.log10(np.min(hlrs[okinds2])),
                            H.shape[0] + 1)
 
         xbin_cents = (bins[1:] + bins[:-1]) / 2
