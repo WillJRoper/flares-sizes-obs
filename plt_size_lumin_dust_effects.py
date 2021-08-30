@@ -401,13 +401,13 @@ for f in filters:
 
         print(intr_hlrs[okinds2].size, hlrs[okinds2].size)
 
-        extinc = lum_to_M(intr_lumins[okinds2]) - lum_to_M(lumins[okinds2])
+        extinc = intr_lumins / lumins
         bins = np.logspace(np.log10(np.min((np.min(hlrs), np.min(intr_hlrs)))),
                            np.log10(np.max((np.max(hlrs), np.max(intr_hlrs)))),
                            40)
-
+        print(extinc)
         H1, xbins, ybins = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
-                                         bins=bins, weights=extinc)
+                                         bins=bins, weights=extinc[okinds2])
         H2, _, _ = np.histogram2d(intr_hlrs[okinds2], hlrs[okinds2],
                                   bins=bins)
 
@@ -443,15 +443,14 @@ for f in filters:
 
         try:
             cbar = ax.hexbin(intr_hlrs[okinds2], hlrs[okinds2],
-                             gridsize=50, mincnt=np.min(extinc),
+                             gridsize=50, mincnt=np.min(extinc[okinds2]),
                              C=extinc, reduce_C_function=np.mean,
                              xscale='log', yscale='log',
                              linewidths=0.2, cmap='Greys',
                              alpha=0.8)
 
-            extinc = intr_lumins[okinds1] / lumins[okinds1]
             im = ax.hexbin(intr_hlrs[okinds1], hlrs[okinds1],
-                           gridsize=50, mincnt=np.min(extinc),
+                           gridsize=50, mincnt=np.min(extinc[okinds1]),
                            C=extinc, reduce_C_function=np.mean,
                            xscale='log', yscale='log',
                            linewidths=0.2, cmap='viridis', alpha=0.9)
