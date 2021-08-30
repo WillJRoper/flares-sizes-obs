@@ -421,13 +421,8 @@ for f in filters:
         # cubic spline interpolation.
         H = scipy.ndimage.zoom(H, 3)
 
-        print(H.shape)
-
-        percentiles = [np.percentile(H[H > 0], 50),
-                       np.percentile(H[H > 0], 80),
-                       np.percentile(H[H > 0], 90),
-                       np.percentile(H[H > 0], 95),
-                       np.percentile(H[H > 0], 99)]
+        print(H.shape, H[H > 0].shape)
+        print(H)
 
         try:
             percentiles = [np.percentile(H[H > 0], 50),
