@@ -422,7 +422,8 @@ for f in filters:
                            np.percentile(H[H > 0], 90),
                            np.percentile(H[H > 0], 95),
                            np.percentile(H[H > 0], 99)]
-        except IndexError:
+        except IndexError as e:
+            print(e)
             continue
 
         bins = np.logspace(np.log10(np.min((np.min(hlrs), np.min(intr_hlrs)))),
