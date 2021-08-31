@@ -240,7 +240,7 @@ for f in filters:
                              C=w[okinds2], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
-                             cmap='Greys')
+                             cmap='Greys', alpha=0.7)
             cbar = ax.hexbin(lumins[okinds1], hlrs[okinds1],
                              C=w[okinds1], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
@@ -446,7 +446,7 @@ for f in filters:
                              C=w[okinds2], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
-                             cmap='Greys')
+                             cmap='Greys', alpha=0.7)
             cbar = ax.hexbin(lumins[okinds1], hlrs[okinds1],
                              C=w[okinds1], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
