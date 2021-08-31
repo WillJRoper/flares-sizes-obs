@@ -164,12 +164,13 @@ for f in filters:
                              np.log10(M_to_lum(-18)),
                              1000)
 
-    print("Plotting for:")
-    print("Orientation =", orientation)
-    print("Type =", Type)
-    print("Filter =", f)
-
     for snap in snaps:
+
+        print("Plotting for:")
+        print("Orientation =", orientation)
+        print("Type =", Type)
+        print("Filter =", f)
+        print("Snap =", snap)
 
         legend_elements = []
 
@@ -187,6 +188,9 @@ for f in filters:
         hlrs = hlrs[okinds]
         masses = masses[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
+
+        if masses.size <= 1:
+            continue
 
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
