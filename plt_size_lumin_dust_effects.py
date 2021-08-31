@@ -437,10 +437,10 @@ for f in filters:
 
         # Label axes
         ax2.set_xlabel('$R_{1/2,\mathrm{Int}}/ [pkpc]$')
-        ax2.set_ylabel('$R_{1/2,\mathrm{Att}}/ [pkpc] '
-                       '/ R_{\mathrm{Int}}/ [pkpc]$')
-        ax1.set_ylabel('$R_{\mathrm{Att}}/ [pkpc] '
-                       '/ R_{\mathrm{Int}}/ [pkpc]$')
+        ax2.set_ylabel('$R_{1/2,\mathrm{Att}} '
+                       '/ R_{\mathrm{Int}}$')
+        ax1.set_ylabel('$R_{\mathrm{Att}} '
+                       '/ R_{\mathrm{Int}}$')
 
         ax1.tick_params(axis='y', which='minor', left=True)
         ax2.tick_params(axis='x', which='minor', bottom=True)
