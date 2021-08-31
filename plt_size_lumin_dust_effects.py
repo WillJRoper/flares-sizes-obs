@@ -393,7 +393,7 @@ for f in filters:
         #
         # plt.close(fig)
 
-        fig = plt.figure()
+        fig = plt.figure(figsize=(6, 3))
         gs = gridspec.GridSpec(2, 1)
         gs.update(wspace=0.0, hspace=0.0)
         ax1 = fig.add_subplot(gs[0, 0], aspect='equal')
