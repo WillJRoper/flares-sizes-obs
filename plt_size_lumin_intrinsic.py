@@ -211,8 +211,7 @@ for f in filters:
         #                1, 2, 5]
 
         try:
-            percentiles = [np.percentile(H[H > 0], 50),
-                           np.percentile(H[H > 0], 80),
+            percentiles = [np.percentile(H[H > 0], 80),
                            np.percentile(H[H > 0], 90),
                            np.percentile(H[H > 0], 95),
                            np.percentile(H[H > 0], 99)]
@@ -246,9 +245,9 @@ for f in filters:
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='viridis')
-            # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
-            #                   norm=LogNorm(), cmap=cmr.bubblegum_r,
-            #                   linewidth=2)
+            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+                              norm=LogNorm(), cmap=cmr.bubblegum_r,
+                              linewidth=2)
         except ValueError as e:
             print(e)
 
@@ -417,8 +416,7 @@ for f in filters:
         H = scipy.ndimage.zoom(H, 3)
 
         try:
-            percentiles = [np.percentile(H[H > 0], 50),
-                           np.percentile(H[H > 0], 80),
+            percentiles = [np.percentile(H[H > 0], 80),
                            np.percentile(H[H > 0], 90),
                            np.percentile(H[H > 0], 95),
                            np.percentile(H[H > 0], 99)]
