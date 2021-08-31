@@ -448,13 +448,13 @@ for f in filters:
 
         cbaxes = ax1.inset_axes([1.0, 1.0, 0.04, 1.0])
         cbar = fig.colorbar(im1, cax=cbaxes)
-        cbaxes.xaxis.set_ticks_position("right")
+        cbaxes.yaxis.set_ticks_position("right")
         cbar.ax.set_xlabel("$A_\mathrm{" + f.split(".")[-1] + "}$",
                            labelpad=-40)
 
         cbaxes = ax2.inset_axes([1.0, 1.0, 0.04, 1.0])
         cbar = fig.colorbar(im2, cax=cbaxes)
-        cbaxes.xaxis.set_ticks_position("right")
+        cbaxes.yaxis.set_ticks_position("right")
         cbar.ax.set_xlabel("$A_\mathrm{" + f.split(".")[-1] + "}$",
                            labelpad=-40)
 
