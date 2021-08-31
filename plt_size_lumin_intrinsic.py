@@ -356,12 +356,6 @@ for f in filters:
 
         ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
 
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
-
         # Label axes
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
@@ -460,12 +454,6 @@ for f in filters:
             continue
 
         ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
-
-        ax.text(0.95, 0.05, f'$z={z}$',
-                bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                          ec="k", lw=1, alpha=0.8),
-                transform=ax.transAxes, horizontalalignment='right',
-                fontsize=8)
 
         # Label axes
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
