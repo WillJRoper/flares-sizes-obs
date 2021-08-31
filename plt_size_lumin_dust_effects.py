@@ -394,15 +394,15 @@ for f in filters:
         # plt.close(fig)
 
         fig = plt.figure()
-        gs = gridspec.GridSpec(1, 2)
+        gs = gridspec.GridSpec(2, 1)
         gs.update(wspace=0.0, hspace=0.0)
         ax1 = fig.add_subplot(gs[0, 0], aspect='equal')
-        ax2 = fig.add_subplot(gs[0, 1], aspect='equal')
+        ax2 = fig.add_subplot(gs[1, 0], aspect='equal')
         ax1.loglog()
         ax2.loglog()
 
-        ax2.tick_params(axis='y', left=False, right=False,
-                        labelleft=False, labelright=False)
+        ax1.tick_params(axis='x', top=False, bottom=False,
+                        labeltop=False, labelbottom=False)
 
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
@@ -436,24 +436,25 @@ for f in filters:
         # ax1.set_ylabel('$R_{1/2,\mathrm{dust}}/ [arcsecond]$')
 
         # Label axes
-        ax1.set_xlabel('$R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
         ax2.set_xlabel('$R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
+        ax2.set_ylabel('$R_{1/2,\mathrm{Attenuated}}/ [pkpc] '
+                       '/ R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
         ax1.set_ylabel('$R_{1/2,\mathrm{Attenuated}}/ [pkpc] '
                        '/ R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
 
-        ax1.tick_params(axis='x', which='minor', bottom=True)
-        ax2.tick_params(axis='x', which='minor', bottom=True)
         ax1.tick_params(axis='y', which='minor', left=True)
+        ax2.tick_params(axis='x', which='minor', bottom=True)
+        ax2.tick_params(axis='y', which='minor', left=True)
 
-        cbaxes = ax1.inset_axes([0.0, 1.0, 1.0, 0.04])
-        cbar = fig.colorbar(im1, cax=cbaxes, orientation="horizontal")
-        cbaxes.xaxis.set_ticks_position("top")
+        cbaxes = ax1.inset_axes([1.0, 1.0, 0.04, 1.0])
+        cbar = fig.colorbar(im1, cax=cbaxes)
+        cbaxes.xaxis.set_ticks_position("right")
         cbar.ax.set_xlabel("$A_\mathrm{" + f.split(".")[-1] + "}$",
                            labelpad=-40)
 
-        cbaxes = ax2.inset_axes([0.0, 1.0, 1.0, 0.04])
-        cbar = fig.colorbar(im2, cax=cbaxes, orientation="horizontal")
-        cbaxes.xaxis.set_ticks_position("top")
+        cbaxes = ax2.inset_axes([1.0, 1.0, 0.04, 1.0])
+        cbar = fig.colorbar(im2, cax=cbaxes)
+        cbaxes.xaxis.set_ticks_position("right")
         cbar.ax.set_xlabel("$A_\mathrm{" + f.split(".")[-1] + "}$",
                            labelpad=-40)
 
