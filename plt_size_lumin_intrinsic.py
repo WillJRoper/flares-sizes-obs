@@ -191,10 +191,12 @@ for f in filters:
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
+        lbins = np.logspace(np.log10(np.min(lumins)), np.log10(np.max(lumins)),
+                           40)
+        hbins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.max(hlrs)),
                            40)
         H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
-                                         bins=bins, weights=w[okinds2])
+                                         bins=(lbins, hbins), weights=w[okinds2])
 
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
         H = scipy.ndimage.zoom(H, 3)
@@ -213,11 +215,13 @@ for f in filters:
         except IndexError:
             continue
 
-        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
+        lbins = np.logspace(np.log10(np.min(lumins)), np.log10(np.max(lumins)),
+                           H.shape[0] + 1)
+        hbins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.max(hlrs)),
                            H.shape[0] + 1)
 
-        xbin_cents = (bins[1:] + bins[:-1]) / 2
-        ybin_cents = (bins[1:] + bins[:-1]) / 2
+        xbin_cents = (lbins[1:] + lbins[:-1]) / 2
+        ybin_cents = (hbins[1:] + hbins[:-1]) / 2
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
@@ -291,10 +295,13 @@ for f in filters:
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
-                           40)
+        lbins = np.logspace(np.log10(np.min(lumins)), np.log10(np.max(lumins)),
+                            40)
+        hbins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.max(hlrs)),
+                            40)
         H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
-                                         bins=bins, weights=w[okinds2])
+                                         bins=(lbins, hbins),
+                                         weights=w[okinds2])
 
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
         H = scipy.ndimage.zoom(H, 3)
@@ -313,11 +320,13 @@ for f in filters:
         except IndexError:
             continue
 
-        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
-                           H.shape[0] + 1)
+        lbins = np.logspace(np.log10(np.min(lumins)), np.log10(np.max(lumins)),
+                            H.shape[0] + 1)
+        hbins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.max(hlrs)),
+                            H.shape[0] + 1)
 
-        xbin_cents = (bins[1:] + bins[:-1]) / 2
-        ybin_cents = (bins[1:] + bins[:-1]) / 2
+        xbin_cents = (lbins[1:] + lbins[:-1]) / 2
+        ybin_cents = (hbins[1:] + hbins[:-1]) / 2
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
@@ -390,10 +399,13 @@ for f in filters:
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
-                           40)
+        lbins = np.logspace(np.log10(np.min(lumins)), np.log10(np.max(lumins)),
+                            40)
+        hbins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.max(hlrs)),
+                            40)
         H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
-                                         bins=bins, weights=w[okinds2])
+                                         bins=(lbins, hbins),
+                                         weights=w[okinds2])
 
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
         H = scipy.ndimage.zoom(H, 3)
@@ -412,11 +424,13 @@ for f in filters:
         except IndexError:
             continue
 
-        bins = np.logspace(np.log10(np.min(lumins)), np.log10(np.min(hlrs)),
-                           H.shape[0] + 1)
+        lbins = np.logspace(np.log10(np.min(lumins)), np.log10(np.max(lumins)),
+                            H.shape[0] + 1)
+        hbins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.max(hlrs)),
+                            H.shape[0] + 1)
 
-        xbin_cents = (bins[1:] + bins[:-1]) / 2
-        ybin_cents = (bins[1:] + bins[:-1]) / 2
+        xbin_cents = (lbins[1:] + lbins[:-1]) / 2
+        ybin_cents = (hbins[1:] + hbins[:-1]) / 2
 
         XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
