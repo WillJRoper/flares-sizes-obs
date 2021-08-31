@@ -436,8 +436,8 @@ for f in filters:
         # ax1.set_ylabel('$R_{1/2,\mathrm{dust}}/ [arcsecond]$')
 
         # Label axes
-        ax2.set_xlabel('$R_{1/2,\mathrm{Int}}/ [pkpc]$')
-        ax2.set_ylabel('$R_{1/2,\mathrm{Att}} '
+        ax2.set_xlabel('$R_{\mathrm{Int}}/ [pkpc]$')
+        ax2.set_ylabel('$R_{\mathrm{Att}} '
                        '/ R_{\mathrm{Int}}$')
         ax1.set_ylabel('$R_{\mathrm{Att}} '
                        '/ R_{\mathrm{Int}}$')
