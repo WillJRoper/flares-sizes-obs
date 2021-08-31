@@ -393,7 +393,7 @@ for f in filters:
         #
         # plt.close(fig)
 
-        fig = plt.figure(figsize=(6, 3))
+        fig = plt.figure()
         gs = gridspec.GridSpec(2, 1)
         gs.update(wspace=0.0, hspace=0.0)
         ax1 = fig.add_subplot(gs[0, 0], aspect='equal')
@@ -436,11 +436,11 @@ for f in filters:
         # ax1.set_ylabel('$R_{1/2,\mathrm{dust}}/ [arcsecond]$')
 
         # Label axes
-        ax2.set_xlabel('$R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
-        ax2.set_ylabel('$R_{1/2,\mathrm{Attenuated}}/ [pkpc] '
-                       '/ R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
-        ax1.set_ylabel('$R_{1/2,\mathrm{Attenuated}}/ [pkpc] '
-                       '/ R_{1/2,\mathrm{Intrinsic}}/ [pkpc]$')
+        ax2.set_xlabel('$R_{1/2,\mathrm{Int}}/ [pkpc]$')
+        ax2.set_ylabel('$R_{1/2,\mathrm{Att}}/ [pkpc] '
+                       '/ R_{\mathrm{Int}}/ [pkpc]$')
+        ax1.set_ylabel('$R_{\mathrm{Att}}/ [pkpc] '
+                       '/ R_{\mathrm{Int}}/ [pkpc]$')
 
         ax1.tick_params(axis='y', which='minor', left=True)
         ax2.tick_params(axis='x', which='minor', bottom=True)
