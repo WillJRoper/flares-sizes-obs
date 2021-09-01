@@ -132,10 +132,12 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
     if mags[ind] < 0:
         mags[ind] = M_to_m(mags[ind], cosmo, z)
 
-cmap = mpl.cm.get_cmap("jet")
+cmap = mpl.cm.get_cmap("winter")
 norm = plt.Normalize(vmin=0, vmax=1)
 
-labels = {"C16": "Calvi+2016",
+labels = {"G11": "Grazian+2011",
+          "G12": "Grazian+2012",
+          "C16": "Calvi+2016",
           "K18": "Kawamata+2018",
           "MO18": "Morishita+2018",
           "B19": "Bridge+2019",
@@ -146,7 +148,7 @@ markers = {"G11": "s", "G12": "v", "C16": "D",
            "K18": "o", "M18": "X", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
 colors = {}
-for key, col in zip(labels.keys(), np.linspace(0, 1, len(labels.keys()))):
+for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
     colors[key] = cmap(norm(col))
 
 
@@ -211,7 +213,7 @@ extinction = 'default'
 
 snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
          '006_z009p000', '007_z008p000', '008_z007p000',
-         '009_z006p000', '010_z005p000', '011_z004p770']
+         '009_z006p000', '010_z005p000']
 
 # Define filter
 filters = ['FAKE.TH.'+ f
@@ -223,6 +225,7 @@ csoft = 0.001802390 / (0.6777) * 1e3
 nlim = 10**8
 
 hlr_dict = {}
+hdr_dict = {}
 hlr_app_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
@@ -269,6 +272,7 @@ for reg, snap in reg_snaps:
                     "r")
 
     hlr_dict.setdefault(snap, {})
+    hdr_dict.setdefault(snap, {})
     hlr_app_dict.setdefault(snap, {})
     hlr_pix_dict.setdefault(snap, {})
     lumin_dict.setdefault(snap, {})
@@ -277,6 +281,7 @@ for reg, snap in reg_snaps:
 
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
+        hdr_dict[snap].setdefault(f, [])
         hlr_app_dict[snap].setdefault(f, [])
         hlr_pix_dict[snap].setdefault(f, [])
         lumin_dict[snap].setdefault(f, [])
@@ -289,6 +294,7 @@ for reg, snap in reg_snaps:
         print(reg, snap, f, masses[okinds].size)
 
         hlr_dict[snap][f].extend(hdf[f]["HLR_0.5"][...][okinds])
+        hdr_dict[snap][f].extend(hdf[f]["HDR"][...][okinds])
         hlr_app_dict[snap][f].extend(hdf[f]["HLR_Aperture_0.5"][...][okinds])
         hlr_pix_dict[snap][f].extend(hdf[f]["HLR_Pixel_0.5"][...][okinds])
         lumin_dict[snap][f].extend(hdf[f]["Luminosity"][...][okinds])
@@ -346,6 +352,7 @@ for mtype in ["part", "app", "pix"]:
 
         hlr = []
         intr_hlr = []
+        hdr = []
         ws = []
         plt_z = []
 
@@ -369,6 +376,7 @@ for mtype in ["part", "app", "pix"]:
                 intr_hlrs = np.array(intr_hlr_pix_dict[snap][f])
                 lumins = np.array(img_lumin_dict[snap][f])
                 intr_lumins = np.array(intr_img_lumin_dict[snap][f])
+            hdrs = np.array(hdr_dict[snap][f])
             w = np.array(weight_dict[snap][f])
 
             if len(w) == 0:
@@ -379,6 +387,7 @@ for mtype in ["part", "app", "pix"]:
                                                    lumins < 10 ** 50))
 
             hlr.append(hlrs[okinds])
+            hdr.append(hdrs[okinds])
             intr_hlr.append(intr_hlrs[okinds])
             ws.append(w[okinds])
 
@@ -439,7 +448,7 @@ for mtype in ["part", "app", "pix"]:
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.semilogy()
-        ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
+        # ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
         for i in range(len(ws)):
 
             vpstats1 = custom_violin_stats(hlr[i], ws[i])
@@ -496,7 +505,7 @@ for mtype in ["part", "app", "pix"]:
                        color=colors[p], alpha=0.7)
 
         # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+        ax.set_xlabel(r'$z$')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
         ax.tick_params(axis='x', which='minor', bottom=True)
@@ -509,6 +518,112 @@ for mtype in ["part", "app", "pix"]:
 
         fig.savefig(
             'plots/Violin_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
+            + orientation + "_" + extinction + "_"
+            + '%d.png' % nlim,
+            bbox_inches='tight')
+
+        plt.close(fig)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.semilogy()
+        # ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
+        for i in range(len(ws)):
+
+            vpstats1 = custom_violin_stats(hlr[i], ws[i])
+            vplot = ax.violin(vpstats1, positions=[plt_z[i]],
+                              vert=True,
+                              showmeans=True,
+                              showextrema=True,
+                              showmedians=True)
+
+            # Make all the violin statistics marks red:
+            for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
+                vp = vplot[partname]
+                vp.set_edgecolor("k")
+                vp.set_linewidth(1)
+
+            # Make the violin body blue with a red border:
+            for vp in vplot['bodies']:
+                vp.set_facecolor("r")
+                vp.set_edgecolor("r")
+                vp.set_linewidth(1)
+                vp.set_alpha(0.5)
+
+        for i in range(len(ws)):
+
+            vpstats1 = custom_violin_stats(intr_hlr[i], ws[i])
+            vplot = ax.violin(vpstats1, positions=[plt_z[i] - 0.5],
+                              vert=True,
+                              showmeans=True,
+                              showextrema=True,
+                              showmedians=True)
+
+            # Make all the violin statistics marks red:
+            for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
+                vp = vplot[partname]
+                vp.set_edgecolor("k")
+                vp.set_linewidth(1)
+
+            # Make the violin body blue with a red border:
+            for vp in vplot['bodies']:
+                vp.set_facecolor("g")
+                vp.set_edgecolor("g")
+                vp.set_linewidth(1)
+                vp.set_alpha(0.5)
+
+        for i in range(len(ws)):
+
+            vpstats1 = custom_violin_stats(hdr[i], ws[i])
+            vplot = ax.violin(vpstats1, positions=[plt_z[i] + 0.5],
+                              vert=True,
+                              showmeans=True,
+                              showextrema=True,
+                              showmedians=True)
+
+            # Make all the violin statistics marks red:
+            for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
+                vp = vplot[partname]
+                vp.set_edgecolor("k")
+                vp.set_linewidth(1)
+
+            # Make the violin body blue with a red border:
+            for vp in vplot['bodies']:
+                vp.set_facecolor("m")
+                vp.set_edgecolor("m")
+                vp.set_linewidth(1)
+                vp.set_alpha(0.5)
+
+        # try:
+        # ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
+        # ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
+        # legend_elements.append(
+        #     Line2D([0], [0], color="r", linestyle="--", label="Intrinsic"))
+        #
+        # ax.fill_between(plt_z, hlr_16, hlr_84, color="g", alpha=0.4)
+        # ax.plot(plt_z, hlr_med, color="g", marker="^", linestyle="-")
+        # legend_elements.append(
+        #     Line2D([0], [0], color="g", linestyle="-",
+        #            label="Attenuated"))
+        # except ValueError as e:
+        #     print(e)
+        #     continue
+
+
+        # Label axes
+        ax.set_xlabel(r'$z$')
+        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+        ax.tick_params(axis='x', which='minor', bottom=True)
+
+        ax.set_xlim(4.5, 11.5)
+        ax.set_ylim(10 ** -1.5, 10 ** 1.5)
+
+        ax.legend(handles=legend_elements, loc='upper center',
+                  bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
+
+        fig.savefig(
+            'plots/ViolinComp_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
             + orientation + "_" + extinction + "_"
             + '%d.png' % nlim,
             bbox_inches='tight')
