@@ -524,14 +524,19 @@ for mtype in ["part", "app", "pix"]:
 
         plt.close(fig)
 
+        legend_elements = []
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.semilogy()
-        # ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
+        ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
+        med_hlr = []
+        med_inthlr = []
+        med_hdr = []
         for i in range(len(ws)):
 
             vpstats1 = custom_violin_stats(hlr[i], ws[i])
-            print(vpstats1)
+            med_hlr.append(vpstats1[0]["median"])
             vplot = ax.violin(vpstats1, positions=[plt_z[i]],
                               vert=True,
                               showmeans=True,
@@ -554,6 +559,7 @@ for mtype in ["part", "app", "pix"]:
         for i in range(len(ws)):
 
             vpstats1 = custom_violin_stats(intr_hlr[i], ws[i])
+            med_inthlr.append(vpstats1[0]["median"])
             vplot = ax.violin(vpstats1, positions=[plt_z[i]],
                               vert=True,
                               showmeans=True,
@@ -576,6 +582,7 @@ for mtype in ["part", "app", "pix"]:
         for i in range(len(ws)):
 
             vpstats1 = custom_violin_stats(hdr[i], ws[i])
+            med_hdr.append(vpstats1[0]["median"])
             vplot = ax.violin(vpstats1, positions=[plt_z[i]],
                               vert=True,
                               showmeans=True,
@@ -595,21 +602,24 @@ for mtype in ["part", "app", "pix"]:
                 vp.set_linewidth(1)
                 vp.set_alpha(0.5)
 
-        # try:
-        # ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
-        # ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
-        # legend_elements.append(
-        #     Line2D([0], [0], color="r", linestyle="--", label="Intrinsic"))
-        #
-        # ax.fill_between(plt_z, hlr_16, hlr_84, color="g", alpha=0.4)
-        # ax.plot(plt_z, hlr_med, color="g", marker="^", linestyle="-")
-        # legend_elements.append(
-        #     Line2D([0], [0], color="g", linestyle="-",
-        #            label="Attenuated"))
-        # except ValueError as e:
-        #     print(e)
-        #     continue
+        ax.plot(plt_z, med_inthlr, color="g", marker="s", linestyle="-")
+        legend_elements.append(
+            Line2D([0], [0], color="g", linestyle="-", marker="s",
+                   label="Median Intrinsic"))
 
+        ax.plot(plt_z, med_hlr, color="r", marker="^", linestyle="-")
+        legend_elements.append(
+            Line2D([0], [0], color="r", linestyle="-", marker="^",
+                   label="Median Attenuated"))
+
+        ax.plot(plt_z, med_hdr, color="m", marker="D", linestyle="-")
+        legend_elements.append(
+            Line2D([0], [0], color="m", linestyle="-", marker="D",
+                   label="Median Dust"))
+
+        legend_elements.append(
+            Line2D([0], [0], color="k", linestyle="_-",
+                   label="Softening"))
 
         # Label axes
         ax.set_xlabel(r'$z$')
@@ -621,7 +631,7 @@ for mtype in ["part", "app", "pix"]:
         ax.set_ylim(10 ** -1.5, 10 ** 1.5)
 
         ax.legend(handles=legend_elements, loc='upper center',
-                  bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
+                  bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=2)
 
         fig.savefig(
             'plots/ViolinComp_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
