@@ -526,7 +526,7 @@ for mtype in ["part", "app", "pix"]:
 
         legend_elements = []
 
-        fig = plt.figure(figsize=(8, 5))
+        fig = plt.figure(figsize=(5, 9))
         ax = fig.add_subplot(111)
         gs = gridspec.GridSpec(3, 1)
         gs.update(wspace=0.0, hspace=0.0)
