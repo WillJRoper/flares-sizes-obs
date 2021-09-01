@@ -618,7 +618,7 @@ for mtype in ["part", "app", "pix"]:
                    label="Median Dust"))
 
         legend_elements.append(
-            Line2D([0], [0], color="k", linestyle="_-",
+            Line2D([0], [0], color="k", linestyle="--",
                    label="Softening"))
 
         # Label axes
