@@ -374,9 +374,13 @@ for mtype in ["part", "app", "pix"]:
             if len(w) == 0:
                 continue
 
-            hlr.append(hlrs)
-            intr_hlr.append(intr_hlrs)
-            ws.append(w)
+            okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+                                    np.logical_and(lumins > M_to_lum(-12),
+                                                   lumins < 10 ** 50))
+
+            hlr.append(hlrs[okinds])
+            intr_hlr.append(intr_hlrs[okinds])
+            ws.append(w[okinds])
 
             # quants = weighted_quantile(hlrs, [0.16, 0.5, 0.84], sample_weight=w,
             #                            values_sorted=False, old_style=False)
