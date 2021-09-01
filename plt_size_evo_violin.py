@@ -528,8 +528,19 @@ for mtype in ["part", "app", "pix"]:
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.semilogy()
-        ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
+        gs = gridspec.GridSpec(3, 1)
+        gs.update(wspace=0.0, hspace=0.0)
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[1, 0])
+        ax3 = fig.add_subplot(gs[2, 0])
+
+        for ax in [ax1, ax2, ax3]:
+
+            if ax != ax3:
+                ax.tick_params(axis='x', top=False, bottom=False,
+                                labeltop=False, labelbottom=False)
+            ax.semilogy()
+
         med_hlr = []
         med_inthlr = []
         med_hdr = []
@@ -537,7 +548,7 @@ for mtype in ["part", "app", "pix"]:
 
             vpstats1 = custom_violin_stats(hlr[i], ws[i])
             med_hlr.append(vpstats1[0]["median"])
-            vplot = ax.violin(vpstats1, positions=[plt_z[i]],
+            vplot = ax1.violin(vpstats1, positions=[plt_z[i]],
                               vert=True,
                               showmeans=True,
                               showextrema=True,
@@ -560,7 +571,7 @@ for mtype in ["part", "app", "pix"]:
 
             vpstats1 = custom_violin_stats(intr_hlr[i], ws[i])
             med_inthlr.append(vpstats1[0]["median"])
-            vplot = ax.violin(vpstats1, positions=[plt_z[i]],
+            vplot = ax2.violin(vpstats1, positions=[plt_z[i]],
                               vert=True,
                               showmeans=True,
                               showextrema=True,
@@ -583,7 +594,7 @@ for mtype in ["part", "app", "pix"]:
 
             vpstats1 = custom_violin_stats(hdr[i], ws[i])
             med_hdr.append(vpstats1[0]["median"])
-            vplot = ax.violin(vpstats1, positions=[plt_z[i]],
+            vplot = ax3.violin(vpstats1, positions=[plt_z[i]],
                               vert=True,
                               showmeans=True,
                               showextrema=True,
@@ -602,35 +613,35 @@ for mtype in ["part", "app", "pix"]:
                 vp.set_linewidth(1)
                 vp.set_alpha(0.5)
 
-        ax.plot(plt_z, med_inthlr, color="g", marker="s", linestyle="-")
+        for ax in [ax1, ax2, ax3]:
+            ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
+            ax.plot(plt_z, med_inthlr, color="g", marker="s", linestyle="-")
+            ax.plot(plt_z, med_hlr, color="r", marker="^", linestyle="-")
+            ax.plot(plt_z, med_hdr, color="m", marker="D", linestyle="-")
+
         legend_elements.append(
             Line2D([0], [0], color="g", linestyle="-", marker="s",
                    label="Median Intrinsic"))
-
-        ax.plot(plt_z, med_hlr, color="r", marker="^", linestyle="-")
         legend_elements.append(
             Line2D([0], [0], color="r", linestyle="-", marker="^",
                    label="Median Attenuated"))
-
-        ax.plot(plt_z, med_hdr, color="m", marker="D", linestyle="-")
         legend_elements.append(
             Line2D([0], [0], color="m", linestyle="-", marker="D",
                    label="Median Dust"))
-
         legend_elements.append(
             Line2D([0], [0], color="k", linestyle="--",
                    label="Softening"))
 
         # Label axes
-        ax.set_xlabel(r'$z$')
-        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+        ax3.set_xlabel(r'$z$')
+        for ax in [ax1, ax2, ax3]:
+            ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+            ax.set_xlim(4.5, 11.5)
+            ax.set_ylim(10 ** -1.5, 10 ** 1.5)
 
-        ax.tick_params(axis='x', which='minor', bottom=True)
+        ax3.tick_params(axis='x', which='minor', bottom=True)
 
-        ax.set_xlim(4.5, 11.5)
-        ax.set_ylim(10 ** -1.5, 10 ** 1.5)
-
-        ax.legend(handles=legend_elements, loc='upper center',
+        ax3.legend(handles=legend_elements, loc='upper center',
                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=2)
 
         fig.savefig(
