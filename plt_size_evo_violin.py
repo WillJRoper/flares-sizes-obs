@@ -436,7 +436,8 @@ for mtype in ["part", "app", "pix"]:
         ax = fig.add_subplot(111)
         ax.semilogy()
         ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
-
+        print([len(i) for i in hlr])
+        print([len(i) for i in ws])
         vpstats1 = custom_violin_stats(hlr, ws)
         try:
             vplot = ax.violin(vpstats1, positions=plt_z,
