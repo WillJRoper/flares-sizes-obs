@@ -438,13 +438,15 @@ for mtype in ["part", "app", "pix"]:
         ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
         print([len(i) for i in hlr])
         print([len(i) for i in ws])
-        vpstats1 = custom_violin_stats(hlr, ws)
-        try:
-            vplot = ax.violin(vpstats1, positions=plt_z,
+        for i in range(len(ws)):
+
+            vpstats1 = custom_violin_stats(hlr[i], ws[i])
+            vplot = ax.violin(vpstats1, positions=plt_z[i],
                               vert=True,
                               showmeans=True,
                               showextrema=True,
                               showmedians=True)
+        # try:
             # ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
             # ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
             # legend_elements.append(
@@ -455,9 +457,9 @@ for mtype in ["part", "app", "pix"]:
             # legend_elements.append(
             #     Line2D([0], [0], color="g", linestyle="-",
             #            label="Attenuated"))
-        except ValueError as e:
-            print(e)
-            continue
+        # except ValueError as e:
+        #     print(e)
+        #     continue
 
         for p in labels.keys():
 
