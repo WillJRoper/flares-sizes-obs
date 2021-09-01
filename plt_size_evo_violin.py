@@ -439,8 +439,7 @@ for mtype in ["part", "app", "pix"]:
         for i in range(len(ws)):
 
             vpstats1 = custom_violin_stats(hlr[i], ws[i])
-            print(vpstats1)
-            vplot = ax.violin(vpstats1, positions=plt_z[i],
+            vplot = ax.violin(vpstats1,
                               vert=True,
                               showmeans=True,
                               showextrema=True,
