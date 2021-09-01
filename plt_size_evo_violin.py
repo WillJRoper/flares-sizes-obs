@@ -346,6 +346,7 @@ for mtype in ["part", "app", "pix"]:
 
         hlr = []
         intr_hlr = []
+        ws = []
         plt_z = []
 
         for snap in snaps:
@@ -375,6 +376,7 @@ for mtype in ["part", "app", "pix"]:
 
             hlr.append(hlrs)
             intr_hlr.append(intr_hlrs)
+            ws.append(w)
 
             # quants = weighted_quantile(hlrs, [0.16, 0.5, 0.84], sample_weight=w,
             #                            values_sorted=False, old_style=False)
@@ -435,9 +437,9 @@ for mtype in ["part", "app", "pix"]:
         ax.semilogy()
         ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
 
-        vpstats1 = custom_violin_stats(plt_z, hlr)
+        vpstats1 = custom_violin_stats(hlr, ws)
         try:
-            vplot = ax.violin(vpstats1,
+            vplot = ax.violin(vpstats1, positions=plt_z,
                               vert=True,
                               showmeans=True,
                               showextrema=True,
