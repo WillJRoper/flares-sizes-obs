@@ -24,10 +24,50 @@ import h5py
 import sys
 import pandas as pd
 import utilities as util
+import weighted
+from matplotlib.cbook import violin_stats
+from scipy import stats
+import statsmodels.api as sm
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
 
+
+def vdensity_with_weights(weights):
+    ''' Outer function allows innder function access to weights. Matplotlib
+    needs function to take in data and coords, so this seems like only way
+    to 'pass' custom density function a set of weights '''
+
+    def vdensity(data, coords):
+        ''' Custom matplotlib weighted violin stats function '''
+        # Using weights from closure, get KDE fomr statsmodels
+        weighted_cost = sm.nonparametric.KDEUnivariate(data)
+        weighted_cost.fit(fft=False, weights=weights)
+
+        # Return y-values for graph of KDE by evaluating on coords
+        return weighted_cost.evaluate(coords)
+
+    return vdensity
+
+
+def custom_violin_stats(data, weights):
+    # Get weighted median and mean (using weighted module for median)
+    median = weighted.quantile_1D(data, weights, 0.5)
+    mean, sumw = np.ma.average(data, weights=list(weights), returned=True)
+
+    # Use matplotlib violin_stats, which expects a function that takes in data and coords
+    # which we get from closure above
+    results = violin_stats(data, vdensity_with_weights(weights))
+
+    # Update result dictionary with our updated info
+    results[0][u"mean"] = mean
+    results[0][u"median"] = median
+
+    # No need to do this, since it should be populated from violin_stats
+    # results[0][u"min"] =  np.min(data)
+    # results[0][u"max"] =  np.max(data)
+
+    return results
 
 
 # Define Kawamata17 fit and parameters
@@ -186,12 +226,14 @@ hlr_dict = {}
 hlr_app_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
+img_lumin_dict = {}
 weight_dict = {}
 
 intr_hlr_dict = {}
 intr_hlr_app_dict = {}
 intr_hlr_pix_dict = {}
 intr_lumin_dict = {}
+intr_img_lumin_dict = {}
 intr_weight_dict = {}
 
 lumin_bins = np.logspace(np.log10(M_to_lum(-16)), np.log10(M_to_lum(-24)), 20)
@@ -230,6 +272,7 @@ for reg, snap in reg_snaps:
     hlr_app_dict.setdefault(snap, {})
     hlr_pix_dict.setdefault(snap, {})
     lumin_dict.setdefault(snap, {})
+    img_lumin_dict.setdefault(snap, {})
     weight_dict.setdefault(snap, {})
 
     for f in filters:
@@ -237,6 +280,7 @@ for reg, snap in reg_snaps:
         hlr_app_dict[snap].setdefault(f, [])
         hlr_pix_dict[snap].setdefault(f, [])
         lumin_dict[snap].setdefault(f, [])
+        img_lumin_dict[snap].setdefault(f, [])
         weight_dict[snap].setdefault(f, [])
 
         masses = hdf[f]["Mass"][...]
@@ -248,6 +292,7 @@ for reg, snap in reg_snaps:
         hlr_app_dict[snap][f].extend(hdf[f]["HLR_Aperture_0.5"][...][okinds])
         hlr_pix_dict[snap][f].extend(hdf[f]["HLR_Pixel_0.5"][...][okinds])
         lumin_dict[snap][f].extend(hdf[f]["Luminosity"][...][okinds])
+        img_lumin_dict[snap][f].extend(hdf[f]["Image_Luminosity"][...][okinds])
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 
@@ -261,6 +306,7 @@ for reg, snap in reg_snaps:
     intr_hlr_dict.setdefault(snap, {})
     intr_hlr_app_dict.setdefault(snap, {})
     intr_hlr_pix_dict.setdefault(snap, {})
+    intr_img_lumin_dict.setdefault(snap, {})
     intr_lumin_dict.setdefault(snap, {})
     intr_weight_dict.setdefault(snap, {})
 
@@ -269,6 +315,7 @@ for reg, snap in reg_snaps:
         intr_hlr_app_dict[snap].setdefault(f, [])
         intr_hlr_pix_dict[snap].setdefault(f, [])
         intr_lumin_dict[snap].setdefault(f, [])
+        intr_img_lumin_dict[snap].setdefault(f, [])
         intr_weight_dict[snap].setdefault(f, [])
 
         masses = hdf[f]["Mass"][...]
@@ -283,6 +330,8 @@ for reg, snap in reg_snaps:
             hdf[f]["HLR_Pixel_0.5"][...][okinds])
         intr_lumin_dict[snap][f].extend(
             hdf[f]["Luminosity"][...][okinds])
+        intr_img_lumin_dict[snap][f].extend(
+            hdf[f]["Image_Luminosity"][...][okinds])
         intr_weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 
@@ -295,72 +344,79 @@ for mtype in ["part", "app", "pix"]:
         print("Orientation =", orientation)
         print("Filter =", f)
 
-        hlr = {}
-        intr_hlr = {}
-        plt_z = set()
+        hlr = []
+        intr_hlr = []
+        plt_z = []
 
         for snap in snaps:
 
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
-            plt_z.append(z)
+
             if mtype == "part":
                 hlrs = np.array(hlr_dict[snap][f])
                 intr_hlrs = np.array(intr_hlr_dict[snap][f])
+                lumins = np.array(lumin_dict[snap][f])
+                intr_lumins = np.array(intr_lumin_dict[snap][f])
             elif mtype == "app":
                 hlrs = np.array(hlr_app_dict[snap][f])
                 intr_hlrs = np.array(intr_hlr_app_dict[snap][f])
-            elif mtype == "pix":
+                lumins = np.array(img_lumin_dict[snap][f])
+                intr_lumins = np.array(intr_img_lumin_dict[snap][f])
+            else:
                 hlrs = np.array(hlr_pix_dict[snap][f])
                 intr_hlrs = np.array(intr_hlr_pix_dict[snap][f])
-            lumins = np.array(lumin_dict[snap][f])
-            intr_lumins = np.array(intr_lumin_dict[snap][f])
+                lumins = np.array(img_lumin_dict[snap][f])
+                intr_lumins = np.array(intr_img_lumin_dict[snap][f])
             w = np.array(weight_dict[snap][f])
 
             if len(w) == 0:
                 continue
 
-            quants = weighted_quantile(hlrs, [0.16, 0.5, 0.84], sample_weight=w,
-                                       values_sorted=False, old_style=False)
+            hlr.append(hlrs)
+            intr_hlr.append(intr_hlrs)
 
-            hlr_med.append(quants[1])
-            hlr_16.append(quants[0])
-            hlr_84.append(quants[2])
-
-            quants = weighted_quantile(hlrs_app, [0.16, 0.5, 0.84], sample_weight=w,
-                                       values_sorted=False, old_style=False)
-
-            hlr_med_app.append(quants[1])
-            hlr_16_app.append(quants[0])
-            hlr_84_app.append(quants[2])
-
-            quants = weighted_quantile(hlrs_pix, [0.16, 0.5, 0.84], sample_weight=w,
-                                       values_sorted=False, old_style=False)
-
-            hlr_med_pix.append(quants[1])
-            hlr_16_pix.append(quants[0])
-            hlr_84_pix.append(quants[2])
-
-            quants = weighted_quantile(intr_hlrs, [0.16, 0.5, 0.84], sample_weight=w,
-                                       values_sorted=False, old_style=False)
-
-            intr_hlr_med.append(quants[1])
-            intr_hlr_16.append(quants[0])
-            intr_hlr_84.append(quants[2])
-
-            quants = weighted_quantile(intr_hlrs_app, [0.16, 0.5, 0.84], sample_weight=w,
-                                       values_sorted=False, old_style=False)
-
-            intr_hlr_med_app.append(quants[1])
-            intr_hlr_16_app.append(quants[0])
-            intr_hlr_84_app.append(quants[2])
-
-            quants = weighted_quantile(intr_hlrs_pix, [0.16, 0.5, 0.84], sample_weight=w,
-                                       values_sorted=False, old_style=False)
-
-            intr_hlr_med_pix.append(quants[1])
-            intr_hlr_16_pix.append(quants[0])
-            intr_hlr_84_pix.append(quants[2])
+            # quants = weighted_quantile(hlrs, [0.16, 0.5, 0.84], sample_weight=w,
+            #                            values_sorted=False, old_style=False)
+            #
+            # hlr_med.append(quants[1])
+            # hlr_16.append(quants[0])
+            # hlr_84.append(quants[2])
+            #
+            # quants = weighted_quantile(hlrs_app, [0.16, 0.5, 0.84], sample_weight=w,
+            #                            values_sorted=False, old_style=False)
+            #
+            # hlr_med_app.append(quants[1])
+            # hlr_16_app.append(quants[0])
+            # hlr_84_app.append(quants[2])
+            #
+            # quants = weighted_quantile(hlrs_pix, [0.16, 0.5, 0.84], sample_weight=w,
+            #                            values_sorted=False, old_style=False)
+            #
+            # hlr_med_pix.append(quants[1])
+            # hlr_16_pix.append(quants[0])
+            # hlr_84_pix.append(quants[2])
+            #
+            # quants = weighted_quantile(intr_hlrs, [0.16, 0.5, 0.84], sample_weight=w,
+            #                            values_sorted=False, old_style=False)
+            #
+            # intr_hlr_med.append(quants[1])
+            # intr_hlr_16.append(quants[0])
+            # intr_hlr_84.append(quants[2])
+            #
+            # quants = weighted_quantile(intr_hlrs_app, [0.16, 0.5, 0.84], sample_weight=w,
+            #                            values_sorted=False, old_style=False)
+            #
+            # intr_hlr_med_app.append(quants[1])
+            # intr_hlr_16_app.append(quants[0])
+            # intr_hlr_84_app.append(quants[2])
+            #
+            # quants = weighted_quantile(intr_hlrs_pix, [0.16, 0.5, 0.84], sample_weight=w,
+            #                            values_sorted=False, old_style=False)
+            #
+            # intr_hlr_med_pix.append(quants[1])
+            # intr_hlr_16_pix.append(quants[0])
+            # intr_hlr_84_pix.append(quants[2])
 
             plt_z.append(z)
 
@@ -378,17 +434,24 @@ for mtype in ["part", "app", "pix"]:
         ax = fig.add_subplot(111)
         ax.semilogy()
         ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
-        try:
-            ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
-            ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
-            legend_elements.append(
-                Line2D([0], [0], color="r", linestyle="--", label="Intrinsic"))
 
-            ax.fill_between(plt_z, hlr_16, hlr_84, color="g", alpha=0.4)
-            ax.plot(plt_z, hlr_med, color="g", marker="^", linestyle="-")
-            legend_elements.append(
-                Line2D([0], [0], color="g", linestyle="-",
-                       label="Attenuated"))
+        vpstats1 = custom_violin_stats(plt_z, hlr)
+        try:
+            vplot = ax.violin(vpstats1,
+                              vert=True,
+                              showmeans=True,
+                              showextrema=True,
+                              showmedians=True)
+            # ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
+            # ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
+            # legend_elements.append(
+            #     Line2D([0], [0], color="r", linestyle="--", label="Intrinsic"))
+            #
+            # ax.fill_between(plt_z, hlr_16, hlr_84, color="g", alpha=0.4)
+            # ax.plot(plt_z, hlr_med, color="g", marker="^", linestyle="-")
+            # legend_elements.append(
+            #     Line2D([0], [0], color="g", linestyle="-",
+            #            label="Attenuated"))
         except ValueError as e:
             print(e)
             continue
@@ -424,7 +487,7 @@ for mtype in ["part", "app", "pix"]:
                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
         fig.savefig(
-            'plots/HalfLightRadius_evolution__' + mtype + '_' + f + '_'
+            'plots/Violin_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
             + orientation + "_" + extinction + "_"
             + '%d.png' % nlim,
             bbox_inches='tight')
