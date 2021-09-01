@@ -70,6 +70,7 @@ hlr_dict = {}
 hlr_app_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
+img_lumin_dict = {}
 mass_dict = {}
 nstar_dict = {}
 weight_dict = {}
@@ -110,6 +111,7 @@ for reg, snap in reg_snaps:
     hlr_app_dict.setdefault(snap, {})
     hlr_pix_dict.setdefault(snap, {})
     lumin_dict.setdefault(snap, {})
+    img_lumin_dict.setdefault(snap, {})
     mass_dict.setdefault(snap, {})
     nstar_dict.setdefault(snap, {})
     weight_dict.setdefault(snap, {})
@@ -118,7 +120,7 @@ for reg, snap in reg_snaps:
         hlr_dict[snap].setdefault(f, [])
         hlr_app_dict[snap].setdefault(f, [])
         hlr_pix_dict[snap].setdefault(f, [])
-        lumin_dict[snap].setdefault(f, [])
+        img_lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
         nstar_dict[snap].setdefault(f, [])
         weight_dict[snap].setdefault(f, [])
@@ -135,6 +137,8 @@ for reg, snap in reg_snaps:
             hdf[f]["HLR_Pixel_0.5"][...][okinds])
         lumin_dict[snap][f].extend(
             hdf[f]["Luminosity"][...][okinds])
+        img_lumin_dict[snap][f].extend(
+            hdf[f]["Image_Luminosity"][...][okinds])
         mass_dict[snap][f].extend(masses[okinds])
         nstar_dict[snap][f].extend(hdf[f]["nStar"][...][okinds])
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
@@ -268,8 +272,8 @@ for f in filters:
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-        ax1.set_xlim(10 ** 27.9, 10 ** 30.5)
-        ax.set_xlim(10 ** 27.9, 10 ** 30.5)
+        ax1.set_xlim(10 ** 26.8, 10 ** 31.2)
+        ax.set_xlim(10 ** 26.8, 10 ** 31.2)
         ax.set_ylim(10 ** -1.5, 10 ** 1.5)
         ax1.set_ylim(10 ** -1.5 * cosmo.arcsec_per_kpc_proper(z).value,
                      10 ** 1.5 * cosmo.arcsec_per_kpc_proper(z).value)
@@ -396,7 +400,7 @@ for f in filters:
         z = float(z_str[0] + '.' + z_str[1])
 
         hlrs = np.array(hlr_pix_dict[snap][f])
-        lumins = np.array(lumin_dict[snap][f])
+        lumins = np.array(img_lumin_dict[snap][f])
         masses = np.array(mass_dict[snap][f])
 
         okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
@@ -479,8 +483,8 @@ for f in filters:
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
-        ax1.set_xlim(10 ** 27.9, 10 ** 30.5)
-        ax.set_xlim(10 ** 27.9, 10 ** 30.5)
+        ax1.set_xlim(10 ** 26.8, 10 ** 31.2)
+        ax.set_xlim(10 ** 26.8, 10 ** 31.2)
         ax.set_ylim(10 ** -1.5, 10 ** 1.5)
         ax1.set_ylim(10 ** -1.5 * cosmo.arcsec_per_kpc_proper(z).value,
                      10 ** 1.5 * cosmo.arcsec_per_kpc_proper(z).value)
