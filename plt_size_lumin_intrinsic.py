@@ -268,6 +268,12 @@ for f in filters:
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
+        ax1.set_xlim(10 ** 27.9, 10 ** 30.5)
+        ax.set_xlim(10 ** 27.9, 10 ** 30.5)
+        ax.set_ylim(10 ** -1.5, 10 ** 1.5)
+        ax1.set_ylim(10 ** -1.5 * cosmo.arcsec_per_kpc_proper(z).value,
+                     10 ** 1.5 * cosmo.arcsec_per_kpc_proper(z).value)
+
         ax.tick_params(axis='x', which='minor', bottom=True)
 
         fig.savefig(
@@ -472,6 +478,12 @@ for f in filters:
         # Label axes
         ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+
+        ax1.set_xlim(10 ** 27.9, 10 ** 30.5)
+        ax.set_xlim(10 ** 27.9, 10 ** 30.5)
+        ax.set_ylim(10 ** -1.5, 10 ** 1.5)
+        ax1.set_ylim(10 ** -1.5 * cosmo.arcsec_per_kpc_proper(z).value,
+                     10 ** 1.5 * cosmo.arcsec_per_kpc_proper(z).value)
 
         ax.tick_params(axis='x', which='minor', bottom=True)
 
