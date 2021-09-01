@@ -443,7 +443,7 @@ for mtype in ["part", "app", "pix"]:
                               vert=True,
                               showmeans=True,
                               showextrema=True,
-                              showmedians=True, color="r")
+                              showmedians=True)
 
             # Make all the violin statistics marks red:
             for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
