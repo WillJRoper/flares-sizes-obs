@@ -443,7 +443,7 @@ for mtype in ["part", "app", "pix"]:
                               vert=True,
                               showmeans=True,
                               showextrema=True,
-                              showmedians=True)
+                              showmedians=True, color="r")
         # try:
             # ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
             # ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
@@ -484,7 +484,7 @@ for mtype in ["part", "app", "pix"]:
         ax.tick_params(axis='x', which='minor', bottom=True)
 
         ax.set_xlim(4.5, 11.5)
-        ax.set_ylim(10**-1.25, 10**0.8)
+        ax.set_ylim(10**-1.5, 10**1.5)
 
         ax.legend(handles=legend_elements, loc='upper center',
                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
