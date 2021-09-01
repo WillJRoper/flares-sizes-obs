@@ -120,6 +120,7 @@ for reg, snap in reg_snaps:
         hlr_dict[snap].setdefault(f, [])
         hlr_app_dict[snap].setdefault(f, [])
         hlr_pix_dict[snap].setdefault(f, [])
+        lumin_dict[snap].setdefault(f, [])
         img_lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
         nstar_dict[snap].setdefault(f, [])
