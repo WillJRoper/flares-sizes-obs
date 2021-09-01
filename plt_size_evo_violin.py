@@ -444,6 +444,20 @@ for mtype in ["part", "app", "pix"]:
                               showmeans=True,
                               showextrema=True,
                               showmedians=True, color="r")
+
+            # Make all the violin statistics marks red:
+            for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
+                vp = vplot[partname]
+                vp.set_edgecolor("k")
+                vp.set_linewidth(1)
+
+            # Make the violin body blue with a red border:
+            for vp in vplot['bodies']:
+                vp.set_facecolor("r")
+                vp.set_edgecolor("r")
+                vp.set_linewidth(1)
+                vp.set_alpha(0.5)
+
         # try:
             # ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
             # ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
