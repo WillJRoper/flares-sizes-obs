@@ -53,6 +53,8 @@ def vdensity_with_weights(weights):
 def custom_violin_stats(data, weights):
     # Get weighted median and mean (using weighted module for median)
     median = weighted.quantile_1D(data, weights, 0.5)
+    pcent_16 = weighted.quantile_1D(data, weights, 0.16)
+    pcent_84 = weighted.quantile_1D(data, weights, 0.84)
     mean, sumw = np.ma.average(data, weights=list(weights), returned=True)
 
     # Use matplotlib violin_stats, which expects a function that takes in data and coords
@@ -62,6 +64,8 @@ def custom_violin_stats(data, weights):
     # Update result dictionary with our updated info
     results[0][u"mean"] = mean
     results[0][u"median"] = median
+    results[0][u"pcent_16"] = pcent_16
+    results[0][u"pcent_84"] = pcent_84
 
     # No need to do this, since it should be populated from violin_stats
     # results[0][u"min"] =  np.min(data)
@@ -527,7 +531,6 @@ for mtype in ["part", "app", "pix"]:
         legend_elements = []
 
         fig = plt.figure(figsize=(5, 9))
-        ax = fig.add_subplot(111)
         gs = gridspec.GridSpec(3, 1)
         gs.update(wspace=0.0, hspace=0.0)
         ax1 = fig.add_subplot(gs[0, 0])
@@ -646,6 +649,100 @@ for mtype in ["part", "app", "pix"]:
 
         fig.savefig(
             'plots/ViolinComp_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
+            + orientation + "_" + extinction + "_"
+            + '%d.png' % nlim,
+            bbox_inches='tight')
+
+        plt.close(fig)
+
+        legend_elements = []
+
+        fig = plt.figure(figsize=(5, 9))
+        ax = fig.add_subplot(111)
+        ax.semilogy()
+
+        med_hlr = []
+        med_inthlr = []
+        med_hdr = []
+        hlr_16 = []
+        inthlr_16 = []
+        hdr_16 = []
+        hlr_84 = []
+        inthlr_84 = []
+        hdr_84 = []
+        for i in range(len(ws)):
+
+            vpstats1 = custom_violin_stats(hlr[i], ws[i])
+            med_hlr.append(vpstats1[0]["median"])
+            hlr_16.append(vpstats1[0]["pcent_16"])
+            hlr_84.append(vpstats1[0]["pcent_84"])
+
+        for i in range(len(ws)):
+
+            vpstats1 = custom_violin_stats(intr_hlr[i], ws[i])
+            med_inthlr.append(vpstats1[0]["median"])
+            inthlr_16.append(vpstats1[0]["pcent_16"])
+            inthlr_84.append(vpstats1[0]["pcent_84"])
+
+        for i in range(len(ws)):
+
+            vpstats1 = custom_violin_stats(hdr[i], ws[i])
+            med_hdr.append(vpstats1[0]["median"])
+            hdr_16.append(vpstats1[0]["pcent_16"])
+            hdr_84.append(vpstats1[0]["pcent_84"])
+
+        ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
+        ax.fill_between(plt_z, inthlr_16, inthlr_84, color="g", alpha=0.4)
+        ax.fill_between(plt_z, hlr_16, hlr_84, color="r", alpha=0.4)
+        ax.fill_between(plt_z, hdr_16, hdr_84, color="m", alpha=0.4)
+        ax.plot(plt_z, med_inthlr, color="g", marker="s", linestyle="-")
+        ax.plot(plt_z, med_hlr, color="r", marker="^", linestyle="-")
+        ax.plot(plt_z, med_hdr, color="m", marker="D", linestyle="-")
+
+        legend_elements.append(
+            Line2D([0], [0], color="g", linestyle="-", marker="s",
+                   label="Median Intrinsic"))
+        legend_elements.append(
+            Line2D([0], [0], color="r", linestyle="-", marker="^",
+                   label="Median Attenuated"))
+        legend_elements.append(
+            Line2D([0], [0], color="m", linestyle="-", marker="D",
+                   label="Median Dust"))
+        legend_elements.append(
+            Line2D([0], [0], color="k", linestyle="--",
+                   label="Softening"))
+
+        for p in labels.keys():
+
+            okinds = papers == p
+            plt_r_es = r_es[okinds]
+            plt_zs = zs[okinds]
+
+            if plt_zs.size == 0:
+                continue
+
+            legend_elements.append(
+                Line2D([0], [0], marker=markers[p], color='w',
+                       label=labels[p], markerfacecolor=colors[p],
+                       markersize=8, alpha=0.7))
+
+            ax.scatter(plt_zs, plt_r_es,
+                       marker=markers[p], label=labels[p], s=17,
+                       color=colors[p], alpha=0.7)
+
+        # Label axes
+        ax.set_xlabel(r'$z$')
+        ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+        ax.set_xlim(4.5, 11.5)
+        ax.set_ylim(10 ** -1.5, 10 ** 1.5)
+
+        ax3.tick_params(axis='x', which='minor', bottom=True)
+
+        ax3.legend(handles=legend_elements, loc='upper center',
+                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=2)
+
+        fig.savefig(
+            'plots/HalfLightRadius_evolution_' + mtype + '_' + f + '_'
             + orientation + "_" + extinction + "_"
             + '%d.png' % nlim,
             bbox_inches='tight')
