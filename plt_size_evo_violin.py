@@ -547,10 +547,18 @@ for mtype in ["part", "app", "pix"]:
         med_hlr = []
         med_inthlr = []
         med_hdr = []
+        hlr_16 = []
+        inthlr_16 = []
+        hdr_16 = []
+        hlr_84 = []
+        inthlr_84 = []
+        hdr_84 = []
         for i in range(len(ws)):
 
             vpstats1 = custom_violin_stats(hlr[i], ws[i])
             med_hlr.append(vpstats1[0]["median"])
+            hlr_16.append(vpstats1[0]["pcent_16"])
+            hlr_84.append(vpstats1[0]["pcent_84"])
             vplot = ax1.violin(vpstats1, positions=[plt_z[i]],
                               vert=True,
                               showmeans=True,
@@ -574,6 +582,8 @@ for mtype in ["part", "app", "pix"]:
 
             vpstats1 = custom_violin_stats(intr_hlr[i], ws[i])
             med_inthlr.append(vpstats1[0]["median"])
+            inthlr_16.append(vpstats1[0]["pcent_16"])
+            inthlr_84.append(vpstats1[0]["pcent_84"])
             vplot = ax2.violin(vpstats1, positions=[plt_z[i]],
                               vert=True,
                               showmeans=True,
@@ -597,6 +607,8 @@ for mtype in ["part", "app", "pix"]:
 
             vpstats1 = custom_violin_stats(hdr[i], ws[i])
             med_hdr.append(vpstats1[0]["median"])
+            hdr_16.append(vpstats1[0]["pcent_16"])
+            hdr_84.append(vpstats1[0]["pcent_84"])
             vplot = ax3.violin(vpstats1, positions=[plt_z[i]],
                               vert=True,
                               showmeans=True,
@@ -657,47 +669,17 @@ for mtype in ["part", "app", "pix"]:
 
         legend_elements = []
 
-        fig = plt.figure(figsize=(5, 9))
+        fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.semilogy()
 
-        med_hlr = []
-        med_inthlr = []
-        med_hdr = []
-        hlr_16 = []
-        inthlr_16 = []
-        hdr_16 = []
-        hlr_84 = []
-        inthlr_84 = []
-        hdr_84 = []
-        for i in range(len(ws)):
-
-            vpstats1 = custom_violin_stats(hlr[i], ws[i])
-            med_hlr.append(vpstats1[0]["median"])
-            hlr_16.append(vpstats1[0]["pcent_16"])
-            hlr_84.append(vpstats1[0]["pcent_84"])
-
-        for i in range(len(ws)):
-
-            vpstats1 = custom_violin_stats(intr_hlr[i], ws[i])
-            med_inthlr.append(vpstats1[0]["median"])
-            inthlr_16.append(vpstats1[0]["pcent_16"])
-            inthlr_84.append(vpstats1[0]["pcent_84"])
-
-        for i in range(len(ws)):
-
-            vpstats1 = custom_violin_stats(hdr[i], ws[i])
-            med_hdr.append(vpstats1[0]["median"])
-            hdr_16.append(vpstats1[0]["pcent_16"])
-            hdr_84.append(vpstats1[0]["pcent_84"])
-
         ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
+        ax.fill_between(plt_z, hdr_16, hdr_84, color="m", alpha=0.4)
         ax.fill_between(plt_z, inthlr_16, inthlr_84, color="g", alpha=0.4)
         ax.fill_between(plt_z, hlr_16, hlr_84, color="r", alpha=0.4)
-        ax.fill_between(plt_z, hdr_16, hdr_84, color="m", alpha=0.4)
+        ax.plot(plt_z, med_hdr, color="m", marker="D", linestyle="-")
         ax.plot(plt_z, med_inthlr, color="g", marker="s", linestyle="-")
         ax.plot(plt_z, med_hlr, color="r", marker="^", linestyle="-")
-        ax.plot(plt_z, med_hdr, color="m", marker="D", linestyle="-")
 
         legend_elements.append(
             Line2D([0], [0], color="g", linestyle="-", marker="s",
