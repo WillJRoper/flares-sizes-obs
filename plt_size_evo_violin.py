@@ -674,7 +674,8 @@ for mtype in ["part", "app", "pix"]:
         ax.semilogy()
 
         ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
-        ax.fill_between(plt_z, hdr_16, hdr_84, color="m", alpha=0.4)
+        ax.fill_between(plt_z, hdr_16, hdr_84, facecolor="none", hatch="X",
+                        edgecolor="m")
         ax.fill_between(plt_z, inthlr_16, inthlr_84, color="g", alpha=0.4)
         ax.fill_between(plt_z, hlr_16, hlr_84, color="r", alpha=0.4)
         ax.plot(plt_z, med_hdr, color="m", marker="D", linestyle="-")
@@ -718,10 +719,10 @@ for mtype in ["part", "app", "pix"]:
         ax.set_xlim(4.5, 11.5)
         ax.set_ylim(10 ** -1.5, 10 ** 1.5)
 
-        ax3.tick_params(axis='x', which='minor', bottom=True)
+        ax.tick_params(axis='x', which='minor', bottom=True)
 
-        ax3.legend(handles=legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=2)
+        ax.legend(handles=legend_elements, loc='upper center',
+                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=4)
 
         fig.savefig(
             'plots/HalfLightRadius_evolution_' + mtype + '_' + f + '_'
