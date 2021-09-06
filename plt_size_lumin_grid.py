@@ -23,6 +23,7 @@ import h5py
 import sys
 import pandas as pd
 import scipy.ndimage
+from scipy.optimize import curve_fit
 import cmasher as cmr
 
 sns.set_context("paper")
@@ -361,12 +362,43 @@ for f in filters:
                                 reduce_C_function=np.sum, xscale='log',
                                 yscale='log', norm=LogNorm(), linewidths=0.2,
                                 cmap='plasma', alpha=0)
-            # cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
-            #                        norm=LogNorm(), cmap=cmr.bubblegum_r,
-            #                        linewidth=2)
-            # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
-            # axes[i].plot(lumin_bin_cents, med, color="r")
-            # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
+
+            popt, pcov = curve_fit(kawa_fit, lumins, hlrs,
+                                   p0=(kawa_params['r_0'][int(z)],
+                                       kawa_params['beta'][int(z)]),
+                                   sigma=w)
+
+            popt1, pcov1 = curve_fit(kawa_fit, lumins[okinds1], hlrs[okinds1],
+                                     p0=(kawa_params['r_0'][int(z)],
+                                         kawa_params['beta'][int(z)]),
+                                     sigma=w[okinds1])
+
+            popt2, pcov2 = curve_fit(kawa_fit, lumins[okinds2], hlrs[okinds2],
+                                     p0=(kawa_params['r_0'][int(z)],
+                                         kawa_params['beta'][int(z)]),
+                                     sigma=w[okinds2])
+
+            print("Total")
+            print(popt)
+            print(pcov)
+            print("Low")
+            print(popt2)
+            print(pcov2)
+            print("High")
+            print(popt1)
+            print(pcov1)
+
+            fit_lumins = np.logspace(np.log10(lumins.min()),
+                                     np.log10(lumins.max()),
+                                     1000)
+
+            fit = kawa_fit(fit_lumins, popt[0], popt[2])
+
+            axes[i].plot(fit_lumins, fit,
+                         linestyle='-', color="m",
+                         alpha=0.9, zorder=5,
+                         linewidth=4)
+
         except ValueError as e:
             print(e)
             continue
@@ -416,21 +448,20 @@ for f in filters:
 
                 fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
                                kawa_params['beta'][int(z)])
-                up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
-                                  kawa_params['beta'][int(z)],
-                                  kawa_up_params['r_0'][int(z)],
-                                  kawa_up_params['beta'][int(z)], uplow="low")
-                low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
-                                   kawa_params['beta'][int(z)],
-                                   kawa_low_params['r_0'][int(z)],
-                                   kawa_low_params['beta'][int(z)],
-                                   uplow="low")
+                # up = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                #                   kawa_params['beta'][int(z)],
+                #                   kawa_up_params['r_0'][int(z)],
+                #                   kawa_up_params['beta'][int(z)], uplow="low")
+                # low = kawa_fit_err(fit, fit_lumins, kawa_params['r_0'][int(z)],
+                #                    kawa_params['beta'][int(z)],
+                #                    kawa_low_params['r_0'][int(z)],
+                #                    kawa_low_params['beta'][int(z)],
+                #                    uplow="low")
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dashed', color="g",
                              alpha=0.9, zorder=2,
                              label="Kawamata+18", linewidth=4)
-                # axes[i].fill_between(fit_lumins, low, up,
-                #                 color='k', alpha=0.4, zorder=1)
+
 
         axes[i].text(0.95, 0.05, f'$z={z}$',
                      bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -454,6 +485,10 @@ for f in filters:
 
     axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
+
+    legend_elements.append(
+        Line2D([0], [0], color="m", linestyle="-",
+               label="FLARES"))
 
     uni_legend_elements = []
     uni_legend_elements.append(

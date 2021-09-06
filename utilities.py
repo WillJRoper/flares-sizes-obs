@@ -378,6 +378,7 @@ def quartic_spline(q):
 
 def make_spline_img(pos, Ndim, i, j, tree, ls, smooth,
                     spline_func=quartic_spline, spline_cut_off=5 / 2):
+
     # Define 2D projected particle position array
     part_pos = pos[:, (i, j)]
 
