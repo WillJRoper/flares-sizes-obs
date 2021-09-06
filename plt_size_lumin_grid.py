@@ -364,18 +364,18 @@ for f in filters:
                                 cmap='plasma', alpha=0)
 
             popt, pcov = curve_fit(kawa_fit, lumins, hlrs,
-                                   p0=(kawa_params['r_0'][int(z)],
-                                       kawa_params['beta'][int(z)]),
+                                   p0=(kawa_params['r_0'][7],
+                                       kawa_params['beta'][7]),
                                    sigma=w)
 
             popt1, pcov1 = curve_fit(kawa_fit, lumins[okinds1], hlrs[okinds1],
-                                     p0=(kawa_params['r_0'][int(z)],
-                                         kawa_params['beta'][int(z)]),
+                                     p0=(kawa_params['r_0'][7],
+                                         kawa_params['beta'][7]),
                                      sigma=w[okinds1])
 
             popt2, pcov2 = curve_fit(kawa_fit, lumins[okinds2], hlrs[okinds2],
-                                     p0=(kawa_params['r_0'][int(z)],
-                                         kawa_params['beta'][int(z)]),
+                                     p0=(kawa_params['r_0'][7],
+                                         kawa_params['beta'][7]),
                                      sigma=w[okinds2])
 
             print("Total")
