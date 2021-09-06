@@ -152,7 +152,7 @@ snaps = ['006_z009p000', '007_z008p000', '008_z007p000', '009_z006p000',
 # Define filter
 filters = ['FAKE.TH.'+ f
            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
-                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
+                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -955,7 +955,7 @@ for f in filters:
                          linestyle='dotted', color="m",
                          alpha=0.9, zorder=3,
                          linewidth=2)
-            
+
         except ValueError as e:
             print(e)
             continue
