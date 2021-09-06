@@ -504,13 +504,13 @@ for f in filters:
 
     uni_legend_elements = []
     uni_legend_elements.append(
-        Line2D([0], [0], color="m", linestyle="-",
+        Line2D([0], [0], color="m", linestyle="dotted",
                label="FLARES (All)"))
     uni_legend_elements.append(
         Line2D([0], [0], color="m", linestyle="-",
                label="FLARES ($M_{\star}/M_\odot\geq10^{9}$)"))
     uni_legend_elements.append(
-        Line2D([0], [0], color="m", linestyle="-",
+        Line2D([0], [0], color="m", linestyle="--",
                label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
     uni_legend_elements.append(
         Line2D([0], [0], color="g", linestyle="--",
@@ -776,13 +776,13 @@ for f in filters:
 
     uni_legend_elements = []
     uni_legend_elements.append(
-        Line2D([0], [0], color="m", linestyle="-",
+        Line2D([0], [0], color="m", linestyle="dotted",
                label="FLARES (All)"))
     uni_legend_elements.append(
         Line2D([0], [0], color="m", linestyle="-",
                label="FLARES ($M_{\star}/M_\odot\geq10^{9}$)"))
     uni_legend_elements.append(
-        Line2D([0], [0], color="m", linestyle="-",
+        Line2D([0], [0], color="m", linestyle="--",
                label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
     uni_legend_elements.append(
         Line2D([0], [0], color="g", linestyle="--",
@@ -1060,13 +1060,13 @@ for f in filters:
 
     uni_legend_elements = []
     uni_legend_elements.append(
-        Line2D([0], [0], color="m", linestyle="-",
+        Line2D([0], [0], color="m", linestyle="dotted",
                label="FLARES (All)"))
     uni_legend_elements.append(
         Line2D([0], [0], color="m", linestyle="-",
                label="FLARES ($M_{\star}/M_\odot\geq10^{9}$)"))
     uni_legend_elements.append(
-        Line2D([0], [0], color="m", linestyle="-",
+        Line2D([0], [0], color="m", linestyle="--",
                label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
     uni_legend_elements.append(
         Line2D([0], [0], color="g", linestyle="--",
