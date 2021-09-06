@@ -392,7 +392,7 @@ for f in filters:
                                      np.log10(lumins.max()),
                                      1000)
 
-            fit = kawa_fit(fit_lumins, popt[0], popt[2])
+            fit = kawa_fit(fit_lumins, popt[0], popt[1])
 
             axes[i].plot(fit_lumins, fit,
                          linestyle='-', color="m",
