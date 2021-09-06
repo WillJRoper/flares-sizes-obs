@@ -391,13 +391,29 @@ for f in filters:
             fit_lumins = np.logspace(np.log10(lumins.min()),
                                      np.log10(lumins.max()),
                                      1000)
+            fit_lumins_low = np.logspace(np.log10(lumins[okinds2].min()),
+                                         np.log10(lumins[okinds2].max()),
+                                         1000)
+            fit_lumins_high = np.logspace(np.log10(lumins[okinds1].min()),
+                                          np.log10(lumins[okinds1].max()),
+                                          1000)
 
             fit = kawa_fit(fit_lumins, popt[0], popt[1])
+            fit_low = kawa_fit(fit_lumins_low, popt2[0], popt2[1])
+            fit_high = kawa_fit(fit_lumins_high, popt1[0], popt1[1])
 
-            axes[i].plot(fit_lumins, fit,
+            axes[i].plot(fit_lumins_high, fit_high,
                          linestyle='-', color="m",
                          alpha=0.9, zorder=5,
-                         linewidth=4)
+                         linewidth=2)
+            axes[i].plot(fit_lumins_low, fit_low,
+                         linestyle='--', color="m",
+                         alpha=0.9, zorder=4,
+                         linewidth=2)
+            axes[i].plot(fit_lumins, fit,
+                         linestyle='dotted', color="m",
+                         alpha=0.9, zorder=3,
+                         linewidth=2)
 
         except ValueError as e:
             print(e)
@@ -486,11 +502,16 @@ for f in filters:
     axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
-    legend_elements.append(
-        Line2D([0], [0], color="m", linestyle="-",
-               label="FLARES"))
-
     uni_legend_elements = []
+    uni_legend_elements.append(
+        Line2D([0], [0], color="m", linestyle="-",
+               label="FLARES (All)"))
+    uni_legend_elements.append(
+        Line2D([0], [0], color="m", linestyle="-",
+               label="FLARES ($M_{\star}/M_\odot\geq10^{9}$)"))
+    uni_legend_elements.append(
+        Line2D([0], [0], color="m", linestyle="-",
+               label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
     uni_legend_elements.append(
         Line2D([0], [0], color="g", linestyle="--",
                label=labels["K18"]))
@@ -611,12 +632,59 @@ for f in filters:
                                 reduce_C_function=np.sum, xscale='log',
                                 yscale='log', norm=LogNorm(), linewidths=0.2,
                                 cmap='plasma', alpha=0)
-            # cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
-            #                        norm=LogNorm(), cmap=cmr.bubblegum_r,
-            #                        linewidth=2)
-            # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
-            # axes[i].plot(lumin_bin_cents, med, color="r")
-            # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
+
+            popt, pcov = curve_fit(kawa_fit, lumins, hlrs,
+                                   p0=(kawa_params['r_0'][7],
+                                       kawa_params['beta'][7]),
+                                   sigma=w)
+
+            popt1, pcov1 = curve_fit(kawa_fit, lumins[okinds1], hlrs[okinds1],
+                                     p0=(kawa_params['r_0'][7],
+                                         kawa_params['beta'][7]),
+                                     sigma=w[okinds1])
+
+            popt2, pcov2 = curve_fit(kawa_fit, lumins[okinds2], hlrs[okinds2],
+                                     p0=(kawa_params['r_0'][7],
+                                         kawa_params['beta'][7]),
+                                     sigma=w[okinds2])
+
+            print("Total")
+            print(popt)
+            print(pcov)
+            print("Low")
+            print(popt2)
+            print(pcov2)
+            print("High")
+            print(popt1)
+            print(pcov1)
+
+            fit_lumins = np.logspace(np.log10(lumins.min()),
+                                     np.log10(lumins.max()),
+                                     1000)
+            fit_lumins_low = np.logspace(np.log10(lumins[okinds2].min()),
+                                         np.log10(lumins[okinds2].max()),
+                                         1000)
+            fit_lumins_high = np.logspace(np.log10(lumins[okinds1].min()),
+                                          np.log10(lumins[okinds1].max()),
+                                          1000)
+
+            fit = kawa_fit(fit_lumins, popt[0], popt[1])
+            fit_low = kawa_fit(fit_lumins_low, popt2[0], popt2[1])
+            fit_high = kawa_fit(fit_lumins_high, popt1[0], popt1[1])
+
+            axes[i].plot(fit_lumins_high, fit_high,
+                         linestyle='-', color="m",
+                         alpha=0.9, zorder=5,
+                         linewidth=2)
+            axes[i].plot(fit_lumins_low, fit_low,
+                         linestyle='--', color="m",
+                         alpha=0.9, zorder=4,
+                         linewidth=2)
+            axes[i].plot(fit_lumins, fit,
+                         linestyle='dotted', color="m",
+                         alpha=0.9, zorder=3,
+                         linewidth=2)
+
         except ValueError as e:
             print(e)
             continue
@@ -707,6 +775,15 @@ for f in filters:
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
     uni_legend_elements = []
+    uni_legend_elements.append(
+        Line2D([0], [0], color="m", linestyle="-",
+               label="FLARES (All)"))
+    uni_legend_elements.append(
+        Line2D([0], [0], color="m", linestyle="-",
+               label="FLARES ($M_{\star}/M_\odot\geq10^{9}$)"))
+    uni_legend_elements.append(
+        Line2D([0], [0], color="m", linestyle="-",
+               label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
     uni_legend_elements.append(
         Line2D([0], [0], color="g", linestyle="--",
                label=labels["K18"]))
@@ -826,12 +903,59 @@ for f in filters:
                                 reduce_C_function=np.sum, xscale='log',
                                 yscale='log', norm=LogNorm(), linewidths=0.2,
                                 cmap='plasma', alpha=0)
-            # cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
-            #                        norm=LogNorm(), cmap=cmr.bubblegum_r,
-            #                        linewidth=2)
-            # med = util.binned_weighted_quantile(lumins, hlrs, weights=w, bins=lumin_bins, quantiles=[0.5, ])
-            # axes[i].plot(lumin_bin_cents, med, color="r")
-            # legend_elements.append(Line2D([0], [0], color='r', label="Weighted Median"))
+
+            popt, pcov = curve_fit(kawa_fit, lumins, hlrs,
+                                   p0=(kawa_params['r_0'][7],
+                                       kawa_params['beta'][7]),
+                                   sigma=w)
+
+            popt1, pcov1 = curve_fit(kawa_fit, lumins[okinds1], hlrs[okinds1],
+                                     p0=(kawa_params['r_0'][7],
+                                         kawa_params['beta'][7]),
+                                     sigma=w[okinds1])
+
+            popt2, pcov2 = curve_fit(kawa_fit, lumins[okinds2], hlrs[okinds2],
+                                     p0=(kawa_params['r_0'][7],
+                                         kawa_params['beta'][7]),
+                                     sigma=w[okinds2])
+
+            print("Total")
+            print(popt)
+            print(pcov)
+            print("Low")
+            print(popt2)
+            print(pcov2)
+            print("High")
+            print(popt1)
+            print(pcov1)
+
+            fit_lumins = np.logspace(np.log10(lumins.min()),
+                                     np.log10(lumins.max()),
+                                     1000)
+            fit_lumins_low = np.logspace(np.log10(lumins[okinds2].min()),
+                                         np.log10(lumins[okinds2].max()),
+                                         1000)
+            fit_lumins_high = np.logspace(np.log10(lumins[okinds1].min()),
+                                          np.log10(lumins[okinds1].max()),
+                                          1000)
+
+            fit = kawa_fit(fit_lumins, popt[0], popt[1])
+            fit_low = kawa_fit(fit_lumins_low, popt2[0], popt2[1])
+            fit_high = kawa_fit(fit_lumins_high, popt1[0], popt1[1])
+
+            axes[i].plot(fit_lumins_high, fit_high,
+                         linestyle='-', color="m",
+                         alpha=0.9, zorder=5,
+                         linewidth=2)
+            axes[i].plot(fit_lumins_low, fit_low,
+                         linestyle='--', color="m",
+                         alpha=0.9, zorder=4,
+                         linewidth=2)
+            axes[i].plot(fit_lumins, fit,
+                         linestyle='dotted', color="m",
+                         alpha=0.9, zorder=3,
+                         linewidth=2)
+            
         except ValueError as e:
             print(e)
             continue
@@ -935,6 +1059,15 @@ for f in filters:
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
     uni_legend_elements = []
+    uni_legend_elements.append(
+        Line2D([0], [0], color="m", linestyle="-",
+               label="FLARES (All)"))
+    uni_legend_elements.append(
+        Line2D([0], [0], color="m", linestyle="-",
+               label="FLARES ($M_{\star}/M_\odot\geq10^{9}$)"))
+    uni_legend_elements.append(
+        Line2D([0], [0], color="m", linestyle="-",
+               label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
     uni_legend_elements.append(
         Line2D([0], [0], color="g", linestyle="--",
                label=labels["K18"]))
