@@ -171,34 +171,34 @@ for f in filters:
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
-        bins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.min(hlrs_pix)), 40)
-        H, xbins, ybins = np.histogram2d(hlrs[okinds2], hlrs_pix[okinds2],
-                                         bins=bins, weights=w[okinds2])
-
-        # Resample your data grid by a factor of 3 using cubic spline interpolation.
-        H = scipy.ndimage.zoom(H, 3)
+        # bins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.min(hlrs_pix)), 40)
+        # H, xbins, ybins = np.histogram2d(hlrs[okinds2], hlrs_pix[okinds2],
+        #                                  bins=bins, weights=w[okinds2])
+        #
+        # # Resample your data grid by a factor of 3 using cubic spline interpolation.
+        # H = scipy.ndimage.zoom(H, 3)
 
         # percentiles = [np.min(w),
         #                10**-3,
         #                10**-1,
         #                1, 2, 5]
 
-        try:
-            percentiles = [np.percentile(H[H > 0], 50),
-                           np.percentile(H[H > 0], 80),
-                           np.percentile(H[H > 0], 90),
-                           np.percentile(H[H > 0], 95),
-                           np.percentile(H[H > 0], 99)]
-        except IndexError:
-            continue
+        # try:
+        #     percentiles = [np.percentile(H[H > 0], 50),
+        #                    np.percentile(H[H > 0], 80),
+        #                    np.percentile(H[H > 0], 90),
+        #                    np.percentile(H[H > 0], 95),
+        #                    np.percentile(H[H > 0], 99)]
+        # except IndexError:
+        #     continue
 
-        bins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.min(hlrs_pix)),
-                           H.shape[0] + 1)
-
-        xbin_cents = (bins[1:] + bins[:-1]) / 2
-        ybin_cents = (bins[1:] + bins[:-1]) / 2
-
-        XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+        # bins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.min(hlrs_pix)),
+        #                    H.shape[0] + 1)
+        #
+        # xbin_cents = (bins[1:] + bins[:-1]) / 2
+        # ybin_cents = (bins[1:] + bins[:-1]) / 2
+        #
+        # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
         # fig = plt.figure(figsize=(6, 6))
         # gs = gridspec.GridSpec(2, 2)
@@ -265,9 +265,9 @@ for f in filters:
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='viridis')
-            cbar = ax.contour(XX, YY, H.T, levels=percentiles,
-                              norm=LogNorm(), cmap=cmr.bubblegum_r,
-                              linewidth=2)
+            # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+            #                   norm=LogNorm(), cmap=cmr.bubblegum_r,
+            #                   linewidth=2)
         except ValueError as e:
             print(e)
             continue
