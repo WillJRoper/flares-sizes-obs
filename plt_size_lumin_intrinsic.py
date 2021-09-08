@@ -260,7 +260,12 @@ for f in filters:
                        gridsize=50, mincnt=1, C=w,
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='viridis', alpha=0)
+                       cmap='viridis', alpha=0,
+                       extent=(26.8, 31.2,
+                               np.log10(10**-1.5
+                                        * cosmo.arcsec_per_kpc_proper(z).value),
+                               np.log10(10**1.5
+                                        * cosmo.arcsec_per_kpc_proper(z).value)))
         except ValueError as e:
             print(e)
             continue
@@ -413,16 +418,18 @@ for f in filters:
         okinds1 = masses >= 10 ** 9
         okinds2 = masses < 10 ** 9
 
-        lbins = np.logspace(np.log10(np.min(lumins)), np.log10(np.max(lumins)),
-                            40)
-        hbins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.max(hlrs)),
-                            40)
+        lbins = np.logspace(26.8, 31.2, 40)
+        hbins = np.logspace(-1.5, 1.5, 40)
         H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
-                                         bins=(lbins, hbins),
-                                         weights=w[okinds2])
+                                         bins=(lbins, hbins), weights=w[okinds2])
 
         # Resample your data grid by a factor of 3 using cubic spline interpolation.
         H = scipy.ndimage.zoom(H, 3)
+
+        # percentiles = [np.min(w),
+        #                10**-3,
+        #                10**-1,
+        #                1, 2, 5]
 
         try:
             percentiles = [np.percentile(H[H > 0], 80),
@@ -433,10 +440,8 @@ for f in filters:
             print(e)
             continue
 
-        lbins = np.logspace(np.log10(np.min(lumins)), np.log10(np.max(lumins)),
-                            H.shape[0] + 1)
-        hbins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.max(hlrs)),
-                            H.shape[0] + 1)
+        lbins = np.logspace(26.8, 31.2, H.shape[0] + 1)
+        hbins = np.logspace(-1.5, 1.5, H.shape[0] + 1)
 
         xbin_cents = (lbins[1:] + lbins[:-1]) / 2
         ybin_cents = (hbins[1:] + hbins[:-1]) / 2
@@ -453,12 +458,14 @@ for f in filters:
                              C=w[okinds2], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
-                             cmap='Greys', alpha=0.7)
+                             cmap='Greys', alpha=0.7,
+                             extent=(26.8, 31.2, -1.5, 1.5))
             cbar = ax.hexbin(lumins[okinds1], hlrs[okinds1],
                              C=w[okinds1], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
-                             cmap='viridis')
+                             cmap='viridis',
+                             extent=(26.8, 31.2, -1.5, 1.5))
             cbar = ax.contour(XX, YY, H.T, levels=percentiles,
                               norm=LogNorm(), cmap=cmr.bubblegum_r,
                               linewidth=2)
@@ -471,7 +478,12 @@ for f in filters:
                        gridsize=50, mincnt=1, C=w,
                        reduce_C_function=np.sum, xscale='log',
                        yscale='log', norm=LogNorm(), linewidths=0.2,
-                       cmap='viridis', alpha=0)
+                       cmap='viridis', alpha=0,
+                       extent=(26.8, 31.2,
+                               np.log10(10**-1.5
+                                        * cosmo.arcsec_per_kpc_proper(z).value),
+                               np.log10(10**1.5
+                                        * cosmo.arcsec_per_kpc_proper(z).value)))
         except ValueError as e:
             print(e)
             continue
