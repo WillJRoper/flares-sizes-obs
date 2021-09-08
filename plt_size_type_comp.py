@@ -272,13 +272,10 @@ for f in filters:
             print(e)
             continue
 
-        min = np.min((ax.get_xlim(), ax.get_ylim()))
-        max = np.max((ax.get_xlim(), ax.get_ylim()))
+        ax.set_xlim(-1.5, 1.5)
+        ax.set_ylim(-1.5, 1.5)
 
-        ax.set_xlim([min, max])
-        ax.set_ylim([min, max])
-
-        ax.plot([min, max], [min, max], color='k', linestyle="--")
+        ax.plot([-1.5, 1.5], [-1.5, 1.5], color='k', linestyle="--")
 
         # Label axes
         ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
