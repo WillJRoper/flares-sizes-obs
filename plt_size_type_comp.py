@@ -259,12 +259,12 @@ for f in filters:
                              C=w[okinds2], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
-                             cmap='Greys')
+                             cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3))
             cbar = ax.hexbin(hlrs[okinds1], hlrs_pix[okinds1],
                              C=w[okinds1], gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
-                             cmap='viridis')
+                             cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3))
             # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
             #                   norm=LogNorm(), cmap=cmr.bubblegum_r,
             #                   linewidth=2)
