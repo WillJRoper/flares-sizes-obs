@@ -272,10 +272,10 @@ for f in filters:
             print(e)
             continue
 
-        ax.plot([-1, 1.3], [-1, 1.3], color='k', linestyle="--")
+        ax.plot([10**-1, 10**1.3], [10**-1, 10**1.3], color='k', linestyle="--")
 
-        ax.set_xlim(-1., 1.3)
-        ax.set_ylim(-1., 1.3)
+        ax.set_xlim(10**-1., 10**1.3)
+        ax.set_ylim(10**-1., 10**1.3)
 
         # Label axes
         ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
