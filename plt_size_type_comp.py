@@ -168,8 +168,8 @@ for f in filters:
         masses = masses[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
 
-        okinds1 = masses >= 10 ** 9
-        okinds2 = masses < 10 ** 9
+        # okinds1 = masses >= 10 ** 9
+        # okinds2 = masses < 10 ** 9
 
         # bins = np.logspace(np.log10(np.min(hlrs)), np.log10(np.min(hlrs_pix)), 40)
         # H, xbins, ybins = np.histogram2d(hlrs[okinds2], hlrs_pix[okinds2],
@@ -255,13 +255,13 @@ for f in filters:
         fig = plt.figure()
         ax = fig.add_subplot(111)
         try:
-            cbar = ax.hexbin(hlrs[okinds2], hlrs_pix[okinds2],
-                             C=w[okinds2], gridsize=50, mincnt=1,
-                             xscale='log', yscale='log',
-                             norm=LogNorm(), linewidths=0.2,
-                             cmap='Greys')
-            cbar = ax.hexbin(hlrs[okinds1], hlrs_pix[okinds1],
-                             C=w[okinds1], gridsize=50, mincnt=1,
+            # cbar = ax.hexbin(hlrs[okinds2], hlrs_pix[okinds2],
+            #                  C=w[okinds2], gridsize=50, mincnt=1,
+            #                  xscale='log', yscale='log',
+            #                  norm=LogNorm(), linewidths=0.2,
+            #                  cmap='Greys')
+            cbar = ax.hexbin(hlrs, hlrs_pix,
+                             C=w, gridsize=50, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='viridis')
