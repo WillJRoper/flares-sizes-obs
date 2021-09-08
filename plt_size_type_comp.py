@@ -272,7 +272,7 @@ for f in filters:
             print(e)
             continue
 
-        ax.plot([10**-1, 10**1.3], [10**-1, 10**1.3],
+        ax.plot([10**-1.1, 10**1.3], [10**-1.1, 10**1.3],
                 color='k', linestyle="--")
 
         # Label axes
@@ -281,8 +281,8 @@ for f in filters:
 
         plt.axis('scaled')
 
-        ax.set_xlim(10 ** -1., 10 ** 1.3)
-        ax.set_ylim(10 ** -1., 10 ** 1.3)
+        ax.set_xlim(10 ** -1.1, 10 ** 1.3)
+        ax.set_ylim(10 ** -1.1, 10 ** 1.3)
 
         fig.savefig(
             'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
