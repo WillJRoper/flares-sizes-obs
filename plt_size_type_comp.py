@@ -256,12 +256,12 @@ for f in filters:
         ax = fig.add_subplot(111)
         try:
             cbar = ax.hexbin(hlrs[okinds2], hlrs_pix[okinds2],
-                             C=w[okinds2], gridsize=50, mincnt=1,
+                             C=w[okinds2], gridsize=100, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3))
             cbar = ax.hexbin(hlrs[okinds1], hlrs_pix[okinds1],
-                             C=w[okinds1], gridsize=50, mincnt=1,
+                             C=w[okinds1], gridsize=100, mincnt=1,
                              xscale='log', yscale='log',
                              norm=LogNorm(), linewidths=0.2,
                              cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3))
