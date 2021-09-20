@@ -527,7 +527,7 @@ for f in filters:
                    ncol=len(uni_legend_elements))
 
     fig.savefig(
-        'plots/HalfLightRadius_' + f + '_' + str(
+        'plots/FitHalfLightRadius_' + f + '_' + str(
             z) + '_'
         + orientation + '_' + Type + "_" + extinction + "_"
         + '%d.png' % nlim,
@@ -798,7 +798,7 @@ for f in filters:
                    bbox_to_anchor=(0.5, -0.15), fancybox=True,
                    ncol=len(uni_legend_elements))
 
-    fig.savefig('plots/HalfLightRadiusAperture_'
+    fig.savefig('plots/FitHalfLightRadiusAperture_'
                 + f + '_' + str(z) + '_' + orientation
                 + '_' + Type + "_" + extinction + "_"
                 + '%d.png' % nlim,
@@ -1082,7 +1082,7 @@ for f in filters:
                    bbox_to_anchor=(0.5, -0.15), fancybox=True,
                    ncol=len(uni_legend_elements))
 
-    fig.savefig('plots/HalfLightRadiusPixel_'
+    fig.savefig('plots/FitHalfLightRadiusPixel_'
                 + f + '_' + str(z) + '_' + orientation
                 + '_' + Type + "_" + extinction + "_"
                 + '%d.png' % nlim,
