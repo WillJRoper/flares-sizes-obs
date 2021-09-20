@@ -1060,12 +1060,12 @@ for f in filters:
         axes[i].set_xlim(10 ** 27.9, 10 ** 30.5)
 
     for i in range(len(axes)):
-        axes[i].set_ylim(np.min(ylims), np.max(ylims))
-        axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
         axes[i].set_yscale("log")
         axes[i].set_xscale("log")
         axes_twin[i].set_yscale("log")
         axes_twin[i].set_xscale("log")
+        axes[i].set_ylim(np.min(ylims), np.max(ylims))
+        axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
 
     axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
