@@ -230,17 +230,21 @@ for reg, snap in reg_snaps:
 
         print(reg, snap, f, masses[okinds].size)
 
-        for i in range(masses[okinds].size):
-            img = hdf[f]["Images"][...][okinds][i]
+        imgs = hdf[f]["Images"][...][okinds]
+        img_lumins = hdf[f]["Image_Luminosity"][...][okinds]
+        hlrs = hdf[f]["HLR_0.5"][...][okinds]
+        masses = masses[okinds]
 
-            surf_den = hdf[f]["Image_Luminosity"][...][okinds][i] / (
+        for i in range(masses.size):
+            img = imgs[i]
+
+            surf_den = img_lumins[i] / (
                         img[img > 0].size * single_pixel_area)
 
-            hlr_dict[snap][f].append(hdf[f]["HLR_0.5"][...][okinds][i])
+            hlr_dict[snap][f].append(hlrs[i])
             surf_den_dict[snap][f].append(surf_den)
-            img_lumin_dict[snap][f].append(
-                hdf[f]["Image_Luminosity"][...][okinds][i])
-            mass_dict[snap][f].append(masses[okinds][i])
+            img_lumin_dict[snap][f].append(img_lumins[i])
+            mass_dict[snap][f].append(masses[i])
             weight_dict[snap][f].append(weights[int(reg)])
 
         # fig = plt.figure()
