@@ -286,6 +286,23 @@ if run:
                 img = util.make_spline_img(this_pos, res, 2, 0, tree,
                                            this_lumin, this_smls)
 
+            max_loc = np.unravel_index(img.argmax(), img.shape)
+            temp_img = img.copy()
+            temp_img[np.unravel_index(img.argmax(), img.shape)] = 0
+            next_max_loc = np.unravel_index(temp_img.argmax(), img.shape)
+
+            dist = np.sqrt((max_loc[0] - next_max_loc[0])**2
+                           + (max_loc[1] - next_max_loc[1])**2)
+
+            hlr_0p5 = util.calc_light_mass_rad(this_radii, this_lumin, 0.5)
+
+            if dist * csoft > hlr_0p5:
+                print("Diffuse galaxy below threshold:", dist * csoft)
+                print(np.log10(tot_l), hlr_0p5, np.log10(this_mass),
+                      this_nstar)
+                print("----------------------------------------------")
+                continue
+
             hdr_dict[tag][f].append(util.calc_light_mass_rad(this_gradii,
                                                              this_metals))
 
@@ -323,21 +340,6 @@ if run:
             mass_dict[tag][f].append(this_mass)
             nstar_dict[tag][f].append(this_nstar)
             img_dict[tag][f].append(img)
-
-            max_loc = np.unravel_index(img.argmax(), img.shape)
-            temp_img = img.copy()
-            temp_img[np.unravel_index(img.argmax(), img.shape)] = 0
-            next_max_loc = np.unravel_index(temp_img.argmax(), img.shape)
-
-            dist = np.sqrt((max_loc[0] - next_max_loc[0])**2
-                           + (max_loc[1] - next_max_loc[1])**2)
-
-            if dist > hlr_pix_dict[tag][f][0.5][-1]:
-                print("Diffuse galaxy below threshold:", dist)
-                print(np.log10(tot_l), hlr_pix_dict[tag][f][0.5][-1],
-                      np.log10(this_mass),
-                      this_nstar)
-                print("----------------------------------------------")
 
             # fig = plt.figure()
             # ax = fig.add_subplot(111)
