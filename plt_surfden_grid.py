@@ -380,7 +380,7 @@ for f in filters:
 
         ylims.append(axes[i].get_ylim())
 
-        axes[i].set_xlim(10 ** 7.5, 10 ** 12)
+        axes[i].set_xlim(10 ** -1.5, 10 ** 1.5)
 
     for i in range(len(axes)):
         axes[i].set_ylim(np.min(ylims), np.max(ylims))
