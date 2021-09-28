@@ -194,10 +194,14 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
-    hdf = h5py.File(
-        "data/flares_sizes_pixlimit_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
-                                                    orientation),
-        "r")
+    try:
+        hdf = h5py.File(
+            "data/flares_sizes_pixlimit_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
+                                                        orientation),
+            "r")
+    except OSError as e:
+        print(e)
+        continue
 
     hlr_dict.setdefault(snap, {})
     hlr_app_dict.setdefault(snap, {})
