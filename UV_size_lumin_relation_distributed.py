@@ -289,10 +289,12 @@ if run:
             hlr_0p5 = util.calc_light_mass_rad(this_radii, this_lumin, 0.5)
             hlr_0p84 = util.calc_light_mass_rad(this_radii, this_lumin, 0.84)
 
-            if hlr_0p84 < 2 * hlr_0p5:
+            surf_den = tot_l / (img[img > 0].size * single_pixel_area)
+
+            if surf_den < 10**25:
                 print("Diffuse galaxy below threshold:", hlr_0p84, 2 * hlr_0p5)
                 print(np.log10(tot_l), hlr_0p5, np.log10(this_mass),
-                      this_nstar)
+                      this_nstar, surf_den)
                 print("----------------------------------------------")
                 continue
 
