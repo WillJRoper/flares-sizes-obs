@@ -195,7 +195,7 @@ for reg in reversed(regions):
 for reg, snap in reg_snaps:
 
     hdf = h5py.File(
-        "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
+        "data/flares_sizes_pixlimit_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
                                                     orientation),
         "r")
 
