@@ -402,15 +402,15 @@ for f in filters:
             fit_low = kawa_fit(fit_lumins_low, popt2[0], popt2[1])
             fit_high = kawa_fit(fit_lumins_high, popt1[0], popt1[1])
 
-            axes[i].plot(fit_lumins_high, fit_high,
+            axes[i].loglog(fit_lumins_high, fit_high,
                          linestyle='-', color="m",
                          alpha=0.9, zorder=5,
                          linewidth=2)
-            axes[i].plot(fit_lumins_low, fit_low,
+            axes[i].loglog(fit_lumins_low, fit_low,
                          linestyle='--', color="m",
                          alpha=0.9, zorder=4,
                          linewidth=2)
-            axes[i].plot(fit_lumins, fit,
+            axes[i].loglog(fit_lumins, fit,
                          linestyle='dotted', color="m",
                          alpha=0.9, zorder=3,
                          linewidth=2)
@@ -473,7 +473,7 @@ for f in filters:
                 #                    kawa_low_params['r_0'][int(z)],
                 #                    kawa_low_params['beta'][int(z)],
                 #                    uplow="low")
-                axes[i].plot(fit_lumins, fit,
+                axes[i].loglog(fit_lumins, fit,
                              linestyle='dashed', color="g",
                              alpha=0.9, zorder=2,
                              label="Kawamata+18", linewidth=4)
@@ -498,10 +498,6 @@ for f in filters:
     for i in range(len(axes)):
         axes[i].set_ylim(np.min(ylims), np.max(ylims))
         axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
-        axes[i].set_yscale("log")
-        axes[i].set_xscale("log")
-        axes_twin[i].set_yscale("log")
-        axes_twin[i].set_xscale("log")
 
     axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
@@ -676,15 +672,15 @@ for f in filters:
             fit_low = kawa_fit(fit_lumins_low, popt2[0], popt2[1])
             fit_high = kawa_fit(fit_lumins_high, popt1[0], popt1[1])
 
-            axes[i].plot(fit_lumins_high, fit_high,
+            axes[i].loglog(fit_lumins_high, fit_high,
                          linestyle='-', color="m",
                          alpha=0.9, zorder=5,
                          linewidth=2)
-            axes[i].plot(fit_lumins_low, fit_low,
+            axes[i].loglog(fit_lumins_low, fit_low,
                          linestyle='--', color="m",
                          alpha=0.9, zorder=4,
                          linewidth=2)
-            axes[i].plot(fit_lumins, fit,
+            axes[i].loglog(fit_lumins, fit,
                          linestyle='dotted', color="m",
                          alpha=0.9, zorder=3,
                          linewidth=2)
@@ -747,7 +743,7 @@ for f in filters:
                 #                    kawa_low_params['r_0'][int(z)],
                 #                    kawa_low_params['beta'][int(z)],
                 #                    uplow="low")
-                axes[i].plot(fit_lumins, fit,
+                axes[i].loglog(fit_lumins, fit,
                              linestyle='dashed', color="g",
                              alpha=0.9,
                              zorder=2,
@@ -774,10 +770,6 @@ for f in filters:
     for i in range(len(axes)):
         axes[i].set_ylim(np.min(ylims), np.max(ylims))
         axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
-        axes[i].set_yscale("log")
-        axes[i].set_xscale("log")
-        axes_twin[i].set_yscale("log")
-        axes_twin[i].set_xscale("log")
 
     axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
@@ -951,15 +943,15 @@ for f in filters:
             fit_low = kawa_fit(fit_lumins_low, popt2[0], popt2[1])
             fit_high = kawa_fit(fit_lumins_high, popt1[0], popt1[1])
 
-            axes[i].plot(fit_lumins_high, fit_high,
+            axes[i].loglog(fit_lumins_high, fit_high,
                          linestyle='-', color="m",
                          alpha=0.9, zorder=5,
                          linewidth=2)
-            axes[i].plot(fit_lumins_low, fit_low,
+            axes[i].loglog(fit_lumins_low, fit_low,
                          linestyle='--', color="m",
                          alpha=0.9, zorder=4,
                          linewidth=2)
-            axes[i].plot(fit_lumins, fit,
+            axes[i].loglog(fit_lumins, fit,
                          linestyle='dotted', color="m",
                          alpha=0.9, zorder=3,
                          linewidth=2)
@@ -1034,7 +1026,7 @@ for f in filters:
                 #                    kawa_low_params['r_0'][int(z)],
                 #                    kawa_low_params['beta'][int(z)],
                 #                    uplow="low")
-                axes[i].plot(fit_lumins, fit,
+                axes[i].loglog(fit_lumins, fit,
                              linestyle='dashed', color="g",
                              alpha=0.9,
                              zorder=2,
@@ -1060,10 +1052,6 @@ for f in filters:
         axes[i].set_xlim(10 ** 27.9, 10 ** 30.5)
 
     for i in range(len(axes)):
-        axes[i].set_yscale("log")
-        axes[i].set_xscale("log")
-        axes_twin[i].set_yscale("log")
-        axes_twin[i].set_xscale("log")
         axes[i].set_ylim(np.min(ylims), np.max(ylims))
         axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
 

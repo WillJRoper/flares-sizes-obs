@@ -303,7 +303,7 @@ if run:
                                                                     r))
 
             # Generate SED
-            if this_mass > 10 ** 10:
+            if this_mass > 10 ** 10.5:
                 sed = models.generate_SED(model, masses[b: e], this_age,
                                           this_Sz,
                                           tauVs_ISM=reg_dict[f + "tauVs_ISM"][
@@ -324,6 +324,21 @@ if run:
             nstar_dict[tag][f].append(this_nstar)
             img_dict[tag][f].append(img)
 
+            max_loc = np.unravel_index(img.argmax(), img.shape)
+            temp_img = img.copy()
+            temp_img[np.unravel_index(img.argmax(), img.shape)] = 0
+            next_max_loc = np.unravel_index(temp_img.argmax(), img.shape)
+
+            dist = np.sqrt((max_loc[0] - next_max_loc[0])**2
+                           + (max_loc[1] - next_max_loc[1])**2)
+
+            if dist > hlr_pix_dict[tag][f][0.5][-1]:
+                print("Diffuse galaxy below threshold:", dist)
+                print(np.log10(tot_l), hlr_pix_dict[tag][f][0.5][-1],
+                      np.log10(this_mass),
+                      this_nstar)
+                print("----------------------------------------------")
+
             # fig = plt.figure()
             # ax = fig.add_subplot(111)
             # ax.imshow(np.log10(img), extent=imgextent)
@@ -342,8 +357,7 @@ if run:
 
         print("There are", len(img_dict[tag][f]), "images")
 
-    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
-                                                                orientation),
+    hdf = h5py.File("data/flares_sizes_pixlimit_{}_{}_{}_{}.hdf5".format(reg, tag, Type, orientation),
                     "w")
 
     for f in filters:
