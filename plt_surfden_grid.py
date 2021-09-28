@@ -230,7 +230,7 @@ for reg, snap in reg_snaps:
 
         print(reg, snap, f, masses[okinds].size)
 
-        for i in masses[okinds]:
+        for i in range(masses[okinds][i]):
             img = hdf[f]["Images"][...][okinds][i]
 
             surf_den = hdf[f]["Image_Luminosity"][...][okinds][i] / (
