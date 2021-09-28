@@ -286,18 +286,11 @@ if run:
                 img = util.make_spline_img(this_pos, res, 2, 0, tree,
                                            this_lumin, this_smls)
 
-            max_loc = np.unravel_index(img.argmax(), img.shape)
-            temp_img = img.copy()
-            temp_img[np.unravel_index(img.argmax(), img.shape)] = 0
-            next_max_loc = np.unravel_index(temp_img.argmax(), img.shape)
-
-            dist = np.sqrt((max_loc[0] - next_max_loc[0])**2
-                           + (max_loc[1] - next_max_loc[1])**2)
-
             hlr_0p5 = util.calc_light_mass_rad(this_radii, this_lumin, 0.5)
+            hlr_0p84 = util.calc_light_mass_rad(this_radii, this_lumin, 0.84)
 
-            if dist * csoft > hlr_0p5:
-                print("Diffuse galaxy below threshold:", dist * csoft)
+            if hlr_0p84 < 2 * hlr_0p5:
+                print("Diffuse galaxy below threshold:", hlr_0p84, 2 * hlr_0p5)
                 print(np.log10(tot_l), hlr_0p5, np.log10(this_mass),
                       this_nstar)
                 print("----------------------------------------------")
