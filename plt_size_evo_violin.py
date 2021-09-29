@@ -12,21 +12,16 @@ matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
 import matplotlib as mpl
-from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
-from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
-import astropy.units as u
-from flare.photom import lum_to_M, M_to_lum, lum_to_flux, m_to_flux
+from flare.photom import M_to_lum
 import flare.photom as photconv
 import h5py
 import sys
 import pandas as pd
-import utilities as util
 import weighted
 from matplotlib.cbook import violin_stats
-from scipy import stats
 import statsmodels.api as sm
 from scipy.optimize import curve_fit
 
@@ -108,13 +103,11 @@ def M_to_m(M, cosmo, z):
 
 
 def r_from_surf_den(lum, s_den):
-
     return np.sqrt(lum / (s_den * np.pi))
 
 
 def lum_from_surf_den_R(r, s_den):
-
-    return s_den * np.pi * r**2
+    return s_den * np.pi * r ** 2
 
 
 df = pd.read_csv("HighzSizes/All.csv")
@@ -225,13 +218,13 @@ snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
          '009_z006p000', '010_z005p000']
 
 # Define filter
-filters = ['FAKE.TH.'+ f
+filters = ['FAKE.TH.' + f
            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 10**8
+nlim = 10 ** 8
 
 hlr_dict = {}
 hdr_dict = {}
@@ -277,9 +270,10 @@ for reg in reversed(regions):
 
 for reg, snap in reg_snaps:
 
-    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
-                                                                orientation),
-                    "r")
+    hdf = h5py.File(
+        "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
+                                                    orientation),
+        "r")
 
     hlr_dict.setdefault(snap, {})
     hdr_dict.setdefault(snap, {})
@@ -352,11 +346,10 @@ for reg, snap in reg_snaps:
         intr_img_lumin_dict[snap][f].extend(
             hdf[f]["Image_Luminosity"][...][okinds])
         intr_weight_dict[snap][f].extend(np.full(masses[okinds].size,
-                                            weights[int(reg)]))
-
+                                                 weights[int(reg)]))
 
     hdf.close()
-for mtype in ["part", "app", "pix"]:
+for mtype in ["pix", "part", "app"]:
     for f in filters:
 
         print("Plotting for:")
@@ -504,16 +497,16 @@ for mtype in ["part", "app", "pix"]:
                 vp.set_alpha(0.5)
 
         # try:
-            # ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
-            # ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
-            # legend_elements.append(
-            #     Line2D([0], [0], color="r", linestyle="--", label="Intrinsic"))
-            #
-            # ax.fill_between(plt_z, hlr_16, hlr_84, color="g", alpha=0.4)
-            # ax.plot(plt_z, hlr_med, color="g", marker="^", linestyle="-")
-            # legend_elements.append(
-            #     Line2D([0], [0], color="g", linestyle="-",
-            #            label="Attenuated"))
+        # ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
+        # ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
+        # legend_elements.append(
+        #     Line2D([0], [0], color="r", linestyle="--", label="Intrinsic"))
+        #
+        # ax.fill_between(plt_z, hlr_16, hlr_84, color="g", alpha=0.4)
+        # ax.plot(plt_z, hlr_med, color="g", marker="^", linestyle="-")
+        # legend_elements.append(
+        #     Line2D([0], [0], color="g", linestyle="-",
+        #            label="Attenuated"))
         # except ValueError as e:
         #     print(e)
         #     continue
@@ -539,20 +532,24 @@ for mtype in ["part", "app", "pix"]:
         okinds2 = fitting_ms > 10 ** 9
 
         popt, pcov = curve_fit(fit, fitting_zs, fitting_hlrs,
-                               p0=(1, 0.5), sigma=fitting_ws)
+                               p0=(1, 0.5), sigma=fitting_ws,
+                               absolute_sigma=True)
 
         popt1, pcov1 = curve_fit(fit, fitting_zs[okinds2],
                                  fitting_hlrs[okinds2],
-                                 p0=(1, 0.5), sigma=fitting_ws[okinds2])
+                                 p0=(1, 0.5), sigma=fitting_ws[okinds2],
+                                 absolute_sigma=True)
 
         fit_plt_zs = np.linspace(12, 4.5, 1000)
 
         print("--------------", "Total", "All", mtype, f, "--------------")
-        print("C=", popt[0], "+/-", pcov[0, 0])
-        print("m=", popt[1], "+/-", pcov[1, 1])
+        print("C=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
+        print("m=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
+        print(pcov)
         print("--------------", "Total", "Massive", mtype, f, "--------------")
-        print("C=", popt1[0], "+/-", pcov1[0, 0])
-        print("m=", popt1[1], "+/-", pcov1[1, 1])
+        print("C=", popt1[0], "+/-", np.sqrt(pcov1[0, 0]))
+        print("m=", popt1[1], "+/-", np.sqrt(pcov1[1, 1]))
+        print(pcov)
         print("----------------------------------------------------------")
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
@@ -575,7 +572,7 @@ for mtype in ["part", "app", "pix"]:
         ax.tick_params(axis='x', which='minor', bottom=True)
 
         ax.set_xlim(4.5, 11.5)
-        ax.set_ylim(10**-1.5, 10**1.5)
+        ax.set_ylim(10 ** -1.5, 10 ** 1.5)
 
         ax.legend(handles=legend_elements, loc='upper center',
                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
@@ -601,7 +598,7 @@ for mtype in ["part", "app", "pix"]:
 
             if ax != ax3:
                 ax.tick_params(axis='x', top=False, bottom=False,
-                                labeltop=False, labelbottom=False)
+                               labeltop=False, labelbottom=False)
             ax.semilogy()
 
         med_hlr = []
@@ -620,10 +617,10 @@ for mtype in ["part", "app", "pix"]:
             hlr_16.append(vpstats1[0]["pcent_16"])
             hlr_84.append(vpstats1[0]["pcent_84"])
             vplot = ax1.violin(vpstats1, positions=[plt_z[i]],
-                              vert=True,
-                              showmeans=True,
-                              showextrema=True,
-                              showmedians=True)
+                               vert=True,
+                               showmeans=True,
+                               showextrema=True,
+                               showmedians=True)
 
             # Make all the violin statistics marks red:
             for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
@@ -645,10 +642,10 @@ for mtype in ["part", "app", "pix"]:
             inthlr_16.append(vpstats1[0]["pcent_16"])
             inthlr_84.append(vpstats1[0]["pcent_84"])
             vplot = ax2.violin(vpstats1, positions=[plt_z[i]],
-                              vert=True,
-                              showmeans=True,
-                              showextrema=True,
-                              showmedians=True)
+                               vert=True,
+                               showmeans=True,
+                               showextrema=True,
+                               showmedians=True)
 
             # Make all the violin statistics marks red:
             for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
@@ -670,10 +667,10 @@ for mtype in ["part", "app", "pix"]:
             hdr_16.append(vpstats1[0]["pcent_16"])
             hdr_84.append(vpstats1[0]["pcent_84"])
             vplot = ax3.violin(vpstats1, positions=[plt_z[i]],
-                              vert=True,
-                              showmeans=True,
-                              showextrema=True,
-                              showmedians=True)
+                               vert=True,
+                               showmeans=True,
+                               showextrema=True,
+                               showmedians=True)
 
             # Make all the violin statistics marks red:
             for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
@@ -717,7 +714,7 @@ for mtype in ["part", "app", "pix"]:
         ax3.tick_params(axis='x', which='minor', bottom=True)
 
         ax3.legend(handles=legend_elements, loc='upper center',
-                  bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=2)
+                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=2)
 
         fig.savefig(
             'plots/ViolinComp_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
@@ -782,7 +779,7 @@ for mtype in ["part", "app", "pix"]:
         ax.tick_params(axis='x', which='minor', bottom=True)
 
         ax.legend(handles=legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=4)
+                  bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=4)
 
         fig.savefig(
             'plots/HalfLightRadius_evolution_' + mtype + '_' + f + '_'
