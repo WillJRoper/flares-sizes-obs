@@ -15,15 +15,12 @@ import matplotlib as mpl
 from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
-from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
 from flare.photom import M_to_lum
 import flare.photom as photconv
 import h5py
 import sys
 import pandas as pd
-import scipy.ndimage
-from scipy.optimize import curve_fit
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -239,7 +236,7 @@ for reg, snap in reg_snaps:
             img = imgs[i]
 
             surf_den = img_lumins[i] / (
-                        img[img > 0].size * single_pixel_area)
+                    img[img > 0].size * single_pixel_area)
 
             hlr_dict[snap][f].append(hlrs[i])
             surf_den_dict[snap][f].append(surf_den)
@@ -301,7 +298,7 @@ for f in filters:
         masses = np.array(mass_dict[snap][f])
 
         okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                masses > 10**8)
+                                masses > 10 ** 8)
 
         surf_dens = surf_dens[okinds]
         hlrs = hlrs[okinds]
@@ -320,13 +317,14 @@ for f in filters:
 
         ylims.append(axes[i].get_ylim())
 
-        axes[i].set_xlim(10**7.5, 10**12)
+        axes[i].set_xlim(10 ** 7.5, 10 ** 12)
 
     for i in range(len(axes)):
         axes[i].set_ylim(np.min(ylims), np.max(ylims))
         axes[i].set_xlabel("$M_\star/M_\odot$")
 
-    axes[0].set_ylabel("$S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]")
+    axes[0].set_ylabel(
+        "$S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]$")
 
     fig.savefig(
         'plots/SurfDen_Mass_' + f + '_'
@@ -387,10 +385,73 @@ for f in filters:
         axes[i].set_xlabel("$R_{1/2}/ [\mathrm{kpc}]$")
 
     axes[0].set_ylabel(
-        "$S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]")
+        "$S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]$")
 
     fig.savefig(
         'plots/SurfDen_Size_' + f + '_'
+        + orientation + '_' + Type + "_" + extinction + "_"
+        + '%d.png' % nlim,
+        bbox_inches='tight', dpi=300)
+
+    plt.close(fig)
+
+    fig = plt.figure(figsize=(18, 5))
+    gs = gridspec.GridSpec(1, len(snaps))
+    gs.update(wspace=0.0, hspace=0.0)
+    axes = []
+    ylims = []
+    i = 0
+    while i < len(snaps):
+        axes.append(fig.add_subplot(gs[0, i]))
+        if i > 0:
+            axes[-1].tick_params(axis='y', left=False, right=False,
+                                 labelleft=False, labelright=False)
+        i += 1
+
+    legend_elements = []
+
+    for i, snap in enumerate(snaps):
+
+        z_str = snap.split('z')[1].split('p')
+        z = float(z_str[0] + '.' + z_str[1])
+
+        hlrs = np.array(hlr_dict[snap][f])
+        surf_dens = np.array(surf_den_dict[snap][f])
+        masses = np.array(mass_dict[snap][f])
+
+        okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
+                                masses > 10 ** 8)
+
+        surf_dens = surf_dens[okinds]
+        hlrs = hlrs[okinds]
+        masses = masses[okinds]
+        w = np.array(weight_dict[snap][f])[okinds]
+
+        try:
+            im = axes[i].hexbin(masses, hlrs, gridsize=100,
+                                mincnt=1, C=surf_dens,
+                                reduce_C_function=np.mean,
+                                xscale='log', yscale='log',
+                                norm=LogNorm(vmin=10 ** 24, vmax=10 ** 27),
+                                linewidths=0.2,
+                                cmap='plasma')
+        except ValueError as e:
+            print(e)
+
+        ylims.append(axes[i].get_ylim())
+
+    for i in range(len(axes)):
+        axes[i].set_ylim(10 ** -1.5, 10 ** 1.5)
+        axes[i].set_xlim(10 ** 7.5, 10 ** 12)
+        axes[i].set_xlabel("$M_\star/M_\odot$")
+
+    axes[0].set_ylabel("$R_{1/2}/ [\mathrm{kpc}]$")
+
+    cbar = fig.colorbar(im, cax=axes[-1])
+    cbar.set_label("$S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]$")
+
+    fig.savefig(
+        'plots/SurfDen_MassSize_' + f + '_'
         + orientation + '_' + Type + "_" + extinction + "_"
         + '%d.png' % nlim,
         bbox_inches='tight', dpi=300)
