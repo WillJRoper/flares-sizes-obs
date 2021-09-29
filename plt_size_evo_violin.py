@@ -445,6 +445,8 @@ for mtype in ["pix", "part", "app"]:
             plt_z.append(z)
 
         fitting_hlrs = []
+        fitting_intr_hlrs = []
+        fitting_hdrs = []
         fitting_zs = []
         fitting_ws = []
         fitting_ms = []
@@ -452,10 +454,14 @@ for mtype in ["pix", "part", "app"]:
         for i in range(len(hlr)):
             fitting_zs.extend(np.full(len(hlr[i]), plt_z[i]))
             fitting_hlrs.extend(hlr[i])
+            fitting_intr_hlrs.extend(intr_hlr[i])
+            fitting_hdrs.extend(hdr[i])
             fitting_ws.extend(ws[i])
             fitting_ms.extend(ms[i])
 
         fitting_hlrs = np.array(fitting_hlrs)
+        fitting_intr_hlrs = np.array(fitting_intr_hlrs)
+        fitting_hdrs = np.array(fitting_hdrs)
         fitting_zs = np.array(fitting_zs)
         fitting_ws = np.array(fitting_ws)
         fitting_ms = np.array(fitting_ms)
@@ -538,6 +544,16 @@ for mtype in ["pix", "part", "app"]:
                                  fitting_hlrs[okinds2],
                                  p0=(1, 0.5), sigma=fitting_ws[okinds2])
 
+        int_popt, int_pcov = curve_fit(fit, fitting_zs, fitting_intr_hlrs,
+                               p0=(1, 0.5), sigma=fitting_ws)
+
+        int_popt1, int_pcov1 = curve_fit(fit, fitting_zs[okinds2],
+                                 fitting_intr_hlrs[okinds2],
+                                 p0=(1, 0.5), sigma=fitting_ws[okinds2])
+
+        popt2, pcov2 = curve_fit(fit, fitting_zs, fitting_hdrs,
+                               p0=(1, 0.5), sigma=fitting_ws)
+
         fit_plt_zs = np.linspace(12, 4.5, 1000)
 
         print("--------------", "Total", "All", mtype, f, "--------------")
@@ -547,20 +563,56 @@ for mtype in ["pix", "part", "app"]:
         print("--------------", "Total", "Massive", mtype, f, "--------------")
         print("C=", popt1[0], "+/-", np.sqrt(pcov1[0, 0]))
         print("m=", popt1[1], "+/-", np.sqrt(pcov1[1, 1]))
-        print(pcov)
+        print(pcov1)
+        print("--------------", "Intrinsc", "All", mtype, f, "--------------")
+        print("C=", int_popt[0], "+/-", np.sqrt(int_pcov[0, 0]))
+        print("m=", int_popt[1], "+/-", np.sqrt(int_pcov[1, 1]))
+        print(int_pcov)
+        print("--------------", "Intrinsic", "Massive", mtype, f, "--------------")
+        print("C=", int_popt1[0], "+/-", np.sqrt(int_pcov1[0, 0]))
+        print("m=", popt1[1], "+/-", np.sqrt(int_pcov1[1, 1]))
+        print(int_pcov1)
+        print("--------------", "Dust", mtype, f, "--------------")
+        print("C=", popt2[0], "+/-", np.sqrt(pcov2[0, 0]))
+        print("m=", popt2[1], "+/-", np.sqrt(pcov2[1, 1]))
+        print(pcov2)
         print("----------------------------------------------------------")
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
                 linestyle="--", color="k")
 
-        legend_elements.append(Line2D([0], [0], color='k', label="All",
+        legend_elements.append(Line2D([0], [0], color='k',
+                                      label="All (Attenuated)",
                                       linestyle="--"))
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt1[0], popt1[1]),
                 linestyle="dotted", color="k")
 
         legend_elements.append(Line2D([0], [0], color='k',
-                                      label="$M_\star/M\odot$",
+                                      label="$M_\star/M_\odot > 10^9$ "
+                                            "(Attenuated)",
+                                      linestyle="dotted"))
+
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt2[0], popt2[1]),
+                linestyle="--", color="m")
+
+        legend_elements.append(Line2D([0], [0], color='m',
+                                      label="Dust",
+                                      linestyle="--"))
+
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, int_popt[0], int_popt[1]),
+                linestyle="--", color="b")
+
+        legend_elements.append(Line2D([0], [0], color='b',
+                                      label="All (Intrinsic)",
+                                      linestyle="--"))
+
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, int_popt1[0], int_popt1[1]),
+                linestyle="dotted", color="b")
+
+        legend_elements.append(Line2D([0], [0], color='b',
+                                      label="$M_\star/M_\odot > 10^9$ "
+                                            "(Intrinsic)",
                                       linestyle="dotted"))
 
         # Label axes
