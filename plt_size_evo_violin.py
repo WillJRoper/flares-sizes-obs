@@ -231,7 +231,7 @@ filters = ['FAKE.TH.'+ f
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 10**8
+nlim = 10**9
 
 hlr_dict = {}
 hdr_dict = {}
