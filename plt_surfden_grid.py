@@ -232,17 +232,26 @@ for reg, snap in reg_snaps:
         hlrs = hdf[f]["HLR_0.5"][...][okinds]
         masses = masses[okinds]
 
-        for i in range(masses.size):
-            img = imgs[i]
+        surf_den = img_lumins / (np.pi * (2 * hlrs)**2)
 
-            surf_den = img_lumins[i] / (
-                    img[img > 0].size * single_pixel_area)
-
-            hlr_dict[snap][f].append(hlrs[i])
-            surf_den_dict[snap][f].append(surf_den)
-            img_lumin_dict[snap][f].append(img_lumins[i])
-            mass_dict[snap][f].append(masses[i])
-            weight_dict[snap][f].append(weights[int(reg)])
+        hlr_dict[snap][f].extend(hlrs)
+        surf_den_dict[snap][f].extend(surf_den)
+        img_lumin_dict[snap][f].extend(img_lumins)
+        mass_dict[snap][f].extend(masses)
+        weight_dict[snap][f].extend(np.full(masses.size,
+                                            weights[int(reg)]))
+        #
+        # for i in range(masses.size):
+        #     img = imgs[i]
+        #
+        #     surf_den = img_lumins[i] / (
+        #             img[img > 0].size * single_pixel_area)
+        #
+        #     hlr_dict[snap][f].append(hlrs[i])
+        #     surf_den_dict[snap][f].append(surf_den)
+        #     img_lumin_dict[snap][f].append(img_lumins[i])
+        #     mass_dict[snap][f].append(masses[i])
+        #     weight_dict[snap][f].append(weights[int(reg)])
 
         # fig = plt.figure()
         # ax = fig.add_subplot(111)
