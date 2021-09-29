@@ -462,6 +462,11 @@ for mtype in ["part", "app", "pix"]:
             fitting_ws.extend(ws[i])
             fitting_ms.extend(ms[i])
 
+        fitting_hlrs = np.array(fitting_hlrs)
+        fitting_zs = np.array(fitting_zs)
+        fitting_ws = np.array(fitting_ws)
+        fitting_ms = np.array(fitting_ms)
+
         soft = []
         for z in plt_z:
 
