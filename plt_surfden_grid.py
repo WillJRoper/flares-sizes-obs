@@ -456,7 +456,7 @@ for f in filters:
 
     axes[0].set_ylabel("$R_{1/2}/ [\mathrm{kpc}]$")
 
-    cbar = fig.colorbar(im, cax=axes[-1])
+    cbar = fig.colorbar(im)
     cbar.set_label("$S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]$")
 
     fig.savefig(
