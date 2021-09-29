@@ -28,6 +28,7 @@ import weighted
 from matplotlib.cbook import violin_stats
 from scipy import stats
 import statsmodels.api as sm
+from scipy.optimize import curve_fit
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -72,6 +73,10 @@ def custom_violin_stats(data, weights):
     # results[0][u"max"] =  np.max(data)
 
     return results
+
+
+def fit(z, C, m):
+    return C * (1 + z) ** -m
 
 
 # Define Kawamata17 fit and parameters
@@ -439,6 +444,15 @@ for mtype in ["part", "app", "pix"]:
 
             plt_z.append(z)
 
+        fitting_hlrs = []
+        fitting_zs = []
+        fitting_ws = []
+
+        for i in hlr:
+            fitting_zs.extend(np.full(len(hlr[i]), plt_z[i]))
+            fitting_hlrs.extend(hlr[i])
+            fitting_ws.extend(ws[i])
+
         soft = []
         for z in plt_z:
 
@@ -490,23 +504,35 @@ for mtype in ["part", "app", "pix"]:
         #     print(e)
         #     continue
 
-        for p in labels.keys():
+        # for p in labels.keys():
+        #
+        #     okinds = papers == p
+        #     plt_r_es = r_es[okinds]
+        #     plt_zs = zs[okinds]
+        #
+        #     if plt_zs.size == 0:
+        #         continue
+        #
+        #     legend_elements.append(
+        #         Line2D([0], [0], marker=markers[p], color='w',
+        #                label=labels[p], markerfacecolor=colors[p],
+        #                markersize=8, alpha=0.7))
+        #
+        #     ax.scatter(plt_zs, plt_r_es,
+        #                marker=markers[p], label=labels[p], s=17,
+        #                color=colors[p], alpha=0.7)
 
-            okinds = papers == p
-            plt_r_es = r_es[okinds]
-            plt_zs = zs[okinds]
+        popt, pcov = curve_fit(fit, fitting_zs, fitting_hlrs,
+                               p0=(1, 0.5), sigma=fitting_ws)
 
-            if plt_zs.size == 0:
-                continue
+        fit_plt_zs = np.linspace(12, 4.5, 1000)
 
-            legend_elements.append(
-                Line2D([0], [0], marker=markers[p], color='w',
-                       label=labels[p], markerfacecolor=colors[p],
-                       markersize=8, alpha=0.7))
+        print("--------------", "Total", mtype, f, "--------------")
+        print("C=", popt[0], "+/-", pcov[0, 0])
+        print("m=", popt[1], "+/-", pcov[1, 1])
 
-            ax.scatter(plt_zs, plt_r_es,
-                       marker=markers[p], label=labels[p], s=17,
-                       color=colors[p], alpha=0.7)
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
+                linestyle="--", color="k")
 
         # Label axes
         ax.set_xlabel(r'$z$')
