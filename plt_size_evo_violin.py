@@ -405,7 +405,7 @@ for mtype in ["part", "app", "pix"]:
             hdr.append(hdrs[okinds])
             intr_hlr.append(intr_hlrs[okinds])
             ws.append(w[okinds])
-            ms.append(m)
+            ms.append(m[okinds])
 
             # quants = weighted_quantile(hlrs, [0.16, 0.5, 0.84], sample_weight=w,
             #                            values_sorted=False, old_style=False)
