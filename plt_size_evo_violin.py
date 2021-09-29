@@ -570,7 +570,7 @@ for mtype in ["pix", "part", "app"]:
         print(int_pcov)
         print("--------------", "Intrinsic", "Massive", mtype, f, "--------------")
         print("C=", int_popt1[0], "+/-", np.sqrt(int_pcov1[0, 0]))
-        print("m=", popt1[1], "+/-", np.sqrt(int_pcov1[1, 1]))
+        print("m=", int_popt1[1], "+/-", np.sqrt(int_pcov1[1, 1]))
         print(int_pcov1)
         print("--------------", "Dust", mtype, f, "--------------")
         print("C=", popt2[0], "+/-", np.sqrt(pcov2[0, 0]))
