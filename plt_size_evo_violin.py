@@ -532,13 +532,11 @@ for mtype in ["pix", "part", "app"]:
         okinds2 = fitting_ms > 10 ** 9
 
         popt, pcov = curve_fit(fit, fitting_zs, fitting_hlrs,
-                               p0=(1, 0.5), sigma=fitting_ws,
-                               absolute_sigma=True)
+                               p0=(1, 0.5), sigma=fitting_ws)
 
         popt1, pcov1 = curve_fit(fit, fitting_zs[okinds2],
                                  fitting_hlrs[okinds2],
-                                 p0=(1, 0.5), sigma=fitting_ws[okinds2],
-                                 absolute_sigma=True)
+                                 p0=(1, 0.5), sigma=fitting_ws[okinds2])
 
         fit_plt_zs = np.linspace(12, 4.5, 1000)
 
