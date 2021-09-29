@@ -313,7 +313,7 @@ for reg, snap in reg_snaps:
         img_lumin_dict[snap][f].extend(hdf[f]["Image_Luminosity"][...][okinds])
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
-        mass_dict[snap][f].extend(masses)
+        mass_dict[snap][f].extend(masses[okinds])
 
     hdf.close()
 
