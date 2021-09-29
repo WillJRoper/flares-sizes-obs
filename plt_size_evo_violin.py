@@ -448,7 +448,7 @@ for mtype in ["part", "app", "pix"]:
         fitting_zs = []
         fitting_ws = []
 
-        for i in hlr:
+        for i in range(len(hlr)):
             fitting_zs.extend(np.full(len(hlr[i]), plt_z[i]))
             fitting_hlrs.extend(hlr[i])
             fitting_ws.extend(ws[i])
