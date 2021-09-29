@@ -223,6 +223,11 @@ for reg, snap in reg_snaps:
         masses = hdf[f]["Mass"][...]
         okinds = masses > nlim
 
+        surf_dens = hdf[f]["Image_Luminosity"][...] \
+                    / (np.pi * (2 * hdf[f]["HLR_0.5"][...]) ** 2)
+
+        okinds = np.logical_and(okinds, surf_dens > 10**26)
+
         print(reg, snap, f, masses[okinds].size)
 
         hlr_dict[snap][f].extend(hdf[f]["HLR_0.5"][...][okinds])
