@@ -227,11 +227,11 @@ snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
 # Define filter
 filters = ['FAKE.TH.'+ f
            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
-                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
+                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-nlim = 10**9
+nlim = 10**8
 
 hlr_dict = {}
 hdr_dict = {}
@@ -240,6 +240,7 @@ hlr_pix_dict = {}
 lumin_dict = {}
 img_lumin_dict = {}
 weight_dict = {}
+mass_dict = {}
 
 intr_hlr_dict = {}
 intr_hlr_app_dict = {}
@@ -287,6 +288,7 @@ for reg, snap in reg_snaps:
     lumin_dict.setdefault(snap, {})
     img_lumin_dict.setdefault(snap, {})
     weight_dict.setdefault(snap, {})
+    mass_dict.setdefault(snap, {})
 
     for f in filters:
         hlr_dict[snap].setdefault(f, [])
@@ -296,6 +298,7 @@ for reg, snap in reg_snaps:
         lumin_dict[snap].setdefault(f, [])
         img_lumin_dict[snap].setdefault(f, [])
         weight_dict[snap].setdefault(f, [])
+        mass_dict[snap].setdefault(f, [])
 
         masses = hdf[f]["Mass"][...]
         okinds = masses > nlim
@@ -310,6 +313,7 @@ for reg, snap in reg_snaps:
         img_lumin_dict[snap][f].extend(hdf[f]["Image_Luminosity"][...][okinds])
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
+        mass_dict[snap][f].extend(masses)
 
     hdf.close()
 
@@ -364,6 +368,7 @@ for mtype in ["part", "app", "pix"]:
         hdr = []
         ws = []
         plt_z = []
+        ms = []
 
         for snap in snaps:
 
@@ -385,6 +390,7 @@ for mtype in ["part", "app", "pix"]:
                 intr_hlrs = np.array(intr_hlr_pix_dict[snap][f])
                 lumins = np.array(img_lumin_dict[snap][f])
                 intr_lumins = np.array(intr_img_lumin_dict[snap][f])
+            m = np.array(mass_dict[snap][f])
             hdrs = np.array(hdr_dict[snap][f])
             w = np.array(weight_dict[snap][f])
 
@@ -399,6 +405,7 @@ for mtype in ["part", "app", "pix"]:
             hdr.append(hdrs[okinds])
             intr_hlr.append(intr_hlrs[okinds])
             ws.append(w[okinds])
+            ms.append(m)
 
             # quants = weighted_quantile(hlrs, [0.16, 0.5, 0.84], sample_weight=w,
             #                            values_sorted=False, old_style=False)
@@ -447,11 +454,13 @@ for mtype in ["part", "app", "pix"]:
         fitting_hlrs = []
         fitting_zs = []
         fitting_ws = []
+        fitting_ms = []
 
         for i in range(len(hlr)):
             fitting_zs.extend(np.full(len(hlr[i]), plt_z[i]))
             fitting_hlrs.extend(hlr[i])
             fitting_ws.extend(ws[i])
+            fitting_ms.extend(ms[i])
 
         soft = []
         for z in plt_z:
@@ -522,17 +531,37 @@ for mtype in ["part", "app", "pix"]:
         #                marker=markers[p], label=labels[p], s=17,
         #                color=colors[p], alpha=0.7)
 
+        okinds2 = fitting_ms > 10 ** 9
+
         popt, pcov = curve_fit(fit, fitting_zs, fitting_hlrs,
                                p0=(1, 0.5), sigma=fitting_ws)
 
+        popt1, pcov1 = curve_fit(fit, fitting_zs[okinds2],
+                                 fitting_hlrs[okinds2],
+                                 p0=(1, 0.5), sigma=fitting_ws[okinds2])
+
         fit_plt_zs = np.linspace(12, 4.5, 1000)
 
-        print("--------------", "Total", mtype, f, "--------------")
+        print("--------------", "Total", "All", mtype, f, "--------------")
         print("C=", popt[0], "+/-", pcov[0, 0])
         print("m=", popt[1], "+/-", pcov[1, 1])
+        print("--------------", "Total", "Massive", mtype, f, "--------------")
+        print("C=", popt1[0], "+/-", pcov1[0, 0])
+        print("m=", popt1[1], "+/-", pcov1[1, 1])
+        print("----------------------------------------------------------")
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
                 linestyle="--", color="k")
+
+        legend_elements.append(Line2D([0], [0], color='k', label="All",
+                                      linestyle="--"))
+
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt1[0], popt1[1]),
+                linestyle="dotted", color="k")
+
+        legend_elements.append(Line2D([0], [0], color='k',
+                                      label="$M_\star/M\odot$",
+                                      linestyle="dotted"))
 
         # Label axes
         ax.set_xlabel(r'$z$')
