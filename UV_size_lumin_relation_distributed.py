@@ -133,6 +133,7 @@ if run:
     sed_int = {}
     sed_tot = {}
     sed_lam = {}
+    surf_dens = {}
 
     # Set mass limit
     masslim = 10 ** 8
@@ -152,6 +153,7 @@ if run:
     sed_int.setdefault(tag, {})
     sed_tot.setdefault(tag, {})
     sed_lam.setdefault(tag, {})
+    surf_dens.setdefault(tag, {})
 
     # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
     reg_dict = phot.get_lum(reg, kappa=0.0795, tag=tag, BC_fac=1,
@@ -236,6 +238,7 @@ if run:
         sed_int[tag].setdefault(f, [])
         sed_tot[tag].setdefault(f, [])
         sed_lam[tag].setdefault(f, [])
+        surf_dens[tag].setdefault(f, [])
 
         for ind in range(len(begin)):
 
@@ -270,7 +273,9 @@ if run:
                 this_gradii = util.calc_rad(this_gpos, i=0, j=1)
 
                 img = util.make_spline_img(this_pos, res, 0, 1, tree,
-                                           this_lumin, this_smls)
+                                           this_lumin, this_smls, 
+                                           spline_func=util.cubic_spline, 
+                                           spline_cut_off=1)
 
             else:
 
@@ -284,19 +289,13 @@ if run:
                 this_gradii = util.calc_rad(this_gpos, i=2, j=0)
 
                 img = util.make_spline_img(this_pos, res, 2, 0, tree,
-                                           this_lumin, this_smls)
+                                           this_lumin, this_smls, 
+                                           spline_func=util.cubic_spline, 
+                                           spline_cut_off=1)
 
-            hlr_0p5 = util.calc_light_mass_rad(this_radii, this_lumin, 0.5)
-            hlr_0p84 = util.calc_light_mass_rad(this_radii, this_lumin, 0.84)
+            surf_den = np.sum(img) / (img[img > 0].size * single_pixel_area)
 
-            surf_den = tot_l / (img[img > 0].size * single_pixel_area)
-
-            if surf_den < 10**25:
-                print("Diffuse galaxy below threshold:", hlr_0p84, 2 * hlr_0p5)
-                print(np.log10(tot_l), hlr_0p5, np.log10(this_mass),
-                      this_nstar, surf_den)
-                print("----------------------------------------------")
-                continue
+            surf_dens[tag][f].append(surf_den)
 
             hdr_dict[tag][f].append(util.calc_light_mass_rad(this_gradii,
                                                              this_metals))
@@ -354,7 +353,7 @@ if run:
 
         print("There are", len(img_dict[tag][f]), "images")
 
-    hdf = h5py.File("data/flares_sizes_pixlimit_{}_{}_{}_{}.hdf5".format(reg, tag, Type, orientation),
+    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, tag, Type, orientation),
                     "w")
 
     for f in filters:
@@ -368,6 +367,7 @@ if run:
         sed_ints = np.array(sed_int[tag][f])
         sed_tots = np.array(sed_tot[tag][f])
         sed_lams = np.array(sed_lam[tag][f])
+        surfdens = np.array(surf_dens[tag][f])
 
         print(imgs.shape)
         print(sed_ints.shape)
@@ -388,6 +388,21 @@ if run:
                                           shape=hdr.shape,
                                           compression="gzip")
             dset.attrs["units"] = "pkpc"
+            
+        try:
+            dset = f_group.create_dataset("Surface_Density", data=surfdens,
+                                          dtype=surfdens.dtype,
+                                          shape=surfdens.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1} / pkpc^2$"
+        except RuntimeError:
+            print("Surface_Density already exists: Overwriting...")
+            del f_group["Surface_Density"]
+            dset = f_group.create_dataset("Surface_Density", data=surfdens,
+                                          dtype=surfdens.dtype,
+                                          shape=surfdens.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1} / pkpc^2$"
 
         try:
             dset = f_group.create_dataset("Luminosity", data=lumins,

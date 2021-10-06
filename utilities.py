@@ -361,6 +361,9 @@ def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth, numThreads=1):
 
 
 def quartic_spline(q):
+
+    k3 = 7 / (478 * np.pi)
+
     w = np.zeros_like(q)
     okinds1 = q < 1 / 2
     okinds2 = np.logical_and(1 / 2 <= q, q < 3 / 2)
@@ -373,7 +376,18 @@ def quartic_spline(q):
                  - 5 * (3 / 2 - q[okinds2]) ** 4
     w[okinds3] = (5 / 2 - q[okinds3]) ** 4
 
-    return w
+    return k3 * w
+
+
+def cubic_spline(q):
+    k = 21 / (2 * np.pi)
+
+    w = np.zeros_like(q)
+    okinds = q <= 1
+
+    w[okinds] = (1 - q[okinds]) ** 4 * (1 + 4 * q[okinds])
+
+    return k * w
 
 
 def make_spline_img(pos, Ndim, i, j, tree, ls, smooth,
@@ -394,8 +408,6 @@ def make_spline_img(pos, Ndim, i, j, tree, ls, smooth,
     pix_pos[:, 0] = X.ravel()
     pix_pos[:, 1] = Y.ravel()
 
-    # Define k constant for 3 dimensions
-    k3 = 7 / (478 * np.pi)
     for ipos, l, sml in zip(part_pos, ls, smooth):
 
         # Query the tree for this particle
@@ -413,7 +425,7 @@ def make_spline_img(pos, Ndim, i, j, tree, ls, smooth,
         w = spline_func(dist / sml)
 
         # Place the kernel for this particle within the img
-        kernel = k3 * w / sml ** 3
+        kernel = w / sml ** 3
         norm_kernel = kernel / np.sum(kernel)
         smooth_img[pix_pos[inds, 0], pix_pos[inds, 1]] += l * norm_kernel
 
