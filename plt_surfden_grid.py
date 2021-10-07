@@ -526,12 +526,13 @@ for f in filters:
             print(e)
 
         for sd in [10**26, 10**27, 10**28, 10**29, 10**30]:
+            sd = float(sd)
             axes[i].plot(fitlumins, sd_fit(fitlumins, sd), linestyle="dashed",
                          color=cmap(norm(np.log10(sd))))
 
         ylims.append(axes[i].get_ylim())
 
-    for i in range(len(axes)):
+    for i in range(len(axes) - 1):
         axes[i].set_ylim(10 ** -1.5, 10 ** 1.5)
         axes[i].set_xlim(10 ** 27.5, 10 ** 30.5)
         axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
