@@ -231,8 +231,8 @@ for reg, snap in reg_snaps:
         hlrs = hdf[f]["HLR_0.5"][...][okinds]
         masses = masses[okinds]
 
-        # surf_den = hdf[f]["Surface_Density"][...][okinds]
-        surf_den = img_lumins / (2 * np.pi * hlrs**2)
+        surf_den = hdf[f]["Surface_Density"][...][okinds]
+        # surf_den = img_lumins / (2 * np.pi * hlrs**2)
 
         hlr_dict[snap][f].extend(hlrs)
         surf_den_dict[snap][f].extend(surf_den)
@@ -440,11 +440,11 @@ for f in filters:
         w = np.array(weight_dict[snap][f])[okinds]
 
         try:
-            im = axes[i].hexbin(masses, hlrs, gridsize=100,
+            im = axes[i].hexbin(masses, hlrs, gridsize=50,
                                 mincnt=1, C=surf_dens,
                                 reduce_C_function=np.mean,
                                 xscale='log', yscale='log',
-                                norm=LogNorm(vmin=10 ** 24, vmax=10 ** 30),
+                                norm=LogNorm(vmin=10 ** 24, vmax=10 ** 31.5),
                                 linewidths=0.2,
                                 cmap='plasma')
         except ValueError as e:
