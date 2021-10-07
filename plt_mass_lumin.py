@@ -41,7 +41,7 @@ filters = ['FAKE.TH.'+ f
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
-masslim = 10 ** 8.0
+masslim = 10 ** 8.5
 
 sd_dict = {}
 lumin_dict = {}
