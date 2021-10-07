@@ -306,8 +306,9 @@ for f in filters:
         surf_dens = np.array(surf_den_dict[snap][f])
         masses = np.array(mass_dict[snap][f])
 
-        okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                masses > 10 ** 8)
+        okinds = np.logical_and(hlrs > 10 ** -2,
+                                np.logical_and(surf_den > 0,
+                                               masses > 10 ** 8))
 
         surf_dens = surf_dens[okinds]
         hlrs = hlrs[okinds]
@@ -367,8 +368,9 @@ for f in filters:
         surf_dens = np.array(surf_den_dict[snap][f])
         masses = np.array(mass_dict[snap][f])
 
-        okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                masses > 10 ** 8)
+        okinds = np.logical_and(hlrs > 10 ** -2,
+                                np.logical_and(surf_den > 0,
+                                               masses > 10 ** 8))
 
         surf_dens = surf_dens[okinds]
         hlrs = hlrs[okinds]
@@ -428,8 +430,9 @@ for f in filters:
         surf_dens = np.array(surf_den_dict[snap][f])
         masses = np.array(mass_dict[snap][f])
 
-        okinds = np.logical_and(hlrs / (csoft / (1 + z)) > 10 ** -1,
-                                masses > 10 ** 8)
+        okinds = np.logical_and(hlrs > 10 ** -2,
+                                np.logical_and(surf_den > 0,
+                                               masses > 10 ** 8))
 
         surf_dens = surf_dens[okinds]
         hlrs = hlrs[okinds]
@@ -441,7 +444,7 @@ for f in filters:
                                 mincnt=1, C=surf_dens,
                                 reduce_C_function=np.mean,
                                 xscale='log', yscale='log',
-                                norm=LogNorm(vmin=10 ** 24, vmax=10 ** 27),
+                                norm=LogNorm(vmin=10 ** 24, vmax=10 ** 30),
                                 linewidths=0.2,
                                 cmap='plasma')
         except ValueError as e:
