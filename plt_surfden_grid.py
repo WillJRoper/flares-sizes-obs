@@ -232,7 +232,7 @@ for reg, snap in reg_snaps:
         hlrs = hdf[f]["HLR_0.5"][...][okinds]
         masses = masses[okinds]
 
-        surf_den = img_lumins / (np.pi * (2 * hlrs)**2)
+        surf_den = hdf[f]["Surface_Density"][...][okinds]
 
         hlr_dict[snap][f].extend(hlrs)
         surf_den_dict[snap][f].extend(surf_den)
