@@ -474,7 +474,7 @@ for f in filters:
 
     plt.close(fig)
 
-    cmap = plt.get_cmap("plasma")
+    cmap = plt.get_cmap("viridis")
     norm = Normalize(vmin=26, vmax=30)
 
     fig = plt.figure(figsize=(18, 5))
