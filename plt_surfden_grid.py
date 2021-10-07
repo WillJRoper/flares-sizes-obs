@@ -227,7 +227,6 @@ for reg, snap in reg_snaps:
 
         print(reg, snap, f, masses[okinds].size)
 
-        imgs = hdf[f]["Images"][...][okinds]
         img_lumins = hdf[f]["Image_Luminosity"][...][okinds]
         hlrs = hdf[f]["HLR_0.5"][...][okinds]
         masses = masses[okinds]
