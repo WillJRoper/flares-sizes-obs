@@ -104,7 +104,7 @@ def get_data(ii, tag, inp='FLARES'):
 
 def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         filters=('FAKE.TH.FUV',), Type='Total', log10t_BC=7.,
-        extinction='default', orientation="sim", masslim=None):
+        extinction='default', orientation="sim", masslim=None, nlim=None):
     kinp = np.load('/cosma7/data/dp004/dc-payy1/my_files/'
                    'los/kernel_sph-anarchy.npz',
                    allow_pickle=True)
@@ -171,6 +171,12 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
         if masslim != None:
             if np.sum(Masses) < masslim:
+                for f in filters:
+                    Lums[f][begin[jj]: end[jj]] = np.nan
+                continue
+
+        if nlim != None:
+            if (end[jj] - begin[jj]) < nlim:
                 for f in filters:
                     Lums[f][begin[jj]: end[jj]] = np.nan
                 continue

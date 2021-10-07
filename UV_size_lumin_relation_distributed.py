@@ -137,6 +137,7 @@ if run:
 
     # Set mass limit
     masslim = 10 ** 8
+    nlim = 100
 
     z_str = tag.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
@@ -160,7 +161,8 @@ if run:
                             IMF='Chabrier_300', bins=np.arange(-24, -16, 0.5),
                             inp='FLARES', LF=False, filters=filters, Type=Type,
                             log10t_BC=7., extinction=extinction,
-                            orientation=orientation, masslim=masslim)
+                            orientation=orientation, masslim=masslim,
+                            nlim=nlim)
     print("Got luminosities")
 
     if z <= 2.8:
