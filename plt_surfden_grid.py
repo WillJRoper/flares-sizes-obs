@@ -475,12 +475,15 @@ for f in filters:
     plt.close(fig)
 
     cmap = plt.get_cmap("plasma")
-    norm = Normalize(vmin=10**26, vmax=10**30)
+    norm = LogNorm(vmin=10**26, vmax=10**30)
 
     fig = plt.figure(figsize=(18, 5))
-    gs = gridspec.GridSpec(1, len(snaps))
+    wid_ratios = len(snaps)*[10]
+    wid_ratios.append(1)
+    gs = gridspec.GridSpec(1, len(snaps) + 1, width_ratios=wid_ratios)
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
+    cax = fig.add_subplot(gs[0, -1])
     ylims = []
     i = 0
     while i < len(snaps):
@@ -536,7 +539,7 @@ for f in filters:
 
     axes[0].set_ylabel("$R_{1/2}/ [\mathrm{kpc}]$")
 
-    cbar = mpl.colorbar.ColorbarBase(axes[-1], cmap=cmap, norm=norm)
+    cbar = mpl.colorbar.ColorbarBase(cax, cmap=cmap, norm=norm)
     cbar.set_label("$S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]$")
 
     fig.savefig(
