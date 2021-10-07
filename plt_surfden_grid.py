@@ -535,7 +535,7 @@ for f in filters:
 
     for i in range(len(axes)):
         axes[i].set_ylim(10 ** -1.5, 10 ** 1.5)
-        axes[i].set_xlim(10 ** 27, 10 ** 30.5)
+        axes[i].set_xlim(10 ** 27., 10 ** 30.5)
         axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
                            + "}/$ [erg $/$ s $/$ Hz]")
 
