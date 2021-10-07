@@ -12,7 +12,7 @@ matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
 import matplotlib as mpl
-from matplotlib.colors import LogNorm
+from matplotlib.colors import LogNorm, Normalize
 import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 from astropy.cosmology import Planck13 as cosmo
@@ -474,6 +474,9 @@ for f in filters:
 
     plt.close(fig)
 
+    cmap = plt.get_cmap("plasma")
+    norm = Normalize(vmin=10**26, vmax=10**30)
+
     fig = plt.figure(figsize=(18, 5))
     gs = gridspec.GridSpec(1, len(snaps))
     gs.update(wspace=0.0, hspace=0.0)
@@ -514,14 +517,14 @@ for f in filters:
                                 mincnt=1, C=w,
                                 reduce_C_function=np.sum,
                                 xscale='log', yscale='log',
-                                norm=LogNorm(vmin=10 ** 24, vmax=10 ** 31),
                                 linewidths=0.2,
                                 cmap='plasma')
         except ValueError as e:
             print(e)
 
         for sd in [10**26, 10**27, 10**28, 10**29, 10**30]:
-            axes[i].plot(fitlumins, sd_fit(fitlumins, sd), linestyle="dashed")
+            axes[i].plot(fitlumins, sd_fit(fitlumins, sd), linestyle="dashed",
+                         color=cmap(norm(sd)))
 
         ylims.append(axes[i].get_ylim())
 
@@ -533,7 +536,7 @@ for f in filters:
 
     axes[0].set_ylabel("$R_{1/2}/ [\mathrm{kpc}]$")
 
-    cbar = fig.colorbar(im)
+    cbar = mpl.colorbar.ColorbarBase(axes[-1], cmap=cmap, norm=norm)
     cbar.set_label("$S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]$")
 
     fig.savefig(
