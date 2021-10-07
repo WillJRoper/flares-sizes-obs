@@ -500,7 +500,8 @@ for f in filters:
         ylims_twin.append(axes_twin[i].get_ylim())
 
         # Label axes
-        axes[i].set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+        axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
+                           + "}/$ [erg $/$ s $/$ Hz]")
 
         axes[i].set_xlim(10 ** 27.9, 10 ** 30.5)
 
@@ -772,7 +773,8 @@ for f in filters:
         ylims_twin.append(axes_twin[i].get_ylim())
 
         # Label axes
-        axes[i].set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+        axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
+                           + "}/$ [erg $/$ s $/$ Hz]")
 
         axes[i].set_xlim(10 ** 27.9, 10 ** 30.5)
 
@@ -1056,7 +1058,8 @@ for f in filters:
         ylims_twin.append(axes_twin[i].get_ylim())
 
         # Label axes
-        axes[i].set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+        axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
+                           + "}/$ [erg $/$ s $/$ Hz]")
 
         axes[i].set_xlim(10 ** 27.9, 10 ** 30.5)
 

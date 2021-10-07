@@ -39,6 +39,10 @@ kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 
 
+def sd_fit(l, sd):
+    return np.sqrt(l / (2 * np.pi * sd))
+
+
 def m_to_M(m, cosmo, z):
     flux = photconv.m_to_flux(m)
     lum = photconv.flux_to_L(flux, cosmo, z)
@@ -464,6 +468,76 @@ for f in filters:
 
     fig.savefig(
         'plots/SurfDen_MassSize_' + f + '_'
+        + orientation + '_' + Type + "_" + extinction + "_"
+        + '%d.png' % nlim,
+        bbox_inches='tight', dpi=300)
+
+    plt.close(fig)
+
+    fig = plt.figure(figsize=(18, 5))
+    gs = gridspec.GridSpec(1, len(snaps))
+    gs.update(wspace=0.0, hspace=0.0)
+    axes = []
+    ylims = []
+    i = 0
+    while i < len(snaps):
+        axes.append(fig.add_subplot(gs[0, i]))
+        if i > 0:
+            axes[-1].tick_params(axis='y', left=False, right=False,
+                                 labelleft=False, labelright=False)
+        i += 1
+
+    legend_elements = []
+
+    for i, snap in enumerate(snaps):
+
+        z_str = snap.split('z')[1].split('p')
+        z = float(z_str[0] + '.' + z_str[1])
+
+        hlrs = np.array(hlr_dict[snap][f])
+        surf_dens = np.array(surf_den_dict[snap][f])
+        lumins = np.array(img_lumin_dict[snap][f])
+
+        okinds = np.logical_and(hlrs > 10 ** -2,
+                                np.logical_and(surf_dens > 0,
+                                               lumins > 10 ** 20))
+
+        surf_dens = surf_dens[okinds]
+        hlrs = hlrs[okinds]
+        lumins = lumins[okinds]
+        w = np.array(weight_dict[snap][f])[okinds]
+
+        fitlumins = np.logspace(28, 31, 1000)
+
+        try:
+            im = axes[i].hexbin(lumins, hlrs, gridsize=50,
+                                mincnt=1, C=w,
+                                reduce_C_function=np.sum,
+                                xscale='log', yscale='log',
+                                norm=LogNorm(vmin=10 ** 24, vmax=10 ** 31),
+                                linewidths=0.2,
+                                cmap='plasma')
+        except ValueError as e:
+            print(e)
+
+        for sd in [10**26, 10**27, 10**28, 10**29, 10**30]:
+            axes[i].plot(fitlumins, sd_fit(fitlumins, sd), linestyle="dashed")
+
+        ylims.append(axes[i].get_ylim())
+
+    for i in range(len(axes)):
+        axes[i].set_ylim(10 ** -1.5, 10 ** 1.5)
+        axes[i].set_xlim(10 ** 7.5, 10 ** 12)
+        axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
+                           + "}/$ [erg $/$ s $/$ Hz]")
+
+    axes[0].set_ylabel("$R_{1/2}/ [\mathrm{kpc}]$")
+
+    cbar = fig.colorbar(im)
+    cbar.set_label("$S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]$")
+
+    fig.savefig(
+        'plots/SurfDen_LuminSize_' + f + '_'
         + orientation + '_' + Type + "_" + extinction + "_"
         + '%d.png' % nlim,
         bbox_inches='tight', dpi=300)

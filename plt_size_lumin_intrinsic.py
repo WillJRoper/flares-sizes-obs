@@ -273,7 +273,8 @@ for f in filters:
         ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
 
         # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+        ax.set_xlabel(r"$L_{" + f.split(".")[-1]
+                           + "}/$ [erg $/$ s $/$ Hz]")
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
         ax1.set_xlim(10 ** 26.8, 10 ** 31.2)
@@ -385,7 +386,8 @@ for f in filters:
         # ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
         #
         # # Label axes
-        # ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+        # ax.set_xlabel(r"$L_{" + f.split(".")[-1]
+        #                            + "}/$ [erg $/$ s $/$ Hz]")
         # ax.set_ylabel('$R_{1/2}/ [pkpc]$')
         #
         # ax.tick_params(axis='x', which='minor', bottom=True)
@@ -491,7 +493,8 @@ for f in filters:
         ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
 
         # Label axes
-        ax.set_xlabel(r'$L_{FUV}/$ [erg $/$ s $/$ Hz]')
+        ax.set_xlabel(r"$L_{" + f.split(".")[-1]
+                           + "}/$ [erg $/$ s $/$ Hz]")
         ax.set_ylabel('$R_{1/2}/ [pkpc]$')
 
         ax1.set_xlim(10 ** 26.8, 10 ** 31.2)
