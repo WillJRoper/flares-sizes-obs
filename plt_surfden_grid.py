@@ -475,7 +475,7 @@ for f in filters:
     plt.close(fig)
 
     cmap = plt.get_cmap("plasma")
-    norm = LogNorm(vmin=10**26, vmax=10**30)
+    norm = Normalize(vmin=26, vmax=30)
 
     fig = plt.figure(figsize=(18, 5))
     wid_ratios = len(snaps)*[10]
@@ -527,7 +527,7 @@ for f in filters:
 
         for sd in [10**26, 10**27, 10**28, 10**29, 10**30]:
             axes[i].plot(fitlumins, sd_fit(fitlumins, sd), linestyle="dashed",
-                         color=cmap(norm(sd)))
+                         color=cmap(norm(np.log10(sd))))
 
         ylims.append(axes[i].get_ylim())
 
@@ -540,7 +540,7 @@ for f in filters:
     axes[0].set_ylabel("$R_{1/2}/ [\mathrm{kpc}]$")
 
     cbar = mpl.colorbar.ColorbarBase(cax, cmap=cmap, norm=norm)
-    cbar.set_label("$S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]$")
+    cbar.set_label(r"$\log{10}\left(S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]\right)$")
 
     fig.savefig(
         'plots/SurfDen_LuminSize_' + f + '_'
