@@ -307,7 +307,7 @@ for f in filters:
         masses = np.array(mass_dict[snap][f])
 
         okinds = np.logical_and(hlrs > 10 ** -2,
-                                np.logical_and(surf_den > 0,
+                                np.logical_and(surf_dens > 0,
                                                masses > 10 ** 8))
 
         surf_dens = surf_dens[okinds]
@@ -369,7 +369,7 @@ for f in filters:
         masses = np.array(mass_dict[snap][f])
 
         okinds = np.logical_and(hlrs > 10 ** -2,
-                                np.logical_and(surf_den > 0,
+                                np.logical_and(surf_dens > 0,
                                                masses > 10 ** 8))
 
         surf_dens = surf_dens[okinds]
@@ -431,7 +431,7 @@ for f in filters:
         masses = np.array(mass_dict[snap][f])
 
         okinds = np.logical_and(hlrs > 10 ** -2,
-                                np.logical_and(surf_den > 0,
+                                np.logical_and(surf_dens > 0,
                                                masses > 10 ** 8))
 
         surf_dens = surf_dens[okinds]
