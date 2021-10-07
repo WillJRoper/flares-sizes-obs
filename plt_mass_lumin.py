@@ -96,7 +96,8 @@ for reg, snap in reg_snaps:
         weight_dict[snap].setdefault(f, [])
 
         masses = hdf[f]["Mass"][...]
-        okinds = masses > masslim
+        nstar = hdf[f]["nStar"][...]
+        okinds = np.logical_and(masses > masslim, nstar > 100)
 
         img_lumins = hdf[f]["Image_Luminosity"][...][okinds]
         hlrs = hdf[f]["HLR_0.5"][...][okinds]
@@ -108,10 +109,7 @@ for reg, snap in reg_snaps:
         lumin_dict[snap][f].extend(
             hdf[f]["Luminosity"][...][okinds])
         mass_dict[snap][f].extend(masses[okinds])
-        try:
-            nstar_dict[snap][f].extend(hdf[f]["nStar"][...])
-        except KeyError:
-            continue
+        nstar_dict[snap][f].extend(nstar)
         weight_dict[snap][f].extend(np.full(masses[okinds].size,
                                             weights[int(reg)]))
 
