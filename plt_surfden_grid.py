@@ -519,7 +519,7 @@ for f in filters:
             im = axes[i].hexbin(lumins, hlrs, gridsize=50,
                                 mincnt=1, C=w,
                                 reduce_C_function=np.sum,
-                                norm=LogNorm,
+                                norm=LogNorm(),
                                 xscale='log', yscale='log',
                                 linewidths=0.2,
                                 cmap='plasma')
