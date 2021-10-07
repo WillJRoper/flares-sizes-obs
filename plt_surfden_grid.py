@@ -513,12 +513,13 @@ for f in filters:
         lumins = lumins[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
 
-        fitlumins = np.logspace(27.5, 31, 1000)
+        fitlumins = np.logspace(27, 31, 1000)
 
         try:
             im = axes[i].hexbin(lumins, hlrs, gridsize=50,
                                 mincnt=1, C=w,
                                 reduce_C_function=np.sum,
+                                norm=LogNorm,
                                 xscale='log', yscale='log',
                                 linewidths=0.2,
                                 cmap='plasma')
@@ -532,16 +533,16 @@ for f in filters:
 
         ylims.append(axes[i].get_ylim())
 
-    for i in range(len(axes) - 1):
+    for i in range(len(axes)):
         axes[i].set_ylim(10 ** -1.5, 10 ** 1.5)
-        axes[i].set_xlim(10 ** 27.5, 10 ** 30.5)
+        axes[i].set_xlim(10 ** 27, 10 ** 30.5)
         axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
                            + "}/$ [erg $/$ s $/$ Hz]")
 
     axes[0].set_ylabel("$R_{1/2}/ [\mathrm{kpc}]$")
 
     cbar = mpl.colorbar.ColorbarBase(cax, cmap=cmap, norm=norm)
-    cbar.set_label(r"$\log{10}\left(S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]\right)$")
+    cbar.set_label(r"$\log_{10}\left(S / [\mathrm{erg} \mathrm{s}^{-1} \mathrm{Hz}^{-1} \mathrm{Mpc}^{-2}]\right)$")
 
     fig.savefig(
         'plots/SurfDen_LuminSize_' + f + '_'
