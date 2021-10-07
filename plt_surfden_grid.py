@@ -139,7 +139,7 @@ for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
 orientation = sys.argv[1]
 
 # Define luminosity and dust model types
-Type = "Total"
+Type = sys.argv[2]
 extinction = 'default'
 
 snaps = ['006_z009p000', '007_z008p000', '008_z007p000', '009_z006p000',
