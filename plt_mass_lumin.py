@@ -43,9 +43,7 @@ csoft = 0.001802390 / (0.6777) * 1e3
 
 masslim = 10 ** 8.0
 
-hlr_dict = {}
-hlr_app_dict = {}
-hlr_pix_dict = {}
+sd_dict = {}
 lumin_dict = {}
 mass_dict = {}
 nstar_dict = {}
@@ -83,6 +81,7 @@ for reg, snap in reg_snaps:
                                                                 orientation),
                     "r")
 
+    sd_dict.setdefault(snap, {})
     lumin_dict.setdefault(snap, {})
     mass_dict.setdefault(snap, {})
     nstar_dict.setdefault(snap, {})
@@ -90,6 +89,7 @@ for reg, snap in reg_snaps:
 
     for f in filters:
 
+        sd_dict[snap].setdefault(f, [])
         lumin_dict[snap].setdefault(f, [])
         mass_dict[snap].setdefault(f, [])
         nstar_dict[snap].setdefault(f, [])
@@ -98,8 +98,13 @@ for reg, snap in reg_snaps:
         masses = hdf[f]["Mass"][...]
         okinds = masses > masslim
 
+        img_lumins = hdf[f]["Image_Luminosity"][...][okinds]
+        hlrs = hdf[f]["HLR_0.5"][...][okinds]
+        surf_den = img_lumins / (2 * np.pi * hlrs ** 2)
+
         print(reg, snap, f, masses[okinds].size)
 
+        sd_dict[snap][f].extend(surf_den)
         lumin_dict[snap][f].extend(
             hdf[f]["Luminosity"][...][okinds])
         mass_dict[snap][f].extend(masses[okinds])
@@ -113,7 +118,7 @@ for reg, snap in reg_snaps:
     hdf.close()
 
 # Set mass limit
-masslim = 10 ** 9
+sdlim = 10 ** 29
 
 for f in filters:
 
@@ -128,13 +133,14 @@ for f in filters:
         z = float(z_str[0] + '.' + z_str[1])
 
         mass = np.array(mass_dict[snap][f])
+        sd = np.array(sd_dict[snap][f])
         lumins = np.array(lumin_dict[snap][f])
         nstar = np.array(nstar_dict[snap][f])
         w = np.array(weight_dict[snap][f])
         print(len(mass), len(lumins), len(w))
 
-        okinds1 = mass < masslim
-        okinds2 = mass >= masslim
+        okinds1 = sd < sdlim
+        okinds2 = sd >= sdlim
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
