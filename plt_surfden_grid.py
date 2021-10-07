@@ -510,7 +510,7 @@ for f in filters:
         lumins = lumins[okinds]
         w = np.array(weight_dict[snap][f])[okinds]
 
-        fitlumins = np.logspace(28, 31, 1000)
+        fitlumins = np.logspace(27, 31, 1000)
 
         try:
             im = axes[i].hexbin(lumins, hlrs, gridsize=50,
@@ -530,7 +530,7 @@ for f in filters:
 
     for i in range(len(axes)):
         axes[i].set_ylim(10 ** -1.5, 10 ** 1.5)
-        # axes[i].set_xlim(10 ** 27.5, 10 ** 31)
+        axes[i].set_xlim(10 ** 27.5, 10 ** 31)
         axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
                            + "}/$ [erg $/$ s $/$ Hz]")
 
