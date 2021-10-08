@@ -44,7 +44,7 @@ Type = sys.argv[2]
 extinction = 'default'
 
 # Define filter
-filters = ['FAKE.TH.'+ f
+filters = ['FAKE.TH.' + f
            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
 
@@ -54,6 +54,7 @@ imgs_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
 mass_dict = {}
+sd_dict = {}
 
 regions = []
 for reg in range(0, 40):
@@ -80,8 +81,10 @@ for reg in regions:
         for f in filters:
             imgs_dict[f] = hdf[f]["Images"][...]
             mass_dict[f] = hdf[f]["Mass"][...]
-            hlr_pix_dict[f] = hdf[f]["HLR_0.5"][...]
+            hlr_pix_dict[f] = hdf[f]["HLR_Pixel_0.5"][...]
             lumin_dict[f] = hdf[f]["Luminosity"][...]
+            sd_dict[f] = hdf[f]["Image_Luminosity"][...] / (
+                    2 * np.pi * hdf[f]["HLR_Pixel_0.5"][...] ** 2)
 
         hdf.close()
 
@@ -103,6 +106,7 @@ for reg in regions:
             hlrs_pix = np.array(hlr_pix_dict[f])
             lumins = np.array(lumin_dict[f])
             mass = np.array(mass_dict[f])
+            sd = np.array(sd_dict[f])
 
             norm = cm.Normalize(vmin=0,
                                 vmax=np.percentile(imgs[imgs > 0], 99.99),
@@ -135,20 +139,20 @@ for reg in regions:
                 j_imgs = imgs[okinds, :, :]
                 j_mass = mass[okinds]
                 j_lumin = lumins[okinds]
-                j_hlrs = hlrs_pix[okinds]
+                j_sd = sd[okinds]
                 done_inds = set()
-                if j_hlrs.size != 0:
-                    rbins = np.linspace(np.min(j_hlrs), np.max(j_hlrs), 5)
-                    rbins[-1] = np.inf
+                if j_sd.size != 0:
+                    sdbins = np.linspace(np.min(j_sd), np.max(j_sd), 5)
+                    sdbins[-1] = np.inf
                 else:
                     rbins = [0, 1, 2, 3, 4]
                 for i in range(4):
-                    okinds = np.logical_and(j_hlrs >= rbins[i],
-                                            j_hlrs < rbins[i + 1])
+                    okinds = np.logical_and(j_sd >= sdbins[i],
+                                            j_sd < sdbins[i + 1])
                     this_imgs = j_imgs[okinds, :, :]
                     this_mass = j_mass[okinds]
                     this_lumin = j_lumin[okinds]
-                    this_hlrs = j_hlrs[okinds]
+                    this_sd = j_sd[okinds]
 
                     try:
                         ind = np.random.choice(this_mass.size)
@@ -165,10 +169,14 @@ for reg in regions:
                         string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(
                             this_mass[ind]) + "\n" \
                                  + r"$\log_{10}\left(L_{" + f.split(".")[
-                                     -1] + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]\right) =$ %.2f" % np.log10(
+                                     -1] + r"} / [\mathrm{erg} / \mathrm{s} / " \
+                                           r"\mathrm{Hz}]\right) =$ %.2f" % np.log10(
                             this_lumin[ind]) + "\n" \
-                                 + r"$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % \
-                                 this_hlrs[ind]
+                                 + r"$\log_{10}\left(S_{R<R_{1/2}," + \
+                                 f.split(".")[
+                                     -1] + r"} / [\mathrm{erg} / \mathrm{s} / " \
+                                           r"\mathrm{Hz} / \mathrm{pkpc}^2]\right) =$ %.2f" % np.log10(
+                            this_sd[ind])
 
                         axes[i, j].text(0.05, 0.95, string,
                                         transform=axes[i, j].transAxes,

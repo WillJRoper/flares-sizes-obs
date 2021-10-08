@@ -182,6 +182,14 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
 
+            okinds = data[snap][f]["okinds"]
+
+            okinds1 = np.logical_and(okinds,
+                                     data[snap][f]["Compact_Population"])
+            okinds2 = np.logical_and(okinds,
+                                     data[snap][f]["Diffuse_Population"][
+                                         okinds])
+
             if measure == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])
                 lumins = np.array(data[snap][f]["Luminosity"])
@@ -192,9 +200,6 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 hlrs = np.array(data[snap][f]["HLR_Aperture_0.5"])
                 lumins = np.array(data[snap][f]["Image_Luminosity"])
             w = np.array(data[snap][f]["Weight"])
-
-            okinds1 = data[snap][f]["Compact_Population"]
-            okinds2 = data[snap][f]["Diffuse_Population"]
 
             # bins = np.logspace(np.log10(0.08), np.log10(20), 40)
             # lumin_bins = np.logspace(np.log10(10 ** 27.),
@@ -380,7 +385,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
                                + "}/$ [erg $/$ s $/$ Hz]")
 
-            axes[i].set_xlim(10 ** 27., 10 ** 30.5)
+            axes[i].set_xlim(10 ** 27.2, 10 ** 30.5)
 
         for i in range(len(axes)):
             axes[i].set_ylim(np.min(ylims), np.max(ylims))
