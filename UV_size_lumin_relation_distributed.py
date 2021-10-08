@@ -137,7 +137,7 @@ if run:
 
     # Set mass limit
     masslim = 10 ** 8
-    nlim = 100
+    nlim = None
 
     z_str = tag.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
@@ -355,7 +355,7 @@ if run:
 
         print("There are", len(img_dict[tag][f]), "images")
 
-    hdf = h5py.File("data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, tag, Type, orientation),
+    hdf = h5py.File("data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, tag, Type, orientation),
                     "w")
 
     for f in filters:
