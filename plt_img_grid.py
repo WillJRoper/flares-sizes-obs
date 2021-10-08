@@ -108,6 +108,8 @@ for reg in regions:
             mass = np.array(mass_dict[f])
             sd = np.array(sd_dict[f])
 
+            print(imgs.shape)
+
             norm = cm.Normalize(vmin=0,
                                 vmax=np.percentile(imgs[imgs > 0], 99.99),
                                 clip=True)
@@ -162,9 +164,9 @@ for reg in regions:
                     if ind > -1:
                         size = this_imgs.shape[-1]
                         axes[i, j].imshow(this_imgs[ind,
-                                          int(0.2 * size):-int(0.2 * size),
-                                          int(0.2 * size):-int(0.2 * size)],
-                                          cmap=cmr.cosmic, norm=norm)
+                                          int(0.4 * size):-int(0.4 * size),
+                                          int(0.4 * size):-int(0.4 * size)],
+                                          cmap=cmr.neutral, norm=norm)
 
                         string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(
                             this_mass[ind]) + "\n" \
