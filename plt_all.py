@@ -56,6 +56,8 @@ for reg, snap in reg_snaps:
 
     for f in filters:
 
+        print(reg, snap, f)
+
         data[snap].setdefault(f, {})
         intr_data[snap].setdefault(f, {})
 
