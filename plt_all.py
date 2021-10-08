@@ -3,7 +3,7 @@ import numpy as np
 from plt_size_lumin_grid import size_lumin_grid
 
 # Set orientation
-orientation = sys.argv[1]
+orientation = "sim"
 
 snaps = ['006_z009p000', '007_z008p000', '008_z007p000', '009_z006p000',
          '010_z005p000']
@@ -111,4 +111,4 @@ for snap in snaps:
         intr_data[snap][f]["Compact_Population"] = compact_pop
         intr_data[snap][f]["Diffuse_Population"] = diffuse_pop
 
-size_lumin_grid(data, snaps, filters, "sim", "Total", "default", "pix")
+size_lumin_grid(data, snaps, filters, orientation, "Total", "default", "pix")
