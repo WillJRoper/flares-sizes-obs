@@ -185,7 +185,7 @@ for reg in regions:
                                         color="w")
                     else:
                         axes[i, j].imshow(np.zeros_like(imgs[0, :, :]),
-                                          cmap=cmr.cosmic, norm=norm)
+                                          cmap=cmr.neutral, norm=norm)
 
             fig.savefig(
                 'plots/Image_grids/ImgGrid_' + f + '_' + str(z) + '_' + reg
