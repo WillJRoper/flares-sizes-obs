@@ -142,6 +142,7 @@ for reg in regions:
                 j_mass = mass[okinds]
                 j_lumin = lumins[okinds]
                 j_sd = sd[okinds]
+                j_hlrs = hlrs_pix[okinds]
                 done_inds = set()
                 if j_sd.size != 0:
                     sdbins = np.linspace(np.min(j_sd), np.max(j_sd), 5)
@@ -155,6 +156,7 @@ for reg in regions:
                     this_mass = j_mass[okinds]
                     this_lumin = j_lumin[okinds]
                     this_sd = j_sd[okinds]
+                    this_hlrs = j_hlrs[okinds]
 
                     try:
                         ind = np.random.choice(this_mass.size)
@@ -178,7 +180,7 @@ for reg in regions:
                                  f.split(".")[
                                      -1] + r"} / [\mathrm{erg} / \mathrm{s} / " \
                                            r"\mathrm{Hz} / \mathrm{pkpc}^2]\right) =$ %.2f" % np.log10(
-                            this_sd[ind])
+                            this_sd[ind]) + r"\n $R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
 
                         axes[i, j].text(0.05, 0.95, string,
                                         transform=axes[i, j].transAxes,
