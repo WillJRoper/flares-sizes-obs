@@ -140,7 +140,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, okinds, okinds1, okinds2, f, orientation, s
                        np.percentile(H[H > 0], 95),
                        np.percentile(H[H > 0], 99)]
     except IndexError:
-        
+        return
 
     bins = np.logspace(np.log10(0.08), np.log10(40), H.shape[0] + 1)
 
@@ -222,7 +222,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, okinds, okinds1, okinds2, f, orientation, s
                        np.percentile(H[H > 0], 95),
                        np.percentile(H[H > 0], 99)]
     except IndexError:
-        
+        return
 
     bins = np.logspace(np.log10(0.08), np.log10(40), H.shape[0] + 1)
 
