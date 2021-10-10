@@ -187,8 +187,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             okinds1 = np.logical_and(okinds,
                                      data[snap][f]["Compact_Population"])
             okinds2 = np.logical_and(okinds,
-                                     data[snap][f]["Diffuse_Population"][
-                                         okinds])
+                                     data[snap][f]["Diffuse_Population"])
 
             if measure == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])
