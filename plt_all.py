@@ -24,7 +24,7 @@ all_snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
 filters = ['FAKE.TH.' + f for f in ['FUV', 'MUV', 'NUV']]
 
 keys = ["Mass", "Image_Luminosity", "HLR_0.5",
-        "HLR_Pixel_0.5", "Luminosity", "HDR", "Images", "nStar"]
+        "HLR_Pixel_0.5", "Luminosity", "HDR", "nStar"]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
