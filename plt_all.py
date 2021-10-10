@@ -3,10 +3,11 @@ import numpy as np
 import pandas as pd
 from plt_half_dust_radius_comp import hdr_comp
 from plt_mass_lumin import mass_lumin
+from plt_size_evo_violin import size_evo_violin
 from plt_size_lumin_fitgrid import fit_size_lumin_grid
 from plt_size_lumin_grid import size_lumin_grid
-from plt_size_evo_violin import size_evo_violin
 from plt_size_lumin_intrinsic import size_lumin_intrinsic
+
 # Set orientation
 orientation = "sim"
 
@@ -44,7 +45,7 @@ for reg in range(0, 40):
 reg_snaps = []
 for reg in reversed(regions):
 
-    for snap in snaps:
+    for snap in all_snaps:
         reg_snaps.append((reg, snap))
 
 for reg, snap in reg_snaps:
@@ -98,19 +99,21 @@ for reg, snap in reg_snaps:
 
     hdf.close()
 
-for snap in snaps:
+for snap in all_snaps:
 
     for f in filters:
 
-        okinds = np.logical_and(
-            np.array(intr_data[snap][f]["Inner_Surface_Density"]) > 10 ** 26,
-            data[snap][f]["nStar"] > 100)
+        print(snap, f)
 
         for key in data[snap][f].keys():
             data[snap][f][key] = np.array(data[snap][f][key])
 
         for key in intr_data[snap][f].keys():
             intr_data[snap][f][key] = np.array(intr_data[snap][f][key])
+
+        okinds = np.logical_and(
+            intr_data[snap][f]["Inner_Surface_Density"] > 10 ** 26,
+            intr_data[snap][f]["nStar"] > 100)
 
         data[snap][f]["okinds"] = okinds
         intr_data[snap][f]["okinds"] = okinds
@@ -144,5 +147,10 @@ for f in filters:
                  data[snap][f]["okinds"], data[snap][f]["Compact_Population"],
                  data[snap][f]["Diffuse_Population"], f,
                  orientation, snap, "Intrinsic", "default")
-        size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"], intr_data[snap][f]["Image_Luminosity"], intr_data[snap][f]["Weight"], intr_data[snap][f]["okinds"], intr_data[snap][f]["Compact_Population"],
-                 intr_data[snap][f]["Diffuse_Population"], f, snap, "pix", orientation, "default")
+        size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
+                             intr_data[snap][f]["Image_Luminosity"],
+                             intr_data[snap][f]["Weight"],
+                             intr_data[snap][f]["okinds"],
+                             intr_data[snap][f]["Compact_Population"],
+                             intr_data[snap][f]["Diffuse_Population"], f, snap,
+                             "pix", orientation, "default")
