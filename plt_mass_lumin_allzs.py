@@ -257,7 +257,7 @@ if __name__ == "__main__":
                 intr_data[snap][f][key] = np.array(
                     intr_data[snap][f][key])
 
-            okinds = intr_data[snap][f]["nStar"] > 50
+            okinds = intr_data[snap][f]["nStar"] > 75
 
             data[snap][f]["okinds"] = okinds
             intr_data[snap][f]["okinds"] = okinds
@@ -283,7 +283,7 @@ if __name__ == "__main__":
             intr_all_z_data[f][key] = np.array(
                 intr_all_z_data[f][key])
 
-        okinds = intr_all_z_data[f]["nStar"] > 50
+        okinds = intr_all_z_data[f]["nStar"] > 75
 
         all_z_data[f]["okinds"] = okinds
         intr_all_z_data[f]["okinds"] = okinds

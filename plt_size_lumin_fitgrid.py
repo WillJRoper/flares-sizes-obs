@@ -147,7 +147,7 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
-                        mtype):
+                        mtype, complete_l, complete_m):
     for f in filters:
 
         print("Plotting for:")
@@ -182,13 +182,6 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
 
-            okinds = data[snap][f]["okinds"]
-
-            okinds1 = np.logical_and(okinds,
-                                     data[snap][f]["Compact_Population"])
-            okinds2 = np.logical_and(okinds,
-                                     data[snap][f]["Diffuse_Population"])
-
             if mtype == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])
                 lumins = np.array(data[snap][f]["Luminosity"])
@@ -199,10 +192,23 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 hlrs = np.array(data[snap][f]["HLR_Aperture_0.5"])
                 lumins = np.array(data[snap][f]["Image_Luminosity"])
             w = np.array(data[snap][f]["Weight"])
+            mass = np.array(data[snap][f]["Mass"])
+
+            okinds = data[snap][f]["okinds"]
+
+            com_okinds = np.logical_and(lumins > complete_l, mass > complete_m)
+
+            okinds1 = np.logical_and(okinds,
+                                     np.logical_and(com_okinds, data[snap][f][
+                                         "Compact_Population"]))
+            okinds2 = np.logical_and(okinds,
+                                     np.logical_and(com_okinds, data[snap][f][
+                                         "Diffuse_Population"]))
 
             try:
 
-                popt, pcov = curve_fit(kawa_fit, lumins, hlrs,
+                popt, pcov = curve_fit(kawa_fit, lumins[com_okinds],
+                                       hlrs[com_okinds],
                                        p0=(kawa_params['r_0'][7],
                                            kawa_params['beta'][7]),
                                        sigma=w)
@@ -223,7 +229,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 print("R_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
                 print("beta=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
                 print(pcov)
-                print("--------------", "Total", "Massive", mtype, f,
+                print("--------------", "Total", "Compact", mtype, f,
                       "--------------")
                 print("R_0=", popt1[0], "+/-", np.sqrt(pcov1[0, 0]))
                 print("beta=", popt1[1], "+/-", np.sqrt(pcov1[1, 1]))
@@ -239,7 +245,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 print(
                     "----------------------------------------------------------")
 
-                fit_lumins = np.logspace(np.log10(lumins.min()),
+                fit_lumins = np.logspace(np.log10(complete_l),
                                          np.log10(lumins.max()),
                                          1000)
 
