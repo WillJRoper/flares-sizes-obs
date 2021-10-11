@@ -147,7 +147,7 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
-                    measure):
+                    mtype):
     for f in filters:
 
         print("Plotting for:")
@@ -456,7 +456,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                        ncol=len(uni_legend_elements))
 
         fig.savefig(
-            'plots/HalfLightRadius_' + measure + "_" + f + '_'
+            'plots/HalfLightRadius_' + mtype + "_" + f + '_'
             + orientation + '_' + Type + "_" + extinction + ".png",
             bbox_inches='tight', dpi=300)
 
