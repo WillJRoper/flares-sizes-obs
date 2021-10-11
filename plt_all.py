@@ -133,7 +133,8 @@ fit_size_lumin_grid(data, snaps, filters, orientation, "Total", "default",
                     "pix")
 
 for f in filters:
-    size_evo_violin(data, intr_data, snaps, f, "pix", "sim")
+    size_evo_violin(data, intr_data, snaps, f, "pix", "sim", "Total",
+                    "default")
     for snap in snaps:
         mass_lumin(intr_data[snap][f]["Mass"],
                    intr_data[snap][f]["Luminosity"],

@@ -113,6 +113,10 @@ for reg in regions:
             norm = cm.Normalize(vmin=0,
                                 vmax=np.percentile(imgs[imgs > 0], 99.99),
                                 clip=True)
+            norm_log = cm.Normalize(vmin=0,
+                                    vmax=np.percentile(
+                                        np.log10(imgs[imgs > 0]), 99.99),
+                                    clip=True)
 
             print(np.min(imgs[imgs > 0]),
                   np.percentile(imgs[imgs > 0], 33.175),
@@ -121,20 +125,32 @@ for reg in regions:
 
             dpi = 1080
             fig = plt.figure(figsize=(4, 4), dpi=dpi)
+            fig_log = plt.figure(figsize=(4, 4), dpi=dpi)
             gs = gridspec.GridSpec(4, 4)
             gs.update(wspace=0.0, hspace=0.0)
             axes = np.empty((4, 4), dtype=object)
+            axes_log = np.empty((4, 4), dtype=object)
             bins = [10 ** 8, 10 ** 9, 10 ** 9.5, 10 ** 10, np.inf]
             for i in range(4):
                 for j in range(4):
                     axes[i, j] = fig.add_subplot(gs[i, j])
+                    axes_log[i, j] = fig.add_subplot(gs[i, j])
 
                     # Remove axis labels and ticks
                     axes[i, j].tick_params(axis='x', top=False, bottom=False,
                                            labeltop=False, labelbottom=False)
-
                     axes[i, j].tick_params(axis='y', left=False, right=False,
                                            labelleft=False, labelright=False)
+
+                    # Remove axis labels and ticks
+                    axes_log[i, j].tick_params(axis='x', top=False,
+                                               bottom=False,
+                                               labeltop=False,
+                                               labelbottom=False)
+                    axes_log[i, j].tick_params(axis='y', left=False,
+                                               right=False,
+                                               labelleft=False,
+                                               labelright=False)
 
             for j in range(4):
                 okinds = np.logical_and(mass >= bins[j], mass < bins[j + 1])
@@ -168,7 +184,16 @@ for reg in regions:
                         axes[i, j].imshow(this_imgs[ind,
                                           int(0.3 * size):-int(0.3 * size),
                                           int(0.3 * size):-int(0.3 * size)],
-                                          cmap=cmr.neutral, norm=norm)
+                                          cmap=cmr.neutral_r, norm=norm)
+
+                        logimg = np.zeros_like(this_imgs[ind, :, :])
+                        logimg[this_imgs[ind, :, :] > 0] = np.log10(
+                            this_imgs[ind, :, :][this_imgs[ind, :, :] > 0])
+
+                        axes_log[i, j].imshow(
+                            logimg[int(0.3 * size):-int(0.3 * size),
+                            int(0.3 * size):-int(0.3 * size)],
+                            cmap=cmr.neutral_r, norm=norm_log)
 
                         string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(
                             this_mass[ind]) + "\n" \
@@ -180,20 +205,37 @@ for reg in regions:
                                  f.split(".")[
                                      -1] + r"} / [\mathrm{erg} / \mathrm{s} / " \
                                            r"\mathrm{Hz} / \mathrm{pkpc}^2]\right) =$ %.2f" % np.log10(
-                            this_sd[ind]) + r"\n $R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % this_hlrs[ind]
+                            this_sd[
+                                ind]) + r" \n $R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % \
+                                 this_hlrs[ind]
 
                         axes[i, j].text(0.05, 0.95, string,
                                         transform=axes[i, j].transAxes,
                                         verticalalignment="top",
                                         horizontalalignment='left', fontsize=2,
                                         color="w")
+                        axes_log[i, j].text(0.05, 0.95, string,
+                                            transform=axes[i, j].transAxes,
+                                            verticalalignment="top",
+                                            horizontalalignment='left',
+                                            fontsize=2,
+                                            color="w")
                     else:
                         axes[i, j].imshow(np.zeros_like(imgs[0, :, :]),
-                                          cmap=cmr.neutral, norm=norm)
+                                          cmap=cmr.neutral_r, norm=norm)
+                        axes_log[i, j].imshow(np.zeros_like(imgs[0, :, :]),
+                                              cmap=cmr.neutral_r,
+                                              norm=norm_log)
 
             fig.savefig(
                 'plots/Image_grids/ImgGrid_' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + '_' + Type
                 + "_" + extinction + "".replace(".", "p") + ".png",
                 bbox_inches='tight', dpi=fig.dpi)
+            fig_log.savefig(
+                'plots/Image_grids/LogImgGrid_' + f + '_' + str(z) + '_' + reg
+                + '_' + snap + '_' + orientation + '_' + Type
+
+                + "_" + extinction + "".replace(".", "p") + ".png",
+                bbox_inches='tight', dpi=fig_log.dpi)
             plt.close(fig)

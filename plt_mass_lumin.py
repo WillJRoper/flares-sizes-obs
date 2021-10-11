@@ -36,12 +36,18 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axtop = fig.add_subplot(gs[0, 0])
     axright = fig.add_subplot(gs[1, 1])
     try:
+        cbar = ax.hexbin(mass, lumins,
+                         gridsize=50, mincnt=1, C=w[okinds1],
+                         reduce_C_function=np.sum,
+                         xscale='log', yscale='log',
+                         norm=LogNorm(), linewidths=0.2,
+                         cmap='Greys', alpha=0.4)
         cbar = ax.hexbin(mass[okinds1], lumins[okinds1],
                          gridsize=50, mincnt=1, C=w[okinds1],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
-                         cmap='Greys', alpha=0.6)
+                         cmap='Greys', alpha=0.8)
         cbar = ax.hexbin(mass[okinds2], lumins[okinds2],
                          gridsize=50, mincnt=1, C=w[okinds2],
                          reduce_C_function=np.sum,
