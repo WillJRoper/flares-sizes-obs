@@ -29,6 +29,9 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
+    okinds1 = np.logical_and(nokinds, okinds1)
+    okinds2 = np.logical_and(nokinds, okinds2)
+
     fig = plt.figure()
     gs = gridspec.GridSpec(2, 2)
     gs.update(wspace=0.0, hspace=0.0)
@@ -37,7 +40,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axright = fig.add_subplot(gs[1, 1])
     try:
         cbar = ax.hexbin(mass, lumins,
-                         gridsize=50, mincnt=1, C=w[okinds1],
+                         gridsize=50, mincnt=1, C=w,
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
