@@ -133,9 +133,11 @@ fit_size_lumin_grid(data, snaps, filters, orientation, "Total", "default",
                     "pix")
 
 for f in filters:
+    print(f)
     size_evo_violin(data, intr_data, snaps, f, "pix", "sim", "Total",
                     "default")
     for snap in snaps:
+        print(snap)
         mass_lumin(intr_data[snap][f]["Mass"],
                    intr_data[snap][f]["Luminosity"],
                    intr_data[snap][f]["okinds"],
@@ -150,7 +152,7 @@ for f in filters:
                  orientation, snap, "Intrinsic", "default")
         size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
                              intr_data[snap][f]["Image_Luminosity"],
-                             intr_data[snap][f]["Weight"],
+                             data[snap][f]["Weight"],
                              intr_data[snap][f]["okinds"],
                              intr_data[snap][f]["Compact_Population"],
                              intr_data[snap][f]["Diffuse_Population"], f, snap,
