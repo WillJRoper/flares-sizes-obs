@@ -69,7 +69,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     except ValueError as e:
         print(e)
 
-    lumin_bins = np.logspace(26.3, 31.5, 100)
+    lumin_bins = np.logspace(26.3, 31.5, 50)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
     Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
@@ -83,7 +83,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axright.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
     ax.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
 
-    mass_bins = np.logspace(7.5, 11.5, 100)
+    mass_bins = np.logspace(7.5, 11.5, 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
     Htop2, bin_edges = np.histogram(mass[nokinds], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
@@ -249,7 +249,7 @@ if __name__ == "__main__":
                 intr_data[snap][f][key] = np.array(intr_data[snap][f][key])
 
             okinds = np.logical_and(
-                intr_data[snap][f]["Inner_Surface_Density"] > 10 ** 26,
+                intr_data[snap][f]["Inner_Surface_Density"] > 0,
                 intr_data[snap][f]["nStar"] > 100)
 
             data[snap][f]["okinds"] = okinds

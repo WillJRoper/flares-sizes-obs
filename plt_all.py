@@ -112,7 +112,7 @@ for snap in all_snaps:
             intr_data[snap][f][key] = np.array(intr_data[snap][f][key])
 
         okinds = np.logical_and(
-            intr_data[snap][f]["Inner_Surface_Density"] > 10 ** 26,
+            intr_data[snap][f]["Inner_Surface_Density"] > 0,
             intr_data[snap][f]["nStar"] > 100)
 
         data[snap][f]["okinds"] = okinds
