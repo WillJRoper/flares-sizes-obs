@@ -69,7 +69,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     except ValueError as e:
         print(e)
 
-    lumin_bins = np.logspace(26.3, 31.5, 75)
+    lumin_bins = np.logspace(26.3, 31.5, 150)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
     Hbot2, bin_edges = np.histogram(lumins[np.logical_or(okinds1, okinds2)], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
@@ -85,7 +85,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axright.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
     ax.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
 
-    mass_bins = np.logspace(7.5, 11.5, 75)
+    mass_bins = np.logspace(7.5, 11.5, 150)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
     Htop2, bin_edges = np.histogram(mass[np.logical_or(okinds1, okinds2)], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
