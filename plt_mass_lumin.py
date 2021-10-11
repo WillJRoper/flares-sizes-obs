@@ -275,4 +275,4 @@ if __name__ == "__main__":
                        intr_data[snap][f]["Diffuse_Population"],
                        intr_data[snap][f]["Compact_Population"],
                        data[snap][f]["Weight"],
-                       f, snap, orientation, "Intrinsic", "default")
+                       f, snap, orientation, "Total", "default")
