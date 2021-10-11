@@ -133,7 +133,7 @@ for reg in regions:
             for i in range(4):
                 for j in range(4):
                     axes[i, j] = fig.add_subplot(gs[i, j])
-                    axes_log[i, j] = fig.add_subplot(gs[i, j])
+                    axes_log[i, j] = fig_log.add_subplot(gs[i, j])
 
                     # Remove axis labels and ticks
                     axes[i, j].tick_params(axis='x', top=False, bottom=False,
@@ -192,7 +192,7 @@ for reg in regions:
                         axes_log[i, j].imshow(
                             logimg[int(0.3 * size):-int(0.3 * size),
                             int(0.3 * size):-int(0.3 * size)],
-                            cmap=cmr.neutral_r, norm=norm_log)
+                            cmap=cmr.neutral, norm=norm_log)
 
                         string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(
                             this_mass[ind]) + "\n" \
@@ -212,7 +212,7 @@ for reg in regions:
                                         transform=axes[i, j].transAxes,
                                         verticalalignment="top",
                                         horizontalalignment='left', fontsize=2,
-                                        color="w")
+                                        color="k")
                         axes_log[i, j].text(0.05, 0.95, string,
                                             transform=axes[i, j].transAxes,
                                             verticalalignment="top",
@@ -223,7 +223,7 @@ for reg in regions:
                         axes[i, j].imshow(np.zeros_like(imgs[0, :, :]),
                                           cmap=cmr.neutral_r, norm=norm)
                         axes_log[i, j].imshow(np.zeros_like(imgs[0, :, :]),
-                                              cmap=cmr.neutral_r,
+                                              cmap=cmr.neutral,
                                               norm=norm_log)
 
             fig.savefig(
