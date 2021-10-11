@@ -210,6 +210,7 @@ if __name__ == "__main__":
 
             print(reg, snap, f)
             all_z_data.setdefault(f, {})
+            intr_all_z_data.setdefault(f, {})
             data[snap].setdefault(f, {})
             intr_data[snap].setdefault(f, {})
 
