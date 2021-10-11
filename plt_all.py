@@ -106,7 +106,7 @@ for snap in all_snaps:
 
         print(snap, f)
 
-        okinds = np.ones(intr_data[snap][f]["nStar"].size)
+        okinds = np.ones(len(intr_data[snap][f]["nStar"]))
         for key in keys:
             okinds = np.logical_and(okinds, np.logical_and(
                 np.array(data[snap][f][key]) > 0,
