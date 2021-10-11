@@ -57,14 +57,14 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
-                         cmap='Greys', alpha=0.8,
+                         cmap='Greys',
                          extent=(7.5, 11.5, 26.3, 31.5))
         cbar = ax.hexbin(mass[okinds2], lumins[okinds2],
                          gridsize=50, mincnt=1, C=w[okinds2],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
-                         cmap='viridis', alpha=0.9,
+                         cmap='viridis',
                          extent=(7.5, 11.5, 26.3, 31.5))
     except ValueError as e:
         print(e)
