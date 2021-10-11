@@ -249,7 +249,7 @@ if __name__ == "__main__":
 
             okinds = np.logical_and(
                 intr_data[snap][f]["Inner_Surface_Density"] > 10 ** 26,
-                intr_data[snap][f]["nStar"] > 100)
+                intr_data[snap][f]["nStar"] > 50)
 
             data[snap][f]["okinds"] = okinds
             intr_data[snap][f]["okinds"] = okinds
