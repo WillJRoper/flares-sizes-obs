@@ -76,10 +76,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
                                     bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    ind = Hbot2.size - 1
-    while ind > 0 and (Hbot2_all[ind] - Hbot2[ind]) == 0:
-        ind -= 1
-    comp_l = lbin_cents[ind]
+    comp_l = np.max(lumins[~nokinds])
     print("Complete to log_10(L/[erg s^-1 Hz^-1]) =", np.log10(comp_l))
 
     axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.4)
@@ -87,16 +84,12 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axright.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
     ax.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
 
-    mass_bins = np.logspace(7.5, 11.5, 150)
+    mass_bins = np.logspace(7.5, 11.5, 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
-    Htop2, bin_edges = np.histogram(mass[np.logical_or(okinds1, okinds2)],
-                                    bins=mass_bins)
+    Htop2, bin_edges = np.histogram(mass[np.logical_or(okinds1, okinds2)], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    ind = Htop2.size - 1
-    while ind > 0 and (Htop2_all[ind] - Htop2[ind]) == 0:
-        ind -= 1
-    comp_m = mbin_cents[ind]
+    comp_m = np.max(mass[~nokinds])
     print("Complete to log_10(M/M_sun) =", np.log10(comp_m))
 
     axtop.plot(mbin_cents, Htop2_all, color="k", alpha=0.4)
