@@ -53,7 +53,7 @@ for reg, snap in reg_snaps:
     try:
         hdf = h5py.File(
             "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
-                                                        orientation),
+                                                            orientation),
             "r")
     except OSError as e:
         print(e)
@@ -79,8 +79,9 @@ for reg, snap in reg_snaps:
 
     try:
         hdf = h5py.File(
-            "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap, "Intrinsic",
-                                                        orientation),
+            "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap,
+                                                            "Intrinsic",
+                                                            orientation),
             "r")
     except OSError as e:
         print(e)
@@ -115,6 +116,11 @@ for snap in all_snaps:
 
         data[snap][f]["okinds"] = okinds
         intr_data[snap][f]["okinds"] = okinds
+
+        data[snap][f]["Complete_Luminosity"] = np.max(
+            data[snap][f]["Luminosity"][~okinds])
+        intr_data[snap][f]["Complete_Mass"] = np.max(
+            intr_data[snap][f]["Mass"][~okinds])
 
         compact_pop = np.array(
             intr_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 29

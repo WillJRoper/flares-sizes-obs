@@ -44,10 +44,10 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axtop.grid(False)
     axright.grid(False)
     try:
-        cbar = ax.hexbin(mass[~np.logical_or(okinds1, okinds2)],
-                         lumins[~np.logical_or(okinds1, okinds2)],
+        cbar = ax.hexbin(mass[~nokinds],
+                         lumins[~nokinds],
                          gridsize=50, mincnt=1,
-                         C=w[~np.logical_or(okinds1, okinds2)],
+                         C=w[~nokinds],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
@@ -72,7 +72,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     lumin_bins = np.logspace(26.3, 31.5, 150)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
-    Hbot2, bin_edges = np.histogram(lumins[np.logical_or(okinds1, okinds2)],
+    Hbot2, bin_edges = np.histogram(lumins[nokinds],
                                     bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
@@ -86,7 +86,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     mass_bins = np.logspace(7.5, 11.5, 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
-    Htop2, bin_edges = np.histogram(mass[np.logical_or(okinds1, okinds2)], bins=mass_bins)
+    Htop2, bin_edges = np.histogram(mass[nokinds], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     comp_m = np.max(mass[~nokinds])
@@ -252,23 +252,15 @@ if __name__ == "__main__":
 
             for key in data[snap][f].keys():
                 data[snap][f][key] = np.array(data[snap][f][key])
-                all_z_data[f][key] = np.array(all_z_data[f][key])
 
             for key in intr_data[snap][f].keys():
                 intr_data[snap][f][key] = np.array(
                     intr_data[snap][f][key])
-                intr_all_z_data[f][key] = np.array(
-                    intr_all_z_data[f][key])
 
-            okinds = intr_data[snap][f]["nStar"] > 100
+            okinds = intr_data[snap][f]["nStar"] > 50
 
             data[snap][f]["okinds"] = okinds
             intr_data[snap][f]["okinds"] = okinds
-
-            okinds = intr_all_z_data[f]["nStar"] > 100
-
-            all_z_data[f]["okinds"] = okinds
-            intr_all_z_data[f]["okinds"] = okinds
 
             compact_pop = np.array(
                 intr_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 29
@@ -280,15 +272,31 @@ if __name__ == "__main__":
             intr_data[snap][f]["Compact_Population"] = compact_pop
             intr_data[snap][f]["Diffuse_Population"] = diffuse_pop
 
-            compact_pop = np.array(
-                intr_all_z_data[f]["Inner_Surface_Density"]) >= 10 ** 29
-            diffuse_pop = np.array(
-                intr_all_z_data[f]["Inner_Surface_Density"]) < 10 ** 29
+    for f in filters:
 
-            all_z_data[f]["Compact_Population"] = compact_pop
-            all_z_data[f]["Diffuse_Population"] = diffuse_pop
-            intr_all_z_data[f]["Compact_Population"] = compact_pop
-            intr_all_z_data[f]["Diffuse_Population"] = diffuse_pop
+        print(f)
+
+        for key in all_z_data[f].keys():
+            all_z_data[f][key] = np.array(all_z_data[f][key])
+
+        for key in intr_all_z_data[f].keys():
+            intr_all_z_data[f][key] = np.array(
+                intr_all_z_data[f][key])
+
+        okinds = intr_all_z_data[f]["nStar"] > 50
+
+        all_z_data[f]["okinds"] = okinds
+        intr_all_z_data[f]["okinds"] = okinds
+
+        compact_pop = np.array(
+            intr_all_z_data[f]["Inner_Surface_Density"]) >= 10 ** 29
+        diffuse_pop = np.array(
+            intr_all_z_data[f]["Inner_Surface_Density"]) < 10 ** 29
+
+        all_z_data[f]["Compact_Population"] = compact_pop
+        all_z_data[f]["Diffuse_Population"] = diffuse_pop
+        intr_all_z_data[f]["Compact_Population"] = compact_pop
+        intr_all_z_data[f]["Diffuse_Population"] = diffuse_pop
 
     for f in filters:
         print("---------------------------", f,
