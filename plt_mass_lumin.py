@@ -72,7 +72,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     print("Complete to log_10(L/[erg s^-1 Hz^-1]) =",
-          np.log10(lbin_cents[np.argmin(np.cumsum(Hbot2_all) - np.cumsum(Hbot2))]))
+          np.log10(lbin_cents[::-1][np.argmin(np.cumsum(Hbot2_all) - np.cumsum(Hbot2))]))
 
     axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.4)
     axright.plot(Hbot2, lbin_cents, color="k")
@@ -83,7 +83,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     print("Complete to log_10(M/M_sun) =",
-          np.log10(mbin_cents[np.argmin(np.cumsum(Htop2_all[::-1]) - np.cumsum(Htop2))]))
+          np.log10(mbin_cents[::-1][np.argmin(np.cumsum(Htop2_all[::-1]) - np.cumsum(Htop2))]))
 
     axtop.plot(mbin_cents, Htop2_all, color="k", alpha=0.4)
     axtop.plot(mbin_cents, Htop2, color="k")
