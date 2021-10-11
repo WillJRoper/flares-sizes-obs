@@ -156,7 +156,7 @@ if __name__ == "__main__":
     reg_snaps = []
     for reg in reversed(regions):
 
-        for snap in all_snaps:
+        for snap in snaps:
             reg_snaps.append((reg, snap))
 
     for reg, snap in reg_snaps:
@@ -210,6 +210,35 @@ if __name__ == "__main__":
                 intr_data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
 
         hdf.close()
+
+    for snap in snaps:
+
+        for f in filters:
+
+            print(snap, f)
+
+            for key in data[snap][f].keys():
+                data[snap][f][key] = np.array(data[snap][f][key])
+
+            for key in intr_data[snap][f].keys():
+                intr_data[snap][f][key] = np.array(intr_data[snap][f][key])
+
+            okinds = np.logical_and(
+                intr_data[snap][f]["Inner_Surface_Density"] > 10 ** 26,
+                intr_data[snap][f]["nStar"] > 100)
+
+            data[snap][f]["okinds"] = okinds
+            intr_data[snap][f]["okinds"] = okinds
+
+            compact_pop = np.array(
+                intr_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 29
+            diffuse_pop = np.array(
+                intr_data[snap][f]["Inner_Surface_Density"]) < 10 ** 29
+
+            data[snap][f]["Compact_Population"] = compact_pop
+            data[snap][f]["Diffuse_Population"] = diffuse_pop
+            intr_data[snap][f]["Compact_Population"] = compact_pop
+            intr_data[snap][f]["Diffuse_Population"] = diffuse_pop
 
     for f in filters:
         for snap in snaps:
