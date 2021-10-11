@@ -207,7 +207,7 @@ def M_to_m(M, cosmo, z):
     return m
 
 
-def size_evo_violin(data, intr_data, snaps, f, mtype, orientation):
+def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinction):
 
     print("Plotting for:")
     print("Orientation =", orientation)
@@ -442,8 +442,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation):
 
     fig.savefig(
         'plots/Violin_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
-        + orientation + "_" + extinction + "_"
-        + '%d.png' % nlim,
+        + orientation + "_" + extinction + ".png",
         bbox_inches='tight')
 
     plt.close(fig)
@@ -581,8 +580,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation):
 
     fig.savefig(
         'plots/ViolinComp_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
-        + orientation + "_" + extinction + "_"
-        + '%d.png' % nlim,
+        + orientation + "_" + extinction + ".png",
         bbox_inches='tight')
 
     plt.close(fig)
@@ -646,8 +644,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation):
 
     fig.savefig(
         'plots/HalfLightRadius_evolution_' + mtype + '_' + f + '_'
-        + orientation + "_" + extinction + "_"
-        + '%d.png' % nlim,
+        + orientation + "_" + extinction + ".png",
         bbox_inches='tight')
 
     plt.close(fig)
