@@ -45,8 +45,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axtop.grid(False)
     axright.grid(False)
     try:
-        cbar = ax.hexbin(mass, lumins,
-                         gridsize=50, mincnt=1, C=w,
+        cbar = ax.hexbin(mass[~np.logical_or(okinds1, okinds2)], lumins[~np.logical_or(okinds1, okinds2)],
+                         gridsize=50, mincnt=1, C=w[~np.logical_or(okinds1, okinds2)],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
@@ -71,11 +71,13 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     lumin_bins = np.logspace(26.3, 31.5, 50)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
-    Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
+    Hbot2, bin_edges = np.histogram(lumins[np.logical_or(okinds1, okinds2)], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    diff = np.cumsum(Hbot2_all[::-1]) - np.cumsum(Hbot2[::-1])
-    comp_l = lbin_cents[::-1][diff > 0][np.argmin(diff[diff > 0])]
+    ind = Hbot2.size
+    while ind > 0 and (Hbot2_all[ind] - Hbot2[ind]) == 0:
+        ind -= 1
+    comp_l = lbin_cents[ind]
     print("Complete to log_10(L/[erg s^-1 Hz^-1]) =", np.log10(comp_l))
 
     axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.4)
@@ -85,11 +87,13 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     mass_bins = np.logspace(7.5, 11.5, 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
-    Htop2, bin_edges = np.histogram(mass[nokinds], bins=mass_bins)
+    Htop2, bin_edges = np.histogram(mass[np.logical_or(okinds1, okinds2)], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    diff = np.cumsum(Htop2_all[::-1]) - np.cumsum(Htop2[::-1])
-    comp_m = mbin_cents[::-1][diff > 0][np.argmin(diff[diff > 0])]
+    ind = Htop2.size
+    while ind > 0 and (Htop2_all[ind] - Htop2[ind]) == 0:
+        ind -= 1
+    comp_m = mbin_cents[ind]
     print("Complete to log_10(M/M_sun) =", np.log10(comp_m))
 
     axtop.plot(mbin_cents, Htop2_all, color="k", alpha=0.4)
