@@ -36,7 +36,7 @@ def M_to_m(M, cosmo, z):
 
 
 def size_lumin_intrinsic(hlrs, lumins, w, okinds, okinds1, okinds2, f, snap,
-                         mtype, orientation, extinction):
+                         mtype, orientation, Type, extinction):
     print("Plotting for:")
     print("Orientation =", orientation)
     print("Type =", Type)

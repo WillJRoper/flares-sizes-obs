@@ -156,4 +156,4 @@ for f in filters:
                              intr_data[snap][f]["okinds"],
                              intr_data[snap][f]["Compact_Population"],
                              intr_data[snap][f]["Diffuse_Population"], f, snap,
-                             "pix", orientation, "default")
+                             "pix", orientation, "Total", "default")
