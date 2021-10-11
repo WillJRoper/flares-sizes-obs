@@ -71,7 +71,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    print("Complete to", lbin_cents[np.argmin(Hbot2_all - Hbot2)])
+    print("Complete to log_10(L/[erg s^-1 Hz^-1]) =",
+          np.log10(lbin_cents[np.argmin(Hbot2_all - Hbot2)]))
 
     axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.4)
     axright.plot(Hbot2, lbin_cents, color="k")
@@ -81,7 +82,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     Htop2, bin_edges = np.histogram(mass[nokinds], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    print("Complete to", mbin_cents[np.argmin(Htop2_all - Htop2)])
+    print("Complete to log_10(M/M_sun) =",
+          np.log10(mbin_cents[np.argmin(Htop2_all - Htop2)]))
 
     axtop.plot(mbin_cents, Htop2_all, color="k", alpha=0.4)
     axtop.plot(mbin_cents, Htop2, color="k")
@@ -147,7 +149,7 @@ if __name__ == "__main__":
     #                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
     filters = ['FAKE.TH.' + f for f in ['FUV', 'MUV', 'NUV']]
 
-    keys = ["Mass", "Image_Luminosity", "Luminosity","nStar"]
+    keys = ["Mass", "Image_Luminosity", "Luminosity", "nStar"]
 
     csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -175,8 +177,9 @@ if __name__ == "__main__":
 
         try:
             hdf = h5py.File(
-                "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
-                                                            orientation),
+                "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap,
+                                                                "Total",
+                                                                orientation),
                 "r")
         except OSError as e:
             print(e)
@@ -203,8 +206,8 @@ if __name__ == "__main__":
         try:
             hdf = h5py.File(
                 "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap,
-                                                            "Intrinsic",
-                                                            orientation),
+                                                                "Intrinsic",
+                                                                orientation),
                 "r")
         except OSError as e:
             print(e)
