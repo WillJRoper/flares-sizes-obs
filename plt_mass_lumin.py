@@ -158,7 +158,8 @@ if __name__ == "__main__":
     #                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
     filters = ['FAKE.TH.' + f for f in ['FUV', 'MUV', 'NUV']]
 
-    keys = ["Mass", "Image_Luminosity", "Luminosity", "nStar"]
+    keys = ["Mass", "Image_Luminosity", "Luminosity", "nStar",
+            "Surface_Density"]
 
     csoft = 0.001802390 / (0.6777) * 1e3
 
