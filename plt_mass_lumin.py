@@ -71,22 +71,28 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    print("Complete to log_10(L/[erg s^-1 Hz^-1]) =",
-          np.log10(lbin_cents[::-1][np.argmin(np.cumsum(Hbot2_all[::-1]) - np.cumsum(Hbot2[::-1]))]))
+    comp_l = lbin_cents[::-1][
+        np.argmin(np.cumsum(Hbot2_all[::-1]) - np.cumsum(Hbot2[::-1]))]
+    print("Complete to log_10(L/[erg s^-1 Hz^-1]) =", np.log10(comp_l))
 
     axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.4)
     axright.plot(Hbot2, lbin_cents, color="k")
+    axright.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
+    ax.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
 
     mass_bins = np.logspace(7.5, 11.5, 100)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
     Htop2, bin_edges = np.histogram(mass[nokinds], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    print("Complete to log_10(M/M_sun) =",
-          np.log10(mbin_cents[::-1][np.argmin(np.cumsum(Htop2_all[::-1]) - np.cumsum(Htop2[::-1]))]))
+    comp_m = mbin_cents[::-1][
+        np.argmin(np.cumsum(Htop2_all[::-1]) - np.cumsum(Htop2[::-1]))]
+    print("Complete to log_10(M/M_sun) =", np.log10(comp_m))
 
     axtop.plot(mbin_cents, Htop2_all, color="k", alpha=0.4)
     axtop.plot(mbin_cents, Htop2, color="k")
+    axtop.axvline(comp_m, linestyle="--", alpha=0.6, color="k")
+    ax.axvline(comp_m, linestyle="--", alpha=0.6, color="k")
 
     # Remove axis labels and ticks
     axtop.tick_params(axis='x', top=False, bottom=False,
