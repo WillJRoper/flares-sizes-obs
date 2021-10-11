@@ -50,23 +50,26 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
-                         cmap='Reds', alpha=0.2)
+                         cmap='Reds', alpha=0.2,
+                         extent=(7.5, 11.5, 26.3, 31.5))
         cbar = ax.hexbin(mass[okinds1], lumins[okinds1],
                          gridsize=50, mincnt=1, C=w[okinds1],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
-                         cmap='Greys', alpha=0.8)
+                         cmap='Greys', alpha=0.8,
+                         extent=(7.5, 11.5, 26.3, 31.5))
         cbar = ax.hexbin(mass[okinds2], lumins[okinds2],
                          gridsize=50, mincnt=1, C=w[okinds2],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
-                         cmap='viridis', alpha=0.9)
+                         cmap='viridis', alpha=0.9,
+                         extent=(7.5, 11.5, 26.3, 31.5))
     except ValueError as e:
         print(e)
 
-    lumin_bins = np.logspace(26.8, 31.5, 100)
+    lumin_bins = np.logspace(26.3, 31.5, 100)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
     Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
@@ -126,8 +129,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     ax.set_xlim(10 ** 7.5, 10 ** 11.5)
     axtop.set_xlim(10 ** 7.5, 10 ** 11.5)
-    ax.set_ylim(10 ** 26.8, 10 ** 31.5)
-    axright.set_ylim(10 ** 26.8, 10 ** 31.5)
+    ax.set_ylim(10 ** 26.3, 10 ** 31.5)
+    axright.set_ylim(10 ** 26.3, 10 ** 31.5)
 
     fig.savefig(
         'plots/' + str(z) + '/MassLumin_' + f + '_' + str(
@@ -245,7 +248,7 @@ if __name__ == "__main__":
                 intr_data[snap][f][key] = np.array(intr_data[snap][f][key])
 
             okinds = np.logical_and(
-                intr_data[snap][f]["Inner_Surface_Density"] > 10 ** 0,
+                intr_data[snap][f]["Inner_Surface_Density"] > 10 ** 26,
                 intr_data[snap][f]["nStar"] > 100)
 
             data[snap][f]["okinds"] = okinds
