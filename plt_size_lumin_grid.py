@@ -262,7 +262,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                       norm=LogNorm(), linewidths=0.2,
                                       cmap='Greys', alpha=0.4)
             except ValueError as e:
-                print(e)
+                print(e, "Diffuse incomplete")
+                print(lumins[diffuse_ncom][lumins[diffuse_ncom] <= 0]. size)
             try:
                 axes[i].hexbin(lumins[compact_ncom], hlrs[compact_ncom], gridsize=50,
                                mincnt=1,
@@ -272,7 +273,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                norm=LogNorm(), linewidths=0.2,
                                cmap='plasma', alpha=0.4)
             except ValueError as e:
-                print(e)
+                print(e, "Compact incomplete")
+                print(lumins[compact_ncom][lumins[compact_ncom] <= 0].size)
             try:
                 cbar = axes[i].hexbin(lumins[okinds2], hlrs[okinds2],
                                       gridsize=50,
@@ -282,7 +284,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                       norm=LogNorm(), linewidths=0.2,
                                       cmap='Greys')
             except ValueError as e:
-                print(e)
+                print(e, "Diffuse complete")
+                print(lumins[okinds2][lumins[okinds2] <= 0].size)
             try:
                 axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50,
                                mincnt=1,
@@ -292,7 +295,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                norm=LogNorm(), linewidths=0.2,
                                cmap='plasma')
             except ValueError as e:
-                print(e)
+                print(e, "Compact complete")
+                print(lumins[okinds1][lumins[okinds1] <= 0].size)
             try:
                 axes_twin[i].hexbin(lumins[okinds], hlrs[okinds]
                                     * cosmo.arcsec_per_kpc_proper(z).value,
@@ -302,7 +306,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                     linewidths=0.2,
                                     cmap='plasma', alpha=0)
             except ValueError as e:
-                print(e)
+                print(e, "All")
+                print(lumins[okinds][lumins[okinds] <= 0].size)
 
                 # popt, pcov = curve_fit(kawa_fit, lumins, hlrs,
                 #                        p0=(kawa_params['r_0'][7],
