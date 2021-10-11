@@ -66,13 +66,13 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     except ValueError as e:
         print(e)
 
-    lumin_bins = np.logspace(27.2, 31.5, 100)
+    lumin_bins = np.logspace(26.8, 31.5, 100)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
     Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     print("Complete to log_10(L/[erg s^-1 Hz^-1]) =",
-          np.log10(lbin_cents[np.argmin(Hbot2_all - Hbot2)]))
+          np.log10(lbin_cents[np.argmin(np.cumsum(Hbot2_all) - np.cumsum(Hbot2))]))
 
     axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.4)
     axright.plot(Hbot2, lbin_cents, color="k")
@@ -83,7 +83,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     print("Complete to log_10(M/M_sun) =",
-          np.log10(mbin_cents[np.argmin(Htop2_all - Htop2)]))
+          np.log10(mbin_cents[np.argmin(np.cumsum(Htop2_all[::-1]) - np.cumsum(Htop2))]))
 
     axtop.plot(mbin_cents, Htop2_all, color="k", alpha=0.4)
     axtop.plot(mbin_cents, Htop2, color="k")
@@ -120,8 +120,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     ax.set_xlim(10 ** 7.5, 10 ** 11.5)
     axtop.set_xlim(10 ** 7.5, 10 ** 11.5)
-    ax.set_ylim(10 ** 27.2, 10 ** 31.5)
-    axright.set_ylim(10 ** 27.2, 10 ** 31.5)
+    ax.set_ylim(10 ** 26.8, 10 ** 31.5)
+    axright.set_ylim(10 ** 26.8, 10 ** 31.5)
 
     fig.savefig(
         'plots/' + str(z) + '/MassLumin_' + f + '_' + str(
