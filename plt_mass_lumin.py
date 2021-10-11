@@ -38,6 +38,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     ax = fig.add_subplot(gs[1, 0])
     axtop = fig.add_subplot(gs[0, 0])
     axright = fig.add_subplot(gs[1, 1])
+    axtop.loglog()
+    axright.loglog()
     try:
         cbar = ax.hexbin(mass, lumins,
                          gridsize=50, mincnt=1, C=w,
@@ -65,8 +67,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    axright.plot(lbin_cents, Hbot2_all, color="k", alpha=0.7)
-    axright.plot(lbin_cents, Hbot2, color="k")
+    axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.7)
+    axright.plot(Hbot2, lbin_cents, color="k")
 
     mass_bins = np.logspace(8, 11, 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
