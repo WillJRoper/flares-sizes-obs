@@ -45,8 +45,10 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axtop.grid(False)
     axright.grid(False)
     try:
-        cbar = ax.hexbin(mass[~np.logical_or(okinds1, okinds2)], lumins[~np.logical_or(okinds1, okinds2)],
-                         gridsize=50, mincnt=1, C=w[~np.logical_or(okinds1, okinds2)],
+        cbar = ax.hexbin(mass[~np.logical_or(okinds1, okinds2)],
+                         lumins[~np.logical_or(okinds1, okinds2)],
+                         gridsize=50, mincnt=1,
+                         C=w[~np.logical_or(okinds1, okinds2)],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
@@ -71,7 +73,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     lumin_bins = np.logspace(26.3, 31.5, 150)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
-    Hbot2, bin_edges = np.histogram(lumins[np.logical_or(okinds1, okinds2)], bins=lumin_bins)
+    Hbot2, bin_edges = np.histogram(lumins[np.logical_or(okinds1, okinds2)],
+                                    bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     ind = Hbot2.size - 1
@@ -87,7 +90,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     mass_bins = np.logspace(7.5, 11.5, 150)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
-    Htop2, bin_edges = np.histogram(mass[np.logical_or(okinds1, okinds2)], bins=mass_bins)
+    Htop2, bin_edges = np.histogram(mass[np.logical_or(okinds1, okinds2)],
+                                    bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     ind = Htop2.size - 1
@@ -137,7 +141,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axright.set_ylim(10 ** 26.3, 10 ** 31.5)
 
     fig.savefig(
-        'plots/' + str(z) + '/MassLumin_' + f + '_' + str(
+        'plots/MassLumin_allz_' + f + '_' + str(
             z) + '_'
         + orientation + '_' + Type + "_" + extinction + '.png',
         bbox_inches='tight')
@@ -169,6 +173,8 @@ if __name__ == "__main__":
 
     data = {}
     intr_data = {}
+    all_z_data = {}
+    intr_all_z_data = {}
 
     # Load weights
     df = pd.read_csv('../weight_files/weights_grid.txt')
@@ -205,13 +211,16 @@ if __name__ == "__main__":
         for f in filters:
 
             print(reg, snap, f)
-
+            all_z_data.setdefault(f, {})
             data[snap].setdefault(f, {})
             intr_data[snap].setdefault(f, {})
 
             for key in keys:
                 data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
+                all_z_data[f].setdefault(key, []).extend(hdf[f][key][...])
 
+            all_z_data[f].setdefault("Weight", []).extend(
+                np.full(hdf[f]["Mass"][...].size, weights[int(reg)]))
             data[snap][f].setdefault("Weight", []).extend(
                 np.full(hdf[f]["Mass"][...].size, weights[int(reg)]))
 
@@ -234,9 +243,12 @@ if __name__ == "__main__":
 
             intr_data[snap][f].setdefault("Inner_Surface_Density",
                                           []).extend(surf_dens)
+            intr_all_z_data[f].setdefault("Inner_Surface_Density",
+                                          []).extend(surf_dens)
 
             for key in keys:
                 intr_data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
+                intr_all_z_data[f].setdefault(key, []).extend(hdf[f][key][...])
 
         hdf.close()
 
@@ -247,10 +259,14 @@ if __name__ == "__main__":
             print(snap, f)
 
             for key in data[snap][f].keys():
-                data[snap][f][key] = np.array(data[snap][f][key])
+                all_z_data[snap][f][key] = np.array(data[snap][f][key])
+                all_z_data[snap][f][key] = np.array(data[snap][f][key])
 
             for key in intr_data[snap][f].keys():
-                intr_data[snap][f][key] = np.array(intr_data[snap][f][key])
+                intr_all_z_data[snap][f][key] = np.array(
+                    intr_data[snap][f][key])
+                intr_all_z_data[snap][f][key] = np.array(
+                    intr_data[snap][f][key])
 
             okinds = intr_data[snap][f]["nStar"] > 100
 
@@ -267,21 +283,31 @@ if __name__ == "__main__":
             intr_data[snap][f]["Compact_Population"] = compact_pop
             intr_data[snap][f]["Diffuse_Population"] = diffuse_pop
 
+            compact_pop = np.array(
+                intr_all_z_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 29
+            diffuse_pop = np.array(
+                all_z_data[snap][f]["Inner_Surface_Density"]) < 10 ** 29
+
+            all_z_data[snap][f]["Compact_Population"] = compact_pop
+            all_z_data[snap][f]["Diffuse_Population"] = diffuse_pop
+            intr_all_z_data[snap][f]["Compact_Population"] = compact_pop
+            intr_all_z_data[snap][f]["Diffuse_Population"] = diffuse_pop
+
     for f in filters:
         for snap in snaps:
             print("---------------------------", f, snap,
                   "---------------------------")
-            mass_lumin(data[snap][f]["Mass"],
-                       data[snap][f]["Luminosity"],
-                       data[snap][f]["okinds"],
-                       data[snap][f]["Diffuse_Population"],
-                       data[snap][f]["Compact_Population"],
-                       data[snap][f]["Weight"],
+            mass_lumin(all_z_data[snap][f]["Mass"],
+                       all_z_data[snap][f]["Luminosity"],
+                       all_z_data[snap][f]["okinds"],
+                       all_z_data[snap][f]["Diffuse_Population"],
+                       all_z_data[snap][f]["Compact_Population"],
+                       all_z_data[snap][f]["Weight"],
                        f, snap, orientation, "Total", "default")
-            mass_lumin(intr_data[snap][f]["Mass"],
-                       intr_data[snap][f]["Luminosity"],
-                       intr_data[snap][f]["okinds"],
-                       intr_data[snap][f]["Diffuse_Population"],
-                       intr_data[snap][f]["Compact_Population"],
-                       data[snap][f]["Weight"],
+            mass_lumin(intr_all_z_data[snap][f]["Mass"],
+                       intr_all_z_data[snap][f]["Luminosity"],
+                       intr_all_z_data[snap][f]["okinds"],
+                       intr_all_z_data[snap][f]["Diffuse_Population"],
+                       intr_all_z_data[snap][f]["Compact_Population"],
+                       all_z_data[snap][f]["Weight"],
                        f, snap, orientation, "Intrinsic", "default")
