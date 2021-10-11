@@ -12,6 +12,7 @@ matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
 import h5py
+import pandas as pd
 from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
 
@@ -134,8 +135,7 @@ if __name__ == "__main__":
     #                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
     filters = ['FAKE.TH.' + f for f in ['FUV', 'MUV', 'NUV']]
 
-    keys = ["Mass", "Image_Luminosity", "HLR_0.5",
-            "HLR_Pixel_0.5", "Luminosity", "HDR", "nStar"]
+    keys = ["Mass", "Image_Luminosity", "Luminosity","nStar"]
 
     csoft = 0.001802390 / (0.6777) * 1e3
 
