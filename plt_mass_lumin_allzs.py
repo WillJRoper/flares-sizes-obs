@@ -258,14 +258,14 @@ if __name__ == "__main__":
             print(snap, f)
 
             for key in data[snap][f].keys():
-                all_z_data[snap][f][key] = np.array(data[snap][f][key])
-                all_z_data[snap][f][key] = np.array(data[snap][f][key])
+                data[snap][f][key] = np.array(data[snap][f][key])
+                all_z_data[f][key] = np.array(all_z_data[f][key])
 
             for key in intr_data[snap][f].keys():
-                intr_all_z_data[snap][f][key] = np.array(
+                intr_data[snap][f][key] = np.array(
                     intr_data[snap][f][key])
-                intr_all_z_data[snap][f][key] = np.array(
-                    intr_data[snap][f][key])
+                intr_all_z_data[f][key] = np.array(
+                    intr_all_z_data[f][key])
 
             okinds = intr_data[snap][f]["nStar"] > 100
 
@@ -283,14 +283,14 @@ if __name__ == "__main__":
             intr_data[snap][f]["Diffuse_Population"] = diffuse_pop
 
             compact_pop = np.array(
-                intr_all_z_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 29
+                intr_all_z_data[f]["Inner_Surface_Density"]) >= 10 ** 29
             diffuse_pop = np.array(
-                all_z_data[snap][f]["Inner_Surface_Density"]) < 10 ** 29
+                all_z_data[f]["Inner_Surface_Density"]) < 10 ** 29
 
-            all_z_data[snap][f]["Compact_Population"] = compact_pop
-            all_z_data[snap][f]["Diffuse_Population"] = diffuse_pop
-            intr_all_z_data[snap][f]["Compact_Population"] = compact_pop
-            intr_all_z_data[snap][f]["Diffuse_Population"] = diffuse_pop
+            all_z_data[f]["Compact_Population"] = compact_pop
+            all_z_data[f]["Diffuse_Population"] = diffuse_pop
+            intr_all_z_data[f]["Compact_Population"] = compact_pop
+            intr_all_z_data[f]["Diffuse_Population"] = diffuse_pop
 
     for f in filters:
         print("---------------------------", f,
