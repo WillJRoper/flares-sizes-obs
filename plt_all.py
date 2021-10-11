@@ -106,62 +106,72 @@ for snap in all_snaps:
 
         print(snap, f)
 
-        for key in data[snap][f].keys():
-            data[snap][f][key] = np.array(data[snap][f][key])
+        okinds = np.ones(intr_data[snap][f]["nStar"].size)
+        for key in keys:
+            okinds = np.logical_and(okinds, np.logical_and(
+                np.array(data[snap][f][key]) > 0,
+                np.array(intr_data[snap][f][key]) > 0))
 
-        for key in intr_data[snap][f].keys():
-            intr_data[snap][f][key] = np.array(intr_data[snap][f][key])
+            for key in data[snap][f].keys():
+                data[snap][f][key] = np.array(data[snap][f][key][okinds])
 
-        okinds = intr_data[snap][f]["nStar"] > 100
+            for key in intr_data[snap][f].keys():
+                intr_data[snap][f][key] = np.array(intr_data[snap][f][key])
 
-        data[snap][f]["okinds"] = okinds
-        intr_data[snap][f]["okinds"] = okinds
+            okinds = intr_data[snap][f]["nStar"] > 100
 
-        data[snap][f]["Complete_Luminosity"] = np.max(
-            intr_data[snap][f]["Luminosity"][~okinds])
-        data[snap][f]["Complete_Mass"] = np.max(
-            intr_data[snap][f]["Mass"][~okinds])
-        intr_data[snap][f]["Complete_Luminosity"] = np.max(
-            intr_data[snap][f]["Luminosity"][~okinds])
-        intr_data[snap][f]["Complete_Mass"] = np.max(
-            intr_data[snap][f]["Mass"][~okinds])
+            data[snap][f]["okinds"] = okinds
+            intr_data[snap][f]["okinds"] = okinds
 
-        compact_pop = np.array(
-            intr_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 29
-        diffuse_pop = np.array(
-            intr_data[snap][f]["Inner_Surface_Density"]) < 10 ** 29
+            data[snap][f]["Complete_Luminosity"] = np.max(
+                intr_data[snap][f]["Luminosity"][~okinds])
+            data[snap][f]["Complete_Mass"] = np.max(
+                intr_data[snap][f]["Mass"][~okinds])
+            intr_data[snap][f]["Complete_Luminosity"] = np.max(
+                intr_data[snap][f]["Luminosity"][~okinds])
+            intr_data[snap][f]["Complete_Mass"] = np.max(
+                intr_data[snap][f]["Mass"][~okinds])
 
-        data[snap][f]["Compact_Population"] = compact_pop
-        data[snap][f]["Diffuse_Population"] = diffuse_pop
-        intr_data[snap][f]["Compact_Population"] = compact_pop
-        intr_data[snap][f]["Diffuse_Population"] = diffuse_pop
+            compact_pop = np.array(
+                intr_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 29
+            diffuse_pop = np.array(
+                intr_data[snap][f]["Inner_Surface_Density"]) < 10 ** 29
 
-size_lumin_grid(data, snaps, filters, orientation, "Total", "default", "pix")
-fit_size_lumin_grid(data, snaps, filters, orientation, "Total", "default",
-                    "pix", )
+            data[snap][f]["Compact_Population"] = compact_pop
+            data[snap][f]["Diffuse_Population"] = diffuse_pop
+            intr_data[snap][f]["Compact_Population"] = compact_pop
+            intr_data[snap][f]["Diffuse_Population"] = diffuse_pop
 
-for f in filters:
-    print(f)
-    size_evo_violin(data, intr_data, snaps, f, "pix", "sim", "Total",
-                    "default")
-    for snap in snaps:
-        print(snap)
-        mass_lumin(intr_data[snap][f]["Mass"],
-                   intr_data[snap][f]["Luminosity"],
-                   intr_data[snap][f]["okinds"],
-                   intr_data[snap][f]["Diffuse_Population"],
-                   intr_data[snap][f]["Compact_Population"],
-                   data[snap][f]["Weight"],
-                   f, snap, orientation, "Intrinsic", "default")
-        hdr_comp(data[snap][f]["HDR"], data[snap][f]["HLR_0.5"],
-                 intr_data[snap][f]["HLR_0.5"], data[snap][f]["Weight"],
-                 data[snap][f]["okinds"], data[snap][f]["Compact_Population"],
-                 data[snap][f]["Diffuse_Population"], f,
-                 orientation, snap, "Intrinsic", "default")
-        size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
-                             intr_data[snap][f]["Image_Luminosity"],
-                             data[snap][f]["Weight"],
-                             intr_data[snap][f]["okinds"],
-                             intr_data[snap][f]["Compact_Population"],
-                             intr_data[snap][f]["Diffuse_Population"], f, snap,
-                             "pix", orientation, "Total", "default")
+            size_lumin_grid(data, snaps, filters, orientation, "Total",
+                            "default", "pix")
+            fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
+                                "default",
+                                "pix")
+
+            for f in filters:
+                print(f)
+            size_evo_violin(data, intr_data, snaps, f, "pix", "sim", "Total",
+                            "default")
+            for snap in snaps:
+                print(snap)
+            mass_lumin(intr_data[snap][f]["Mass"],
+                       intr_data[snap][f]["Luminosity"],
+                       intr_data[snap][f]["okinds"],
+                       intr_data[snap][f]["Diffuse_Population"],
+                       intr_data[snap][f]["Compact_Population"],
+                       data[snap][f]["Weight"],
+                       f, snap, orientation, "Intrinsic", "default")
+            hdr_comp(data[snap][f]["HDR"], data[snap][f]["HLR_0.5"],
+                     intr_data[snap][f]["HLR_0.5"], data[snap][f]["Weight"],
+                     data[snap][f]["okinds"],
+                     data[snap][f]["Compact_Population"],
+                     data[snap][f]["Diffuse_Population"], f,
+                     orientation, snap, "Intrinsic", "default")
+            size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
+                                 intr_data[snap][f]["Image_Luminosity"],
+                                 data[snap][f]["Weight"],
+                                 intr_data[snap][f]["okinds"],
+                                 intr_data[snap][f]["Compact_Population"],
+                                 intr_data[snap][f]["Diffuse_Population"], f,
+                                 snap,
+                                 "pix", orientation, "Total", "default")

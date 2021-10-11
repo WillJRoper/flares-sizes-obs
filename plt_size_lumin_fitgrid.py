@@ -145,7 +145,7 @@ lumin_bin_cents = lumin_bins[1:] - (lumin_bin_wid / 2)
 M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
-def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
+def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                         extinction,
                         mtype):
     for f in filters:
