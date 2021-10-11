@@ -35,7 +35,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     okinds2 = np.logical_and(nokinds, okinds2)
 
     fig = plt.figure()
-    gs = gridspec.GridSpec(2, 2, height_ratios=(3, 10), width_ratios=(10, 3))
+    gs = gridspec.GridSpec(2, 2, height_ratios=(2, 10), width_ratios=(10, 2))
     gs.update(wspace=0.0, hspace=0.0)
     ax = fig.add_subplot(gs[1, 0])
     axtop = fig.add_subplot(gs[0, 0])
@@ -69,7 +69,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     except ValueError as e:
         print(e)
 
-    lumin_bins = np.logspace(26.3, 31.5, 50)
+    lumin_bins = np.logspace(26.3, 31.5, 75)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
     Hbot2, bin_edges = np.histogram(lumins[np.logical_or(okinds1, okinds2)], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
@@ -85,7 +85,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axright.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
     ax.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
 
-    mass_bins = np.logspace(7.5, 11.5, 50)
+    mass_bins = np.logspace(7.5, 11.5, 75)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
     Htop2, bin_edges = np.histogram(mass[np.logical_or(okinds1, okinds2)], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
