@@ -63,8 +63,7 @@ for reg in range(0, 40):
     else:
         regions.append(str(reg))
 
-snaps = ['005_z010p000', '007_z008p000', '008_z007p000',
-         '009_z006p000', '010_z005p000']
+snaps = ['007_z008p000', '010_z005p000']
 
 # reg, snap = regions[0], '010_z005p000'
 
