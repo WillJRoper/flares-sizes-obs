@@ -74,7 +74,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     Hbot2, bin_edges = np.histogram(lumins[np.logical_or(okinds1, okinds2)], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    ind = Hbot2.size
+    ind = Hbot2.size - 1
     while ind > 0 and (Hbot2_all[ind] - Hbot2[ind]) == 0:
         ind -= 1
     comp_l = lbin_cents[ind]
@@ -90,7 +90,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     Htop2, bin_edges = np.histogram(mass[np.logical_or(okinds1, okinds2)], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    ind = Htop2.size
+    ind = Htop2.size - 1
     while ind > 0 and (Htop2_all[ind] - Htop2[ind]) == 0:
         ind -= 1
     comp_m = mbin_cents[ind]
