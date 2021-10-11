@@ -186,8 +186,12 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 hlrs = np.array(data[snap][f]["HLR_0.5"])
                 lumins = np.array(data[snap][f]["Luminosity"])
                 intr_lumins = np.array(data[snap][f]["Luminosity"])
-            else:
+            elif mtype == "app":
                 hlrs = np.array(data[snap][f]["HLR_Aperture_0.5"])
+                lumins = np.array(data[snap][f]["Image_Luminosity"])
+                intr_lumins = np.array(data[snap][f]["Image_Luminosity"])
+            else:
+                hlrs = np.array(data[snap][f]["HLR_Pixel_0.5"])
                 lumins = np.array(data[snap][f]["Image_Luminosity"])
                 intr_lumins = np.array(data[snap][f]["Image_Luminosity"])
             w = np.array(data[snap][f]["Weight"])
