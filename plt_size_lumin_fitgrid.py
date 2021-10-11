@@ -147,7 +147,7 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
-                        measure):
+                        mtype):
     for f in filters:
 
         print("Plotting for:")
@@ -189,10 +189,10 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             okinds2 = np.logical_and(okinds,
                                      data[snap][f]["Diffuse_Population"])
 
-            if measure == "part":
+            if mtype == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])
                 lumins = np.array(data[snap][f]["Luminosity"])
-            elif measure == "pix":
+            elif mtype == "pix":
                 hlrs = np.array(data[snap][f]["HLR_Pixel_0.5"])
                 lumins = np.array(data[snap][f]["Image_Luminosity"])
             else:
@@ -212,37 +212,48 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                          p0=(kawa_params['r_0'][7],
                                              kawa_params['beta'][7]),
                                          sigma=w[okinds1])
-
                 popt2, pcov2 = curve_fit(kawa_fit, lumins[okinds2],
                                          hlrs[okinds2],
                                          p0=(kawa_params['r_0'][7],
                                              kawa_params['beta'][7]),
                                          sigma=w[okinds2])
 
-                print("Total")
-                print(popt)
+                print("--------------", "Total", "All", mtype, f,
+                      "--------------")
+                print("R_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
+                print("beta=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
                 print(pcov)
-                print("Low")
-                print(popt2)
-                print(pcov2)
-                print("High")
-                print(popt1)
+                print("--------------", "Total", "Massive", mtype, f,
+                      "--------------")
+                print("R_0=", popt1[0], "+/-", np.sqrt(pcov1[0, 0]))
+                print("beta=", popt1[1], "+/-", np.sqrt(pcov1[1, 1]))
                 print(pcov1)
+                print("--------------", "Kawamata", "All", mtype, f,
+                      "--------------")
+                if int(z) in [6, 7, 8, 9]:
+                    print("R_0=", kawa_params['r_0'][int(z)])
+                    print("beta=", kawa_params['beta'][int(z)])
+                else:
+                    print("R_0= ---")
+                    print("beta= ---")
+                print(
+                    "----------------------------------------------------------")
 
                 fit_lumins = np.logspace(np.log10(lumins.min()),
                                          np.log10(lumins.max()),
                                          1000)
-                fit_lumins_low = np.logspace(np.log10(lumins[okinds2].min()),
-                                             np.log10(lumins[okinds2].max()),
-                                             1000)
-                fit_lumins_high = np.logspace(np.log10(lumins[okinds1].min()),
-                                              np.log10(lumins[okinds1].max()),
-                                              1000)
 
                 fit = kawa_fit(fit_lumins, popt[0], popt[1])
 
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dotted', color="m",
+                             alpha=0.9, zorder=3,
+                             linewidth=2)
+
+                fit = kawa_fit(fit_lumins, popt1[0], popt1[1])
+
+                axes[i].plot(fit_lumins, fit,
+                             linestyle='-', color="m",
                              alpha=0.9, zorder=3,
                              linewidth=2)
 
@@ -301,9 +312,9 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         uni_legend_elements.append(
             Line2D([0], [0], color="m", linestyle="-",
                    label="FLARES ($M_{\star}/M_\odot\geq10^{9}$)"))
-        uni_legend_elements.append(
-            Line2D([0], [0], color="m", linestyle="--",
-                   label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
+        # uni_legend_elements.append(
+        #     Line2D([0], [0], color="m", linestyle="--",
+        #            label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
         uni_legend_elements.append(
             Line2D([0], [0], color="g", linestyle="--",
                    label=labels["K18"]))
@@ -319,7 +330,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                        ncol=len(uni_legend_elements))
 
         fig.savefig(
-            'plots/FitHalfLightRadius_' + measure + "_" + f + '_'
+            'plots/FitHalfLightRadius_' + mtype + "_" + f + '_'
             + orientation + '_' + Type + "_" + extinction + ".png",
             bbox_inches='tight', dpi=300)
 

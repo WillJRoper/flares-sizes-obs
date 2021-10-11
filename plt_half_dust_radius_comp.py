@@ -37,7 +37,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, okinds, okinds1, okinds2, f, orientation, s
 
     bins = np.logspace(np.log10(0.08), np.log10(20), 40)
     H, xbins, ybins = np.histogram2d(hdrs[okinds2], hlrs[okinds2],
-                                     bins=bins, w=w[okinds2])
+                                     bins=bins, weights=w[okinds2])
 
     # Resample your data grid by a factor of 3 using cubic spline interpolation.
     H = scipy.ndimage.zoom(H, 3)
