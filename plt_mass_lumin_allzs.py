@@ -272,6 +272,11 @@ if __name__ == "__main__":
             data[snap][f]["okinds"] = okinds
             intr_data[snap][f]["okinds"] = okinds
 
+            okinds = intr_all_z_data[f]["nStar"] > 100
+
+            all_z_data[f]["okinds"] = okinds
+            intr_all_z_data[f]["okinds"] = okinds
+
             compact_pop = np.array(
                 intr_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 29
             diffuse_pop = np.array(
