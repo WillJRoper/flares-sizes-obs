@@ -44,9 +44,11 @@ Type = sys.argv[2]
 extinction = 'default'
 
 # Define filter
+# filters = ['FAKE.TH.' + f
+#            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
+#                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 filters = ['FAKE.TH.' + f
-           for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
-                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
+           for f in ['FUV', 'MUV', 'NUV']]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -205,7 +207,7 @@ for reg in regions:
                                      -1] + r"} / [\mathrm{erg} / \mathrm{s} / " \
                                            r"\mathrm{Hz} / \mathrm{pkpc}^2]\right) =$ %.2f" % np.log10(
                             this_sd[
-                                ind]) + r" \n $R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % \
+                                ind]) + " \n $R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % \
                                  this_hlrs[ind]
 
                         axes[i, j].text(0.05, 0.95, string,
