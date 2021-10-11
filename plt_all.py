@@ -118,7 +118,11 @@ for snap in all_snaps:
         intr_data[snap][f]["okinds"] = okinds
 
         data[snap][f]["Complete_Luminosity"] = np.max(
-            data[snap][f]["Luminosity"][~okinds])
+            intr_data[snap][f]["Luminosity"][~okinds])
+        data[snap][f]["Complete_Mass"] = np.max(
+            intr_data[snap][f]["Mass"][~okinds])
+        intr_data[snap][f]["Complete_Luminosity"] = np.max(
+            intr_data[snap][f]["Luminosity"][~okinds])
         intr_data[snap][f]["Complete_Mass"] = np.max(
             intr_data[snap][f]["Mass"][~okinds])
 
@@ -134,7 +138,7 @@ for snap in all_snaps:
 
 size_lumin_grid(data, snaps, filters, orientation, "Total", "default", "pix")
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total", "default",
-                    "pix")
+                    "pix", )
 
 for f in filters:
     print(f)

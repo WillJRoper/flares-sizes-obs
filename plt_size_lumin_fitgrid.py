@@ -13,7 +13,6 @@ warnings.filterwarnings('ignore')
 import seaborn as sns
 import matplotlib as mpl
 from scipy.optimize import curve_fit
-import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
@@ -146,8 +145,9 @@ lumin_bin_cents = lumin_bins[1:] - (lumin_bin_wid / 2)
 M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
-def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
-                        mtype, complete_l, complete_m):
+def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
+                        extinction,
+                        mtype):
     for f in filters:
 
         print("Plotting for:")
@@ -185,18 +185,21 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             if mtype == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])
                 lumins = np.array(data[snap][f]["Luminosity"])
-            elif mtype == "pix":
-                hlrs = np.array(data[snap][f]["HLR_Pixel_0.5"])
-                lumins = np.array(data[snap][f]["Image_Luminosity"])
+                intr_lumins = np.array(data[snap][f]["Luminosity"])
             else:
                 hlrs = np.array(data[snap][f]["HLR_Aperture_0.5"])
                 lumins = np.array(data[snap][f]["Image_Luminosity"])
+                intr_lumins = np.array(data[snap][f]["Image_Luminosity"])
             w = np.array(data[snap][f]["Weight"])
             mass = np.array(data[snap][f]["Mass"])
 
+            complete_l, complete_m = data[snap][f]["Complete_Luminosity"], \
+                                     data[snap][f]["Complete_Mass"]
+
             okinds = data[snap][f]["okinds"]
 
-            com_okinds = np.logical_and(lumins > complete_l, mass > complete_m)
+            com_okinds = np.logical_and(intr_lumins > complete_l,
+                                        mass > complete_m)
 
             okinds1 = np.logical_and(okinds,
                                      np.logical_and(com_okinds, data[snap][f][
