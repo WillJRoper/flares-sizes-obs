@@ -251,9 +251,9 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                xscale='log', yscale='log',
                                norm=LogNorm(), linewidths=0.2,
                                cmap='plasma')
-                axes_twin[i].hexbin(lumins, hlrs
+                axes_twin[i].hexbin(lumins[okinds], hlrs[okinds]
                                     * cosmo.arcsec_per_kpc_proper(z).value,
-                                    gridsize=50, mincnt=1, C=w,
+                                    gridsize=50, mincnt=1, C=w[okinds],
                                     reduce_C_function=np.sum, xscale='log',
                                     yscale='log', norm=LogNorm(),
                                     linewidths=0.2,

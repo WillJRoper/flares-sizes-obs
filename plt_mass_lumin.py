@@ -11,6 +11,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
+import h5py
 from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
 
@@ -33,13 +34,15 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     okinds2 = np.logical_and(nokinds, okinds2)
 
     fig = plt.figure()
-    gs = gridspec.GridSpec(2, 2)
+    gs = gridspec.GridSpec(2, 2, height_ratios=(3, 10), width_ratios=(10, 3))
     gs.update(wspace=0.0, hspace=0.0)
     ax = fig.add_subplot(gs[1, 0])
     axtop = fig.add_subplot(gs[0, 0])
     axright = fig.add_subplot(gs[1, 1])
     axtop.loglog()
     axright.loglog()
+    axtop.grid(False)
+    axright.grid(False)
     try:
         cbar = ax.hexbin(mass, lumins,
                          gridsize=50, mincnt=1, C=w,
@@ -62,7 +65,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     except ValueError as e:
         print(e)
 
-    lumin_bins = np.logspace(27.2, 30.5, 50)
+    lumin_bins = np.logspace(27.2, 32.5, 50)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
     Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
@@ -70,7 +73,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.7)
     axright.plot(Hbot2, lbin_cents, color="k")
 
-    mass_bins = np.logspace(8, 11, 50)
+    mass_bins = np.logspace(8, 11.5, 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
     Htop2, bin_edges = np.histogram(mass[nokinds], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
@@ -100,10 +103,10 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     ax.tick_params(axis='both', which='minor', bottom=True, left=True)
 
-    ax.set_xlim(10 ** 8, 10 ** 11)
-    axtop.set_xlim(10 ** 8, 10 ** 11)
-    ax.set_ylim(10 ** 27.2, 10 ** 30.5)
-    axright.set_ylim(10 ** 27.2, 10 ** 30.5)
+    ax.set_xlim(10 ** 8, 10 ** 11.5)
+    axtop.set_xlim(10 ** 8, 10 ** 11.5)
+    ax.set_ylim(10 ** 27.2, 10 ** 32.5)
+    axright.set_ylim(10 ** 27.2, 10 ** 32.5)
 
     fig.savefig(
         'plots/' + str(z) + '/MassLumin_' + f + '_' + str(
@@ -112,3 +115,110 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
         bbox_inches='tight')
 
     plt.close(fig)
+
+
+if __name__ == "__main__":
+
+    # Set orientation
+    orientation = "sim"
+
+    snaps = ['006_z009p000', '007_z008p000', '008_z007p000', '009_z006p000',
+             '010_z005p000']
+    all_snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
+                 '006_z009p000', '007_z008p000', '008_z007p000',
+                 '009_z006p000', '010_z005p000', '011_z004p770']
+
+    # Define filter
+    # filters = ['FAKE.TH.' + f
+    #            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
+    #                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
+    filters = ['FAKE.TH.' + f for f in ['FUV', 'MUV', 'NUV']]
+
+    keys = ["Mass", "Image_Luminosity", "HLR_0.5",
+            "HLR_Pixel_0.5", "Luminosity", "HDR", "nStar"]
+
+    csoft = 0.001802390 / (0.6777) * 1e3
+
+    data = {}
+    intr_data = {}
+
+    # Load weights
+    df = pd.read_csv('../weight_files/weights_grid.txt')
+    weights = np.array(df['weights'])
+
+    regions = []
+    for reg in range(0, 40):
+        if reg < 10:
+            regions.append('0' + str(reg))
+        else:
+            regions.append(str(reg))
+
+    reg_snaps = []
+    for reg in reversed(regions):
+
+        for snap in all_snaps:
+            reg_snaps.append((reg, snap))
+
+    for reg, snap in reg_snaps:
+
+        try:
+            hdf = h5py.File(
+                "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
+                                                            orientation),
+                "r")
+        except OSError as e:
+            print(e)
+            continue
+
+        data.setdefault(snap, {})
+        intr_data.setdefault(snap, {})
+
+        for f in filters:
+
+            print(reg, snap, f)
+
+            data[snap].setdefault(f, {})
+            intr_data[snap].setdefault(f, {})
+
+            for key in keys:
+                data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
+
+            data[snap][f].setdefault("Weight", []).extend(
+                np.full(hdf[f]["Mass"][...].size, weights[int(reg)]))
+
+        hdf.close()
+
+        try:
+            hdf = h5py.File(
+                "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap,
+                                                            "Intrinsic",
+                                                            orientation),
+                "r")
+        except OSError as e:
+            print(e)
+            continue
+
+        for f in filters:
+
+            surf_dens = hdf[f]["Image_Luminosity"][...] \
+                        / (np.pi * (2 * hdf[f]["HLR_0.5"][...]) ** 2)
+
+            intr_data[snap][f].setdefault("Inner_Surface_Density",
+                                          []).extend(surf_dens)
+
+            for key in keys:
+                intr_data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
+
+        hdf.close()
+
+    for f in filters:
+        for snap in snaps:
+            print("---------------------------", f, snap,
+                  "---------------------------")
+            mass_lumin(intr_data[snap][f]["Mass"],
+                       intr_data[snap][f]["Luminosity"],
+                       intr_data[snap][f]["okinds"],
+                       intr_data[snap][f]["Diffuse_Population"],
+                       intr_data[snap][f]["Compact_Population"],
+                       data[snap][f]["Weight"],
+                       f, snap, orientation, "Intrinsic", "default")
