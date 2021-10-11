@@ -66,18 +66,22 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     except ValueError as e:
         print(e)
 
-    lumin_bins = np.logspace(27.2, 31.5, 50)
+    lumin_bins = np.logspace(27.2, 31.5, 100)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
     Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
+    print("Complete to", lbin_cents[np.argmin(Hbot2_all - Hbot2)])
+
     axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.4)
     axright.plot(Hbot2, lbin_cents, color="k")
 
-    mass_bins = np.logspace(7.2, 11.5, 50)
+    mass_bins = np.logspace(7.5, 11.5, 100)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
     Htop2, bin_edges = np.histogram(mass[nokinds], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
+
+    print("Complete to", mbin_cents[np.argmin(Htop2_all - Htop2)])
 
     axtop.plot(mbin_cents, Htop2_all, color="k", alpha=0.4)
     axtop.plot(mbin_cents, Htop2, color="k")
@@ -100,11 +104,11 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axright.spines['top'].set_visible(False)
     axright.spines['right'].set_visible(False)
 
-    ax.text(0.95, 0.05, f'$z={z}$',
-            bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                      ec="k", lw=1, alpha=0.8),
-            transform=ax.transAxes, horizontalalignment='right',
-            fontsize=8)
+    # ax.text(0.95, 0.05, f'$z={z}$',
+    #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
+    #                   ec="k", lw=1, alpha=0.8),
+    #         transform=ax.transAxes, horizontalalignment='right',
+    #         fontsize=8)
 
     # Label axes
     ax.set_ylabel(r"$L_{" + f.split(".")[-1] + "}/$ [erg $/$ s $/$ Hz]")
@@ -112,8 +116,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     ax.tick_params(axis='both', which='minor', bottom=True, left=True)
 
-    ax.set_xlim(10 ** 7.2, 10 ** 11.5)
-    axtop.set_xlim(10 ** 7.2, 10 ** 11.5)
+    ax.set_xlim(10 ** 7.5, 10 ** 11.5)
+    axtop.set_xlim(10 ** 7.5, 10 ** 11.5)
     ax.set_ylim(10 ** 27.2, 10 ** 31.5)
     axright.set_ylim(10 ** 27.2, 10 ** 31.5)
 
