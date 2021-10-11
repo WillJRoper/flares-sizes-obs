@@ -50,7 +50,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=LogNorm(), linewidths=0.2,
-                         cmap='Greys', alpha=0.4)
+                         cmap='Greys', alpha=0.2)
         cbar = ax.hexbin(mass[okinds1], lumins[okinds1],
                          gridsize=50, mincnt=1, C=w[okinds1],
                          reduce_C_function=np.sum,
@@ -66,20 +66,20 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     except ValueError as e:
         print(e)
 
-    lumin_bins = np.logspace(27.2, 32.5, 50)
+    lumin_bins = np.logspace(27.2, 31.5, 50)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
     Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.7)
+    axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.4)
     axright.plot(Hbot2, lbin_cents, color="k")
 
-    mass_bins = np.logspace(8, 11.5, 50)
+    mass_bins = np.logspace(7.2, 11.5, 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
     Htop2, bin_edges = np.histogram(mass[nokinds], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    axtop.plot(mbin_cents, Htop2_all, color="k", alpha=0.7)
+    axtop.plot(mbin_cents, Htop2_all, color="k", alpha=0.4)
     axtop.plot(mbin_cents, Htop2, color="k")
 
     # Remove axis labels and ticks
@@ -91,6 +91,14 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
                         labeltop=False, labelbottom=False)
     axright.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
+
+    axtop.spines['top'].set_visible(False)
+    axtop.spines['right'].set_visible(False)
+    axtop.spines['left'].set_visible(False)
+
+    axright.spines['bottom'].set_visible(False)
+    axright.spines['top'].set_visible(False)
+    axright.spines['right'].set_visible(False)
 
     ax.text(0.95, 0.05, f'$z={z}$',
             bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -104,10 +112,10 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     ax.tick_params(axis='both', which='minor', bottom=True, left=True)
 
-    ax.set_xlim(10 ** 8, 10 ** 11.5)
-    axtop.set_xlim(10 ** 8, 10 ** 11.5)
-    ax.set_ylim(10 ** 27.2, 10 ** 32.5)
-    axright.set_ylim(10 ** 27.2, 10 ** 32.5)
+    ax.set_xlim(10 ** 7.2, 10 ** 11.5)
+    axtop.set_xlim(10 ** 7.2, 10 ** 11.5)
+    ax.set_ylim(10 ** 27.2, 10 ** 31.5)
+    axright.set_ylim(10 ** 27.2, 10 ** 31.5)
 
     fig.savefig(
         'plots/' + str(z) + '/MassLumin_' + f + '_' + str(
