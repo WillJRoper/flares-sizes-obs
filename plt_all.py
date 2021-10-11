@@ -52,7 +52,7 @@ for reg, snap in reg_snaps:
 
     try:
         hdf = h5py.File(
-            "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
+            "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
                                                         orientation),
             "r")
     except OSError as e:
@@ -79,7 +79,7 @@ for reg, snap in reg_snaps:
 
     try:
         hdf = h5py.File(
-            "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Intrinsic",
+            "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap, "Intrinsic",
                                                         orientation),
             "r")
     except OSError as e:
