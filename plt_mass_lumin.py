@@ -269,10 +269,17 @@ if __name__ == "__main__":
         for snap in snaps:
             print("---------------------------", f, snap,
                   "---------------------------")
+            mass_lumin(data[snap][f]["Mass"],
+                       data[snap][f]["Luminosity"],
+                       data[snap][f]["okinds"],
+                       data[snap][f]["Diffuse_Population"],
+                       data[snap][f]["Compact_Population"],
+                       data[snap][f]["Weight"],
+                       f, snap, orientation, "Total", "default")
             mass_lumin(intr_data[snap][f]["Mass"],
                        intr_data[snap][f]["Luminosity"],
                        intr_data[snap][f]["okinds"],
                        intr_data[snap][f]["Diffuse_Population"],
                        intr_data[snap][f]["Compact_Population"],
                        data[snap][f]["Weight"],
-                       f, snap, orientation, "Total", "default")
+                       f, snap, orientation, "Intrinsic", "default")
