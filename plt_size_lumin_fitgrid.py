@@ -15,6 +15,7 @@ import matplotlib as mpl
 from scipy.optimize import curve_fit
 from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
+import matplotlib.gridspec as gridspec
 from astropy.cosmology import Planck13 as cosmo
 from flare.photom import M_to_lum
 import flare.photom as photconv
