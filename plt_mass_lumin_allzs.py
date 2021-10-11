@@ -285,7 +285,7 @@ if __name__ == "__main__":
             compact_pop = np.array(
                 intr_all_z_data[f]["Inner_Surface_Density"]) >= 10 ** 29
             diffuse_pop = np.array(
-                all_z_data[f]["Inner_Surface_Density"]) < 10 ** 29
+                intr_all_z_data[f]["Inner_Surface_Density"]) < 10 ** 29
 
             all_z_data[f]["Compact_Population"] = compact_pop
             all_z_data[f]["Diffuse_Population"] = diffuse_pop
