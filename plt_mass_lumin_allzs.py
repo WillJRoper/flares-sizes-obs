@@ -21,11 +21,10 @@ sns.set_style('whitegrid')
 
 
 def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
-               f, snap, orientation, Type, extinction):
+               f, orientation, Type, extinction):
     print("Plotting for:")
     print("Orientation =", orientation)
     print("Type =", Type)
-    print("Snapshot =", snap)
     print("Filter =", f)
 
     z_str = snap.split('z')[1].split('p')
@@ -141,8 +140,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
     axright.set_ylim(10 ** 26.3, 10 ** 31.5)
 
     fig.savefig(
-        'plots/MassLumin_allz_' + f + '_' + str(
-            z) + '_'
+        'plots/MassLumin_allz_' + f + '_'
         + orientation + '_' + Type + "_" + extinction + '.png',
         bbox_inches='tight')
 
@@ -294,20 +292,19 @@ if __name__ == "__main__":
             intr_all_z_data[snap][f]["Diffuse_Population"] = diffuse_pop
 
     for f in filters:
-        for snap in snaps:
-            print("---------------------------", f, snap,
-                  "---------------------------")
-            mass_lumin(all_z_data[snap][f]["Mass"],
-                       all_z_data[snap][f]["Luminosity"],
-                       all_z_data[snap][f]["okinds"],
-                       all_z_data[snap][f]["Diffuse_Population"],
-                       all_z_data[snap][f]["Compact_Population"],
-                       all_z_data[snap][f]["Weight"],
-                       f, snap, orientation, "Total", "default")
-            mass_lumin(intr_all_z_data[snap][f]["Mass"],
-                       intr_all_z_data[snap][f]["Luminosity"],
-                       intr_all_z_data[snap][f]["okinds"],
-                       intr_all_z_data[snap][f]["Diffuse_Population"],
-                       intr_all_z_data[snap][f]["Compact_Population"],
-                       all_z_data[snap][f]["Weight"],
-                       f, snap, orientation, "Intrinsic", "default")
+        print("---------------------------", f,
+              "---------------------------")
+        mass_lumin(all_z_data[f]["Mass"],
+                   all_z_data[f]["Luminosity"],
+                   all_z_data[f]["okinds"],
+                   all_z_data[f]["Diffuse_Population"],
+                   all_z_data[f]["Compact_Population"],
+                   all_z_data[f]["Weight"],
+                   f, orientation, "Total", "default")
+        mass_lumin(intr_all_z_data[f]["Mass"],
+                   intr_all_z_data[f]["Luminosity"],
+                   intr_all_z_data[f]["okinds"],
+                   intr_all_z_data[f]["Diffuse_Population"],
+                   intr_all_z_data[f]["Compact_Population"],
+                   all_z_data[f]["Weight"],
+                   f, orientation, "Intrinsic", "default")
