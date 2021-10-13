@@ -155,23 +155,30 @@ for f in filters:
     for snap in snaps:
         print(snap)
         mass_lumin(intr_data[snap][f]["Mass"],
-               intr_data[snap][f]["Luminosity"],
-               intr_data[snap][f]["okinds"],
-               intr_data[snap][f]["Diffuse_Population"],
-               intr_data[snap][f]["Compact_Population"],
-               data[snap][f]["Weight"],
-               f, snap, orientation, "Intrinsic", "default")
+                   intr_data[snap][f]["Luminosity"],
+                   intr_data[snap][f]["okinds"],
+                   intr_data[snap][f]["Diffuse_Population"],
+                   intr_data[snap][f]["Compact_Population"],
+                   data[snap][f]["Weight"],
+                   f, snap, orientation, "Intrinsic", "default")
+        mass_lumin(data[snap][f]["Mass"],
+                   data[snap][f]["Luminosity"],
+                   data[snap][f]["okinds"],
+                   data[snap][f]["Diffuse_Population"],
+                   data[snap][f]["Compact_Population"],
+                   data[snap][f]["Weight"],
+                   f, snap, orientation, "Total", "default")
         hdr_comp(data[snap][f]["HDR"], data[snap][f]["HLR_0.5"],
-             intr_data[snap][f]["HLR_0.5"], data[snap][f]["Weight"],
-             data[snap][f]["okinds"],
-             data[snap][f]["Compact_Population"],
-             data[snap][f]["Diffuse_Population"], f,
-             orientation, snap, "Intrinsic", "default")
+                 intr_data[snap][f]["HLR_0.5"], data[snap][f]["Weight"],
+                 data[snap][f]["okinds"],
+                 data[snap][f]["Compact_Population"],
+                 data[snap][f]["Diffuse_Population"], f,
+                 orientation, snap, "Intrinsic", "default")
         size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
-                         intr_data[snap][f]["Image_Luminosity"],
-                         data[snap][f]["Weight"],
-                         intr_data[snap][f]["okinds"],
-                         intr_data[snap][f]["Compact_Population"],
-                         intr_data[snap][f]["Diffuse_Population"], f,
-                         snap,
-                         "pix", orientation, "Total", "default")
+                             intr_data[snap][f]["Image_Luminosity"],
+                             data[snap][f]["Weight"],
+                             intr_data[snap][f]["okinds"],
+                             intr_data[snap][f]["Compact_Population"],
+                             intr_data[snap][f]["Diffuse_Population"], f,
+                             snap,
+                             "pix", orientation, "Total", "default")
