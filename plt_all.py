@@ -124,9 +124,9 @@ for snap in all_snaps:
         intr_data[snap][f]["okinds"] = okinds
 
         data[snap][f]["Complete_Luminosity"] = np.max(
-            intr_data[snap][f]["Luminosity"][~okinds])
+            data[snap][f]["Luminosity"][~okinds])
         data[snap][f]["Complete_Mass"] = np.max(
-            intr_data[snap][f]["Mass"][~okinds])
+            data[snap][f]["Mass"][~okinds])
         intr_data[snap][f]["Complete_Luminosity"] = np.max(
             intr_data[snap][f]["Luminosity"][~okinds])
         intr_data[snap][f]["Complete_Mass"] = np.max(
