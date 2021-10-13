@@ -21,7 +21,7 @@ sns.set_style('whitegrid')
 
 
 def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
-               f, snap, orientation, Type, extinction):
+               f, snap, orientation, Type, extinction, comp_l, comp_m):
     print("Plotting for:")
     print("Orientation =", orientation)
     print("Type =", Type)
@@ -71,11 +71,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     lumin_bins = np.logspace(26.3, 31.5, 50)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
-    Hbot2, bin_edges = np.histogram(lumins[~nokinds], bins=lumin_bins)
+    Hbot2, bin_edges = np.histogram(lumins[nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
-
-    comp_l = np.max(lumins[~nokinds])
-    print("Complete to log_10(L/[erg s^-1 Hz^-1]) =", np.log10(comp_l))
 
     axright.plot(Hbot2_all, lbin_cents, color="k", alpha=0.4)
     axright.plot(Hbot2, lbin_cents, color="k")
@@ -84,11 +81,8 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     mass_bins = np.logspace(7.5, 11.5, 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
-    Htop2, bin_edges = np.histogram(mass[~nokinds], bins=mass_bins)
+    Htop2, bin_edges = np.histogram(mass[nokinds], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
-
-    comp_m = np.max(mass[~nokinds])
-    print("Complete to log_10(M/M_sun) =", np.log10(comp_m))
 
     axtop.plot(mbin_cents, Htop2_all, color="k", alpha=0.4)
     axtop.plot(mbin_cents, Htop2, color="k")

@@ -1,6 +1,8 @@
 import h5py
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.colors import LogNorm
 from plt_half_dust_radius_comp import hdr_comp
 from plt_mass_lumin import mass_lumin
 from plt_size_evo_violin import size_evo_violin
@@ -142,11 +144,42 @@ for snap in all_snaps:
         intr_data[snap][f]["Compact_Population"] = compact_pop
         intr_data[snap][f]["Diffuse_Population"] = diffuse_pop
 
+        data[snap][f]["Compact_Population_Complete"] = np.logical_and(
+            compact_pop, okinds)
+        data[snap][f]["Diffuse_Population_Complete"] = np.logical_and(
+            diffuse_pop, okinds)
+        intr_data[snap][f]["Compact_Population_Complete"] = np.logical_and(
+            compact_pop, okinds)
+        intr_data[snap][f]["Diffuse_Population_Complete"] = np.logical_and(
+            diffuse_pop, okinds)
+
+        data[snap][f]["Compact_Population_NotComplete"] = np.logical_and(
+            compact_pop, ~okinds)
+        data[snap][f]["Diffuse_Population_NotComplete"] = np.logical_and(
+            diffuse_pop, ~okinds)
+        intr_data[snap][f]["Compact_Population_NotComplete"] = np.logical_and(
+            compact_pop, ~okinds)
+        intr_data[snap][f]["Diffuse_Population_NotComplete"] = np.logical_and(
+            diffuse_pop, ~okinds)
+
 size_lumin_grid(data, snaps, filters, orientation, "Total",
                 "default", "pix")
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix")
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+im = ax.hexbin(data['010_z005p000']['FAKE.TH.FUV']["Luminosity"],
+               data['010_z005p000']['FAKE.TH.FUV']["HLR_0.5"],
+               gridsize=50,
+               mincnt=1, C=data['010_z005p000']['FAKE.TH.FUV']["Weight"],
+               reduce_C_function=np.sum,
+               xscale='log', yscale='log',
+               norm=LogNorm(), linewidths=0.2,
+               cmap='plasma')
+fig.colorbar(im)
+fig.savefig("plots/test.png", bbox_inches="tight")
 
 for f in filters:
     print(f)
@@ -160,14 +193,18 @@ for f in filters:
                    intr_data[snap][f]["Diffuse_Population"],
                    intr_data[snap][f]["Compact_Population"],
                    data[snap][f]["Weight"],
-                   f, snap, orientation, "Intrinsic", "default")
+                   f, snap, orientation, "Intrinsic", "default",
+                   intr_data[snap][f]["Complete_Luminosity"],
+                   intr_data[snap][f]["Complete_Mass"])
         mass_lumin(data[snap][f]["Mass"],
                    data[snap][f]["Luminosity"],
                    data[snap][f]["okinds"],
                    data[snap][f]["Diffuse_Population"],
                    data[snap][f]["Compact_Population"],
                    data[snap][f]["Weight"],
-                   f, snap, orientation, "Total", "default")
+                   f, snap, orientation, "Total", "default",
+                   data[snap][f]["Complete_Luminosity"],
+                   data[snap][f]["Complete_Mass"])
         hdr_comp(data[snap][f]["HDR"], data[snap][f]["HLR_0.5"],
                  intr_data[snap][f]["HLR_0.5"], data[snap][f]["Weight"],
                  data[snap][f]["okinds"],
@@ -182,3 +219,11 @@ for f in filters:
                              intr_data[snap][f]["Diffuse_Population"], f,
                              snap,
                              "pix", orientation, "Total", "default")
+        size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
+                             intr_data[snap][f]["Image_Luminosity"],
+                             data[snap][f]["Weight"],
+                             intr_data[snap][f]["okinds"],
+                             intr_data[snap][f]["Compact_Population"],
+                             intr_data[snap][f]["Diffuse_Population"], f,
+                             snap,
+                             "part", orientation, "Total", "default")

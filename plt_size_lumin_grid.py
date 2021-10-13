@@ -200,22 +200,10 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             complete_l, complete_m = data[snap][f]["Complete_Luminosity"], \
                                      data[snap][f]["Complete_Mass"]
 
-            okinds = data[snap][f]["okinds"]
-
-            com_okinds = np.logical_and(intr_lumins > complete_l,
-                                        mass > complete_m)
-
-            compact_ncom = np.logical_and(~com_okinds,
-                                          data[snap][f]["Compact_Population"])
-            diffuse_ncom = np.logical_and(~com_okinds,
-                                          data[snap][f]["Diffuse_Population"])
-
-            okinds1 = np.logical_and(okinds,
-                                     np.logical_and(com_okinds, data[snap][f][
-                                         "Compact_Population"]))
-            okinds2 = np.logical_and(okinds,
-                                     np.logical_and(com_okinds, data[snap][f][
-                                         "Diffuse_Population"]))
+            compact_ncom = data[snap][f]["Compact_Population_NotComplete"]
+            diffuse_ncom = data[snap][f]["Diffuse_Population_NotComplete"]
+            compact_com = data[snap][f]["Compact_Population_Complete"]
+            diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
 
             # bins = np.logspace(np.log10(0.08), np.log10(20), 40)
             # lumin_bins = np.logspace(np.log10(10 ** 27.),
@@ -260,7 +248,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                       reduce_C_function=np.sum,
                                       xscale='log', yscale='log',
                                       norm=LogNorm(), linewidths=0.2,
-                                      cmap='Greys', alpha=0.2)
+                                      cmap='Greys', alpha=0.3)
             except ValueError as e:
                 print(e, "Diffuse incomplete", snap, f)
                 print(lumins[diffuse_ncom][lumins[diffuse_ncom] <= 0],
@@ -273,35 +261,32 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                reduce_C_function=np.sum,
                                xscale='log', yscale='log',
                                norm=LogNorm(), linewidths=0.2,
-                               cmap='plasma', alpha=0.2)
+                               cmap='plasma', alpha=0.3)
             except ValueError as e:
                 print(e, "Compact incomplete", snap, f)
                 print(lumins[compact_ncom][lumins[compact_ncom] <= 0],
                       lumins[compact_ncom][lumins[compact_ncom] <= 0].size)
             try:
-                cbar = axes[i].hexbin(lumins[okinds2], hlrs[okinds2],
+                cbar = axes[i].hexbin(lumins[diffuse_com], hlrs[diffuse_com],
                                       gridsize=50,
-                                      mincnt=1, C=w[okinds2],
+                                      mincnt=1, C=w[diffuse_com],
                                       reduce_C_function=np.sum,
                                       xscale='log', yscale='log',
                                       norm=LogNorm(), linewidths=0.2,
                                       cmap='Greys')
             except ValueError as e:
                 print(e, "Diffuse complete", snap, f)
-                print(lumins[okinds2][lumins[okinds2] <= 0],
-                      lumins[okinds2][lumins[okinds2] <= 0].size)
             try:
-                axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50,
+                axes[i].hexbin(lumins[compact_com],
+                               hlrs[compact_com], gridsize=50,
                                mincnt=1,
-                               C=w[okinds1],
+                               C=w[compact_com],
                                reduce_C_function=np.sum,
                                xscale='log', yscale='log',
                                norm=LogNorm(), linewidths=0.2,
                                cmap='plasma')
             except ValueError as e:
                 print(e, "Compact complete", snap, f)
-                print(lumins[okinds1][lumins[okinds1] <= 0],
-                      lumins[okinds1][lumins[okinds1] <= 0].size)
             try:
                 axes_twin[i].hexbin(lumins[okinds], hlrs[okinds]
                                     * cosmo.arcsec_per_kpc_proper(z).value,
@@ -312,8 +297,6 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                     cmap='plasma', alpha=0)
             except ValueError as e:
                 print(e, "All", snap, f)
-                print(lumins[okinds][lumins[okinds] <= 0],
-                      lumins[okinds][lumins[okinds] <= 0].size)
 
                 # popt, pcov = curve_fit(kawa_fit, lumins, hlrs,
                 #                        p0=(kawa_params['r_0'][7],
