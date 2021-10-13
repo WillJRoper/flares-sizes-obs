@@ -168,6 +168,8 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
             axes.append(fig.add_subplot(gs[0, i]))
             axes_twin.append(axes[-1].twinx())
             axes_twin[-1].grid(False)
+            axes[-1].loglog()
+            axes_twin[-1].loglog()
             if i > 0:
                 axes[-1].tick_params(axis='y', left=False, right=False,
                                      labelleft=False, labelright=False)
