@@ -162,12 +162,6 @@ for snap in all_snaps:
         intr_data[snap][f]["Diffuse_Population_NotComplete"] = np.logical_and(
             diffuse_pop, ~okinds)
 
-size_lumin_grid(data, snaps, filters, orientation, "Total",
-                "default", "pix")
-fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
-                    "default",
-                    "pix")
-
 fig = plt.figure()
 ax = fig.add_subplot(111)
 im = ax.hexbin(data['010_z005p000']['FAKE.TH.FUV']["Luminosity"],
@@ -180,6 +174,12 @@ im = ax.hexbin(data['010_z005p000']['FAKE.TH.FUV']["Luminosity"],
                cmap='plasma')
 fig.colorbar(im)
 fig.savefig("plots/test.png", bbox_inches="tight")
+
+size_lumin_grid(data, snaps, filters, orientation, "Total",
+                "default", "pix")
+fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
+                    "default",
+                    "pix")
 
 for f in filters:
     print(f)
