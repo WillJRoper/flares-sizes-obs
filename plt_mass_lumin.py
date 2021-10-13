@@ -71,7 +71,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     lumin_bins = np.logspace(26.3, 31.5, 50)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
-    Hbot2, bin_edges = np.histogram(lumins[np.logical_or(okinds1, okinds2)], bins=lumin_bins)
+    Hbot2, bin_edges = np.histogram(lumins[~nokinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     comp_l = np.max(lumins[~nokinds])
@@ -84,7 +84,7 @@ def mass_lumin(mass, lumins, nokinds, okinds1, okinds2, w,
 
     mass_bins = np.logspace(7.5, 11.5, 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
-    Htop2, bin_edges = np.histogram(mass[np.logical_or(okinds1, okinds2)], bins=mass_bins)
+    Htop2, bin_edges = np.histogram(mass[~nokinds], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     comp_m = np.max(mass[~nokinds])
