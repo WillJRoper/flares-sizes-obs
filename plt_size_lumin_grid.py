@@ -260,7 +260,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                       reduce_C_function=np.sum,
                                       xscale='log', yscale='log',
                                       norm=LogNorm(), linewidths=0.2,
-                                      cmap='Greys', alpha=0.4)
+                                      cmap='Greys', alpha=0.2)
             except ValueError as e:
                 print(e, "Diffuse incomplete", snap, f)
                 print(lumins[diffuse_ncom][lumins[diffuse_ncom] <= 0],
@@ -273,7 +273,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                reduce_C_function=np.sum,
                                xscale='log', yscale='log',
                                norm=LogNorm(), linewidths=0.2,
-                               cmap='plasma', alpha=0.4)
+                               cmap='plasma', alpha=0.2)
             except ValueError as e:
                 print(e, "Compact incomplete", snap, f)
                 print(lumins[compact_ncom][lumins[compact_ncom] <= 0],

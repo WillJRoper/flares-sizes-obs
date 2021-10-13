@@ -142,15 +142,15 @@ for snap in all_snaps:
         intr_data[snap][f]["Compact_Population"] = compact_pop
         intr_data[snap][f]["Diffuse_Population"] = diffuse_pop
 
-size_lumin_grid(data, all_snaps, filters, orientation, "Total",
+size_lumin_grid(data, snaps, filters, orientation, "Total",
                 "default", "pix")
-fit_size_lumin_grid(data, all_snaps, filters, orientation, "Total",
+fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix")
 
 for f in filters:
     print(f)
-    size_evo_violin(data, intr_data, snaps, f, "pix", "sim", "Total",
+    size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "Total",
                     "default")
     for snap in snaps:
         print(snap)

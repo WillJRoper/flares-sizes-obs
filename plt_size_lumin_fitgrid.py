@@ -79,7 +79,7 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
 
     okinds = np.logical_and(~np.isnan(bin_cents), ~np.isnan(y_stat))
 
-    axes[i].plot(bin_cents[okinds], y_stat[okinds], color=color, linestyle=ls,
+    ax.plot(bin_cents[okinds], y_stat[okinds], color=color, linestyle=ls,
                  label=lab)
 
 
@@ -220,18 +220,29 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                                        p0=(kawa_params['r_0'][7],
                                            kawa_params['beta'][7]),
                                        sigma=w)
+            except ValueError as e:
+                print(e)
 
+            try:
                 popt1, pcov1 = curve_fit(kawa_fit, lumins[okinds1],
                                          hlrs[okinds1],
                                          p0=(kawa_params['r_0'][7],
                                              kawa_params['beta'][7]),
                                          sigma=w[okinds1])
+            except ValueError as e:
+                print(e)
+
+            try:
                 popt2, pcov2 = curve_fit(kawa_fit, lumins[okinds2],
                                          hlrs[okinds2],
                                          p0=(kawa_params['r_0'][7],
                                              kawa_params['beta'][7]),
                                          sigma=w[okinds2])
+            except ValueError as e:
+                print(e)
 
+
+            try:
                 print("--------------", "Total", "All", mtype, f,
                       "--------------")
                 print("R_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
