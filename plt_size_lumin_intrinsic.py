@@ -83,7 +83,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
                          C=w[diff_ncomp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
-                         cmap='Greys', alpha=0.7,
+                         cmap='Greys',
                          extent=(26.8, 31.2, -1.5, 1.5), alpha=0.2)
         cbar = ax.hexbin(lumins[com_ncomp], hlrs[com_ncomp],
                          C=w[com_ncomp], gridsize=50, mincnt=1,
@@ -95,7 +95,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
                          C=w[diff_comp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
-                         cmap='Greys', alpha=0.7,
+                         cmap='Greys',
                          extent=(26.8, 31.2, -1.5, 1.5))
         cbar = ax.hexbin(lumins[com_comp], hlrs[com_comp],
                          C=w[com_comp], gridsize=50, mincnt=1,
