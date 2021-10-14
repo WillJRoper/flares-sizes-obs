@@ -134,6 +134,14 @@ for snap in all_snaps:
         intr_data[snap][f]["Complete_Mass"] = np.max(
             intr_data[snap][f]["Mass"][~okinds])
 
+        okinds = np.logical_and(data[snap][f]["Luminosity"] >= data[snap][f][
+            "Complete_Luminosity"], data[snap][f]["Mass"] >= data[snap][f][
+                                    "Complete_Mass"])
+        intr_okinds = np.logical_and(
+            intr_data[snap][f]["Luminosity"] >= intr_data[snap][f][
+                "Complete_Luminosity"],
+            intr_data[snap][f]["Mass"] >= intr_data[snap][f]["Complete_Mass"])
+
         compact_pop = np.array(
             intr_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 29
         diffuse_pop = np.array(
