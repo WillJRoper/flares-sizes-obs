@@ -170,7 +170,7 @@ im = ax.hexbin(data['010_z005p000']['FAKE.TH.FUV']["Luminosity"],
                mincnt=1, C=data['010_z005p000']['FAKE.TH.FUV']["Weight"],
                reduce_C_function=np.sum,
                xscale='log', yscale='log',
-               norm=LogNorm(), linewidths=0.2,
+               norm=LogNorm(vmin=10**-4, vmax=1), linewidths=0.2,
                cmap='plasma')
 fig.colorbar(im)
 fig.savefig("plots/test.png", bbox_inches="tight")
