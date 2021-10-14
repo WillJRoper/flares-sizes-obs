@@ -352,43 +352,41 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     #                marker=markers[p], label=labels[p], s=17,
     #                color=colors[p], alpha=0.7)
 
-    okinds2 = fitting_ms > 10 ** 9
-
     popt, pcov = curve_fit(fit, fitting_zs, fitting_hlrs,
                            p0=(1, 0.5), sigma=fitting_ws)
 
-    popt1, pcov1 = curve_fit(fit, fitting_zs[okinds2],
-                             fitting_hlrs[okinds2],
-                             p0=(1, 0.5), sigma=fitting_ws[okinds2])
+    # popt1, pcov1 = curve_fit(fit, fitting_zs[okinds2],
+    #                          fitting_hlrs[okinds2],
+    #                          p0=(1, 0.5), sigma=fitting_ws[okinds2])
 
     int_popt, int_pcov = curve_fit(fit, fitting_zs, fitting_intr_hlrs,
                            p0=(1, 0.5), sigma=fitting_ws)
 
-    int_popt1, int_pcov1 = curve_fit(fit, fitting_zs[okinds2],
-                             fitting_intr_hlrs[okinds2],
-                             p0=(1, 0.5), sigma=fitting_ws[okinds2])
+    # int_popt1, int_pcov1 = curve_fit(fit, fitting_zs[okinds2],
+    #                          fitting_intr_hlrs[okinds2],
+    #                          p0=(1, 0.5), sigma=fitting_ws[okinds2])
 
     popt2, pcov2 = curve_fit(fit, fitting_zs, fitting_hdrs,
                            p0=(1, 0.5), sigma=fitting_ws)
 
     fit_plt_zs = np.linspace(12, 4.5, 1000)
 
-    print("--------------", "Total", "All", mtype, f, "--------------")
+    print("--------------", "Total", "Complete", mtype, f, "--------------")
     print("C=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
     print("m=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
     print(pcov)
-    print("--------------", "Total", "Massive", mtype, f, "--------------")
-    print("C=", popt1[0], "+/-", np.sqrt(pcov1[0, 0]))
-    print("m=", popt1[1], "+/-", np.sqrt(pcov1[1, 1]))
-    print(pcov1)
-    print("--------------", "Intrinsc", "All", mtype, f, "--------------")
+    # print("--------------", "Total", "Massive", mtype, f, "--------------")
+    # print("C=", popt1[0], "+/-", np.sqrt(pcov1[0, 0]))
+    # print("m=", popt1[1], "+/-", np.sqrt(pcov1[1, 1]))
+    # print(pcov1)
+    print("--------------", "Intrinsc", "Complete", mtype, f, "--------------")
     print("C=", int_popt[0], "+/-", np.sqrt(int_pcov[0, 0]))
     print("m=", int_popt[1], "+/-", np.sqrt(int_pcov[1, 1]))
     print(int_pcov)
-    print("--------------", "Intrinsic", "Massive", mtype, f, "--------------")
-    print("C=", int_popt1[0], "+/-", np.sqrt(int_pcov1[0, 0]))
-    print("m=", int_popt1[1], "+/-", np.sqrt(int_pcov1[1, 1]))
-    print(int_pcov1)
+    # print("--------------", "Intrinsic", "Massive", mtype, f, "--------------")
+    # print("C=", int_popt1[0], "+/-", np.sqrt(int_pcov1[0, 0]))
+    # print("m=", int_popt1[1], "+/-", np.sqrt(int_pcov1[1, 1]))
+    # print(int_pcov1)
     print("--------------", "Dust", mtype, f, "--------------")
     print("C=", popt2[0], "+/-", np.sqrt(pcov2[0, 0]))
     print("m=", popt2[1], "+/-", np.sqrt(pcov2[1, 1]))

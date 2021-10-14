@@ -128,6 +128,9 @@ if run:
     lumin_dict = {}
     img_lumin_dict = {}
     mass_dict = {}
+    gmass_dict = {}
+    met_dict = {}
+    gmet_dict = {}
     nstar_dict = {}
     img_dict = {}
     sed_int = {}
@@ -149,6 +152,9 @@ if run:
     lumin_dict.setdefault(tag, {})
     img_lumin_dict.setdefault(tag, {})
     mass_dict.setdefault(tag, {})
+    gmass_dict.setdefault(tag, {})
+    met_dict.setdefault(tag, {})
+    gmet_dict.setdefault(tag, {})
     nstar_dict.setdefault(tag, {})
     img_dict.setdefault(tag, {})
     sed_int.setdefault(tag, {})
@@ -213,6 +219,7 @@ if run:
     smls = reg_dict["smls"] * 10 ** 3
     masses = reg_dict["masses"]
     gas_masses = reg_dict["gmasses"]
+    star_Z = reg_dict["S_Z"]
     gas_Z = reg_dict["G_Z"]
     nstars = reg_dict["nstar"]
     begin = reg_dict["begin"]
@@ -235,6 +242,9 @@ if run:
         lumin_dict[tag].setdefault(f, [])
         img_lumin_dict[tag].setdefault(f, [])
         mass_dict[tag].setdefault(f, [])
+        gmass_dict[tag].setdefault(f, [])
+        met_dict[tag].setdefault(f, [])
+        gmet_dict[tag].setdefault(f, [])
         nstar_dict[tag].setdefault(f, [])
         img_dict[tag].setdefault(f, [])
         sed_int[tag].setdefault(f, [])
@@ -253,6 +263,7 @@ if run:
             this_smls = smls[b: e]
             this_mass = np.nansum(masses[b: e])
             this_gmass = np.nansum(gas_masses[b: e])
+            this_met = star_Z[gb: ge] * masses[gb: ge]
             this_metals = gas_Z[gb: ge] * gas_masses[gb: ge]
             this_nstar = nstars[ind]
             this_age = reg_dict["S_age"][b: e]
@@ -334,6 +345,9 @@ if run:
             lumin_dict[tag][f].append(tot_l)
             img_lumin_dict[tag][f].append(np.sum(img))
             mass_dict[tag][f].append(this_mass)
+            gmass_dict[tag][f].append(this_gmass)
+            met_dict[tag][f].append(np.sum(this_met))
+            gmet_dict[tag][f].append(np.sum(this_metals))
             nstar_dict[tag][f].append(this_nstar)
             img_dict[tag][f].append(img)
 
@@ -364,6 +378,9 @@ if run:
         lumins = np.array(lumin_dict[tag][f])
         img_lumins = np.array(img_lumin_dict[tag][f])
         mass = np.array(mass_dict[tag][f])
+        gmass = np.array(gmass_dict[tag][f])
+        met = np.array(met_dict[tag][f])
+        gmet = np.array(gmet_dict[tag][f])
         nstar = np.array(nstar_dict[tag][f])
         imgs = np.array(img_dict[tag][f])
         sed_ints = np.array(sed_int[tag][f])
@@ -508,6 +525,51 @@ if run:
             dset = f_group.create_dataset("Mass", data=mass,
                                           dtype=mass.dtype,
                                           shape=mass.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$M_\odot$"
+
+        try:
+            dset = f_group.create_dataset("Gas_Mass", data=gmass,
+                                          dtype=gmass.dtype,
+                                          shape=gmass.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$M_\odot$"
+        except RuntimeError:
+            print("Gas_Mass already exists: Overwriting...")
+            del f_group["Gas_Mass"]
+            dset = f_group.create_dataset("Gas_Mass", data=gmass,
+                                          dtype=gmass.dtype,
+                                          shape=gmass.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$M_\odot$"
+
+        try:
+            dset = f_group.create_dataset("Gas_Metal_Mass", data=gmet,
+                                          dtype=gmet.dtype,
+                                          shape=gmet.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$M_\odot$"
+        except RuntimeError:
+            print("Gas_Metal_Mass already exists: Overwriting...")
+            del f_group["Gas_Metal_Mass"]
+            dset = f_group.create_dataset("Gas_Metal_Mass", data=gmet,
+                                          dtype=gmet.dtype,
+                                          shape=gmet.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$M_\odot$"
+
+        try:
+            dset = f_group.create_dataset("Star_Metal_Mass", data=met,
+                                          dtype=met.dtype,
+                                          shape=met.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$M_\odot$"
+        except RuntimeError:
+            print("Star_Metal_Mass already exists: Overwriting...")
+            del f_group["Star_Metal_Mass"]
+            dset = f_group.create_dataset("Star_Metal_Mass", data=met,
+                                          dtype=met.dtype,
+                                          shape=met.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$M_\odot$"
 

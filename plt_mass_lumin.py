@@ -56,7 +56,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, w,
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
-                         cmap='viridis',
+                         cmap='viridis', alpha=0.2,
                          extent=(7.5, 11.5, 26.3, 31.5))
         cbar = ax.hexbin(mass[diff_comp], lumins[diff_comp],
                          gridsize=50, mincnt=1, C=w[diff_comp],

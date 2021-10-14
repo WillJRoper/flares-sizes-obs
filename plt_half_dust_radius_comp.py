@@ -107,8 +107,8 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
 
     plt.axis('scaled')
 
-    ax.set_xlim([0.08, 15])
-    ax.set_ylim([0.08, 20])
+    ax.set_xlim(10 ** -1.1, 10 ** 1.3)
+    ax.set_ylim(10 ** -1.1, 10 ** 1.3)
 
     # fig.colorbar(cbar)
 
@@ -197,7 +197,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ R_{1/2, dust}$")
     ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
-    ax.set_xlim([0.08, 15])
+    ax.set_xlim(10 ** -1.1, 10 ** 1.3)
     ax.set_ylim([0.08, 50])
 
     plt.axis('scaled')
@@ -291,7 +291,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                   + f.split(".")[-1] + ", \mathrm{Intrinsic}}$")
     ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
-    ax.set_xlim([0.08, 15])
+    ax.set_xlim(10 ** -1.1, 10 ** 1.3)
     ax.set_ylim([0.08, 50])
 
     plt.axis('scaled')

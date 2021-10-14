@@ -264,14 +264,18 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
 
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dotted', color="m",
-                             alpha=0.9, zorder=3,
+                             zorder=3,
+                             linewidth=2)
+                axes_twin[i].plot(fit_lumins, fit,
+                             linestyle='dotted', color="m",
+                             alpha=0, zorder=3,
                              linewidth=2)
 
                 fit = kawa_fit(fit_lumins, popt1[0], popt1[1])
 
                 axes[i].plot(fit_lumins, fit,
                              linestyle='-', color="m",
-                             alpha=0.9, zorder=3,
+                             zorder=3,
                              linewidth=2)
 
             except ValueError as e:
@@ -294,7 +298,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                                kawa_params['beta'][int(z)])
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dashed', color="g",
-                             alpha=0.9, zorder=2,
+                             zorder=2,
                              label="Kawamata+18", linewidth=4)
 
             axes[i].text(0.95, 0.05, f'$z={z}$',
@@ -330,7 +334,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                    label="FLARES (All)"))
         uni_legend_elements.append(
             Line2D([0], [0], color="m", linestyle="-",
-                   label="FLARES ($M_{\star}/M_\odot\geq10^{9}$)"))
+                   label="FLARES (Complete)"))
         # uni_legend_elements.append(
         #     Line2D([0], [0], color="m", linestyle="--",
         #            label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
