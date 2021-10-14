@@ -285,9 +285,9 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             except ValueError as e:
                 print(e, "Compact complete", snap, f)
             try:
-                axes_twin[i].hexbin(lumins[okinds], hlrs[okinds]
+                axes_twin[i].hexbin(lumins, hlrs
                                     * cosmo.arcsec_per_kpc_proper(z).value,
-                                    gridsize=50, mincnt=1, C=w[okinds],
+                                    gridsize=50, mincnt=1, C=w,
                                     reduce_C_function=np.sum, xscale='log',
                                     yscale='log', norm=weight_norm,
                                     linewidths=0.2,

@@ -80,7 +80,7 @@ def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
     okinds = np.logical_and(~np.isnan(bin_cents), ~np.isnan(y_stat))
 
     ax.plot(bin_cents[okinds], y_stat[okinds], color=color, linestyle=ls,
-                 label=lab)
+            label=lab)
 
 
 def r_from_surf_den(lum, s_den):
@@ -234,7 +234,6 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
             except ValueError as e:
                 print(e)
 
-
             try:
                 print("--------------", "Total", "All", mtype, f,
                       "--------------")
@@ -318,7 +317,9 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
 
         for i in range(len(axes)):
             axes[i].set_ylim(np.min(ylims), np.max(ylims))
-            axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
+            axes_twin[i].set_ylim(
+                np.min(ylims) * cosmo.arcsec_per_kpc_proper(z).value,
+                np.max(ylims) * cosmo.arcsec_per_kpc_proper(z).value)
 
         axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
         axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
