@@ -147,7 +147,7 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
-                    mtype):
+                    mtype, weight_norm):
     for f in filters:
 
         print("Plotting for:")
@@ -197,9 +197,6 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             w = np.array(data[snap][f]["Weight"])
             mass = np.array(data[snap][f]["Mass"])
 
-            complete_l, complete_m = data[snap][f]["Complete_Luminosity"], \
-                                     data[snap][f]["Complete_Mass"]
-
             compact_ncom = data[snap][f]["Compact_Population_NotComplete"]
             diffuse_ncom = data[snap][f]["Diffuse_Population_NotComplete"]
             compact_com = data[snap][f]["Compact_Population_Complete"]
@@ -247,7 +244,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                       mincnt=1, C=w[diffuse_ncom],
                                       reduce_C_function=np.sum,
                                       xscale='log', yscale='log',
-                                      norm=LogNorm(), linewidths=0.2,
+                                      norm=weight_norm, linewidths=0.2,
                                       cmap='Greys', alpha=0.3)
             except ValueError as e:
                 print(e, "Diffuse incomplete", snap, f)
@@ -260,7 +257,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                C=w[compact_ncom],
                                reduce_C_function=np.sum,
                                xscale='log', yscale='log',
-                               norm=LogNorm(), linewidths=0.2,
+                               norm=weight_norm, linewidths=0.2,
                                cmap='plasma', alpha=0.3)
             except ValueError as e:
                 print(e, "Compact incomplete", snap, f)
@@ -272,7 +269,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                       mincnt=1, C=w[diffuse_com],
                                       reduce_C_function=np.sum,
                                       xscale='log', yscale='log',
-                                      norm=LogNorm(), linewidths=0.2,
+                                      norm=weight_norm, linewidths=0.2,
                                       cmap='Greys')
             except ValueError as e:
                 print(e, "Diffuse complete", snap, f)
@@ -283,7 +280,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                C=w[compact_com],
                                reduce_C_function=np.sum,
                                xscale='log', yscale='log',
-                               norm=LogNorm(), linewidths=0.2,
+                               norm=weight_norm, linewidths=0.2,
                                cmap='plasma')
             except ValueError as e:
                 print(e, "Compact complete", snap, f)
@@ -292,7 +289,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                     * cosmo.arcsec_per_kpc_proper(z).value,
                                     gridsize=50, mincnt=1, C=w[okinds],
                                     reduce_C_function=np.sum, xscale='log',
-                                    yscale='log', norm=LogNorm(),
+                                    yscale='log', norm=weight_norm,
                                     linewidths=0.2,
                                     cmap='plasma', alpha=0)
             except ValueError as e:

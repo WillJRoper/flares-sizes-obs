@@ -200,46 +200,37 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
             w = np.array(data[snap][f]["Weight"])
             mass = np.array(data[snap][f]["Mass"])
 
-            complete_l, complete_m = data[snap][f]["Complete_Luminosity"], \
-                                     data[snap][f]["Complete_Mass"]
-
-            okinds = data[snap][f]["okinds"]
-
-            com_okinds = np.logical_and(intr_lumins > complete_l,
-                                        mass > complete_m)
-
-            okinds1 = np.logical_and(okinds,
-                                     np.logical_and(com_okinds, data[snap][f][
-                                         "Compact_Population"]))
-            okinds2 = np.logical_and(okinds,
-                                     np.logical_and(com_okinds, data[snap][f][
-                                         "Diffuse_Population"]))
+            compact_ncom = data[snap][f]["Compact_Population_NotComplete"]
+            diffuse_ncom = data[snap][f]["Diffuse_Population_NotComplete"]
+            compact_com = data[snap][f]["Compact_Population_Complete"]
+            diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
+            complete = np.logical_or(compact_com, diffuse_com)
 
             try:
 
-                popt, pcov = curve_fit(kawa_fit, lumins[com_okinds],
-                                       hlrs[com_okinds],
+                popt, pcov = curve_fit(kawa_fit, lumins[complete],
+                                       hlrs[complete],
                                        p0=(kawa_params['r_0'][7],
                                            kawa_params['beta'][7]),
-                                       sigma=w[com_okinds])
+                                       sigma=w[complete])
             except ValueError as e:
                 print(e)
 
             try:
-                popt1, pcov1 = curve_fit(kawa_fit, lumins[okinds1],
-                                         hlrs[okinds1],
+                popt1, pcov1 = curve_fit(kawa_fit, lumins[compact_com],
+                                         hlrs[compact_com],
                                          p0=(kawa_params['r_0'][7],
                                              kawa_params['beta'][7]),
-                                         sigma=w[okinds1])
+                                         sigma=w[compact_com])
             except ValueError as e:
                 print(e)
 
             try:
-                popt2, pcov2 = curve_fit(kawa_fit, lumins[okinds2],
-                                         hlrs[okinds2],
+                popt2, pcov2 = curve_fit(kawa_fit, lumins,
+                                         hlrs,
                                          p0=(kawa_params['r_0'][7],
                                              kawa_params['beta'][7]),
-                                         sigma=w[okinds2])
+                                         sigma=w)
             except ValueError as e:
                 print(e)
 
@@ -266,8 +257,8 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                 print(
                     "----------------------------------------------------------")
 
-                fit_lumins = np.logspace(np.log10(complete_l),
-                                         np.log10(lumins.max()),
+                fit_lumins = np.logspace(np.log10(np.min(lumins[complete])),
+                                         np.log10(np.max(lumins[complete])),
                                          1000)
 
                 fit = kawa_fit(fit_lumins, popt[0], popt[1])

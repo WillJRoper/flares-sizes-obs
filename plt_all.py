@@ -1,5 +1,4 @@
 import h5py
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.colors import LogNorm
@@ -9,6 +8,7 @@ from plt_size_evo_violin import size_evo_violin
 from plt_size_lumin_fitgrid import fit_size_lumin_grid
 from plt_size_lumin_grid import size_lumin_grid
 from plt_size_lumin_intrinsic import size_lumin_intrinsic
+from plt_size_type_comp import size_comp
 
 # Set orientation
 orientation = "sim"
@@ -162,21 +162,11 @@ for snap in all_snaps:
         intr_data[snap][f]["Diffuse_Population_NotComplete"] = np.logical_and(
             diffuse_pop, ~okinds)
 
-fig = plt.figure()
-ax = fig.add_subplot(111)
-im = ax.hexbin(data['010_z005p000']['FAKE.TH.FUV']["Luminosity"],
-               data['010_z005p000']['FAKE.TH.FUV']["HLR_0.5"],
-               gridsize=50,
-               mincnt=1, C=data['010_z005p000']['FAKE.TH.FUV']["Weight"],
-               reduce_C_function=np.sum,
-               xscale='log', yscale='log',
-               norm=LogNorm(vmin=10**-4, vmax=1), linewidths=0.2,
-               cmap='plasma')
-fig.colorbar(im)
-fig.savefig("plots/test.png", bbox_inches="tight")
+# Define the norm
+weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
 
 size_lumin_grid(data, snaps, filters, orientation, "Total",
-                "default", "pix")
+                "default", "pix", weight_norm)
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix")
@@ -195,7 +185,7 @@ for f in filters:
                    data[snap][f]["Weight"],
                    f, snap, orientation, "Intrinsic", "default",
                    intr_data[snap][f]["Complete_Luminosity"],
-                   intr_data[snap][f]["Complete_Mass"])
+                   intr_data[snap][f]["Complete_Mass"], weight_norm)
         mass_lumin(data[snap][f]["Mass"],
                    data[snap][f]["Luminosity"],
                    data[snap][f]["okinds"],
@@ -204,13 +194,13 @@ for f in filters:
                    data[snap][f]["Weight"],
                    f, snap, orientation, "Total", "default",
                    data[snap][f]["Complete_Luminosity"],
-                   data[snap][f]["Complete_Mass"])
+                   data[snap][f]["Complete_Mass"], weight_norm)
         hdr_comp(data[snap][f]["HDR"], data[snap][f]["HLR_0.5"],
                  intr_data[snap][f]["HLR_0.5"], data[snap][f]["Weight"],
                  data[snap][f]["okinds"],
                  data[snap][f]["Compact_Population"],
                  data[snap][f]["Diffuse_Population"], f,
-                 orientation, snap, "Intrinsic", "default")
+                 orientation, snap, "Intrinsic", "default", weight_norm)
         size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
                              intr_data[snap][f]["Image_Luminosity"],
                              data[snap][f]["Weight"],
@@ -218,12 +208,28 @@ for f in filters:
                              intr_data[snap][f]["Compact_Population"],
                              intr_data[snap][f]["Diffuse_Population"], f,
                              snap,
-                             "pix", orientation, "Total", "default")
-        size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
-                             intr_data[snap][f]["Image_Luminosity"],
+                             "pix", orientation, "Total", "default",
+                             weight_norm)
+        size_lumin_intrinsic(intr_data[snap][f]["HLR_0.5"],
+                             intr_data[snap][f]["Luminosity"],
                              data[snap][f]["Weight"],
                              intr_data[snap][f]["okinds"],
                              intr_data[snap][f]["Compact_Population"],
                              intr_data[snap][f]["Diffuse_Population"], f,
                              snap,
-                             "part", orientation, "Total", "default")
+                             "part", orientation, "Total", "default",
+                             weight_norm)
+        size_comp(f, snap, intr_data[snap][f]["HLR_0.5"],
+                  intr_data[snap][f]["HLR_Pixel_0.5"], data[snap][f]["Weight"],
+                  intr_data[snap][f]["Compact_Population_Complete"],
+                  intr_data[snap][f]["Diffuse_Population_Complete"],
+                  intr_data[snap][f]["Compact_Population_NotComplete"],
+                  intr_data[snap][f]["Diffuse_Population_NotComplete"],
+                  weight_norm, orientation, "Intrinsic", "default")
+        size_comp(f, snap, data[snap][f]["HLR_0.5"],
+                  data[snap][f]["HLR_Pixel_0.5"], data[snap][f]["Weight"],
+                  data[snap][f]["Compact_Population_Complete"],
+                  data[snap][f]["Diffuse_Population_Complete"],
+                  data[snap][f]["Compact_Population_NotComplete"],
+                  data[snap][f]["Diffuse_Population_NotComplete"],
+                  weight_norm, orientation, "Total", "default")

@@ -35,8 +35,8 @@ def M_to_m(M, cosmo, z):
     return m
 
 
-def size_lumin_intrinsic(hlrs, lumins, w, okinds, okinds1, okinds2, f, snap,
-                         mtype, orientation, Type, extinction):
+def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_ncomp, f, snap,
+                         mtype, orientation, Type, extinction, weight_norm):
     print("Plotting for:")
     print("Orientation =", orientation)
     print("Type =", Type)
@@ -46,57 +46,66 @@ def size_lumin_intrinsic(hlrs, lumins, w, okinds, okinds1, okinds2, f, snap,
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
-    okinds1 = np.logical_and(okinds, okinds1)
-    okinds2 = np.logical_and(okinds, okinds2)
-
     if w.size <= 1:
         return
 
-    lbins = np.logspace(26.8, 31.2, 40)
-    hbins = np.logspace(-1.5, 1.5, 40)
-    H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
-                                     bins=(lbins, hbins), weights=w[okinds2])
-
-    # Resample your data grid by a factor of 3 using cubic spline interpolation.
-    H = scipy.ndimage.zoom(H, 3)
-
-    try:
-        percentiles = [np.percentile(H[H > 0], 80),
-                       np.percentile(H[H > 0], 90),
-                       np.percentile(H[H > 0], 95),
-                       np.percentile(H[H > 0], 99)]
-    except IndexError as e:
-        print(e)
-        return
-
-    lbins = np.logspace(26.8, 31.2, H.shape[0] + 1)
-    hbins = np.logspace(-1.5, 1.5, H.shape[0] + 1)
-
-    xbin_cents = (lbins[1:] + lbins[:-1]) / 2
-    ybin_cents = (hbins[1:] + hbins[:-1]) / 2
-
-    XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+    # lbins = np.logspace(26.8, 31.2, 40)
+    # hbins = np.logspace(-1.5, 1.5, 40)
+    # H, xbins, ybins = np.histogram2d(lumins[diff_ncomp], hlrs[okinds2],
+    #                                  bins=(lbins, hbins), weights=w[okinds2])
+    #
+    # # Resample your data grid by a factor of 3 using cubic spline interpolation.
+    # H = scipy.ndimage.zoom(H, 3)
+    #
+    # try:
+    #     percentiles = [np.percentile(H[H > 0], 80),
+    #                    np.percentile(H[H > 0], 90),
+    #                    np.percentile(H[H > 0], 95),
+    #                    np.percentile(H[H > 0], 99)]
+    # except IndexError as e:
+    #     print(e)
+    #     return
+    #
+    # lbins = np.logspace(26.8, 31.2, H.shape[0] + 1)
+    # hbins = np.logspace(-1.5, 1.5, H.shape[0] + 1)
+    #
+    # xbin_cents = (lbins[1:] + lbins[:-1]) / 2
+    # ybin_cents = (hbins[1:] + hbins[:-1]) / 2
+    #
+    # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax1 = ax.twinx()
     ax1.grid(False)
     try:
-        cbar = ax.hexbin(lumins[okinds2], hlrs[okinds2],
-                         C=w[okinds2], gridsize=50, mincnt=1,
+        cbar = ax.hexbin(lumins[diff_ncomp], hlrs[diff_ncomp],
+                         C=w[diff_ncomp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
-                         norm=LogNorm(), linewidths=0.2,
+                         norm=weight_norm, linewidths=0.2,
+                         cmap='Greys', alpha=0.7,
+                         extent=(26.8, 31.2, -1.5, 1.5), alpha=0.2)
+        cbar = ax.hexbin(lumins[com_ncomp], hlrs[com_ncomp],
+                         C=w[com_ncomp], gridsize=50, mincnt=1,
+                         xscale='log', yscale='log',
+                         norm=weight_norm, linewidths=0.2,
+                         cmap='viridis',
+                         extent=(26.8, 31.2, -1.5, 1.5), alpha=0.2)
+        cbar = ax.hexbin(lumins[diff_comp], hlrs[diff_comp],
+                         C=w[diff_comp], gridsize=50, mincnt=1,
+                         xscale='log', yscale='log',
+                         norm=weight_norm, linewidths=0.2,
                          cmap='Greys', alpha=0.7,
                          extent=(26.8, 31.2, -1.5, 1.5))
-        cbar = ax.hexbin(lumins[okinds1], hlrs[okinds1],
-                         C=w[okinds1], gridsize=50, mincnt=1,
+        cbar = ax.hexbin(lumins[com_comp], hlrs[com_comp],
+                         C=w[com_comp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
-                         norm=LogNorm(), linewidths=0.2,
+                         norm=weight_norm, linewidths=0.2,
                          cmap='viridis',
                          extent=(26.8, 31.2, -1.5, 1.5))
-        cbar = ax.contour(XX, YY, H.T, levels=percentiles,
-                          norm=LogNorm(), cmap=cmr.bubblegum_r,
-                          linewidth=2)
+        # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
+        #                   norm=weight_norm, cmap=cmr.bubblegum_r,
+        #                   linewidth=2)
     except ValueError as e:
         print(e)
 
@@ -105,7 +114,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, okinds, okinds1, okinds2, f, snap,
                    hlrs * cosmo.arcsec_per_kpc_proper(z).value,
                    gridsize=50, mincnt=1, C=w,
                    reduce_C_function=np.sum, xscale='log',
-                   yscale='log', norm=LogNorm(), linewidths=0.2,
+                   yscale='log', norm=weight_norm, linewidths=0.2,
                    cmap='viridis', alpha=0,
                    extent=(26.8, 31.2,
                            np.log10(10 ** -1.5

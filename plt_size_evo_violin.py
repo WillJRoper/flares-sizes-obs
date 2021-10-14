@@ -244,22 +244,20 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         hdrs = np.array(data[snap][f]["HDR"])
         w = np.array(data[snap][f]["Weight"])
 
-        complete_l, complete_m = data[snap][f]["Complete_Luminosity"], \
-                                 data[snap][f]["Complete_Mass"]
+        compact_ncom = data[snap][f]["Compact_Population_NotComplete"]
+        diffuse_ncom = data[snap][f]["Diffuse_Population_NotComplete"]
+        compact_com = data[snap][f]["Compact_Population_Complete"]
+        diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
+        complete = np.logical_or(compact_com, diffuse_com)
 
-        okinds = data[snap][f]["okinds"]
-
-        com_okinds = np.logical_and(intr_lumins > complete_l,
-                                    m > complete_m)
-
-        if len(w[okinds]) == 0:
+        if len(w[complete]) == 0:
             continue
 
-        hlr.append(hlrs[com_okinds])
-        hdr.append(hdrs[com_okinds])
-        intr_hlr.append(intr_hlrs[com_okinds])
-        ws.append(w[com_okinds])
-        ms.append(m[com_okinds])
+        hlr.append(hlrs[complete])
+        hdr.append(hdrs[complete])
+        intr_hlr.append(intr_hlrs[complete])
+        ws.append(w[complete])
+        ms.append(m[complete])
 
         plt_z.append(z)
 
@@ -401,16 +399,16 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
             linestyle="--", color="k")
 
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="All (Attenuated)",
+                                  label="Attenuated",
                                   linestyle="--"))
 
-    ax.plot(fit_plt_zs, fit(fit_plt_zs, popt1[0], popt1[1]),
-            linestyle="dotted", color="k")
-
-    legend_elements.append(Line2D([0], [0], color='k',
-                                  label="$M_\star/M_\odot > 10^9$ "
-                                        "(Attenuated)",
-                                  linestyle="dotted"))
+    # ax.plot(fit_plt_zs, fit(fit_plt_zs, popt1[0], popt1[1]),
+    #         linestyle="dotted", color="k")
+    #
+    # legend_elements.append(Line2D([0], [0], color='k',
+    #                               label="$M_\star/M_\odot > 10^9$ "
+    #                                     "(Attenuated)",
+    #                               linestyle="dotted"))
 
     ax.plot(fit_plt_zs, fit(fit_plt_zs, popt2[0], popt2[1]),
             linestyle="--", color="m")
@@ -423,16 +421,16 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
             linestyle="--", color="b")
 
     legend_elements.append(Line2D([0], [0], color='b',
-                                  label="All (Intrinsic)",
+                                  label="Intrinsic",
                                   linestyle="--"))
 
-    ax.plot(fit_plt_zs, fit(fit_plt_zs, int_popt1[0], int_popt1[1]),
-            linestyle="dotted", color="b")
-
-    legend_elements.append(Line2D([0], [0], color='b',
-                                  label="$M_\star/M_\odot > 10^9$ "
-                                        "(Intrinsic)",
-                                  linestyle="dotted"))
+    # ax.plot(fit_plt_zs, fit(fit_plt_zs, int_popt1[0], int_popt1[1]),
+    #         linestyle="dotted", color="b")
+    #
+    # legend_elements.append(Line2D([0], [0], color='b',
+    #                               label="$M_\star/M_\odot > 10^9$ "
+    #                                     "(Intrinsic)",
+    #                               linestyle="dotted"))
 
     # Label axes
     ax.set_xlabel(r'$z$')
