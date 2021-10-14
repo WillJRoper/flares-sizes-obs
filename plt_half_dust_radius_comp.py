@@ -294,8 +294,6 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax.set_xlim(10 ** -1.1, 10 ** 1.3)
     ax.set_ylim([0.08, 50])
 
-    plt.axis('scaled')
-
     fig.savefig('plots/' + str(z) + '/HalfDustRadius_hlrratio_' + f + '_'
                 + str(z) + '_' + Type + '_' + orientation + "_"
                 + extinction + "".replace(".", "p") + ".png",
