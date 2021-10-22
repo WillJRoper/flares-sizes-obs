@@ -96,7 +96,7 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
 
 # Define filter
 # filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
-filters = ['FAKE.TH.'+ f
+filters = ['FAKE.TH.' + f
            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H', 'K']]
 
@@ -125,14 +125,19 @@ if run:
     hlr_dict = {}
     hlr_app_dict = {}
     hlr_pix_dict = {}
+    nosmooth_hlr_dict = {}
+    nosmooth_hlr_app_dict = {}
+    nosmooth_hlr_pix_dict = {}
     lumin_dict = {}
     img_lumin_dict = {}
+    nosmooth_img_lumin_dict = {}
     mass_dict = {}
     gmass_dict = {}
     met_dict = {}
     gmet_dict = {}
     nstar_dict = {}
     img_dict = {}
+    nosmooth_img_dict = {}
     sed_int = {}
     sed_tot = {}
     sed_lam = {}
@@ -149,14 +154,19 @@ if run:
     hlr_dict.setdefault(tag, {})
     hlr_app_dict.setdefault(tag, {})
     hlr_pix_dict.setdefault(tag, {})
+    nosmooth_hlr_dict.setdefault(tag, {})
+    nosmooth_hlr_app_dict.setdefault(tag, {})
+    nosmooth_hlr_pix_dict.setdefault(tag, {})
     lumin_dict.setdefault(tag, {})
     img_lumin_dict.setdefault(tag, {})
+    nosmooth_img_lumin_dict.setdefault(tag, {})
     mass_dict.setdefault(tag, {})
     gmass_dict.setdefault(tag, {})
     met_dict.setdefault(tag, {})
     gmet_dict.setdefault(tag, {})
     nstar_dict.setdefault(tag, {})
     img_dict.setdefault(tag, {})
+    nosmooth_img_dict.setdefault(tag, {})
     sed_int.setdefault(tag, {})
     sed_tot.setdefault(tag, {})
     sed_lam.setdefault(tag, {})
@@ -233,20 +243,28 @@ if run:
         hlr_dict[tag].setdefault(f, {})
         hlr_app_dict[tag].setdefault(f, {})
         hlr_pix_dict[tag].setdefault(f, {})
+        nosmooth_hlr_dict[tag].setdefault(f, {})
+        nosmooth_hlr_app_dict[tag].setdefault(f, {})
+        nosmooth_hlr_pix_dict[tag].setdefault(f, {})
 
         for r in radii_fracs:
             hlr_dict[tag][f].setdefault(r, [])
             hlr_app_dict[tag][f].setdefault(r, [])
             hlr_pix_dict[tag][f].setdefault(r, [])
+            nosmooth_hlr_dict[tag][f].setdefault(r, [])
+            nosmooth_hlr_app_dict[tag][f].setdefault(r, [])
+            nosmooth_hlr_pix_dict[tag][f].setdefault(r, [])
 
         lumin_dict[tag].setdefault(f, [])
         img_lumin_dict[tag].setdefault(f, [])
+        nosmooth_img_lumin_dict[tag].setdefault(f, [])
         mass_dict[tag].setdefault(f, [])
         gmass_dict[tag].setdefault(f, [])
         met_dict[tag].setdefault(f, [])
         gmet_dict[tag].setdefault(f, [])
         nstar_dict[tag].setdefault(f, [])
         img_dict[tag].setdefault(f, [])
+        nosmooth_img_dict[tag].setdefault(f, [])
         sed_int[tag].setdefault(f, [])
         sed_tot[tag].setdefault(f, [])
         sed_lam[tag].setdefault(f, [])
@@ -286,9 +304,12 @@ if run:
                 this_gradii = util.calc_rad(this_gpos, i=0, j=1)
 
                 img = util.make_spline_img(this_pos, res, 0, 1, tree,
-                                           this_lumin, this_smls, 
-                                           spline_func=util.cubic_spline, 
+                                           this_lumin, this_smls,
+                                           spline_func=util.cubic_spline,
                                            spline_cut_off=1)
+
+                no_smooth_img = np.histogram2d(this_pos[:, 0], this_pos[:, 1],
+                                               range=imgrange, bins=res)
 
             else:
 
@@ -302,9 +323,12 @@ if run:
                 this_gradii = util.calc_rad(this_gpos, i=2, j=0)
 
                 img = util.make_spline_img(this_pos, res, 2, 0, tree,
-                                           this_lumin, this_smls, 
-                                           spline_func=util.cubic_spline, 
+                                           this_lumin, this_smls,
+                                           spline_func=util.cubic_spline,
                                            spline_cut_off=1)
+
+                no_smooth_img = np.histogram2d(this_pos[:, 2], this_pos[:, 0],
+                                               range=imgrange, bins=res)
 
             surf_den = np.sum(img) / (img[img > 0].size * single_pixel_area)
 
@@ -321,6 +345,15 @@ if run:
 
                 hlr_pix_dict[tag][f][r].append(
                     util.get_pixel_hlr(img, single_pixel_area, r))
+
+                nosmooth_hlr_app_dict[tag][f][r].append(
+                    util.get_img_hlr(no_smooth_img,
+                                     apertures,
+                                     app_radii, res,
+                                     csoft, r))
+
+                nosmooth_hlr_pix_dict[tag][f][r].append(
+                    util.get_pixel_hlr(no_smooth_img, single_pixel_area, r))
 
                 hlr_dict[tag][f][r].append(util.calc_light_mass_rad(this_radii,
                                                                     this_lumin,
@@ -344,12 +377,14 @@ if run:
 
             lumin_dict[tag][f].append(tot_l)
             img_lumin_dict[tag][f].append(np.sum(img))
+            nosmooth_img_lumin_dict[tag][f].append(np.sum(img))
             mass_dict[tag][f].append(this_mass)
             gmass_dict[tag][f].append(this_gmass)
             met_dict[tag][f].append(np.sum(this_met))
             gmet_dict[tag][f].append(np.sum(this_metals))
             nstar_dict[tag][f].append(this_nstar)
             img_dict[tag][f].append(img)
+            nosmooth_img_dict[tag][f].append(img)
 
             # fig = plt.figure()
             # ax = fig.add_subplot(111)
@@ -369,20 +404,24 @@ if run:
 
         print("There are", len(img_dict[tag][f]), "images")
 
-    hdf = h5py.File("data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, tag, Type, orientation),
-                    "w")
+    hdf = h5py.File(
+        "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
+                                                        orientation),
+        "w")
 
     for f in filters:
 
         hdr = np.array(hdr_dict[tag][f])
         lumins = np.array(lumin_dict[tag][f])
         img_lumins = np.array(img_lumin_dict[tag][f])
+        nosmooth_img_lumins = np.array(nosmooth_img_lumin_dict[tag][f])
         mass = np.array(mass_dict[tag][f])
         gmass = np.array(gmass_dict[tag][f])
         met = np.array(met_dict[tag][f])
         gmet = np.array(gmet_dict[tag][f])
         nstar = np.array(nstar_dict[tag][f])
         imgs = np.array(img_dict[tag][f])
+        nosmooth_imgs = np.array(nosmooth_img_dict[tag][f])
         sed_ints = np.array(sed_int[tag][f])
         sed_tots = np.array(sed_tot[tag][f])
         sed_lams = np.array(sed_lam[tag][f])
@@ -407,7 +446,7 @@ if run:
                                           shape=hdr.shape,
                                           compression="gzip")
             dset.attrs["units"] = "pkpc"
-            
+
         try:
             dset = f_group.create_dataset("Surface_Density", data=surfdens,
                                           dtype=surfdens.dtype,
@@ -499,6 +538,21 @@ if run:
             dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
 
         try:
+            dset = f_group.create_dataset("Image_Luminosity_No_Smooth", data=nosmooth_img_lumins,
+                                          dtype=nosmooth_img_lumins.dtype,
+                                          shape=nosmooth_img_lumins.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+        except RuntimeError:
+            print("Image_Luminosity_No_Smooth already exists: Overwriting...")
+            del f_group["Image_Luminosity_No_Smooth"]
+            dset = f_group.create_dataset("Image_Luminosity_No_Smooth", data=nosmooth_img_lumins,
+                                          dtype=nosmooth_img_lumins.dtype,
+                                          shape=nosmooth_img_lumins.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+
+        try:
             dset = f_group.create_dataset("Images", data=imgs,
                                           dtype=imgs.dtype,
                                           shape=imgs.shape,
@@ -510,6 +564,21 @@ if run:
             dset = f_group.create_dataset("Images", data=imgs,
                                           dtype=imgs.dtype,
                                           shape=imgs.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+
+        try:
+            dset = f_group.create_dataset("No_Smooth_Images", data=nosmooth_imgs,
+                                          dtype=nosmooth_imgs.dtype,
+                                          shape=nosmooth_imgs.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
+        except RuntimeError:
+            print("No_Smooth_Images already exists: Overwriting...")
+            del f_group["No_Smooth_Images"]
+            dset = f_group.create_dataset("No_Smooth_Images", data=nosmooth_imgs,
+                                          dtype=nosmooth_imgs.dtype,
+                                          shape=nosmooth_imgs.shape,
                                           compression="gzip")
             dset.attrs["units"] = "$erg s^{-1} Hz^{-1}$"
 
@@ -594,6 +663,10 @@ if run:
             hlrs_app = np.array(hlr_app_dict[tag][f][r])
             hlrs_pix = np.array(hlr_pix_dict[tag][f][r])
 
+            nosmooth_hlrs = np.array(nosmooth_hlr_dict[tag][f][r])
+            nosmooth_hlrs_app = np.array(nosmooth_hlr_app_dict[tag][f][r])
+            nosmooth_hlrs_pix = np.array(nosmooth_hlr_pix_dict[tag][f][r])
+
             try:
                 dset = f_group.create_dataset("HLR_%.1f" % r, data=hlrs,
                                               dtype=hlrs.dtype,
@@ -641,6 +714,41 @@ if run:
                                               data=hlrs_pix,
                                               dtype=hlrs_pix.dtype,
                                               shape=hlrs_pix.shape,
+                                              compression="gzip")
+                dset.attrs["units"] = "$\mathrm{pkpc}$"
+
+            try:
+                dset = f_group.create_dataset("HLR_Aperture_%.1f_No_Smooth" % r,
+                                              data=nosmooth_hlrs_app,
+                                              dtype=nosmooth_hlrs_app.dtype,
+                                              shape=nosmooth_hlrs_app.shape,
+                                              compression="gzip")
+                dset.attrs["units"] = "$\mathrm{pkpc}$"
+            except RuntimeError:
+                print("HLR_Aperture_%.1f_No_Smooth" % r,
+                      "already exists: Overwriting...")
+                del f_group["HLR_Aperture_%.1f_No_Smooth" % r]
+                dset = f_group.create_dataset("HLR_Aperture_%.1f_No_Smooth" % r,
+                                              data=nosmooth_hlrs_app,
+                                              dtype=nosmooth_hlrs_app.dtype,
+                                              shape=nosmooth_hlrs_app.shape,
+                                              compression="gzip")
+                dset.attrs["units"] = "$\mathrm{pkpc}$"
+
+            try:
+                dset = f_group.create_dataset("HLR_Pixel_%.1f_No_Smooth" % r,
+                                              data=nosmooth_hlrs_pix,
+                                              dtype=nosmooth_hlrs_pix.dtype,
+                                              shape=nosmooth_hlrs_pix.shape,
+                                              compression="gzip")
+                dset.attrs["units"] = "$\mathrm{pkpc}$"
+            except RuntimeError:
+                print("HLR_Pixel_%.1f_No_Smooth" % r, "already exists: Overwriting...")
+                del f_group["HLR_Pixel_%.1f_No_Smooth" % r]
+                dset = f_group.create_dataset("HLR_Pixel_%.1f_No_Smooth" % r,
+                                              data=nosmooth_hlrs_pix,
+                                              dtype=nosmooth_hlrs_pix.dtype,
+                                              shape=nosmooth_hlrs_pix.shape,
                                               compression="gzip")
                 dset.attrs["units"] = "$\mathrm{pkpc}$"
 
