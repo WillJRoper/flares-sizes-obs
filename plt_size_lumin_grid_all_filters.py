@@ -204,6 +204,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes.append(fig.add_subplot(gs[0, i]))
         axes_twin.append(axes[-1].twinx())
         axes_twin[-1].grid(False)
+        axes[-1].loglog()
+        axes_twin[-1].loglog()
         if i > 0:
             axes[-1].tick_params(axis='y', left=False, right=False,
                                  labelleft=False, labelright=False)
@@ -282,26 +284,26 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             except ValueError as e:
                 print(e, f)
 
-        if Type != "Intrinsic":
-
-            if int(z) in [6, 7, 8, 9]:
-
-                if z == 7 or z == 6:
-                    low_lim = -16
-                elif z == 8:
-                    low_lim = -16.8
-                else:
-                    low_lim = -15.4
-                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
-                                         np.log10(M_to_lum(low_lim)),
-                                         1000)
-
-                fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
-                               kawa_params['beta'][int(z)])
-                axes[i].plot(fit_lumins, fit,
-                             linestyle='dashed', color="g",
-                             alpha=0.6, zorder=0,
-                             label="Kawamata+18", linewidth=4)
+        # if Type != "Intrinsic":
+        #
+        #     if int(z) in [6, 7, 8, 9]:
+        #
+        #         if z == 7 or z == 6:
+        #             low_lim = -16
+        #         elif z == 8:
+        #             low_lim = -16.8
+        #         else:
+        #             low_lim = -15.4
+        #         fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+        #                                  np.log10(M_to_lum(low_lim)),
+        #                                  1000)
+        #
+        #         fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+        #                        kawa_params['beta'][int(z)])
+        #         axes[i].plot(fit_lumins, fit,
+        #                      linestyle='dashed', color="g",
+        #                      alpha=0.6, zorder=0,
+        #                      label="Kawamata+18", linewidth=4)
 
         axes[i].text(0.95, 0.05, f'$z={z}$',
                      bbox=dict(boxstyle="round,pad=0.3", fc='w',
