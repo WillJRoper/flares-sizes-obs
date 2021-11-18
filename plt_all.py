@@ -181,7 +181,8 @@ size_lumin_grid(data, snaps, filters, orientation, "Total",
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix")
-size_lumin_grid_allf(data, snaps, filters, orientation, "Total", "default",
+size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
+                     "Total", "default",
                      "pix")
 
 for f in filters:
