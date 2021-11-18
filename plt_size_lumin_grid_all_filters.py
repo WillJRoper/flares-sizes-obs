@@ -235,7 +235,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[complete]
             elif mtype == "app":
                 hlrs = np.array(data[snap][f]["HLR_Aperture_0.5"])[complete]
-                lumins = np.array(data[snap][f]["Image_Luminosity"])[complete
+                lumins = np.array(data[snap][f]["Image_Luminosity"])[complete]
                 intr_hlrs = np.array(intr_data[snap][f]["HLR_Aperture_0.5"])[complete]
                 intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[complete]
             else:
