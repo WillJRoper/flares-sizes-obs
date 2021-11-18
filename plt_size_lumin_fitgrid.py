@@ -278,6 +278,12 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                              zorder=3,
                              linewidth=2)
 
+                axes_twin[i].plot(fit_lumins,
+                                  fit * cosmo.arcsec_per_kpc_proper(z),
+                             linestyle='-', color="m",
+                             zorder=3,
+                             linewidth=2, alpha=0)
+
             except ValueError as e:
                 print(e)
                 continue

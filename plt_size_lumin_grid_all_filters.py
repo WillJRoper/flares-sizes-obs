@@ -263,6 +263,12 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                              linestyle='-', color=cmap(norm(trans[f][1])),
                              alpha=0.9, zorder=2,
                              label=f.split(".")[-1], linewidth=4)
+                axes_twin[i].plot(fit_lumins,
+                                  fit * cosmo.arcsec_per_kpc_proper(z),
+                             linestyle='-', color="m",
+                             zorder=3,
+                             linewidth=2, alpha=0)
+
             except ValueError as e:
                 print(e, f)
 
