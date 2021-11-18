@@ -249,7 +249,7 @@ for reg in regions:
         cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
                                        spacing='uniform', ticks=cents,
                                        boundaries=bounds, format='%1i')
-        cb.set_ticklabels(filters)
+        cb.set_ticklabels(filter_labels)
 
         string = 'plots/SED/SED' + "_" + str(z) + '_' + reg \
                  + '_' + snap + '_' + orientation + "_" + extinction
