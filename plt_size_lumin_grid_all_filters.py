@@ -204,12 +204,12 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes.append(fig.add_subplot(gs[0, i]))
         axes_twin.append(axes[-1].twinx())
         axes_twin[-1].grid(False)
-        axes[-1].loglog()
-        axes_twin[-1].loglog()
+        axes[-1].semilogx()
+        axes_twin[-1].semilogx()
         if i > 0:
             axes[-1].tick_params(axis='y', left=False, right=False,
                                  labelleft=False, labelright=False)
-        if i < len(snaps):
+        if i < len(snaps) - 1:
             axes_twin[-1].tick_params(axis='y', left=False, right=False,
                                       labelleft=False, labelright=False)
         i += 1
@@ -337,18 +337,16 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
     uni_legend_elements = []
+    for f in filters:
+        uni_legend_elements.append(
+            Line2D([0], [0], color=cmap(norm(trans[f][1])), linestyle="-",
+                   label=f.split(".")[-1]))
     uni_legend_elements.append(
-        Line2D([0], [0], color="m", linestyle="dotted",
-               label="FLARES (All)"))
+        Line2D([0], [0], color="k", linestyle="-",
+               label="Dust Attenuated"))
     uni_legend_elements.append(
-        Line2D([0], [0], color="m", linestyle="-",
-               label="FLARES ($M_{\star}/M_\odot\geq10^{9}$)"))
-    uni_legend_elements.append(
-        Line2D([0], [0], color="m", linestyle="--",
-               label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
-    uni_legend_elements.append(
-        Line2D([0], [0], color="g", linestyle="--",
-               label=labels["K18"]))
+        Line2D([0], [0], color="k", linestyle="--",
+               label="Intrinsic"))
     included = []
     for l in legend_elements:
         if (l.get_label(), l.get_marker()) not in included:
