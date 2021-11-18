@@ -9,6 +9,7 @@ from plt_size_lumin_fitgrid import fit_size_lumin_grid
 from plt_size_lumin_grid import size_lumin_grid
 from plt_size_lumin_intrinsic import size_lumin_intrinsic
 from plt_size_type_comp import size_comp
+from plt_size_lumin_grid_all_filters import size_lumin_grid_allf
 
 # Set orientation
 orientation = "sim"
@@ -180,6 +181,8 @@ size_lumin_grid(data, snaps, filters, orientation, "Total",
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix")
+size_lumin_grid_allf(data, snaps, filters, orientation, "Total", "default",
+                     "pix")
 
 for f in filters:
     print(f)

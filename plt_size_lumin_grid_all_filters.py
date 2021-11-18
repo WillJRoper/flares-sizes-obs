@@ -151,8 +151,8 @@ lumin_bin_cents = lumin_bins[1:] - (lumin_bin_wid / 2)
 M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
-def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
-                    mtype):
+def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
+                         Type, extinction, mtype):
     trans = {}
     plt_lams = []
     cents = []
@@ -191,7 +191,6 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
     print("Plotting for:")
     print("Orientation =", orientation)
     print("Type =", Type)
-    print("Filter =", f)
 
     fig = plt.figure(figsize=(18, 5))
     gs = gridspec.GridSpec(1, len(snaps))
@@ -231,16 +230,19 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
 
             if mtype == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])[complete]
-                lumins = np.array(data[snap][f]["Luminosity"])[complete]
-                intr_lumins = np.array(data[snap][f]["Luminosity"])[complete]
+                lumins = np.array(data[snap][f]["Image_Luminosity"])[complete]
+                intr_hlrs = np.array(intr_data[snap][f]["HLR_0.5"])[complete]
+                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[complete]
             elif mtype == "app":
                 hlrs = np.array(data[snap][f]["HLR_Aperture_0.5"])[complete]
-                lumins = np.array(data[snap][f]["Image_Luminosity"])[complete]
-                intr_lumins = np.array(data[snap][f]["Image_Luminosity"])[complete]
+                lumins = np.array(data[snap][f]["Image_Luminosity"])[complete
+                intr_hlrs = np.array(intr_data[snap][f]["HLR_Aperture_0.5"])[complete]
+                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[complete]
             else:
                 hlrs = np.array(data[snap][f]["HLR_Pixel_0.5"])[complete]
                 lumins = np.array(data[snap][f]["Image_Luminosity"])[complete]
-                intr_lumins = np.array(data[snap][f]["Image_Luminosity"])[complete]
+                intr_hlrs = np.array(intr_data[snap][f]["HLR_Pixel_0.5"])[complete]
+                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[complete]
             w = np.array(data[snap][f]["Weight"])[complete]
             mass = np.array(data[snap][f]["Mass"])[complete]
 
@@ -248,19 +250,37 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 popt, pcov = curve_fit(st_line_fit, lumins, hlrs,
                                          p0=(1, 1),
                                          sigma=w)
+
+                fit_lumins = np.logspace(np.log10(np.min(lumins)),
+                                         np.log10(np.max(lumins)),
+                                         1000)
+
+                fit = st_line_fit(fit_lumins, popt[0], popt[1])
+
+                axes[i].plot(fit_lumins, fit,
+                             linestyle='-', color=cmap(norm(trans[f][1])),
+                             alpha=0.9, zorder=2,
+                             label=f.split(".")[-1], linewidth=4)
             except ValueError as e:
-                print(e)
+                print(e, f)
 
-            fit_lumins = np.logspace(np.log10(np.min(lumins)),
-                                     np.log10(np.max(lumins)),
-                                     1000)
+            try:
+                popt, pcov = curve_fit(st_line_fit, intr_lumins, intr_hlrs,
+                                       p0=(1, 1),
+                                       sigma=w)
 
-            fit = st_line_fit(fit_lumins, popt[0], popt[1])
+                fit_lumins = np.logspace(np.log10(np.min(intr_lumins)),
+                                         np.log10(np.max(intr_lumins)),
+                                         1000)
 
-            axes[i].plot(fit_lumins, fit,
-                         linestyle='-', color=cmap(norm(trans[f][1])),
-                         alpha=0.9, zorder=2,
-                         label=f.split(".")[-1], linewidth=4)
+                fit = st_line_fit(fit_lumins, popt[0], popt[1])
+
+                axes[i].plot(fit_lumins, fit,
+                             linestyle='--', color=cmap(norm(trans[f][1])),
+                             alpha=0.7, zorder=1,
+                             label=f.split(".")[-1], linewidth=4)
+            except ValueError as e:
+                print(e, f)
 
         if Type != "Intrinsic":
 
@@ -280,7 +300,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                kawa_params['beta'][int(z)])
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dashed', color="g",
-                             alpha=0.7, zorder=2,
+                             alpha=0.6, zorder=0,
                              label="Kawamata+18", linewidth=4)
 
         axes[i].text(0.95, 0.05, f'$z={z}$',
