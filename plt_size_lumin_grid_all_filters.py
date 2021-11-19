@@ -329,7 +329,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
                            + "}/$ [erg $/$ s $/$ Hz]")
 
-        axes[i].set_xlim(10 ** 27.2, 10 ** 32)
+        axes[i].set_xlim(10 ** 27.2, 10 ** 31.9)
 
     for i in range(len(axes)):
         axes[i].set_ylim(np.min(ylims), np.max(ylims))
