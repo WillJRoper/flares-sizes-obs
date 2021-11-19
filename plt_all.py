@@ -66,7 +66,7 @@ for reg, snap in reg_snaps:
     data.setdefault(snap, {})
     intr_data.setdefault(snap, {})
 
-    for f in filters:
+    for f in all_filters:
 
         print(reg, snap, f)
 
@@ -91,7 +91,7 @@ for reg, snap in reg_snaps:
         print(e)
         continue
 
-    for f in filters:
+    for f in all_filters:
 
         surf_dens = hdf[f]["Image_Luminosity"][...] \
                     / (np.pi * (2 * hdf[f]["HLR_0.5"][...]) ** 2)

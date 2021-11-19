@@ -249,9 +249,10 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             mass = np.array(data[snap][f]["Mass"])[complete]
 
             try:
-                popt, pcov = curve_fit(st_line_fit, lumins, hlrs,
-                                         p0=(1, 1),
-                                         sigma=w)
+                popt, pcov = curve_fit(st_line_fit, np.log10(lumins),
+                                       np.log0(hlrs),
+                                       p0=(1, 1),
+                                       sigma=w)
 
                 fit_lumins = np.logspace(np.log10(np.min(lumins)),
                                          np.log10(np.max(lumins)),
@@ -273,7 +274,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 print(e, f)
 
             try:
-                popt, pcov = curve_fit(st_line_fit, intr_lumins, intr_hlrs,
+                popt, pcov = curve_fit(st_line_fit, np.log10(intr_lumins),
+                                       np.log10(intr_hlrs),
                                        p0=(1, 1),
                                        sigma=w)
 
@@ -327,7 +329,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
                            + "}/$ [erg $/$ s $/$ Hz]")
 
-        axes[i].set_xlim(10 ** 27.2, 10 ** 30.5)
+        axes[i].set_xlim(10 ** 27.2, 10 ** 32)
 
     for i in range(len(axes)):
         axes[i].set_ylim(np.min(ylims), np.max(ylims))

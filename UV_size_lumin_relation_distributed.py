@@ -17,50 +17,6 @@ import sys
 from synthobs.sed import models
 import flare.filters
 
-# Define Kawamata17 fit and parameters
-kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
-               'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
-kawa_up_params = {'beta': {6: 0.08, 7: 0.08,
-                           8: 0.28, 9: 1.01},
-                  'r_0': {6: 0.2, 7: 0.2,
-                          8: 5.28, 9: 367.64}}
-kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
-                            8: 0.78, 9: 0.27},
-                   'r_0': {6: 0.15, 7: 0.15,
-                           8: 0.26, 9: 0.74}}
-kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
-
-
-def kawa_fit_err(y, l, ro, b, ro_err, b_err, uplow="up"):
-    ro_term = ro_err * (l / M_to_lum(-21)) ** b
-    beta_term = b_err * ro * (l / M_to_lum(-21)) ** b \
-                * np.log(l / M_to_lum(-21))
-
-    if uplow == "up":
-        return y + np.sqrt(ro_term ** 2 + beta_term ** 2)
-    else:
-        return y - np.sqrt(ro_term ** 2 + beta_term ** 2)
-
-
-def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
-    if bins == None:
-        bin = np.logspace(np.log10(xs.min()), np.log10(xs.max()), 15)
-    else:
-        bin = bins
-
-    # Compute binned statistics
-    y_stat, binedges, bin_ind = binned_statistic(xs, ys, statistic='median',
-                                                 bins=bin)
-
-    # Compute bincentres
-    bin_wid = binedges[1] - binedges[0]
-    bin_cents = binedges[1:] - bin_wid / 2
-
-    okinds = np.logical_and(~np.isnan(bin_cents), ~np.isnan(y_stat))
-
-    ax.plot(bin_cents[okinds], y_stat[okinds], color=color, linestyle=ls,
-            label=lab)
-
 
 regions = []
 for reg in range(0, 40):
