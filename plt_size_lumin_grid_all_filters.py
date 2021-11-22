@@ -259,7 +259,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                          1000)
 
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
-
+                print("Total", popt)
                 axes[i].plot(fit_lumins, fit,
                              linestyle='-', color=cmap(norm(trans[f][1])),
                              alpha=0.9, zorder=2,
@@ -282,7 +282,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 fit_lumins = np.logspace(np.log10(np.min(intr_lumins)),
                                          np.log10(np.max(intr_lumins)),
                                          1000)
-
+                print("Intrinsic", popt)
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
                 axes[i].plot(fit_lumins, fit,
