@@ -41,7 +41,7 @@ kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
                            8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 st_line_fit = lambda x, m, c: 10**(m * np.log10(x) + c)
-st_line_fit_nolog = lambda x, m, c: m * x + c
+st_line_fit_nolog = lambda x, m, c: m * np.log10(x) + c
 
 
 def m_to_M(m, cosmo, z):
