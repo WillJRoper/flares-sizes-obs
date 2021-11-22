@@ -106,6 +106,8 @@ for snap in snaps:
 
         for reg in regions:
 
+            print(snap, f, reg)
+
             reg = regions[0]
 
             hdf = h5py.File(
