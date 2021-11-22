@@ -271,12 +271,12 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                              linewidth=2, alpha=0)
 
             except ValueError as e:
-                print(e, f)
+                print(e, f, "Total")
 
             try:
                 popt, pcov = curve_fit(st_line_fit, np.log10(intr_lumins),
                                        np.log10(intr_hlrs),
-                                       p0=(1, 1),
+                                       p0=(-1, 1),
                                        sigma=w)
 
                 fit_lumins = np.logspace(np.log10(np.min(intr_lumins)),
@@ -290,7 +290,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                              alpha=0.7, zorder=1,
                              label=f.split(".")[-1], linewidth=4)
             except ValueError as e:
-                print(e, f)
+                print(e, f, "Intrinsic")
 
         # if Type != "Intrinsic":
         #
@@ -339,16 +339,16 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
     uni_legend_elements = []
-    for f in filters:
-        uni_legend_elements.append(
-            Line2D([0], [0], color=cmap(norm(trans[f][1])), linestyle="-",
-                   label=f.split(".")[-1]))
     uni_legend_elements.append(
         Line2D([0], [0], color="k", linestyle="-",
                label="Dust Attenuated"))
     uni_legend_elements.append(
         Line2D([0], [0], color="k", linestyle="--",
                label="Intrinsic"))
+    for f in filters:
+        uni_legend_elements.append(
+            Line2D([0], [0], color=cmap(norm(trans[f][1])), linestyle="-",
+                   label=f.split(".")[-1]))
     included = []
     for l in legend_elements:
         if (l.get_label(), l.get_marker()) not in included:
