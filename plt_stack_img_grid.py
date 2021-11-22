@@ -105,28 +105,26 @@ for snap in snaps:
             num_stacked[f][b] = 0
 
         for reg in regions:
-            for snap in snaps:
 
-                reg = regions[0]
+            reg = regions[0]
 
-                hdf = h5py.File(
-                    "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap,
-                                                                Type,
-                                                                orientation),
-                    "r")
+            hdf = h5py.File(
+                "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap,
+                                                            Type,
+                                                            orientation),
+                "r")
 
-                for f in filters:
-                    for i, b in enumerate(bins[:-1]):
-                        masses = hdf[f]["Mass"][...]
-                        okinds = np.logical_and(masses >= b,
-                                                masses < bins[i + 1])
-                        imgs = hdf[f]["Images"][...]
-                        stacks[f][b] += np.sum(imgs[okinds, :, :],
-                                               axis=0)
+            for i, b in enumerate(bins[:-1]):
+                masses = hdf[f]["Mass"][...]
+                okinds = np.logical_and(masses >= b,
+                                        masses < bins[i + 1])
+                imgs = hdf[f]["Images"][...]
+                stacks[f][b] += np.sum(imgs[okinds, :, :],
+                                       axis=0)
 
-                        num_stacked[f][b] += masses[okinds].size
+                num_stacked[f][b] += masses[okinds].size
 
-                hdf.close()
+            hdf.close()
 
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
