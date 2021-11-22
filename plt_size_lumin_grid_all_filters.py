@@ -194,8 +194,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     print("Orientation =", orientation)
     print("Type =", Type)
 
-    fig = plt.figure(figsize=(18, 5))
-    gs = gridspec.GridSpec(2, len(snaps), height_ratios=(5, 1))
+    fig = plt.figure(figsize=(18, 6))
+    gs = gridspec.GridSpec(2, len(snaps), height_ratios=(5, 2))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
     axes_ratio = []
@@ -369,7 +369,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             included.append((l.get_label(), l.get_marker()))
 
     axes[2].legend(handles=uni_legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.15), fancybox=True,
+                   bbox_to_anchor=(0.5, -0.3), fancybox=True,
                    ncol=len(uni_legend_elements))
 
     fig.savefig(
