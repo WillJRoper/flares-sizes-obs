@@ -211,8 +211,13 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes_twin[-1].grid(False)
         axes[-1].loglog()
         axes_twin[-1].loglog()
+        axes_ratio[-1].loglog()
         if i > 0:
             axes[-1].tick_params(axis='y', left=False, right=False,
+                                 labelleft=False, labelright=False)
+            axes[-1].tick_params(axis='x', top=False, bottom=False,
+                                 labeltop=False, labelbottom=False)
+            axes_ratio[-1].tick_params(axis='y', left=False, right=False,
                                  labelleft=False, labelright=False)
         if i < len(snaps) - 1:
             axes_twin[-1].tick_params(axis='y', left=False, right=False,
