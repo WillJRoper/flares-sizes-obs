@@ -141,7 +141,8 @@ for snap in snaps:
     norm = cm.Normalize(vmin=0,
                         vmax=np.percentile(all_imgs[all_imgs > 0], 99.99),
                         clip=True)
-    norm_log = cm.LogNorm(vmin=0,
+    norm_log = cm.LogNorm(vmin=np.percentile(
+                              np.log10(all_imgs[all_imgs > 0]), 16),
                           vmax=np.percentile(
                               np.log10(all_imgs[all_imgs > 0]), 99.99),
                           clip=True)
