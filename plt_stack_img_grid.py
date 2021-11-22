@@ -170,7 +170,7 @@ for snap in snaps:
     for j, b in enumerate(bins[:-1]):
         for i, f in enumerate(filters):
 
-            size = stacks[f][b]
+            size = stacks[f][b].shape[0]
             axes[i, j].imshow(stacks[f][b][int(0.3 * size):-int(0.3 * size),
                               int(0.3 * size):-int(0.3 * size)],
                               cmap=cmr.neutral_r, norm=norm)
