@@ -58,7 +58,7 @@ mass_dict = {}
 sd_dict = {}
 
 regions = []
-for reg in range(0, 40):
+for reg in range(0, 5):
     if reg < 10:
         regions.append('0' + str(reg))
     else:
@@ -137,7 +137,7 @@ for snap in snaps:
             stacks[f][b] = stacks[f][b] / num_stacked[f][b]
             all_imgs.append(stacks[f][b])
     all_imgs = np.array(all_imgs)
-
+    print(all_imgs.shape)
     norm = cm.Normalize(vmin=0,
                         vmax=np.percentile(all_imgs[all_imgs > 0], 99.99),
                         clip=True)
