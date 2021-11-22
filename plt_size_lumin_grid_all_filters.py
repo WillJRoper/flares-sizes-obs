@@ -296,7 +296,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
                 axes_ratio[i].plot(fit_lumins, fit,
-                             linestyle='--', color=cmap(norm(trans[f][1])),
+                             linestyle='-', color=cmap(norm(trans[f][1])),
                              alpha=0.7, zorder=1,
                              label=f.split(".")[-1])
             except ValueError as e:
@@ -340,6 +340,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes_ratio[i].set_xlabel(r"$L/$ [erg $/$ s $/$ Hz]")
 
         axes[i].set_xlim(10 ** 27.2, 10 ** 31.9)
+        axes_ratio[i].set_xlim(10 ** 27.2, 10 ** 31.9)
 
     for i in range(len(axes)):
         axes[i].set_ylim(np.min(ylims), np.max(ylims))
@@ -352,11 +353,11 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
     uni_legend_elements = []
     uni_legend_elements.append(
-        Line2D([0], [0], color="k", linestyle="-",
-               label="Dust Attenuated"))
-    uni_legend_elements.append(
-        Line2D([0], [0], color="k", linestyle="--",
-               label="Intrinsic"))
+    #     Line2D([0], [0], color="k", linestyle="-",
+    #            label="Dust Attenuated"))
+    # uni_legend_elements.append(
+    #     Line2D([0], [0], color="k", linestyle="--",
+    #            label="Intrinsic"))
     for f in filters:
         uni_legend_elements.append(
             Line2D([0], [0], color=cmap(norm(trans[f][1])), linestyle="-",
