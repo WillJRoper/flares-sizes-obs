@@ -195,15 +195,18 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     print("Type =", Type)
 
     fig = plt.figure(figsize=(18, 5))
-    gs = gridspec.GridSpec(1, len(snaps))
+    gs = gridspec.GridSpec(2, len(snaps), height_ratios=(5, 1))
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
+    axes_ratio = []
     axes_twin = []
     ylims = []
     ylims_twin = []
+    ylims_ratio = []
     i = 0
     while i < len(snaps):
         axes.append(fig.add_subplot(gs[0, i]))
+        axes_ratio.append(fig.add_subplot(gs[1, i]))
         axes_twin.append(axes[-1].twinx())
         axes_twin[-1].grid(False)
         axes[-1].loglog()
@@ -276,18 +279,18 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 print(e, f, "Total")
 
             try:
-                popt, pcov = curve_fit(st_line_fit, intr_lumins,
-                                       intr_hlrs,
+                popt, pcov = curve_fit(st_line_fit, lumins,
+                                       hlrs / intr_hlrs,
                                        p0=(1, 1),
                                        sigma=w)
 
-                fit_lumins = np.logspace(np.log10(np.min(intr_lumins)),
-                                         np.log10(np.max(intr_lumins)),
+                fit_lumins = np.logspace(np.log10(np.min((intr_lumins, lumins))),
+                                         np.log10(np.max((intr_lumins, lumins))),
                                          1000)
-                print("Intrinsic", popt)
+                print("Ratio", popt)
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
-                axes[i].plot(fit_lumins, fit,
+                axes_ratio[i].plot(fit_lumins, fit,
                              linestyle='--', color=cmap(norm(trans[f][1])),
                              alpha=0.7, zorder=1,
                              label=f.split(".")[-1])
@@ -322,23 +325,25 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                      horizontalalignment='right',
                      fontsize=8)
 
-        axes[i].tick_params(axis='x', which='minor', bottom=True)
+        axes_ratio[i].tick_params(axis='x', which='minor', bottom=True)
 
         ylims.append(axes[i].get_ylim())
         ylims_twin.append(axes_twin[i].get_ylim())
+        ylims_ratio.append(axes_ratio[i].get_ylim())
 
         # Label axes
-        axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
-                           + "}/$ [erg $/$ s $/$ Hz]")
+        axes_ratio[i].set_xlabel(r"$L/$ [erg $/$ s $/$ Hz]")
 
         axes[i].set_xlim(10 ** 27.2, 10 ** 31.9)
 
     for i in range(len(axes)):
         axes[i].set_ylim(np.min(ylims), np.max(ylims))
         axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
+        axes_ratio[i].set_ylim(np.min(ylims_ratio), np.max(ylims_ratio))
 
     axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
+    axes_ratio[0].set_ylabel('$R_{1/2, Att}/ R_{1/2, Int}$')
 
     uni_legend_elements = []
     uni_legend_elements.append(
