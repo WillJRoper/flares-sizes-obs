@@ -40,7 +40,7 @@ kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
                    'r_0': {6: 0.15, 7: 0.15,
                            8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
-st_line_fit = lambda x, m, c: m * x + c
+st_line_fit = lambda x, m, c: 10**(m * np.log10(x) + c)
 
 
 def m_to_M(m, cosmo, z):
@@ -249,8 +249,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             mass = np.array(data[snap][f]["Mass"])[complete]
 
             try:
-                popt, pcov = curve_fit(st_line_fit, np.log10(lumins),
-                                       np.log10(hlrs),
+                popt, pcov = curve_fit(st_line_fit, lumins,
+                                       hlrs,
                                        p0=(1, 1),
                                        sigma=w)
 
@@ -258,7 +258,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                          np.log10(np.max(lumins)),
                                          1000)
 
-                fit = st_line_fit(np.log10(fit_lumins), popt[0], popt[1])
+                fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
                 axes[i].plot(fit_lumins, fit,
                              linestyle='-', color=cmap(norm(trans[f][1])),
@@ -274,8 +274,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 print(e, f, "Total")
 
             try:
-                popt, pcov = curve_fit(st_line_fit, np.log10(intr_lumins),
-                                       np.log10(intr_hlrs),
+                popt, pcov = curve_fit(st_line_fit, intr_lumins,
+                                       intr_hlrs,
                                        p0=(-1, 1),
                                        sigma=w)
 
@@ -283,7 +283,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                          np.log10(np.max(intr_lumins)),
                                          1000)
 
-                fit = st_line_fit(np.log10(fit_lumins), popt[0], popt[1])
+                fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
                 axes[i].plot(fit_lumins, fit,
                              linestyle='--', color=cmap(norm(trans[f][1])),
