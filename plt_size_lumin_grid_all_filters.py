@@ -175,6 +175,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             lam_max = np.max(l[t > 0])
         i += 1
 
+    cmap = mpl.cm.get_cmap('jet', len(filters))
+
     bounds.append(i + 0.5)
 
     sinds = np.argsort(plt_lams)
@@ -263,7 +265,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 axes[i].plot(fit_lumins, fit,
                              linestyle='-', color=cmap(norm(trans[f][1])),
                              alpha=0.9, zorder=2,
-                             label=f.split(".")[-1], linewidth=4)
+                             label=f.split(".")[-1])
                 axes_twin[i].plot(fit_lumins,
                                   fit * cosmo.arcsec_per_kpc_proper(z),
                              linestyle='-', color="m",
@@ -288,7 +290,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 axes[i].plot(fit_lumins, fit,
                              linestyle='--', color=cmap(norm(trans[f][1])),
                              alpha=0.7, zorder=1,
-                             label=f.split(".")[-1], linewidth=4)
+                             label=f.split(".")[-1])
             except ValueError as e:
                 print(e, f, "Intrinsic")
 
