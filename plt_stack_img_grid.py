@@ -85,8 +85,8 @@ for snap in snaps:
     hdf.close()
 
     dpi = img_shape
-    fig = plt.figure(figsize=(len(filters), 4), dpi=dpi)
-    fig_log = plt.figure(figsize=(len(filters), 4), dpi=dpi)
+    fig = plt.figure(figsize=(4, len(filters)), dpi=dpi)
+    fig_log = plt.figure(figsize=(4, len(filters)), dpi=dpi)
     gs = gridspec.GridSpec(ncols=4, nrows=len(filters))
     gs.update(wspace=0.0, hspace=0.0)
     axes = np.empty((len(filters), 4), dtype=object)
