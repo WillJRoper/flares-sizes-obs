@@ -352,7 +352,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     axes_ratio[0].set_ylabel('$R_{1/2, Att}/ R_{1/2, Int}$')
 
     uni_legend_elements = []
-    uni_legend_elements.append(
+    # uni_legend_elements.append(
     #     Line2D([0], [0], color="k", linestyle="-",
     #            label="Dust Attenuated"))
     # uni_legend_elements.append(
