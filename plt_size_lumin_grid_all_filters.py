@@ -369,8 +369,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             uni_legend_elements.append(l)
             included.append((l.get_label(), l.get_marker()))
 
-    axes[2].legend(handles=uni_legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.3), fancybox=True,
+    axes_ratio[2].legend(handles=uni_legend_elements, loc='upper center',
+                   bbox_to_anchor=(0.5, -0.15), fancybox=True,
                    ncol=len(uni_legend_elements))
 
     fig.savefig(
