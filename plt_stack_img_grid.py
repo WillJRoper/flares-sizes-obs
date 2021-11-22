@@ -133,7 +133,7 @@ for snap in snaps:
 
     all_imgs = []
     for f in filters:
-        for b in bins[-1]:
+        for b in bins[:-1]:
             stacks[f][b] = stacks[f][b] / num_stacked[f][b]
             all_imgs.append(stacks[f][b])
     all_imgs = np.array(all_imgs)
@@ -167,7 +167,7 @@ for snap in snaps:
                                        labelleft=False,
                                        labelright=False)
 
-    for j, b in enumerate(bins[-1]):
+    for j, b in enumerate(bins[:-1]):
         for i, f in enumerate(filters):
 
             size = stacks[f][b]
