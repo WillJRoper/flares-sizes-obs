@@ -41,6 +41,7 @@ kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
                            8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 st_line_fit = lambda x, m, c: 10**(m * np.log10(x) + c)
+st_line_fit_nolog = lambda x, m, c: m * x + c
 
 
 def m_to_M(m, cosmo, z):
@@ -211,7 +212,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes_twin[-1].grid(False)
         axes[-1].loglog()
         axes_twin[-1].loglog()
-        axes_ratio[-1].loglog()
+        axes_ratio[-1].semilogx()
         if i > 0:
             axes[-1].tick_params(axis='y', left=False, right=False,
                                  labelleft=False, labelright=False)
@@ -284,7 +285,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 print(e, f, "Total")
 
             try:
-                popt, pcov = curve_fit(st_line_fit, lumins,
+                popt, pcov = curve_fit(st_line_fit_nolog, lumins,
                                        hlrs / intr_hlrs,
                                        p0=(1, 1),
                                        sigma=w)
@@ -293,7 +294,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                          np.log10(np.max((intr_lumins, lumins))),
                                          1000)
                 print("Ratio", popt)
-                fit = st_line_fit(fit_lumins, popt[0], popt[1])
+                fit = st_line_fit_nolog(fit_lumins, popt[0], popt[1])
 
                 axes_ratio[i].plot(fit_lumins, fit,
                              linestyle='-', color=cmap(norm(trans[f][1])),
