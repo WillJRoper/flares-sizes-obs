@@ -40,7 +40,7 @@ kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
                            8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 st_line_fit = lambda x, m, c: 10 ** (m * np.log10(x) + c)
-bt_line_fit = lambda x, m, c: m * lum_to_M(x) + c
+bt_line_fit = lambda x, m, c: 10 ** (m * lum_to_M(x) + c)
 
 bt_fits = {7: {"FUV": (0.134, -4.05), "NUV": (0.093, -2.897),
                  "U": (0.060, -1.979), "B": (0.038, -1.316),
@@ -53,7 +53,6 @@ bt_fits = {7: {"FUV": (0.134, -4.05), "NUV": (0.093, -2.897),
                  "Z": (-0.019, 0.285), "Y": (-0.012, 0.072),
                  "J": (-0.033, 0.681), "H": (-0.044, 0.979)}
            }
-
 
 def m_to_M(m, cosmo, z):
     flux = photconv.m_to_flux(m)
