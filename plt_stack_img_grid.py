@@ -170,25 +170,25 @@ for snap in snaps:
         for i, f in enumerate(filters):
 
             if j == 0:
-                axes[i, j].set_ylabel(f.split(".")[-1], fontsize=4)
-                axes_log[i, j].set_ylabel(f.split(".")[-1], fontsize=4)
+                axes[i, j].set_ylabel(f.split(".")[-1], fontsize=6)
+                axes_log[i, j].set_ylabel(f.split(".")[-1], fontsize=6)
             if i == 0:
                 if bins[j + 1] == np.inf:
                     axes[i, j].set_title("%d $\leq "
                                          "\log_{10}(M/M_\odot)$"
-                                         % (np.log10(bins[j])), fontsize=4)
+                                         % (np.log10(bins[j])), fontsize=6)
                     axes_log[i, j].set_title("%d $\leq "
                                              "\log_{10}(M/M_\odot)$"
-                                             % (np.log10(bins[j])), fontsize=4)
+                                             % (np.log10(bins[j])), fontsize=6)
                 else:
                     axes[i, j].set_title("%d $\leq "
                                          "\log_{10}(M/M_\odot) <$ %d"
                                          % (np.log10(bins[j]),
-                                            np.log10(bins[j + 1])), fontsize=4)
+                                            np.log10(bins[j + 1])), fontsize=6)
                     axes_log[i, j].set_title("%d $\leq "
                                          "\log_{10}(M/M_\odot) <$ %d"
                                          % (np.log10(bins[j]),
-                                            np.log10(bins[j + 1])), fontsize=4)
+                                            np.log10(bins[j + 1])), fontsize=6)
 
             size = stacks[f][b].shape[0]
             axes[i, j].imshow(stacks[f][b][int(0.4 * size):-int(0.4 * size),
