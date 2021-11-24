@@ -305,7 +305,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                         print(fit)
                         print("BT", popt)
                         axes[i].plot(fit_lumins, fit,
-                                     linestyle='-',
+                                     linestyle='--',
                                      color=cmap(norm(trans[f][1])),
                                      alpha=0.9, zorder=2)
 
@@ -326,7 +326,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
                 axes_ratio[i].plot(fit_lumins, fit,
-                                   linestyle='--',
+                                   linestyle='-',
                                    color=cmap(norm(trans[f][1])),
                                    alpha=0.7, zorder=1,
                                    label=f.split(".")[-1])
