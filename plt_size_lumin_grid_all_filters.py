@@ -12,7 +12,6 @@ matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
 import matplotlib as mpl
-from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
@@ -40,7 +39,19 @@ kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
                    'r_0': {6: 0.15, 7: 0.15,
                            8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
-st_line_fit = lambda x, m, c: 10**(m * np.log10(x) + c)
+st_line_fit = lambda x, m, c: 10 ** (m * np.log10(x) + c)
+
+bt_fits = {7.0: {"FUV": (0.134, -4.05), "NUV": (0.093, -2.897),
+                 "U": (0.060, -1.979), "B": (0.038, -1.316),
+                 "V": (0.011, -0.548), "I": (-0.013, 0.133),
+                 "Z": (-0.014, 0.151), "Y": (-0.011, 0.066),
+                 "J": (-0.032, 0.678), "H": (-0.044, 1.014)},
+           8.0: {"FUV": (0.120, -3.682), "NUV": (0.077, -2.461),
+                 "U": (0.047, -1.609), "B": (0.025, -0.972),
+                 "V": (-0.001, -0.225), "I": (-0.019, 0.298),
+                 "Z": (-0.019, 0.285), "Y": (-0.012, 0.072),
+                 "J": (-0.033, 0.681), "H": (-0.044, 0.979)}
+           }
 
 
 def m_to_M(m, cosmo, z):
@@ -218,7 +229,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             axes[-1].tick_params(axis='x', top=False, bottom=False,
                                  labeltop=False, labelbottom=False)
             axes_ratio[-1].tick_params(axis='y', left=False, right=False,
-                                 labelleft=False, labelright=False)
+                                       labelleft=False, labelright=False)
         if i < len(snaps) - 1:
             axes_twin[-1].tick_params(axis='y', left=False, right=False,
                                       labelleft=False, labelright=False)
@@ -244,17 +255,22 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 hlrs = np.array(data[snap][f]["HLR_0.5"])[complete]
                 lumins = np.array(data[snap][f]["Image_Luminosity"])[complete]
                 intr_hlrs = np.array(intr_data[snap][f]["HLR_0.5"])[complete]
-                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[complete]
+                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[
+                    complete]
             elif mtype == "app":
                 hlrs = np.array(data[snap][f]["HLR_Aperture_0.5"])[complete]
                 lumins = np.array(data[snap][f]["Image_Luminosity"])[complete]
-                intr_hlrs = np.array(intr_data[snap][f]["HLR_Aperture_0.5"])[complete]
-                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[complete]
+                intr_hlrs = np.array(intr_data[snap][f]["HLR_Aperture_0.5"])[
+                    complete]
+                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[
+                    complete]
             else:
                 hlrs = np.array(data[snap][f]["HLR_Pixel_0.5"])[complete]
                 lumins = np.array(data[snap][f]["Image_Luminosity"])[complete]
-                intr_hlrs = np.array(intr_data[snap][f]["HLR_Pixel_0.5"])[complete]
-                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[complete]
+                intr_hlrs = np.array(intr_data[snap][f]["HLR_Pixel_0.5"])[
+                    complete]
+                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[
+                    complete]
             w = np.array(data[snap][f]["Weight"])[complete]
             mass = np.array(data[snap][f]["Mass"])[complete]
 
@@ -276,9 +292,20 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                              label=f.split(".")[-1])
                 axes_twin[i].plot(fit_lumins,
                                   fit * cosmo.arcsec_per_kpc_proper(z),
-                             linestyle='-', color="m",
-                             zorder=3,
-                             linewidth=2, alpha=0)
+                                  linestyle='-', color="m",
+                                  zorder=3,
+                                  linewidth=2, alpha=0)
+
+                if z in bt_fits.keys():
+                    if f in bt_fits[z].keys():
+                        fit = st_line_fit(fit_lumins,
+                                          bt_fits[z][f.split(".")[-1]][0],
+                                          bt_fits[z][f.split(".")[-1]][1])
+                        print("BT", popt)
+                        axes[i].plot(fit_lumins, fit,
+                                     linestyle='-',
+                                     color=cmap(norm(trans[f][1])),
+                                     alpha=0.9, zorder=2)
 
             except ValueError as e:
                 print(e, f, "Total")
@@ -289,16 +316,18 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                        p0=(1, 1),
                                        sigma=w)
 
-                fit_lumins = np.logspace(np.log10(np.min((intr_lumins, lumins))),
-                                         np.log10(np.max((intr_lumins, lumins))),
-                                         1000)
+                fit_lumins = np.logspace(
+                    np.log10(np.min((intr_lumins, lumins))),
+                    np.log10(np.max((intr_lumins, lumins))),
+                    1000)
                 print("Ratio", popt)
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
                 axes_ratio[i].plot(fit_lumins, fit,
-                             linestyle='-', color=cmap(norm(trans[f][1])),
-                             alpha=0.7, zorder=1,
-                             label=f.split(".")[-1])
+                                   linestyle='--',
+                                   color=cmap(norm(trans[f][1])),
+                                   alpha=0.7, zorder=1,
+                                   label=f.split(".")[-1])
             except ValueError as e:
                 print(e, f, "Intrinsic")
 
@@ -352,12 +381,12 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     axes_ratio[0].set_ylabel('$R_{1/2, Att}/ R_{1/2, Int}$')
 
     uni_legend_elements = []
-    # uni_legend_elements.append(
-    #     Line2D([0], [0], color="k", linestyle="-",
-    #            label="Dust Attenuated"))
-    # uni_legend_elements.append(
-    #     Line2D([0], [0], color="k", linestyle="--",
-    #            label="Intrinsic"))
+    uni_legend_elements.append(
+        Line2D([0], [0], color="k", linestyle="-",
+               label="FLARES"))
+    uni_legend_elements.append(
+        Line2D([0], [0], color="k", linestyle="--",
+               label="BlueTides"))
     for f in filters:
         uni_legend_elements.append(
             Line2D([0], [0], color=cmap(norm(trans[f][1])), linestyle="-",
@@ -370,8 +399,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             included.append((l.get_label(), l.get_marker()))
 
     axes_ratio[2].legend(handles=uni_legend_elements, loc='upper center',
-                   bbox_to_anchor=(0.5, -0.35), fancybox=True,
-                   ncol=len(uni_legend_elements))
+                         bbox_to_anchor=(0.5, -0.35), fancybox=True,
+                         ncol=len(uni_legend_elements))
 
     fig.savefig(
         'plots/FilterCompHalfLightRadius_' + mtype + "_" + f + '_'
