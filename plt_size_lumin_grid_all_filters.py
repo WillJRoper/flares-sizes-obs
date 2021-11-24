@@ -42,12 +42,12 @@ kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 st_line_fit = lambda x, m, c: 10 ** (m * np.log10(x) + c)
 bt_line_fit = lambda x, m, c: M_to_lum(m * lum_to_M(x) + c)
 
-bt_fits = {7.0: {"FUV": (0.134, -4.05), "NUV": (0.093, -2.897),
+bt_fits = {7: {"FUV": (0.134, -4.05), "NUV": (0.093, -2.897),
                  "U": (0.060, -1.979), "B": (0.038, -1.316),
                  "V": (0.011, -0.548), "I": (-0.013, 0.133),
                  "Z": (-0.014, 0.151), "Y": (-0.011, 0.066),
                  "J": (-0.032, 0.678), "H": (-0.044, 1.014)},
-           8.0: {"FUV": (0.120, -3.682), "NUV": (0.077, -2.461),
+           8: {"FUV": (0.120, -3.682), "NUV": (0.077, -2.461),
                  "U": (0.047, -1.609), "B": (0.025, -0.972),
                  "V": (-0.001, -0.225), "I": (-0.019, 0.298),
                  "Z": (-0.019, 0.285), "Y": (-0.012, 0.072),
@@ -297,11 +297,11 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                   zorder=3,
                                   linewidth=2, alpha=0)
 
-                if z in bt_fits.keys():
-                    if f in bt_fits[z].keys():
+                if int(z) in [7, 8]:
+                    if f in bt_fits[int(z)].keys():
                         fit = st_line_fit(fit_lumins,
-                                          bt_fits[z][f.split(".")[-1]][0],
-                                          bt_fits[z][f.split(".")[-1]][1])
+                                          bt_fits[int(z)][f.split(".")[-1]][0],
+                                          bt_fits[int(z)][f.split(".")[-1]][1])
                         print(fit)
                         print("BT", popt)
                         axes[i].plot(fit_lumins, fit,
