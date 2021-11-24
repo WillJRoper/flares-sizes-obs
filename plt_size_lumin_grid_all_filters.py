@@ -296,7 +296,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                   linestyle='-', color="m",
                                   zorder=3,
                                   linewidth=2, alpha=0)
-
+                print(int(z))
                 if int(z) in [7, 8]:
                     if f in bt_fits[int(z)].keys():
                         fit = st_line_fit(fit_lumins,
