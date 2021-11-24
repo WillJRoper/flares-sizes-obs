@@ -295,16 +295,16 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                   linestyle='-', color="m",
                                   zorder=3,
                                   linewidth=2, alpha=0)
-
                 if int(z) in [7, 8]:
                     if f.split(".")[-1] in bt_fits[int(z)].keys():
-                        fit = bt_line_fit(fit_lumins,
+                        fit = st_line_fit(fit_lumins,
                                           bt_fits[int(z)][f.split(".")[-1]][0],
                                           bt_fits[int(z)][f.split(".")[-1]][1])
+                        print("BT", bt_fits[int(z)][f.split(".")[-1]])
                         axes[i].plot(fit_lumins, fit,
                                      linestyle='--',
                                      color=cmap(norm(trans[f][1])),
-                                     alpha=0.9, zorder=2)
+                                     alpha=0.6, zorder=1)
 
             except ValueError as e:
                 print(e, f, "Total")
@@ -325,7 +325,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 axes_ratio[i].plot(fit_lumins, fit,
                                    linestyle='-',
                                    color=cmap(norm(trans[f][1])),
-                                   alpha=0.7, zorder=1,
+                                   alpha=0.9, zorder=1,
                                    label=f.split(".")[-1])
             except ValueError as e:
                 print(e, f, "Intrinsic")
