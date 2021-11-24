@@ -343,7 +343,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                                  weights=w)
 
                 # Resample your data grid by a factor of 3 using cubic spline interpolation.
-                H = scipy.ndimage.zoom(H, 3)
+                H = scipy.ndimage.zoom(H, 5)
 
                 percentiles = [np.percentile(H, 16),
                                np.percentile(H, 50),
