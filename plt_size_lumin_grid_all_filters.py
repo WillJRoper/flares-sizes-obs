@@ -345,9 +345,9 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 # Resample your data grid by a factor of 3 using cubic spline interpolation.
                 H = scipy.ndimage.zoom(H, 3)
 
-                percentiles = [np.percentile(H[H > 0], 16),
-                               np.percentile(H[H > 0], 50),
-                               np.percentile(H[H > 0], 84)]
+                percentiles = [np.percentile(H, 16),
+                               np.percentile(H, 50),
+                               np.percentile(H, 84)]
 
                 lbins = np.logspace(np.log10(np.min(lumins)),
                                     np.log10(np.max(lumins)), H.shape[0] + 1)
