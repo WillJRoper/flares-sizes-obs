@@ -169,9 +169,15 @@ for snap in snaps:
     for j, b in enumerate(bins[:-1]):
         for i, f in enumerate(filters):
 
+            if j == 0:
+                axes[i, j].set_ylabel(f.split(".")[-1])
+            if i == 0:
+                axes[i, j].set_title("%.2f $\leq M <$ %.2f" % (bins[j],
+                                                               bins[j + 1]))
+
             size = stacks[f][b].shape[0]
-            axes[i, j].imshow(stacks[f][b][int(0.3 * size):-int(0.3 * size),
-                              int(0.3 * size):-int(0.3 * size)],
+            axes[i, j].imshow(stacks[f][b][int(0.4 * size):-int(0.4 * size),
+                              int(0.4 * size):-int(0.4 * size)],
                               cmap=cmr.neutral_r, norm=norm)
 
             axes_log[i, j].imshow(
