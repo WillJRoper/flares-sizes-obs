@@ -171,19 +171,26 @@ for snap in snaps:
 
             if j == 0:
                 axes[i, j].set_ylabel(f.split(".")[-1])
+                axes_log[i, j].set_ylabel(f.split(".")[-1])
             if i == 0:
-                axes[i, j].set_title("%.2f $\leq M <$ %.2f" % (bins[j],
-                                                               bins[j + 1]))
+                axes[i, j].set_title("%d $\leq "
+                                     "\log_{10}(M/M_\odot) <$ %d"
+                                     % (np.log10(bins[j]),
+                                        np.log10(bins[j + 1])))
+                axes_log[i, j].set_title("%d $\leq "
+                                     "\log_{10}(M/M_\odot) <$ %d"
+                                     % (np.log10(bins[j]),
+                                        np.log10(bins[j + 1])))
 
             size = stacks[f][b].shape[0]
             axes[i, j].imshow(stacks[f][b][int(0.4 * size):-int(0.4 * size),
                               int(0.4 * size):-int(0.4 * size)],
-                              cmap=cmr.neutral_r, norm=norm)
+                              cmap=cmr.neutral_r)
 
             axes_log[i, j].imshow(
                 stacks[f][b][int(0.3 * size):-int(0.3 * size),
                 int(0.3 * size):-int(0.3 * size)],
-                cmap=cmr.neutral, norm=norm_log)
+                cmap=cmr.neutral)
 
     fig.savefig(
         'plots/Image_grids/StackImgGrid_' + reg
