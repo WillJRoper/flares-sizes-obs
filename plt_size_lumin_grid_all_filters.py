@@ -16,7 +16,7 @@ import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
-from flare.photom import M_to_lum
+from flare.photom import M_to_lum, lum_to_M
 import flare.photom as photconv
 import pandas as pd
 from scipy.optimize import curve_fit
@@ -40,6 +40,7 @@ kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
                            8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 st_line_fit = lambda x, m, c: 10 ** (m * np.log10(x) + c)
+bt_line_fit = lambda x, m, c: M_to_lum(m * lum_to_M(x) + c)
 
 bt_fits = {7.0: {"FUV": (0.134, -4.05), "NUV": (0.093, -2.897),
                  "U": (0.060, -1.979), "B": (0.038, -1.316),
@@ -301,6 +302,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                         fit = st_line_fit(fit_lumins,
                                           bt_fits[z][f.split(".")[-1]][0],
                                           bt_fits[z][f.split(".")[-1]][1])
+                        print(fit)
                         print("BT", popt)
                         axes[i].plot(fit_lumins, fit,
                                      linestyle='-',
