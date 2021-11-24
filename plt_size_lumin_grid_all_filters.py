@@ -360,7 +360,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
                 cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
-                                       cmap=cmap(norm(trans[f][1])),
+                                       colors=cmap(norm(trans[f][1])),
                                        linewidth=2)
 
         axes[i].text(0.95, 0.95, f'$z={z}$',
