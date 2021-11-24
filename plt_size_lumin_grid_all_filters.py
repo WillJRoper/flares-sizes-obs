@@ -16,11 +16,12 @@ import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
-from flare.photom import M_to_lum, lum_to_M
+from flare.photom import M_to_lum
 import flare.photom as photconv
 import pandas as pd
 from scipy.optimize import curve_fit
 import matplotlib.colors as cm
+import scipy
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -40,19 +41,20 @@ kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
                            8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 st_line_fit = lambda x, m, c: 10 ** (m * np.log10(x) + c)
-bt_line_fit = lambda x, m, c: 10 ** (m * lum_to_M(x) + c)
+bt_line_fit = lambda x, m, c: 10 ** (m * x + c)
 
 bt_fits = {7: {"FUV": (0.134, -4.05), "NUV": (0.093, -2.897),
-                 "U": (0.060, -1.979), "B": (0.038, -1.316),
-                 "V": (0.011, -0.548), "I": (-0.013, 0.133),
-                 "Z": (-0.014, 0.151), "Y": (-0.011, 0.066),
-                 "J": (-0.032, 0.678), "H": (-0.044, 1.014)},
+               "U": (0.060, -1.979), "B": (0.038, -1.316),
+               "V": (0.011, -0.548), "I": (-0.013, 0.133),
+               "Z": (-0.014, 0.151), "Y": (-0.011, 0.066),
+               "J": (-0.032, 0.678), "H": (-0.044, 1.014)},
            8: {"FUV": (0.120, -3.682), "NUV": (0.077, -2.461),
-                 "U": (0.047, -1.609), "B": (0.025, -0.972),
-                 "V": (-0.001, -0.225), "I": (-0.019, 0.298),
-                 "Z": (-0.019, 0.285), "Y": (-0.012, 0.072),
-                 "J": (-0.033, 0.681), "H": (-0.044, 0.979)}
+               "U": (0.047, -1.609), "B": (0.025, -0.972),
+               "V": (-0.001, -0.225), "I": (-0.019, 0.298),
+               "Z": (-0.019, 0.285), "Y": (-0.012, 0.072),
+               "J": (-0.033, 0.681), "H": (-0.044, 0.979)}
            }
+
 
 def m_to_M(m, cosmo, z):
     flux = photconv.m_to_flux(m)
@@ -243,6 +245,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         z = float(z_str[0] + '.' + z_str[1])
 
         for f in filters:
+            print(f)
 
             compact_ncom = data[snap][f]["Compact_Population_NotComplete"]
             diffuse_ncom = data[snap][f]["Diffuse_Population_NotComplete"]
@@ -330,28 +333,37 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             except ValueError as e:
                 print(e, f, "Intrinsic")
 
-        # if Type != "Intrinsic":
-        #
-        #     if int(z) in [6, 7, 8, 9]:
-        #
-        #         if z == 7 or z == 6:
-        #             low_lim = -16
-        #         elif z == 8:
-        #             low_lim = -16.8
-        #         else:
-        #             low_lim = -15.4
-        #         fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
-        #                                  np.log10(M_to_lum(low_lim)),
-        #                                  1000)
-        #
-        #         fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
-        #                        kawa_params['beta'][int(z)])
-        #         axes[i].plot(fit_lumins, fit,
-        #                      linestyle='dashed', color="g",
-        #                      alpha=0.6, zorder=0,
-        #                      label="Kawamata+18", linewidth=4)
+            if f == filters[-1] or f == filters[0]:
+                lbins = np.logspace(np.log10(np.min(lumins)),
+                                    np.log10(np.max(lumins)), 40)
+                hbins = np.logspace(np.log10(np.min(hlrs)),
+                                    np.log10(np.max(hlrs)), 40)
+                H, xbins, ybins = np.histogram2d(lumins, hlrs,
+                                                 bins=(lbins, hbins),
+                                                 weights=w)
 
-        axes[i].text(0.95, 0.05, f'$z={z}$',
+                # Resample your data grid by a factor of 3 using cubic spline interpolation.
+                H = scipy.ndimage.zoom(H, 3)
+
+                percentiles = [np.percentile(H[H > 0], 16),
+                               np.percentile(H[H > 0], 50),
+                               np.percentile(H[H > 0], 84)]
+
+                lbins = np.logspace(np.log10(np.min(lumins)),
+                                    np.log10(np.max(lumins)), H.shape[0] + 1)
+                hbins = np.logspace(np.log10(np.min(hlrs)),
+                                    np.log10(np.max(hlrs)), H.shape[0] + 1)
+
+                xbin_cents = (lbins[1:] + lbins[:-1]) / 2
+                ybin_cents = (hbins[1:] + hbins[:-1]) / 2
+
+                XX, YY = np.meshgrid(xbin_cents, ybin_cents)
+
+                cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
+                                       cmap=cmap(norm(trans[f][1])),
+                                       linewidth=2)
+
+        axes[i].text(0.95, 0.95, f'$z={z}$',
                      bbox=dict(boxstyle="round,pad=0.3", fc='w',
                                ec="k", lw=1, alpha=0.8),
                      transform=axes[i].transAxes,
