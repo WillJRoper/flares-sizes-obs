@@ -289,8 +289,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 fit_lumins = np.logspace(np.log10(np.min(lumins)),
                                          np.log10(np.max(lumins)),
                                          1000)
-                print(np.log10(np.min(lumins)), np.log10(np.max(lumins)))
-                print(np.log10(fit_lumins))
+                print(f, np.log10(np.min(lumins)), np.log10(np.max(lumins)))
 
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
                 print("Total", popt)
@@ -338,6 +337,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 print(e, f, "Intrinsic")
 
             if f == filters[-1]:
+                print(f, np.log10(np.min(lumins)), np.log10(np.max(lumins)))
                 axes[i].hexbin(lumins,
                                hlrs, gridsize=50,
                                mincnt=0.00001,
