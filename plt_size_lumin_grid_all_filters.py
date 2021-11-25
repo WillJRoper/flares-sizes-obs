@@ -339,8 +339,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 hbins = np.logspace(np.log10(np.min(hlrs)),
                                     np.log10(np.max(hlrs)), 40)
                 H, xbins, ybins = np.histogram2d(lumins, hlrs,
-                                                 bins=(lbins, hbins),
-                                                 weights=w)
+                                                 bins=(lbins, hbins))
 
                 # Resample your data grid by a factor of 3 using cubic spline interpolation.
                 H = scipy.ndimage.zoom(H, 5)
@@ -361,7 +360,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
                 cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
                                        colors=cmap(norm(trans[f][1])),
-                                       linewidth=2)
+                                       linewidth=1.5, alpha=0.5)
 
         axes[i].text(0.95, 0.95, f'$z={z}$',
                      bbox=dict(boxstyle="round,pad=0.3", fc='w',
