@@ -97,7 +97,7 @@ imgint_dict = {}
 mass_dict = {}
 
 regions = []
-for reg in range(0, 2):
+for reg in range(0, 40):
     if reg < 10:
         regions.append('0' + str(reg))
     else:
