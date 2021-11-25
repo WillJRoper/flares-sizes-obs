@@ -40,8 +40,7 @@ kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
                    'r_0': {6: 0.15, 7: 0.15,
                            8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
-st_line_fit = lambda x, m, c: 10 ** (m * np.log10(x) + c)
-bt_line_fit = lambda x, m, c: 10 ** (m * x + c)
+st_line_fit = lambda x, m, c: m * np.log10(x) + c
 
 bt_fits = {7: {"FUV": (0.134, -4.05), "NUV": (0.093, -2.897),
                "U": (0.060, -1.979), "B": (0.038, -1.316),
