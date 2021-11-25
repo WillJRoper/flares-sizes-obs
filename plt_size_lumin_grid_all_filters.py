@@ -336,15 +336,15 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             except ValueError as e:
                 print(e, f, "Intrinsic")
 
-            # if f == filters[-1] or f == filters[0]:
-            #     axes[i].hexbin(lumins,
-            #                    hlrs, gridsize=50,
-            #                    mincnt=1,
-            #                    C=w,
-            #                    reduce_C_function=np.sum,
-            #                    xscale='log', yscale='log',
-            #                    norm=weight_norm, linewidths=0.2,
-            #                    cmap=cmaps[f], alpha=0.5)
+            if f == filters[-1]:
+                axes[i].hexbin(lumins,
+                               hlrs, gridsize=50,
+                               mincnt=1,
+                               C=w,
+                               reduce_C_function=np.sum,
+                               xscale='log', yscale='log',
+                               norm=weight_norm, linewidths=0.2,
+                               cmap=cmaps[f], alpha=0.5)
 
         axes[i].text(0.95, 0.95, f'$z={z}$',
                      bbox=dict(boxstyle="round,pad=0.3", fc='w',

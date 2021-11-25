@@ -149,16 +149,13 @@ for snap in snaps:
             continue
 
     print("Plotting for:")
-    print("Region = ", reg)
     print("Snapshot = ", snap)
-    print("Orientation =", orientation)
-    print("Filter =", f)
 
     legend_elements = []
 
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
-    print(sedint_dict[f])
+
     sedint = np.array(sedint_dict[f])
     sedtot = np.array(sedtot_dict[f])
     sedlam = np.array(sedlam_dict[f])
@@ -186,7 +183,7 @@ for snap in snaps:
         ax.plot(sedlam, sedint,
                 color=int_cmap(znorm(z)))
 
-    # ax.set_xlim(100, None)
+    ax.set_xlim(10 ** 5, None)
     ax.set_ylim(10 ** 3, None)
 
     # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
@@ -214,21 +211,18 @@ for snap in snaps:
     # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
     # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
-    ax.set_xlabel("$\lambda / [\AA]$")
-    ax.set_ylabel("$L_{" + f.split(".")[-1]
-                  + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
+ax.set_xlabel("$\lambda / [\AA]$")
+ax.set_ylabel("$L_{" + f.split(".")[-1]
+              + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
 
-    ax.legend()
+# create a second axes for the colorbar
+ax2 = fig.add_axes([0.95, 0.1, 0.015, 0.8])
+cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
+                               spacing='uniform', ticks=cents,
+                               boundaries=bounds, format='%1i')
+cb.set_ticklabels(filter_labels)
 
-    # create a second axes for the colorbar
-    ax2 = fig.add_axes([0.95, 0.1, 0.015, 0.8])
-    cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
-                                   spacing='uniform', ticks=cents,
-                                   boundaries=bounds, format='%1i')
-    cb.set_ticklabels(filter_labels)
-
-    string = 'plots/SED/SED' + "_" + str(z) + '_' + reg \
-             + '_' + snap + '_' + orientation + "_" + extinction
-    fig.savefig(string.replace(".", "p") + ".png",
-                bbox_inches='tight', dpi=100)
-    plt.close(fig)
+string = 'plots/SED/SED' + "_" + orientation + "_" + extinction
+fig.savefig(string.replace(".", "p") + ".png",
+            bbox_inches='tight', dpi=100)
+plt.close(fig)
