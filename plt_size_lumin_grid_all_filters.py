@@ -284,7 +284,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 popt, pcov = curve_fit(st_line_fit, lumins,
                                        np.log10(hlrs),
                                        p0=(1, 1),
-                                       sigma=w)
+                                       sigma=w, absolute_sigma=True)
 
                 fit_lumins = np.logspace(np.log10(np.min(lumins)),
                                          np.log10(np.max(lumins)),
@@ -303,7 +303,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                   linewidth=2, alpha=0)
                 if int(z) in [7, 8]:
                     if f.split(".")[-1] in bt_fits[int(z)].keys():
-                        fit = st_line_fit(fit_lumins,
+                        fit = 10 ** st_line_fit(fit_lumins,
                                           bt_fits[int(z)][f.split(".")[-1]][0],
                                           bt_fits[int(z)][f.split(".")[-1]][1])
                         print("BT", bt_fits[int(z)][f.split(".")[-1]])
@@ -319,7 +319,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 popt, pcov = curve_fit(st_line_fit, lumins,
                                        hlrs / intr_hlrs,
                                        p0=(1, 1),
-                                       sigma=w)
+                                       sigma=w, absolute_sigma=True)
 
                 fit_lumins = np.logspace(np.log10(np.min(lumins)),
                                          np.log10(np.max(lumins)),
