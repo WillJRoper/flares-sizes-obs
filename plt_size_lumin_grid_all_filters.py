@@ -227,7 +227,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes_twin[-1].grid(False)
         axes[-1].loglog()
         axes_twin[-1].loglog()
-        axes_ratio[-1].loglog()
+        axes_ratio[-1].semilogx()
         if i > 0:
             axes[-1].tick_params(axis='y', left=False, right=False,
                                  labelleft=False, labelright=False)
@@ -300,7 +300,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                              alpha=0.9, zorder=2,
                              label=f.split(".")[-1])
                 axes_twin[i].plot(fit_lumins,
-                                  fit * cosmo.arcsec_per_kpc_proper(z),
+                                  10 ** fit * cosmo.arcsec_per_kpc_proper(z),
                                   linestyle='-', color="m",
                                   zorder=3,
                                   linewidth=2, alpha=0)
@@ -320,17 +320,14 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
             try:
                 popt, pcov = curve_fit(st_line_fit, lumins,
-                                       np.log10(hlrs / intr_hlrs),
+                                       hlrs / intr_hlrs,
                                        p0=(1, 1),
                                        sigma=w, absolute_sigma=True)
 
-                fit_lumins = np.logspace(np.log10(np.min(lumins)),
-                                         np.log10(np.max(lumins)),
-                                         1000)
                 print("Ratio", popt)
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
-                axes_ratio[i].plot(fit_lumins, 10 ** fit,
+                axes_ratio[i].plot(fit_lumins, fit,
                                    linestyle='-',
                                    color=cmap(norm(trans[f][1])),
                                    alpha=0.9, zorder=1,
@@ -338,16 +335,16 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             except ValueError as e:
                 print(e, f, "Intrinsic")
 
-            if f == filters[-1]:
-                print(f, np.log10(np.min(lumins)), np.log10(np.max(lumins)))
-                axes[i].hexbin(lumins,
-                               hlrs, gridsize=50,
-                               mincnt=0.00001,
-                               C=w,
-                               reduce_C_function=np.sum,
-                               xscale='log', yscale='log',
-                               norm=weight_norm, linewidths=0.2,
-                               cmap=cmaps[f], alpha=0.5)
+            # if f == filters[-1]:
+            #     print(f, np.log10(np.min(lumins)), np.log10(np.max(lumins)))
+            #     axes[i].hexbin(lumins,
+            #                    hlrs, gridsize=50,
+            #                    mincnt=0.00001,
+            #                    C=w,
+            #                    reduce_C_function=np.sum,
+            #                    xscale='log', yscale='log',
+            #                    norm=weight_norm, linewidths=0.2,
+            #                    cmap=cmaps[f], alpha=0.5)
 
         axes[i].text(0.95, 0.95, f'$z={z}$',
                      bbox=dict(boxstyle="round,pad=0.3", fc='w',
