@@ -168,16 +168,23 @@ for snap in snaps:
 
     print(sedint.shape)
 
-    for i in range(sedtot.shape[0]):
-        ax.plot(sedlam[i, :], sedtot[i, :],
-                color=tot_cmap(znorm(z)), alpha=0.05)
-        ax.plot(sedlam[i, :], sedint[i, :],
-                color=int_cmap(znorm(z)), alpha=0.05)
+    if sedtot.shape[0] > 1:
+        for i in range(sedtot.shape[0]):
+            ax.plot(sedlam[i, :], sedtot[i, :],
+                    color=tot_cmap(znorm(z)), alpha=0.05)
+            ax.plot(sedlam[i, :], sedint[i, :],
+                    color=int_cmap(znorm(z)), alpha=0.05)
 
-    ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
-            color=tot_cmap(znorm(z)))
-    ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
-            color=int_cmap(znorm(z)))
+        ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
+                color=tot_cmap(znorm(z)))
+        ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
+                color=int_cmap(znorm(z)))
+    else:
+
+        ax.plot(sedlam, sedtot,
+                color=tot_cmap(znorm(z)))
+        ax.plot(sedlam, sedint,
+                color=int_cmap(znorm(z)))
 
     # ax.set_xlim(100, None)
     ax.set_ylim(10 ** 3, None)
