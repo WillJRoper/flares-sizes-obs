@@ -317,7 +317,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
             try:
                 popt, pcov = curve_fit(st_line_fit, lumins,
-                                       hlrs / intr_hlrs,
+                                       np.log10(hlrs / intr_hlrs),
                                        p0=(1, 1),
                                        sigma=w, absolute_sigma=True)
 
@@ -327,7 +327,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 print("Ratio", popt)
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
-                axes_ratio[i].plot(fit_lumins, fit,
+                axes_ratio[i].plot(fit_lumins, 10 ** fit,
                                    linestyle='-',
                                    color=cmap(norm(trans[f][1])),
                                    alpha=0.9, zorder=1,
