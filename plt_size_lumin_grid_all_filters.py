@@ -289,6 +289,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 fit_lumins = np.logspace(np.log10(np.min(lumins)),
                                          np.log10(np.max(lumins)),
                                          1000)
+                
+                print(np.log10(fit_lumins))
 
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
                 print("Total", popt)
