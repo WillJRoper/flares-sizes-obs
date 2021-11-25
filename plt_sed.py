@@ -134,10 +134,10 @@ for snap in snaps:
                 "r")
 
             try:
-                sedint_dict.setdefault(f, []).append(
+                sedint_dict.setdefault(f, []).extend(
                     hdf[f]["SED_intrinsic"][...])
-                sedtot_dict.setdefault(f, []).append(hdf[f]["SED_total"][...])
-                sedlam_dict.setdefault(f, []).append(
+                sedtot_dict.setdefault(f, []).extend(hdf[f]["SED_total"][...])
+                sedlam_dict.setdefault(f, []).extend(
                     hdf[f]["SED_lambda"][...] * 1E4)
             except KeyError as e:
                 print(e)
@@ -158,7 +158,7 @@ for snap in snaps:
 
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
-
+    print(sedint_dict[f])
     sedint = np.array(sedint_dict[f])
     sedtot = np.array(sedtot_dict[f])
     sedlam = np.array(sedlam_dict[f])
