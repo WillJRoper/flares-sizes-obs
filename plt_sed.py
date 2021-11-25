@@ -178,9 +178,9 @@ for snap in snaps:
     #             color="g", alpha=0.01)
 
     ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
-            color="r")
+            color="r", label="Attenuated")
     ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
-            color="g")
+            color="g", label="Intrinsic")
 
     ax.set_xlim(10 ** 6, None)
     ax.set_ylim(10 ** 14, 10**33.)
@@ -213,6 +213,8 @@ for snap in snaps:
 ax.set_xlabel("$\lambda / [\AA]$")
 ax.set_ylabel("$L_{" + f.split(".")[-1]
               + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
+
+ax.legend()
 
 # create a second axes for the colorbar
 ax2 = fig.add_axes([0.95, 0.1, 0.015, 0.8])
