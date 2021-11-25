@@ -182,7 +182,7 @@ for snap in snaps:
     ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
             color="g", label="Intrinsic")
 
-    ax.set_xlim(10 ** 6.4, None)
+    ax.set_xlim(10 ** 6.6, None)
     ax.set_ylim(10 ** 20., 10**33.)
 
     # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
