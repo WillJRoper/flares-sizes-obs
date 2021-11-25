@@ -148,6 +148,7 @@ labels = {"G11": "Grazian+2011",
 markers = {"G11": "s", "G12": "v", "C16": "D",
            "K18": "o", "M18": "X", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
+
 colors = {}
 for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
     colors[key] = cmap(norm(col))
@@ -165,7 +166,7 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
-                         Type, extinction, mtype):
+                         Type, extinction, mtype, weight_norm):
     trans = {}
     plt_lams = []
     cents = []
@@ -189,6 +190,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         i += 1
 
     cmap = mpl.cm.get_cmap('jet', len(filters))
+
+    cmaps = {filters[0]: "Blues", filters[-1]: "Reds"}
 
     bounds.append(i + 0.5)
 
@@ -334,33 +337,14 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 print(e, f, "Intrinsic")
 
             if f == filters[-1] or f == filters[0]:
-                lbins = np.logspace(np.log10(np.min(lumins)),
-                                    np.log10(np.max(lumins)), 40)
-                hbins = np.logspace(np.log10(np.min(hlrs)),
-                                    np.log10(np.max(hlrs)), 40)
-                H, xbins, ybins = np.histogram2d(lumins, hlrs,
-                                                 bins=(lbins, hbins))
-
-                # Resample your data grid by a factor of 3 using cubic spline interpolation.
-                H = scipy.ndimage.zoom(H, 7)
-
-                percentiles = [np.percentile(H, 16),
-                               np.percentile(H, 50),
-                               np.percentile(H, 84)]
-
-                lbins = np.logspace(np.log10(np.min(lumins)),
-                                    np.log10(np.max(lumins)), H.shape[0] + 1)
-                hbins = np.logspace(np.log10(np.min(hlrs)),
-                                    np.log10(np.max(hlrs)), H.shape[0] + 1)
-
-                xbin_cents = (lbins[1:] + lbins[:-1]) / 2
-                ybin_cents = (hbins[1:] + hbins[:-1]) / 2
-
-                XX, YY = np.meshgrid(xbin_cents, ybin_cents)
-
-                cbar = axes[i].contour(XX, YY, H.T, levels=percentiles,
-                                       colors=cmap(norm(trans[f][1])),
-                                       linewidth=1.5, alpha=0.5)
+                axes[i].hexbin(lumins,
+                               hlrs, gridsize=50,
+                               mincnt=1,
+                               C=w,
+                               reduce_C_function=np.sum,
+                               xscale='log', yscale='log',
+                               norm=weight_norm, linewidths=0.2,
+                               cmap=cmaps[f], alpha=0.5)
 
         axes[i].text(0.95, 0.95, f'$z={z}$',
                      bbox=dict(boxstyle="round,pad=0.3", fc='w',
