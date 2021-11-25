@@ -368,7 +368,8 @@ for f in filters:
                 axes_log[i, j].imshow(
                     stacks[f][b][int(0.3 * size):-int(0.3 * size),
                     int(0.3 * size):-int(0.3 * size)],
-                    cmap=cmr.neutral, norm=cm.LogNorm())
+                    cmap=cmr.neutral,
+                    norm=cm.LogNorm(vmin=np.percentile(stacks[f][b][int(0.3 * size):-int(0.3 * size), int(0.3 * size):-int(0.3 * size)], 16)))
 
         fig.savefig(
             'plots/Image_grids/StackImgRow_' + f + '_' + reg

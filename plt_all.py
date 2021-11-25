@@ -183,7 +183,7 @@ weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
 #                     "pix")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
-                     "pix")
+                     "pix", weight_norm)
 
 # for f in filters:
 #     print(f)
