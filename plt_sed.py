@@ -100,160 +100,126 @@ imgint_dict = {}
 mass_dict = {}
 
 regions = []
-for reg in range(0, 40):
+for reg in range(0, 2):
     if reg < 10:
         regions.append('0' + str(reg))
     else:
         regions.append(str(reg))
 
-snaps = ['010_z005p000', ]
+snaps = ['005_z010p000', '006_z009p000', '007_z008p000', '008_z007p000',
+         '009_z006p000', '010_z005p000', ]
 
 lim = 5
 
 np.random.seed(100)
 
-for reg in regions:
-    for snap in snaps:
+int_cmap = mpl.cm.get_cmap('Greens', len(filters))
+tot_cmap = mpl.cm.get_cmap('Reds', len(filters))
+znorm = cm.Normalize(vmin=5, vmax=10)
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.loglog()
+
+for f in filters:
+    ax.axvspan(trans[f][0], trans[f][2], alpha=0.5,
+               color=cmap(norm(trans[f][1])))
+
+for snap in snaps:
+    for reg in regions:
+
+        f = "FAKE.TH.FUV"
+
         try:
             hdf = h5py.File(
                 "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
                                                             orientation),
                 "r")
 
-            for f in filters:
-                try:
-                    sedint_dict[f] = hdf[f]["SED_intrinsic"][...]
-                    sedtot_dict[f] = hdf[f]["SED_total"][...]
-                    sedlam_dict[f] = hdf[f]["SED_lambda"][...]
-                    imgtot_dict[f] = hdf[f]["Images"][...]
-                    mass_dict[f] = hdf[f]["Mass"][...]
-                except KeyError as e:
-                    print(e)
-                    continue
-
-            hdf.close()
-
-            hdf = h5py.File(
-                "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap,
-                                                            "Intrinsic",
-                                                            orientation),
-                "r")
-
-            for f in filters:
-                try:
-                    imgint_dict[f] = hdf[f]["Images"][...]
-                except KeyError as e:
-                    print(e)
-                    continue
+            try:
+                sedint_dict[f].setdefault(hdf[f]["SED_intrinsic"][...])
+                sedtot_dict[f].setdefault(hdf[f]["SED_total"][...])
+                sedlam_dict[f].setdefault(hdf[f]["SED_lambda"][...] * 1E4)
+            except KeyError as e:
+                print(e)
+                continue
 
             hdf.close()
 
         except OSError:
             continue
 
-        f = "FAKE.TH.FUV"
+    print("Plotting for:")
+    print("Region = ", reg)
+    print("Snapshot = ", snap)
+    print("Orientation =", orientation)
+    print("Filter =", f)
 
-        print("Plotting for:")
-        print("Region = ", reg)
-        print("Snapshot = ", snap)
-        print("Orientation =", orientation)
-        print("Filter =", f)
+    legend_elements = []
 
-        legend_elements = []
+    z_str = snap.split('z')[1].split('p')
+    z = float(z_str[0] + '.' + z_str[1])
 
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
+    sedint = np.array(sedint_dict[f])
+    sedtot = np.array(sedtot_dict[f])
+    sedlam = np.array(sedlam_dict[f])
 
-        sedint = np.array(sedint_dict[f])
-        sedtot = np.array(sedtot_dict[f])
-        sedlam = np.array(sedlam_dict[f])
-        imgtot = np.array(imgtot_dict[f])
-        imgint = np.array(imgint_dict[f])
-        masses = np.array(mass_dict[f])
+    if sedint.size == 0:
+        continue
 
-        okinds = masses > 10**10
+    print(sedint.shape)
 
-        imgtot = imgtot[okinds]
-        imgint = imgint[okinds]
-        masses = masses[okinds]
+    ax.plot(sedlam, sedtot, color=tot_cmap(znorm(z)), alpha=0.05)
+    ax.plot(sedlam, sedint, color=int_cmap(znorm(z)), alpha=0.05)
 
-        if masses.size == 0:
-            continue
+    ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
+            color=tot_cmap(znorm(z)))
+    ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
+            color=int_cmap(znorm(z)))
 
-        print(imgtot.shape, imgint.shape)
+    # ax.set_xlim(100, None)
+    ax.set_ylim(10**3, None)
 
-        fig = plt.figure(figsize=(8, 3))
-        ax = fig.add_subplot(111)
-        ax.loglog()
+    # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
+    # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
+    #
+    # y_low = ax.get_ylim()[1] - ywidth
+    # x_low = ax.get_xlim()[0]
+    #
+    # axin1 = ax.inset_axes([x_low, y_low, xwidth, ywidth],
+    #                       transform=ax.transData)
+    # axin2 = ax.inset_axes([x_low + xwidth, y_low, xwidth, ywidth],
+    #                       transform=ax.transData)
 
-        for f in filters:
-            ax.axvspan(trans[f][0], trans[f][2], alpha=0.5,
-                       color=cmap(norm(trans[f][1])))
+    # for axi in [axin1, axin2]:
+    #
+    #     axi.grid(False)
+    #
+    #     # Remove axis labels and ticks
+    #     axi.tick_params(axis='x', top=False, bottom=False,
+    #                     labeltop=False, labelbottom=False)
+    #
+    #     axi.tick_params(axis='y', left=False, right=False,
+    #                     labelleft=False, labelright=False)
+    #
+    # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
+    # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
-        # i = 0
-        # done = set()
-        # while i < lim:
-        #     ind = np.random.choice(len(masses))
-        #     j = 0
-        #     while ind in done:
-        #         ind = np.random.choice(len(masses))
-        #         j += 1
-        #         if j > lim:
-        #             i = lim + 1
-        #             break
-        #     ax.plot(sedlam[ind, :], sedtot[ind, :], color="r", alpha=0.1)
-        #     ax.plot(sedlam[ind, :], sedint[ind, :], color="g", alpha=0.1)
-        #     done.update({ind})
+    ax.set_xlabel("$\lambda / [\AA]$")
+    ax.set_ylabel("$L_{" + f.split(".")[-1]
+                  + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
 
-        max_ind = np.argmax(masses)
-        ax.plot(sedlam[max_ind, :], sedtot[max_ind, :], color="r",
-                label="Attenuated")
-        ax.plot(sedlam[max_ind, :], sedint[max_ind, :], color="g",
-                label="Intrinsic")
+    ax.legend()
 
-        ax.set_xlim(100, None)
-        ax.set_ylim(10**3, None)
+    # create a second axes for the colorbar
+    ax2 = fig.add_axes([0.95, 0.1, 0.015, 0.8])
+    cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
+                                   spacing='uniform', ticks=cents,
+                                   boundaries=bounds, format='%1i')
+    cb.set_ticklabels(filter_labels)
 
-        # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
-        # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
-        #
-        # y_low = ax.get_ylim()[1] - ywidth
-        # x_low = ax.get_xlim()[0]
-        #
-        # axin1 = ax.inset_axes([x_low, y_low, xwidth, ywidth],
-        #                       transform=ax.transData)
-        # axin2 = ax.inset_axes([x_low + xwidth, y_low, xwidth, ywidth],
-        #                       transform=ax.transData)
-
-        # for axi in [axin1, axin2]:
-        #
-        #     axi.grid(False)
-        #
-        #     # Remove axis labels and ticks
-        #     axi.tick_params(axis='x', top=False, bottom=False,
-        #                     labeltop=False, labelbottom=False)
-        #
-        #     axi.tick_params(axis='y', left=False, right=False,
-        #                     labelleft=False, labelright=False)
-        #
-        # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
-        # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
-
-        ax.set_xlabel("$\lambda / [\AA]$")
-        ax.set_ylabel("$L_{" + f.split(".")[-1]
-                      + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
-
-        ax.legend()
-
-        # create a second axes for the colorbar
-        ax2 = fig.add_axes([0.95, 0.1, 0.015, 0.8])
-        cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
-                                       spacing='uniform', ticks=cents,
-                                       boundaries=bounds, format='%1i')
-        cb.set_ticklabels(filter_labels)
-
-        string = 'plots/SED/SED' + "_" + str(z) + '_' + reg \
-                 + '_' + snap + '_' + orientation + "_" + extinction
-        fig.savefig( string.replace(".", "p") + ".png",
-                     bbox_inches='tight', dpi=100)
-        plt.close(fig)
+    string = 'plots/SED/SED' + "_" + str(z) + '_' + reg \
+             + '_' + snap + '_' + orientation + "_" + extinction
+    fig.savefig( string.replace(".", "p") + ".png",
+                 bbox_inches='tight', dpi=100)
+    plt.close(fig)
