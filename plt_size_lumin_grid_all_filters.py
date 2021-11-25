@@ -219,6 +219,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     ylims = []
     ylims_twin = []
     ylims_ratio = []
+    xlims = (np.inf, 0)
     i = 0
     while i < len(snaps):
         axes.append(fig.add_subplot(gs[0, i]))
@@ -321,10 +322,9 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                        p0=(1, 1),
                                        sigma=w)
 
-                fit_lumins = np.logspace(
-                    np.log10(np.min((intr_lumins, lumins))),
-                    np.log10(np.max((intr_lumins, lumins))),
-                    1000)
+                fit_lumins = np.logspace(np.log10(np.min(lumins)),
+                                         np.log10(np.max(lumins)),
+                                         1000)
                 print("Ratio", popt)
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
@@ -336,15 +336,15 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             except ValueError as e:
                 print(e, f, "Intrinsic")
 
-            if f == filters[-1] or f == filters[0]:
-                axes[i].hexbin(lumins,
-                               hlrs, gridsize=50,
-                               mincnt=1,
-                               C=w,
-                               reduce_C_function=np.sum,
-                               xscale='log', yscale='log',
-                               norm=weight_norm, linewidths=0.2,
-                               cmap=cmaps[f], alpha=0.5)
+            # if f == filters[-1] or f == filters[0]:
+            #     axes[i].hexbin(lumins,
+            #                    hlrs, gridsize=50,
+            #                    mincnt=1,
+            #                    C=w,
+            #                    reduce_C_function=np.sum,
+            #                    xscale='log', yscale='log',
+            #                    norm=weight_norm, linewidths=0.2,
+            #                    cmap=cmaps[f], alpha=0.5)
 
         axes[i].text(0.95, 0.95, f'$z={z}$',
                      bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -353,17 +353,26 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                      horizontalalignment='right',
                      fontsize=8)
 
+        axes[i].tick_params(axis='x', which='minor', bottom=True)
         axes_ratio[i].tick_params(axis='x', which='minor', bottom=True)
 
         ylims.append(axes[i].get_ylim())
         ylims_twin.append(axes_twin[i].get_ylim())
         ylims_ratio.append(axes_ratio[i].get_ylim())
 
+        this_xlims = axes[i].get_xlim()
+        if this_xlims[0] < xlims[0]:
+            xlims[0] = this_xlims[0]
+        if this_xlims[1] > xlims[1]:
+            xlims[1] = this_xlims[1]
+
         # Label axes
         axes_ratio[i].set_xlabel(r"$L/$ [erg $/$ s $/$ Hz]")
 
-        axes[i].set_xlim(10 ** 27.2, 10 ** 31.9)
-        axes_ratio[i].set_xlim(10 ** 27.2, 10 ** 31.9)
+    for i, snap in enumerate(snaps):
+
+        axes[i].set_xlim(xlims[0], xlims[1])
+        axes_ratio[i].set_xlim(xlims[0], xlims[1])
 
     for i in range(len(axes)):
         axes[i].set_ylim(np.min(ylims), np.max(ylims))
