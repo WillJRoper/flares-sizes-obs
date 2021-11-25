@@ -339,26 +339,31 @@ for f in filters:
                 #     axes_log[i, j].set_ylabel(f.split(".")[-1], fontsize=6)
                 if i == 0:
                     if bins[j + 1] == np.inf:
-                        axes[i, j].set_title("%d $\leq "
-                                             "\log_{10}(M/M_\odot)$"
-                                             % (np.log10(bins[j])), fontsize=5)
-                        axes_log[i, j].set_title("%d $\leq "
-                                                 "\log_{10}(M/M_\odot)$"
-                                                 % (np.log10(bins[j])), fontsize=5)
+                        axes[i, j].set_title("$10^{%d} \leq "
+                                             "M/M_\odot$"
+                                             % (np.log10(bins[j])),
+                                             fontsize=5)
+                        axes_log[i, j].set_title("$10^{%d} \leq "
+                                                 "M/M_\odot$"
+                                                 % (np.log10(bins[j])),
+                                                 fontsize=5)
                     else:
-                        axes[i, j].set_title("%d $\leq "
-                                             "\log_{10}(M/M_\odot) <$ %d"
+                        axes[i, j].set_title("$10^{%d} \leq M/M_\odot "
+                                             "< 10^{%d}$"
                                              % (np.log10(bins[j]),
-                                                np.log10(bins[j + 1])), fontsize=5)
-                        axes_log[i, j].set_title("%d $\leq "
-                                             "\log_{10}(M/M_\odot) <$ %d"
-                                             % (np.log10(bins[j]),
-                                                np.log10(bins[j + 1])), fontsize=5)
+                                                np.log10(bins[j + 1])),
+                                             fontsize=5)
+                        axes_log[i, j].set_title("$10^{%d} \leq M/M_\odot "
+                                                 "< 10^{%d}$"
+                                                 % (np.log10(bins[j]),
+                                                    np.log10(bins[j + 1])),
+                                                 fontsize=5)
 
                 size = stacks[f][b].shape[0]
-                axes[i, j].imshow(stacks[f][b][int(0.4 * size):-int(0.4 * size),
-                                  int(0.4 * size):-int(0.4 * size)],
-                                  cmap=cmr.neutral_r)
+                axes[i, j].imshow(
+                    stacks[f][b][int(0.4 * size):-int(0.4 * size),
+                    int(0.4 * size):-int(0.4 * size)],
+                    cmap=cmr.neutral_r)
 
                 axes_log[i, j].imshow(
                     stacks[f][b][int(0.3 * size):-int(0.3 * size),
