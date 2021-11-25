@@ -219,7 +219,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     ylims = []
     ylims_twin = []
     ylims_ratio = []
-    xlims = (np.inf, 0)
+    xlims = [np.inf, 0]
     i = 0
     while i < len(snaps):
         axes.append(fig.add_subplot(gs[0, i]))
