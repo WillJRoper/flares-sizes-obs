@@ -249,7 +249,7 @@ for f in filters:
 
         hdf.close()
 
-        dpi = img_shape
+        dpi = img_shape * 2
         fig = plt.figure(figsize=(4, len(row_filters)), dpi=dpi)
         fig_log = plt.figure(figsize=(4, len(row_filters)), dpi=dpi)
         gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters))
