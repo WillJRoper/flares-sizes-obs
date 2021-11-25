@@ -255,7 +255,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             compact_com = data[snap][f]["Compact_Population_Complete"]
             diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
 
-            complete = np.logical_and(compact_com, diffuse_com)
+            complete = np.logical_or(compact_com, diffuse_com)
 
             if mtype == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])[complete]
@@ -285,7 +285,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 fit_lumins = np.logspace(np.log10(low_lum),
                                          np.log10(np.max(lumins)),
                                          1000)
-                
+
                 popt, pcov = curve_fit(st_line_fit, lumins,
                                        np.log10(hlrs),
                                        p0=(1, 1),
