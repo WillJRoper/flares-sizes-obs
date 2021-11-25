@@ -164,26 +164,26 @@ for snap in snaps:
 
     print(sedint.shape)
 
-    if sedtot.shape[0] > 1:
-        for i in range(sedtot.shape[0]):
-            ax.plot(sedlam[i, :], sedtot[i, :],
-                    color="r", alpha=0.01)
-            ax.plot(sedlam[i, :], sedint[i, :],
-                    color="g", alpha=0.01, linestyle="--")
-    else:
-
-        ax.plot(sedlam, sedtot,
-                color="r", alpha=0.01)
-        ax.plot(sedlam, sedint,
-                color="g", alpha=0.01)
+    # if sedtot.shape[0] > 1:
+    #     for i in range(sedtot.shape[0]):
+    #         ax.plot(sedlam[i, :], sedtot[i, :],
+    #                 color="r", alpha=0.01)
+    #         ax.plot(sedlam[i, :], sedint[i, :],
+    #                 color="g", alpha=0.01, linestyle="--")
+    # else:
+    #
+    #     ax.plot(sedlam, sedtot,
+    #             color="r", alpha=0.01)
+    #     ax.plot(sedlam, sedint,
+    #             color="g", alpha=0.01)
 
     ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
             color="r")
     ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
-            color="g", linestyle="--")
+            color="g")
 
-    ax.set_xlim(10 ** 5, None)
-    ax.set_ylim(10 ** 3, None)
+    ax.set_xlim(10 ** 6, None)
+    ax.set_ylim(10 ** 14, 10**33.)
 
     # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
     # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
