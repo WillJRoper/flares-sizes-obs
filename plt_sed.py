@@ -13,11 +13,8 @@ warnings.filterwarnings('ignore')
 import seaborn as sns
 import matplotlib.colors as cm
 import matplotlib as mpl
-import matplotlib.gridspec as gridspec
 import flare.photom as photconv
 import h5py
-import sys
-import cmasher as cmr
 
 sns.set_context("paper")
 sns.set_style('whitegrid')
@@ -47,7 +44,7 @@ extinction = 'default'
 
 # Define filter
 # filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
-filters = ['FAKE.TH.'+ f
+filters = ['FAKE.TH.' + f
            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 
@@ -137,9 +134,11 @@ for snap in snaps:
                 "r")
 
             try:
-                sedint_dict[f].setdefault(hdf[f]["SED_intrinsic"][...])
-                sedtot_dict[f].setdefault(hdf[f]["SED_total"][...])
-                sedlam_dict[f].setdefault(hdf[f]["SED_lambda"][...] * 1E4)
+                sedint_dict.setdefault(f, []).append(
+                    hdf[f]["SED_intrinsic"][...])
+                sedtot_dict.setdefault(f, []).append(hdf[f]["SED_total"][...])
+                sedlam_dict.setdefault(f, []).append(
+                    hdf[f]["SED_lambda"][...] * 1E4)
             except KeyError as e:
                 print(e)
                 continue
@@ -178,7 +177,7 @@ for snap in snaps:
             color=int_cmap(znorm(z)))
 
     # ax.set_xlim(100, None)
-    ax.set_ylim(10**3, None)
+    ax.set_ylim(10 ** 3, None)
 
     # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
     # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
@@ -220,6 +219,6 @@ for snap in snaps:
 
     string = 'plots/SED/SED' + "_" + str(z) + '_' + reg \
              + '_' + snap + '_' + orientation + "_" + extinction
-    fig.savefig( string.replace(".", "p") + ".png",
-                 bbox_inches='tight', dpi=100)
+    fig.savefig(string.replace(".", "p") + ".png",
+                bbox_inches='tight', dpi=100)
     plt.close(fig)
