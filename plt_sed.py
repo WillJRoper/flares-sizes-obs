@@ -51,7 +51,7 @@ filters = ['FAKE.TH.'+ f
            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 
-cmap = mpl.cm.get_cmap('jet', len(filters))
+cmap = mpl.cm.get_cmap('viridis', len(filters))
 
 trans = {}
 plt_lams = []
@@ -62,6 +62,7 @@ i = 1
 for f in filters:
     l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt',
                       skiprows=1).T
+    l *= 1E4  # microns to Angstrom
     wid = np.max(l[t > 0]) - np.min(l[t > 0])
     trans[f] = []
     trans[f].append(np.min(l[t > 0]))
@@ -238,7 +239,7 @@ for reg in regions:
         # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
         # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
-        ax.set_xlabel("$\lambda / [\mathrm{microns}]$")
+        ax.set_xlabel("$\lambda / [\AA]$")
         ax.set_ylabel("$L_{" + f.split(".")[-1]
                       + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
 
