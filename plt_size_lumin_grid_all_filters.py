@@ -255,7 +255,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             compact_com = data[snap][f]["Compact_Population_Complete"]
             diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
 
-            complete = np.logical_or(compact_com, diffuse_com)
+            complete = np.logical_and(compact_com, diffuse_com)
 
             if mtype == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])[complete]
@@ -277,8 +277,13 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                     complete]
                 intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])[
                     complete]
+            low_lum = data[snap][f]["Complete_Luminosity"]
             w = np.array(data[snap][f]["Weight"])[complete]
             mass = np.array(data[snap][f]["Mass"])[complete]
+
+            fit_lumins = np.logspace(np.log10(low_lum),
+                                     np.log10(np.max(lumins)),
+                                     1000)
 
             try:
                 popt, pcov = curve_fit(st_line_fit, lumins,
@@ -286,9 +291,6 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                        p0=(1, 1),
                                        sigma=w, absolute_sigma=True)
 
-                fit_lumins = np.logspace(np.log10(np.min(lumins)),
-                                         np.log10(np.max(lumins)),
-                                         1000)
                 print(f, np.log10(np.min(lumins)), np.log10(np.max(lumins)))
 
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])

@@ -128,20 +128,20 @@ for snap in all_snaps:
         intr_data[snap][f]["okinds"] = okinds
 
         data[snap][f]["Complete_Luminosity"] = np.max(
-            data[snap][f]["Luminosity"][~okinds])
+            data[snap][f]["Image_Luminosity"][~okinds])
         data[snap][f]["Complete_Mass"] = np.max(
             data[snap][f]["Mass"][~okinds])
         intr_data[snap][f]["Complete_Luminosity"] = np.max(
-            intr_data[snap][f]["Luminosity"][~okinds])
+            intr_data[snap][f]["Image_Luminosity"][~okinds])
         intr_data[snap][f]["Complete_Mass"] = np.max(
             intr_data[snap][f]["Mass"][~okinds])
 
         okinds = np.logical_and(
-            data[snap][f]["Luminosity"] >= data[snap][f][
+            data[snap][f]["Image_Luminosity"] >= data[snap][f][
                 "Complete_Luminosity"], data[snap][f]["Mass"] >= data[snap][f][
                 "Complete_Mass"])
         intr_okinds = np.logical_and(
-            intr_data[snap][f]["Luminosity"] >= intr_data[snap][f][
+            intr_data[snap][f]["Image_Luminosity"] >= intr_data[snap][f][
                 "Complete_Luminosity"],
             intr_data[snap][f]["Mass"] >= intr_data[snap][f]["Complete_Mass"])
 
@@ -160,18 +160,18 @@ for snap in all_snaps:
         data[snap][f]["Diffuse_Population_Complete"] = np.logical_and(
             diffuse_pop, okinds)
         intr_data[snap][f]["Compact_Population_Complete"] = np.logical_and(
-            compact_pop, okinds)
+            compact_pop, intr_okinds)
         intr_data[snap][f]["Diffuse_Population_Complete"] = np.logical_and(
-            diffuse_pop, okinds)
+            diffuse_pop, intr_okinds)
 
         data[snap][f]["Compact_Population_NotComplete"] = np.logical_and(
             compact_pop, ~okinds)
         data[snap][f]["Diffuse_Population_NotComplete"] = np.logical_and(
             diffuse_pop, ~okinds)
         intr_data[snap][f]["Compact_Population_NotComplete"] = np.logical_and(
-            compact_pop, ~okinds)
+            compact_pop, ~intr_okinds)
         intr_data[snap][f]["Diffuse_Population_NotComplete"] = np.logical_and(
-            diffuse_pop, ~okinds)
+            diffuse_pop, ~intr_okinds)
 
 # Define the norm
 weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
