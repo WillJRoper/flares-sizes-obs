@@ -281,11 +281,11 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             w = np.array(data[snap][f]["Weight"])[complete]
             mass = np.array(data[snap][f]["Mass"])[complete]
 
-            fit_lumins = np.logspace(np.log10(low_lum),
-                                     np.log10(np.max(lumins)),
-                                     1000)
-
             try:
+                fit_lumins = np.logspace(np.log10(low_lum),
+                                         np.log10(np.max(lumins)),
+                                         1000)
+                
                 popt, pcov = curve_fit(st_line_fit, lumins,
                                        np.log10(hlrs),
                                        p0=(1, 1),
