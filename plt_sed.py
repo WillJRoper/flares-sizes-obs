@@ -110,8 +110,8 @@ lim = 5
 
 np.random.seed(100)
 
-int_cmap = mpl.cm.get_cmap('Greens', len(filters))
-tot_cmap = mpl.cm.get_cmap('Reds', len(filters))
+int_cmap = mpl.cm.get_cmap('plasma', len(filters))
+tot_cmap = mpl.cm.get_cmap('plasma', len(filters))
 znorm = cm.Normalize(vmin=5, vmax=10)
 
 fig = plt.figure()
@@ -170,18 +170,18 @@ for snap in snaps:
             ax.plot(sedlam[i, :], sedtot[i, :],
                     color=tot_cmap(znorm(z)), alpha=0.05)
             ax.plot(sedlam[i, :], sedint[i, :],
-                    color=int_cmap(znorm(z)), alpha=0.05)
-
-        ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
-                color=tot_cmap(znorm(z)))
-        ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
-                color=int_cmap(znorm(z)))
+                    color=int_cmap(znorm(z)), alpha=0.05, linestyle="--")
     else:
 
         ax.plot(sedlam, sedtot,
-                color=tot_cmap(znorm(z)))
+                color=tot_cmap(znorm(z)), alpha=0.05)
         ax.plot(sedlam, sedint,
-                color=int_cmap(znorm(z)))
+                color=int_cmap(znorm(z)), linestyle="--", alpha=0.05)
+
+    ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
+            color=tot_cmap(znorm(z)))
+    ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
+            color=int_cmap(znorm(z)), linestyle="--")
 
     ax.set_xlim(10 ** 5, None)
     ax.set_ylim(10 ** 3, None)
