@@ -189,7 +189,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             lam_max = np.max(l[t > 0])
         i += 1
 
-    cmap = mpl.cm.get_cmap('jet', len(filters))
+    cmap = mpl.cm.get_cmap('viridis', len(filters))
 
     cmaps = {filters[0]: "Blues", filters[-1]: "Reds"}
 
