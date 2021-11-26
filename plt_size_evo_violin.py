@@ -437,7 +437,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         if ls == "-":
             okinds = fitting_lums >= 0.3 * L_star
         elif ls == "--":
-            okinds = np.logical(fitting_lums >= 0.3 * L_star,
+            okinds = np.logical_and(fitting_lums >= 0.3 * L_star,
                                 fitting_lums <= L_star)
         else:
             okinds = fitting_lums < 0.3 * L_star
