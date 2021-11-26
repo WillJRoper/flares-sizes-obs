@@ -286,8 +286,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                          np.log10(np.max(lumins)),
                                          1000)
 
-                popt, pcov = curve_fit(st_line_fit, lumins,
-                                       np.log10(hlrs),
+                popt, pcov = curve_fit(kawa_fit, lumins,
+                                       hlrs,
                                        p0=(1, 1),
                                        sigma=w, absolute_sigma=True)
 

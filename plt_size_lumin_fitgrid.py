@@ -27,14 +27,8 @@ sns.set_style('whitegrid')
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
-kawa_up_params = {'beta': {6: 0.08, 7: 0.08,
-                           8: 0.28, 9: 1.01},
-                  'r_0': {6: 0.2, 7: 0.2,
-                          8: 5.28, 9: 367.64}}
-kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
-                            8: 0.78, 9: 0.27},
-                   'r_0': {6: 0.15, 7: 0.15,
-                           8: 0.26, 9: 0.74}}
+bt_params = {'beta': {7: 0.13, 8: 0.12, 9: 0.10, 10: 0.11, 11: 0.09},
+               'r_0': {7: 0.67, 8: 0.63, 9: 0.58, 10: 0.56, 11: 0.51},}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 
 
@@ -307,6 +301,20 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                              zorder=2,
                              label="Kawamata+18", linewidth=4)
 
+            if int(z) in [7, 8, 9, 10, 11]:
+
+                fit_lumins = np.logspace(np.log10(np.min(lumins[complete])),
+                                         np.log10(np.max(lumins[complete])),
+                                         1000)
+
+                fit = kawa_fit(fit_lumins, bt_params['r_0'][int(z)],
+                               bt_params['beta'][int(z)])
+                axes[i].plot(fit_lumins, fit,
+                             linestyle='dashed', color="m",
+                             zorder=2,
+                             label="BlueTides+21", linewidth=4)
+
+
             axes[i].text(0.95, 0.05, f'$z={z}$',
                          bbox=dict(boxstyle="round,pad=0.3", fc='w',
                                    ec="k", lw=1, alpha=0.8),
@@ -347,6 +355,9 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
         uni_legend_elements.append(
             Line2D([0], [0], color="g", linestyle="--",
                    label=labels["K18"]))
+        uni_legend_elements.append(
+            Line2D([0], [0], color="m", linestyle="--",
+                   label="BlueTides+21"))
         included = []
         for l in legend_elements:
             if (l.get_label(), l.get_marker()) not in included:

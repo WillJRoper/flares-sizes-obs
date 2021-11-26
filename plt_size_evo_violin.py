@@ -73,19 +73,21 @@ def custom_violin_stats(data, weights):
 def fit(z, C, m):
     return C * (1 + z) ** -m
 
+def norm_fit(z, m):
+    return (1 + z) ** -m
+
+oesch_up_m = 1.12
+hol_up_m = 1.3
+oesch_low_m = 1.32
+hol_low_m = 0.8
+bt_up_m = 0.559
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
-kawa_up_params = {'beta': {6: 0.08, 7: 0.08,
-                           8: 0.28, 9: 1.01},
-                  'r_0': {6: 0.2, 7: 0.2,
-                          8: 5.28, 9: 367.64}}
-kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
-                            8: 0.78, 9: 0.27},
-                   'r_0': {6: 0.15, 7: 0.15,
-                           8: 0.26, 9: 0.74}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
+
+L_star = 10**29.03
 
 
 def m_to_M(m, cosmo, z):
@@ -219,6 +221,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ws = []
     plt_z = []
     ms = []
+    lums = []
 
     for snap in snaps:
 
@@ -258,9 +261,11 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         intr_hlr.append(intr_hlrs[complete])
         ws.append(w[complete])
         ms.append(m[complete])
+        lums.append(lumins[complete])
 
         plt_z.append(z)
 
+    fitting_lums = []
     fitting_hlrs = []
     fitting_intr_hlrs = []
     fitting_hdrs = []
@@ -275,6 +280,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         fitting_hdrs.extend(hdr[i])
         fitting_ws.extend(ws[i])
         fitting_ms.extend(ms[i])
+        fitting_lums.extend(lums[i])
 
     fitting_hlrs = np.array(fitting_hlrs)
     fitting_intr_hlrs = np.array(fitting_intr_hlrs)
@@ -282,6 +288,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     fitting_zs = np.array(fitting_zs)
     fitting_ws = np.array(fitting_ws)
     fitting_ms = np.array(fitting_ms)
+    fitting_lums = np.array(fitting_lums)
 
     soft = []
     for z in plt_z:
@@ -318,39 +325,6 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
             vp.set_edgecolor("r")
             vp.set_linewidth(1)
             vp.set_alpha(0.5)
-
-    # try:
-    # ax.fill_between(plt_z, intr_hlr_16, intr_hlr_84, color="r", alpha=0.4)
-    # ax.plot(plt_z, intr_hlr_med, color="r", marker="D", linestyle="--")
-    # legend_elements.append(
-    #     Line2D([0], [0], color="r", linestyle="--", label="Intrinsic"))
-    #
-    # ax.fill_between(plt_z, hlr_16, hlr_84, color="g", alpha=0.4)
-    # ax.plot(plt_z, hlr_med, color="g", marker="^", linestyle="-")
-    # legend_elements.append(
-    #     Line2D([0], [0], color="g", linestyle="-",
-    #            label="Attenuated"))
-    # except ValueError as e:
-    #     print(e)
-    #     continue
-
-    # for p in labels.keys():
-    #
-    #     okinds = papers == p
-    #     plt_r_es = r_es[okinds]
-    #     plt_zs = zs[okinds]
-    #
-    #     if plt_zs.size == 0:
-    #         continue
-    #
-    #     legend_elements.append(
-    #         Line2D([0], [0], marker=markers[p], color='w',
-    #                label=labels[p], markerfacecolor=colors[p],
-    #                markersize=8, alpha=0.7))
-    #
-    #     ax.scatter(plt_zs, plt_r_es,
-    #                marker=markers[p], label=labels[p], s=17,
-    #                color=colors[p], alpha=0.7)
 
     popt, pcov = curve_fit(fit, fitting_zs, fitting_hlrs,
                            p0=(1, 0.5), sigma=fitting_ws)
@@ -444,6 +418,126 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     fig.savefig(
         'plots/Violin_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
+        + orientation + "_" + extinction + ".png",
+        bbox_inches='tight')
+
+    plt.close(fig)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.semilogy()
+    # ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
+
+    fit_plt_zs = np.linspace(12, 4.5, 1000)
+
+    for ls in ["-", "--", "dotted"]:
+
+        print("Linestyle:", ls)
+
+        if ls == "-":
+            okinds = fitting_lums >= 0.3 * L_star
+        elif ls == "--":
+            okinds = np.logical(fitting_lums >= 0.3 * L_star,
+                                fitting_lums <= L_star)
+        else:
+            okinds = fitting_lums < 0.3 * L_star
+
+        popt, pcov = curve_fit(fit, fitting_zs[okinds], fitting_hlrs[okinds],
+                               p0=(1, 0.5), sigma=fitting_ws[okinds])
+
+        # int_popt, int_pcov = curve_fit(fit, fitting_zs[okinds],
+        #                                fitting_intr_hlrs[okinds],
+        #                        p0=(1, 0.5), sigma=fitting_ws[okinds])
+        #
+        # popt2, pcov2 = curve_fit(fit, fitting_zs[okinds], fitting_hdrs[okinds],
+        #                        p0=(1, 0.5), sigma=fitting_ws[okinds])
+
+        print("--------------", "Total", "Complete", mtype, f, "--------------")
+        print("C=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
+        print("m=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
+        print(pcov)
+        print("--------------", "Intrinsc", "Complete", mtype, f, "--------------")
+        print("C=", int_popt[0], "+/-", np.sqrt(int_pcov[0, 0]))
+        print("m=", int_popt[1], "+/-", np.sqrt(int_pcov[1, 1]))
+        print(int_pcov)
+        print("--------------", "Dust", mtype, f, "--------------")
+        print("C=", popt2[0], "+/-", np.sqrt(pcov2[0, 0]))
+        print("m=", popt2[1], "+/-", np.sqrt(pcov2[1, 1]))
+        print(pcov2)
+        print("----------------------------------------------------------")
+
+        ax.plot(fit_plt_zs, norm_fit(fit_plt_zs, popt[1]),
+                linestyle=ls, color="r")
+
+        # ax.plot(fit_plt_zs, norm_fit(fit_plt_zs, int_popt[1]),
+        #         linestyle=ls, color="b")
+        #
+        # ax.plot(fit_plt_zs, norm_fit(fit_plt_zs, popt2[1]),
+        #         linestyle=ls, color="m")
+
+    ax.plot(fit_plt_zs, norm_fit(fit_plt_zs, oesch_low_m),
+            linestyle="dotted", color="g")
+    ax.plot(fit_plt_zs, norm_fit(fit_plt_zs, oesch_up_m),
+            linestyle="-", color="g")
+
+    ax.plot(fit_plt_zs, norm_fit(fit_plt_zs, hol_low_m),
+            linestyle="dotted", color="m")
+    ax.plot(fit_plt_zs, norm_fit(fit_plt_zs, hol_up_m),
+            linestyle="-", color="m")
+
+    ax.plot(fit_plt_zs, norm_fit(fit_plt_zs, bt_up_m),
+            linestyle="--", color="m")
+
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="$L^{*}_{z=3} \leq L$",
+                                  linestyle="-"))
+
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="$0.3L^{*}_{z=3}\leq L \leq L^{*}_{z=3}$",
+                                  linestyle="--"))
+
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="$L < L^{*}_{z=3} \leq L$",
+                                  linestyle="dotted"))
+
+    legend_elements.append(Line2D([0], [0], color='r',
+                                  label="FLARES",
+                                  linestyle="-"))
+
+    legend_elements.append(Line2D([0], [0], color='b',
+                                  label="BlueTides+21",
+                                  linestyle="-"))
+
+    legend_elements.append(Line2D([0], [0], color='g',
+                                  label="Oesch+10",
+                                  linestyle="-"))
+
+    legend_elements.append(Line2D([0], [0], color='m',
+                                  label="Holwerda+15",
+                                  linestyle="-"))
+
+    # ax.plot(fit_plt_zs, fit(fit_plt_zs, int_popt1[0], int_popt1[1]),
+    #         linestyle="dotted", color="b")
+    #
+    # legend_elements.append(Line2D([0], [0], color='b',
+    #                               label="$M_\star/M_\odot > 10^9$ "
+    #                                     "(Intrinsic)",
+    #                               linestyle="dotted"))
+
+    # Label axes
+    ax.set_xlabel(r'$z$')
+    ax.set_ylabel('$R_{1/2}/ R_0$')
+
+    ax.tick_params(axis='x', which='minor', bottom=True)
+
+    ax.set_xlim(4.5, 11.5)
+    ax.set_ylim(10 ** -1.5, 10 ** 1.5)
+
+    ax.legend(handles=legend_elements, loc='upper center',
+              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
+
+    fig.savefig(
+        'plots/Violin_NormedHalfLightRadius_evolution_' + mtype + '_' + f + '_'
         + orientation + "_" + extinction + ".png",
         bbox_inches='tight')
 
