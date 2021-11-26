@@ -488,10 +488,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
             linestyle="-", color="m")
 
     ax.plot(fit_plt_zs, norm_fit(fit_plt_zs, bt_up_m),
-            linestyle="--", color="m")
+            linestyle="--", color="b")
 
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="$L^{*}_{z=3} \leq L$",
+                                  label="$0.3 L^{*}_{z=3} \leq L$",
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='k',
@@ -499,7 +499,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
                                   linestyle="--"))
 
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="$L < L^{*}_{z=3} \leq L$",
+                                  label="$L < 0.3 L^{*}_{z=3}",
                                   linestyle="dotted"))
 
     legend_elements.append(Line2D([0], [0], color='r',

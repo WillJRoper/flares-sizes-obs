@@ -293,14 +293,14 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
                 print(f, np.log10(np.min(lumins)), np.log10(np.max(lumins)))
 
-                fit = st_line_fit(fit_lumins, popt[0], popt[1])
+                fit = kawa_fit(fit_lumins, popt[0], popt[1])
                 print("Total", popt)
                 axes[i].plot(fit_lumins, fit,
                              linestyle='-', color=cmap(norm(trans[f][1])),
                              alpha=0.9, zorder=2,
                              label=f.split(".")[-1])
                 axes_twin[i].plot(fit_lumins,
-                                  10 ** fit * cosmo.arcsec_per_kpc_proper(z),
+                                  fit * cosmo.arcsec_per_kpc_proper(z),
                                   linestyle='-', color="m",
                                   zorder=3,
                                   linewidth=2, alpha=0)
