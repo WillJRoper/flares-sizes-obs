@@ -506,8 +506,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     # bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
 
     bar_ax.set_ylabel("$m$")
-    bar_ax.set_xticks([1, 4, 7, 10],
-                      ["FLARES", "Marshall+", "Oesch+", "Holwerda+"])
+    bar_ax.set_xticks([1, 4, 7, 10])
+    bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+", "Holwerda+"])
 
     legend_elements.append(Line2D([0], [0], color='r',
                                   label="$0.3 L^{*}_{z=3} \leq L$",
