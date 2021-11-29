@@ -448,21 +448,22 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
                                p0=(1, 0.5), sigma=fitting_ws[okinds])
 
         if ls == "-":
-            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0] + 0.5, oesch_up_m),
+            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], oesch_up_m),
                     linestyle="-", color="g", zorder=0)
-            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0] + 0.6, hol_up_m),
+            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], hol_up_m),
                     linestyle="-", color="m", zorder=0)
         elif ls == "--":
-            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0] + 0.7, bt_up_m),
+            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], bt_up_m),
                     linestyle="--", color="b", zorder=0)
         else:
-            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0] + 0.8, oesch_low_m),
+            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], oesch_low_m),
                     linestyle="dotted", color="g", zorder=0)
 
-            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0] + 0.9, hol_low_m),
+            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], hol_low_m),
                     linestyle="dotted", color="m", zorder=0)
 
-        print("--------------", "Total", "Complete", ls, mtype, f, "--------------")
+        print("--------------", "Total", "Complete", ls,
+              mtype, f, "--------------")
         print("C=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
         print("m=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
         print(pcov)
