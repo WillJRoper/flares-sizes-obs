@@ -485,22 +485,22 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax = ax.inset_axes([0.5, 0.7, 0.5, 0.3])
     bar_ax.bar([0, 1, 2], slopes)
     bar_ax.errorbar([0, 1, 2], slopes, yerr=slope_errors, color="grey",
-                    fmt=None, capsize=5)
+                    fmt="", capsize=5)
 
     bar_ax.bar([6, 7], [oesch_low_m[0], oesch_up_m[0]], color="grey",)
     bar_ax.errorbar([3, 4], [oesch_low_m[0], oesch_up_m[0]],
                     yerr=[oesch_low_m[1], oesch_up_m[1]], color="grey",
-                    fmt=None, capsize=5)
+                    fmt="", capsize=5)
 
     bar_ax.bar([4], [bt_up_m[0]], color="grey",)
     bar_ax.errorbar([7], [bt_up_m[0]],
                     yerr=[bt_up_m[1]], color="grey",
-                    fmt=None, capsize=5)
+                    fmt="", capsize=5)
 
     bar_ax.bar([9, 11], [hol_low_m[0], hol_up_m[0]], color="grey",)
     bar_ax.errorbar([9, 11], [hol_low_m[0], hol_up_m[0]],
                     yerr=[hol_low_m[1], hol_up_m[1]], color="grey",
-                    fmt=None, capsize=5)
+                    fmt="", capsize=5)
 
     bar_ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
     bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
