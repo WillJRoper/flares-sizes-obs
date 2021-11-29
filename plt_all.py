@@ -137,11 +137,11 @@ for snap in all_snaps:
             intr_data[snap][f]["Mass"][~okinds])
 
         print("Intrinsic: complete luminosity/mass for", snap, f,
-              str(intr_data[snap][f]["Complete_Luminosity"]) + "/" + str(
-                  intr_data[snap][f]["Complete_Mass"]))
+              "%.2f/%.2f" % (np.log10(intr_data[snap][f]["Complete_Luminosity"]),
+                             np.log10(intr_data[snap][f]["Complete_Mass"])))
         print("Total: complete luminosity/mass for", snap, f,
-              str(data[snap][f]["Complete_Luminosity"]) + "/" + str(
-                  data[snap][f]["Complete_Mass"]))
+              "%.2f/%.2f" % (np.log10(data[snap][f]["Complete_Luminosity"]),
+                             np.log10(data[snap][f]["Complete_Mass"])))
 
         okinds = np.logical_and(
             data[snap][f]["Image_Luminosity"] >= data[snap][f][
