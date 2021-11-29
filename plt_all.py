@@ -122,7 +122,7 @@ for snap in all_snaps:
         for key in intr_data[snap][f].keys():
             intr_data[snap][f][key] = np.array(intr_data[snap][f][key])[okinds]
 
-        okinds = intr_data[snap][f]["nStar"] > 100
+        okinds = intr_data[snap][f]["nStar"] >= 100
 
         data[snap][f]["okinds"] = okinds
         intr_data[snap][f]["okinds"] = okinds
@@ -135,6 +135,13 @@ for snap in all_snaps:
             intr_data[snap][f]["Image_Luminosity"][~okinds])
         intr_data[snap][f]["Complete_Mass"] = np.max(
             intr_data[snap][f]["Mass"][~okinds])
+
+        print("Intrinsic: complete luminosity/mass for", snap, f,
+              str(intr_data[snap][f]["Complete_Luminosity"]) + "/" + str(
+                  intr_data[snap][f]["Complete_Mass"]))
+        print("Total: complete luminosity/mass for", snap, f,
+              str(data[snap][f]["Complete_Luminosity"]) + "/" + str(
+                  data[snap][f]["Complete_Mass"]))
 
         okinds = np.logical_and(
             data[snap][f]["Image_Luminosity"] >= data[snap][f][
@@ -192,7 +199,7 @@ for f in filters:
     for snap in snaps:
         print(snap)
         mass_lumin(intr_data[snap][f]["Mass"],
-                   intr_data[snap][f]["Luminosity"],
+                   intr_data[snap][f]["Image_Luminosity"],
                    intr_data[snap][f]["Compact_Population_Complete"],
                    intr_data[snap][f]["Diffuse_Population_Complete"],
                    intr_data[snap][f]["Compact_Population_NotComplete"],
@@ -203,7 +210,7 @@ for f in filters:
                    intr_data[snap][f]["Complete_Luminosity"],
                    intr_data[snap][f]["Complete_Mass"], weight_norm)
         mass_lumin(data[snap][f]["Mass"],
-                   data[snap][f]["Luminosity"],
+                   data[snap][f]["Image_Luminosity"],
                    data[snap][f]["Compact_Population_Complete"],
                    data[snap][f]["Diffuse_Population_Complete"],
                    data[snap][f]["Compact_Population_NotComplete"],
