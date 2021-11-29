@@ -492,13 +492,13 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     bar_ax.bar([1, 4, 7], [slopes[1], bt_up_m[0], oesch_up_m[0]], width=1,
                color="g")
-    bar_ax.errorbar([0, 6, 9], [slopes[1], bt_up_m[0], oesch_up_m[0]],
+    bar_ax.errorbar([1, 4, 7], [slopes[1], bt_up_m[0], oesch_up_m[0]],
                     yerr=[slope_errors[1], bt_up_m[1], oesch_up_m[1]],
                     color="g", fmt="", capsize=5)
 
     bar_ax.bar([2, 11], [slopes[2], hol_up_m[0]], width=1,
                color="r")
-    bar_ax.errorbar([0, 6, 9], [slopes[2], hol_up_m[0]],
+    bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
                     yerr=[slope_errors[2], hol_up_m[1]],
                     color="r", fmt="", capsize=5)
 
