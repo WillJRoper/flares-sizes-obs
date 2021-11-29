@@ -448,7 +448,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
             okinds = fitting_lums < 0.3 * L_star
 
         popt, pcov = curve_fit(fit, fitting_zs[okinds], fitting_hlrs[okinds],
-                               p0=(1, 0.5), sigma=fitting_ws[okinds])
+                               p0=(1, 0.5), sigma=fitting_ws[okinds],
+                               absolute_sigma=True)
 
         # if ls == "-":
         #     ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], oesch_up_m),
@@ -476,31 +477,31 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
                 linestyle=ls, color=col)
         hlr_16 = []
         hlr_84 = []
-        for i in range(len(ws)):
-            vpstats1 = custom_violin_stats(hlr[i], ws[i])
-            hlr_16.append(vpstats1[0]["pcent_16"])
-            hlr_84.append(vpstats1[0]["pcent_84"])
+        for i in range(len(plt_z)):
+            zokinds = fitting_zs[okinds] == plt_z[i]
+            hlr_16.append(np.percentile(fitting_hlrs[okinds][zokinds], 16))
+            hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
         ax.fill_between(plt_z, hlr_16, hlr_84, color=col, alpha=0.4)
 
     bar_ax = ax.inset_axes([0.5, 0.7, 0.5, 0.3])
 
     bar_ax.bar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]], width=1,
-               color="b")
+               color="b", alpha=0.6)
     bar_ax.errorbar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]],
                     yerr=[slope_errors[0], oesch_low_m[1], hol_low_m[1]],
-                    color="b", fmt="", capsize=5)
+                    color="b", fmt=".", markersize=0, capsize=5)
 
     bar_ax.bar([1, 4, 7], [slopes[1], bt_up_m[0], oesch_up_m[0]], width=1,
-               color="g")
+               color="g", alpha=0.6)
     bar_ax.errorbar([1, 4, 7], [slopes[1], bt_up_m[0], oesch_up_m[0]],
                     yerr=[slope_errors[1], bt_up_m[1], oesch_up_m[1]],
-                    color="g", fmt="", capsize=5)
+                    color="g", fmt=".", markersize=0, capsize=5)
 
     bar_ax.bar([2, 11], [slopes[2], hol_up_m[0]], width=1,
-               color="r")
+               color="r", alpha=0.6)
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
                     yerr=[slope_errors[2], hol_up_m[1]],
-                    color="r", fmt="", capsize=5)
+                    color="r", fmt=".", markersize=0, capsize=5)
 
     # bar_ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
     # bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
@@ -508,6 +509,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax.set_ylabel("$m$")
     bar_ax.set_xticks([1, 4, 7, 10])
     bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+", "Holwerda+"])
+
+    bar_ax.grid(False)
 
     legend_elements.append(Line2D([0], [0], color='r',
                                   label="$0.3 L^{*}_{z=3} \leq L$",
@@ -542,9 +545,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.set_xlabel(r'$z$')
     ax.set_ylabel('$R_{1/2}/ [\mathrm{pkpc}]$')
 
-    ax.tick_params(axis='x', which='minor', bottom=True)
+    ax.tick_params(axis='y', which='minor', left=True)
 
-    ax.set_xlim(4.5, 11.5)
+    ax.set_xlim(4.77, 11.5)
     # ax.set_ylim(10 ** -1.5, 10 ** 1.5)
 
     ax.legend(handles=legend_elements, loc='upper center',
