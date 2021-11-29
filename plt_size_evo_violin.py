@@ -475,21 +475,21 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
                 linestyle=ls, color=col)
-        hlr_16 = []
-        hlr_84 = []
-        for i in range(len(plt_z)):
-            print(plt_z)
-            zokinds = np.logical_and(fitting_zs[okinds] > plt_z[i] - 0.5,
-                                     fitting_zs[okinds] <= plt_z[i] + 0.5)
-            if fitting_hlrs[okinds][zokinds].size == 0:
-                hlr_16.append(np.nan)
-                hlr_84.append(np.nan)
-                continue
-            hlr_16.append(np.percentile(fitting_hlrs[okinds][zokinds], 16))
-            hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
-        ax.fill_between(plt_z, hlr_16, hlr_84, color=col, alpha=0.3)
+        # hlr_16 = []
+        # hlr_84 = []
+        # for i in range(len(plt_z)):
+        #     print(plt_z)
+        #     zokinds = np.logical_and(fitting_zs[okinds] > plt_z[i] - 0.5,
+        #                              fitting_zs[okinds] <= plt_z[i] + 0.5)
+        #     if fitting_hlrs[okinds][zokinds].size == 0:
+        #         hlr_16.append(np.nan)
+        #         hlr_84.append(np.nan)
+        #         continue
+        #     hlr_16.append(np.percentile(fitting_hlrs[okinds][zokinds], 16))
+        #     hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
+        # ax.fill_between(plt_z, hlr_16, hlr_84, color=col, alpha=0.3)
 
-    bar_ax = ax.inset_axes([0.5, 0.7, 0.5, 0.3])
+    bar_ax = ax.inset_axes([0.35, 0.65, 0.5, 0.3])
 
     bar_ax.bar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]], width=1,
                color="b", alpha=0.6)
@@ -554,7 +554,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.tick_params(axis='y', which='minor', left=True)
 
     ax.set_xlim(4.77, 11.5)
-    ax.set_ylim(10 ** -0.8, 10 ** 1.5)
+    ax.set_ylim(10 ** -0.8, 10 ** 1.)
 
     ax.legend(handles=legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
