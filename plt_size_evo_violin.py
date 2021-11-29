@@ -483,40 +483,31 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         ax.fill_between(plt_z, hlr_16, hlr_84, color=col, alpha=0.4)
 
     bar_ax = ax.inset_axes([0.5, 0.7, 0.5, 0.3])
-    bar_ax.bar([0, 1, 2], slopes)
-    bar_ax.errorbar([0, 1, 2], slopes, yerr=slope_errors, color="grey",
-                    fmt="", capsize=5)
 
-    bar_ax.bar([6, 7], [oesch_low_m[0], oesch_up_m[0]], color="grey",)
-    bar_ax.errorbar([3, 4], [oesch_low_m[0], oesch_up_m[0]],
-                    yerr=[oesch_low_m[1], oesch_up_m[1]], color="grey",
-                    fmt="", capsize=5)
+    bar_ax.bar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]], width=1,
+               color="b")
+    bar_ax.errorbar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]],
+                    yerr=[slope_errors[0], oesch_low_m[1], hol_low_m[1]],
+                    color="b", fmt="", capsize=5)
 
-    bar_ax.bar([4], [bt_up_m[0]], color="grey",)
-    bar_ax.errorbar([7], [bt_up_m[0]],
-                    yerr=[bt_up_m[1]], color="grey",
-                    fmt="", capsize=5)
+    bar_ax.bar([1, 4, 7], [slopes[1], bt_up_m[0], oesch_up_m[0]], width=1,
+               color="g")
+    bar_ax.errorbar([0, 6, 9], [slopes[1], bt_up_m[0], oesch_up_m[0]],
+                    yerr=[slope_errors[1], bt_up_m[1], oesch_up_m[1]],
+                    color="g", fmt="", capsize=5)
 
-    bar_ax.bar([9, 11], [hol_low_m[0], hol_up_m[0]], color="grey",)
-    bar_ax.errorbar([9, 11], [hol_low_m[0], hol_up_m[0]],
-                    yerr=[hol_low_m[1], hol_up_m[1]], color="grey",
-                    fmt="", capsize=5)
+    bar_ax.bar([2, 11], [slopes[2], hol_up_m[0]], width=1,
+               color="r")
+    bar_ax.errorbar([0, 6, 9], [slopes[2], hol_up_m[0]],
+                    yerr=[slope_errors[2], hol_up_m[1]],
+                    color="r", fmt="", capsize=5)
 
-    bar_ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
-    bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
+    # bar_ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+    # bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
 
     bar_ax.set_ylabel("$m$")
-
-    par = bar_ax.twiny()
-    offset = -30
-    new_fixed_axis = bar_ax.get_grid_helper().new_fixed_axis
-    par.axis["bottom"] = new_fixed_axis(loc="bottom",
-                                        axes=par,
-                                        offset=(0, offset))
-    par.get_xaxis().set_visible(False)
-    par.axis["top"].set_visible(False)
-    par.set_xticks([1, 4, 7, 10])
-    par.set_xticklabels(["FLARES", "Marshall+", "Oesch+", "Holwerda+"])
+    bar_ax.set_xticks([1, 4, 7, 10],
+                      ["FLARES", "Marshall+", "Oesch+", "Holwerda+"])
 
     legend_elements.append(Line2D([0], [0], color='r',
                                   label="$0.3 L^{*}_{z=3} \leq L$",
