@@ -482,7 +482,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
             hlr_84.append(vpstats1[0]["pcent_84"])
         ax.fill_between(plt_z, hlr_16, hlr_84, color=col, alpha=0.4)
 
-    bar_ax = ax.insert_axes([0.5, 0.7, 0.5, 0.3], color="grey",)
+    bar_ax = ax.inset_axes([0.5, 0.7, 0.5, 0.3], color="grey",)
     bar_ax.bar([0, 1, 2], slopes)
     bar_ax.errorbar([0, 1, 2], slopes, yerr=slope_errors, color="grey",
                     marker="none", linestyle="none", capsize=5)
