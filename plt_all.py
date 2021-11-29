@@ -122,7 +122,7 @@ for snap in all_snaps:
         for key in intr_data[snap][f].keys():
             intr_data[snap][f][key] = np.array(intr_data[snap][f][key])[okinds]
 
-        okinds = intr_data[snap][f]["nStar"] >= 100
+        okinds = intr_data[snap][f]["nStar"] > 100
 
         data[snap][f]["okinds"] = okinds
         intr_data[snap][f]["okinds"] = okinds
