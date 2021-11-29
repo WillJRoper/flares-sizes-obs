@@ -76,11 +76,11 @@ def fit(z, C, m):
 def norm_fit(z, m):
     return (1 + z) ** -m
 
-oesch_up_m = 1.12
-hol_up_m = 1.3
-oesch_low_m = 1.32
-hol_low_m = 0.8
-bt_up_m = 0.559
+oesch_up_m = (1.12, 0.17, 0.17)  # (0.3-1)L*
+hol_up_m = (1.3, 0.4, 0.4)  # L<0.3L*
+oesch_low_m = (1.32, 0.52, 0.52)  # L<0.3L*
+hol_low_m = (0.8, 0.1, 0.1)   # 0.3L*<L
+bt_up_m = (0.559, 0.008, 0.008)  # (0.3-1)L*
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
@@ -432,7 +432,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     fit_plt_zs = np.linspace(12, 4.5, 1000)
 
-    for ls in ["-", "--", "dotted"]:
+    slopes = []
+    slope_errors = []
+
+    for ls, col in zip(["-", "--", "dotted"], ["r", "g", "b"]):
 
         print("Linestyle:", ls)
 
@@ -447,21 +450,21 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         popt, pcov = curve_fit(fit, fitting_zs[okinds], fitting_hlrs[okinds],
                                p0=(1, 0.5), sigma=fitting_ws[okinds])
 
-        if ls == "-":
-            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], oesch_up_m),
-                    linestyle="-", color="g", zorder=0)
-            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], hol_up_m),
-                    linestyle="-", color="m", zorder=0)
-        elif ls == "--":
-            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], bt_up_m),
-                    linestyle="--", color="b", zorder=0)
-        else:
-            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], oesch_low_m),
-                    linestyle="dotted", color="g", zorder=0)
-
-            ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], hol_low_m),
-                    linestyle="dotted", color="m", zorder=0)
-
+        # if ls == "-":
+        #     ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], oesch_up_m),
+        #             linestyle="-", color="g", zorder=0)
+        #     ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], hol_up_m),
+        #             linestyle="-", color="m", zorder=0)
+        # elif ls == "--":
+        #     ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], bt_up_m),
+        #             linestyle="--", color="b", zorder=0)
+        #     ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], oesch_low_m),
+        #             linestyle="--", color="g", zorder=0)
+        # else:
+        #     ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], hol_low_m),
+        #             linestyle="dotted", color="m", zorder=0)
+        slopes.append(popt[1])
+        slope_errors.append(np.sqrt(pcov[1, 1]))
         print("--------------", "Total", "Complete", ls,
               mtype, f, "--------------")
         print("C=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
@@ -470,36 +473,77 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         print("----------------------------------------------------------")
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
-                linestyle=ls, color="r")
+                linestyle=ls, color=col)
+        hlr_16 = []
+        hlr_84 = []
+        for i in range(len(ws)):
+            vpstats1 = custom_violin_stats(hlr[i], ws[i])
+            hlr_16.append(vpstats1[0]["pcent_16"])
+            hlr_84.append(vpstats1[0]["pcent_84"])
+        ax.fill_between(plt_z, hlr_16, hlr_84, color=col, alpha=0.4)
 
-    legend_elements.append(Line2D([0], [0], color='k',
+    bar_ax = ax.insert_axis([0.5, 0.7, 0.5, 0.3], color="grey",)
+    bar_ax.bar([0, 1, 2], slopes)
+    bar_ax.errorbar([0, 1, 2], slopes, yerr=slope_errors, color="grey",
+                    marker="none", linestyle="none", capsize=5)
+
+    bar_ax.bar([6, 7], [oesch_low_m[0], oesch_up_m[0]], color="grey",)
+    bar_ax.errorbar([3, 4], [oesch_low_m[0], oesch_up_m[0]],
+                    yerr=[oesch_low_m[1], oesch_up_m[1]], color="grey",
+                    marker="none", linestyle="none", capsize=5)
+
+    bar_ax.bar([4], [bt_up_m[0]], color="grey",)
+    bar_ax.errorbar([7], [bt_up_m[0]],
+                    yerr=[bt_up_m[1]], color="grey",
+                    marker="none", linestyle="none", capsize=5)
+
+    bar_ax.bar([9, 11], [hol_low_m[0], hol_up_m[0]], color="grey",)
+    bar_ax.errorbar([9, 11], [hol_low_m[0], hol_up_m[0]],
+                    yerr=[hol_low_m[1], hol_up_m[1]], color="grey",
+                    marker="none", linestyle="none", capsize=5)
+
+    bar_ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+    bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
+
+    par = bar_ax.twiny()
+    offset = -30
+    new_fixed_axis = bar_ax.get_grid_helper().new_fixed_axis
+    par.axis["bottom"] = new_fixed_axis(loc="bottom",
+                                        axes=par,
+                                        offset=(0, offset))
+    par.get_xaxis().set_visible(False)
+    par.axis["top"].set_visible(False)
+    par.set_xticks([1, 4, 7, 10])
+    par.set_xticklabels(["FLARES", "Marshall+", "Oesch+", "Holwerda+"])
+
+    legend_elements.append(Line2D([0], [0], color='r',
                                   label="$0.3 L^{*}_{z=3} \leq L$",
                                   linestyle="-"))
 
-    legend_elements.append(Line2D([0], [0], color='k',
+    legend_elements.append(Line2D([0], [0], color='g',
                                   label="$0.3L^{*}_{z=3}\leq L "
                                         "\leq L^{*}_{z=3}$",
                                   linestyle="--"))
 
-    legend_elements.append(Line2D([0], [0], color='k',
+    legend_elements.append(Line2D([0], [0], color='b',
                                   label="$L < 0.3 L^{*}_{z=3}$",
                                   linestyle="dotted"))
 
-    legend_elements.append(Line2D([0], [0], color='r',
-                                  label="FLARES",
-                                  linestyle="-"))
-
-    legend_elements.append(Line2D([0], [0], color='b',
-                                  label="BlueTides+21",
-                                  linestyle="-"))
-
-    legend_elements.append(Line2D([0], [0], color='g',
-                                  label="Oesch+10",
-                                  linestyle="-"))
-
-    legend_elements.append(Line2D([0], [0], color='m',
-                                  label="Holwerda+15",
-                                  linestyle="-"))
+    # legend_elements.append(Line2D([0], [0], color='r',
+    #                               label="FLARES",
+    #                               linestyle="-"))
+    #
+    # legend_elements.append(Line2D([0], [0], color='b',
+    #                               label="BlueTides+21",
+    #                               linestyle="-"))
+    #
+    # legend_elements.append(Line2D([0], [0], color='g',
+    #                               label="Oesch+10",
+    #                               linestyle="-"))
+    #
+    # legend_elements.append(Line2D([0], [0], color='m',
+    #                               label="Holwerda+15",
+    #                               linestyle="-"))
 
     # Label axes
     ax.set_xlabel(r'$z$')
@@ -508,13 +552,13 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.tick_params(axis='x', which='minor', bottom=True)
 
     ax.set_xlim(4.5, 11.5)
-    ax.set_ylim(10 ** -1.5, 10 ** 1.5)
+    # ax.set_ylim(10 ** -1.5, 10 ** 1.5)
 
     ax.legend(handles=legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
     fig.savefig(
-        'plots/Violin_AllHalfLightRadius_evolution_' + mtype + '_' + f + '_'
+        'plots/Violin_ObsCompHalfLightRadius_evolution_' + mtype + '_' + f + '_'
         + orientation + "_" + extinction + ".png",
         bbox_inches='tight')
 
