@@ -489,7 +489,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         #     hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
         # ax.fill_between(plt_z, hlr_16, hlr_84, color=col, alpha=0.3)
 
-    bar_ax = ax.inset_axes([0.35, 0.65, 0.5, 0.3])
+    bar_ax = ax.inset_axes([0.35, 0.65, 0.65, 0.35])
 
     bar_ax.bar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]], width=1,
                color="b", alpha=0.6)
