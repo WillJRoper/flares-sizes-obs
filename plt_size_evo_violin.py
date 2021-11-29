@@ -478,7 +478,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         hlr_16 = []
         hlr_84 = []
         for i in range(len(plt_z)):
-            zokinds = fitting_zs[okinds] == plt_z[i]
+            zokinds = np.logical_and(fitting_zs[okinds] > plt_z[i] - 0.5,
+                                     fitting_zs[okinds] <= plt_z[i] + 0.5)
+            if fitting_hlrs[okinds][zokinds].size == 0:
+                continue
             hlr_16.append(np.percentile(fitting_hlrs[okinds][zokinds], 16))
             hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
         ax.fill_between(plt_z, hlr_16, hlr_84, color=col, alpha=0.4)
@@ -548,7 +551,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.tick_params(axis='y', which='minor', left=True)
 
     ax.set_xlim(4.77, 11.5)
-    # ax.set_ylim(10 ** -1.5, 10 ** 1.5)
+    ax.set_ylim(10 ** -0.8, 10 ** 1.5)
 
     ax.legend(handles=legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
