@@ -90,6 +90,7 @@ ono_low_m = (1.3, 0.12, 0.14)  # (0.3-1)L* https://iopscience.iop.org/article/10
 ono_up_m = (1.3, 0.12, 0.14)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
 ono_low_norm = (1.3, 0.12, 0.14)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
 ono_up_norm = (1.3, 0.12, 0.14)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+kawa_up_norm = (1.28, 0.11, 0.11)  # (0.3-1)L* https://iopscience.iop.org/article/10.3847/1538-4357/aaa6cf
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
@@ -393,10 +394,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
                     yerr=[slope_errors[0], oesch_low_m[1], hol_low_m[1]],
                     color="b", fmt=".", markersize=0, capsize=3)
 
-    bar_ax.bar([1, 4, 7], [slopes[1], bt_up_m[0], oesch_up_m[0]], width=1,
+    bar_ax.bar([1, 4, 7, 13], [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0]], width=1,
                color="g", alpha=0.6)
-    bar_ax.errorbar([1, 4, 7], [slopes[1], bt_up_m[0], oesch_up_m[0]],
-                    yerr=[slope_errors[1], bt_up_m[1], oesch_up_m[1]],
+    bar_ax.errorbar([1, 4, 7, 13], [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0]],
+                    yerr=[slope_errors[1], bt_up_m[1], oesch_up_m[1], kawa_up_norm[1]],
                     color="g", fmt=".", markersize=0, capsize=3)
 
     bar_ax.bar([2, 11], [slopes[2], hol_up_m[0]], width=1,
@@ -408,14 +409,15 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
 
-    bar_ax.set_xlim(-0.5, 11.5)
+    bar_ax.set_xlim(-0.5, 14.5)
 
     # bar_ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
     # bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
 
     bar_ax.set_ylabel("$m$")
-    bar_ax.set_xticks([1, 4, 7, 10])
-    bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+", "Holwerda+"])
+    bar_ax.set_xticks([1, 4, 7, 10, 13])
+    bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+",
+                            "Holwerda+", "Kawamata+"])
 
     bar_ax.grid(False)
     bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
