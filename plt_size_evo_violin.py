@@ -514,7 +514,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.5)
     bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.5)
 
-    bar_ax.set_xlims(-0.5, 11.5)
+    bar_ax.set_xlim(-0.5, 11.5)
 
     # bar_ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
     # bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
