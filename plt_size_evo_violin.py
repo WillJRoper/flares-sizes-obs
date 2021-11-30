@@ -523,6 +523,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax.set_xticks([1, 4, 7, 10])
     bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+", "Holwerda+"])
 
+    bar_ax.grid(False)
     bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.5)
 
     legend_elements.append(Line2D([0], [0], color='r',
