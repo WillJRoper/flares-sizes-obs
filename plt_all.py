@@ -107,7 +107,7 @@ for reg, snap in reg_snaps:
 for snap in all_snaps:
 
     for f in all_filters:
-        okinds = np.ones(len(intr_data[snap][f]["nStar"]))
+        okinds = np.ones(len(intr_data[snap][f]["nStar"]), dtype=bool)
         # for key in keys:
         #     okinds = np.logical_and(okinds, np.logical_and(
         #         np.array(data[snap][f][key]) > 0,
