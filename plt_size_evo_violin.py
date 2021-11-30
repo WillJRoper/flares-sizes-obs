@@ -489,7 +489,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
                 continue
             hlr_16.append(np.percentile(fitting_hlrs[okinds][zokinds], 16))
             hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
-        ax.errorbar(plt_z, med, yerr=(hlr_16, hlr_84), color=col, marker="s")
+        ax.errorbar(plt_z, med, yerr=(hlr_16, hlr_84), capsize=5, color=col, marker="s")
 
     bar_ax = ax.inset_axes([0.35, 0.65, 0.65, 0.35])
 
@@ -497,19 +497,24 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
                color="b", alpha=0.6)
     bar_ax.errorbar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]],
                     yerr=[slope_errors[0], oesch_low_m[1], hol_low_m[1]],
-                    color="b", fmt=".", markersize=0, capsize=5)
+                    color="b", fmt=".", markersize=0, capsize=3)
 
     bar_ax.bar([1, 4, 7], [slopes[1], bt_up_m[0], oesch_up_m[0]], width=1,
                color="g", alpha=0.6)
     bar_ax.errorbar([1, 4, 7], [slopes[1], bt_up_m[0], oesch_up_m[0]],
                     yerr=[slope_errors[1], bt_up_m[1], oesch_up_m[1]],
-                    color="g", fmt=".", markersize=0, capsize=5)
+                    color="g", fmt=".", markersize=0, capsize=3)
 
     bar_ax.bar([2, 11], [slopes[2], hol_up_m[0]], width=1,
                color="r", alpha=0.6)
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
                     yerr=[slope_errors[2], hol_up_m[1]],
-                    color="r", fmt=".", markersize=0, capsize=5)
+                    color="r", fmt=".", markersize=0, capsize=3)
+    bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.5)
+    bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.5)
+    bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.5)
+
+    bar_ax.set_xlims(-0.5, 11.5)
 
     # bar_ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
     # bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
@@ -518,7 +523,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax.set_xticks([1, 4, 7, 10])
     bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+", "Holwerda+"])
 
-    bar_ax.grid(False)
+    bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.5)
 
     legend_elements.append(Line2D([0], [0], color='r',
                                   label="$0.3 L^{*}_{z=3} \leq L$",
