@@ -320,13 +320,14 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     slopes = []
     slope_errors = []
 
-    for ls, col in zip(["-", "-", "-"], ["r", "g", "b"]):
+    for ls, bin, col in zip(["-", "-", "-"], ["high", "mid", "low"],
+                            ["r", "g", "b"]):
 
         print("Linestyle:", ls)
 
-        if ls == "-":
+        if bin == "high":
             okinds = fitting_lums >= 0.3 * L_star
-        elif ls == "--":
+        elif bin == "mid":
             okinds = np.logical_and(fitting_lums >= 0.3 * L_star,
                                 fitting_lums <= L_star)
         else:
