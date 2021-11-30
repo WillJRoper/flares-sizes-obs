@@ -471,7 +471,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.tick_params(axis='y', which='minor', left=True)
 
     ax.set_xlim(4.77, 11.5)
-    ax.set_ylim(10 ** -0.8, 10 ** 1.)
+    # ax.set_ylim(10 ** -0.8, 10 ** 1.)
 
     ax.legend(handles=legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
