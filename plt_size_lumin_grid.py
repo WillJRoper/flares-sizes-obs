@@ -24,18 +24,14 @@ import pandas as pd
 sns.set_context("paper")
 sns.set_style('whitegrid')
 
+
+# Lstar = M_to_lum(-21)
+Lstar = 10**28.51
+
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
-kawa_up_params = {'beta': {6: 0.08, 7: 0.08,
-                           8: 0.28, 9: 1.01},
-                  'r_0': {6: 0.2, 7: 0.2,
-                          8: 5.28, 9: 367.64}}
-kawa_low_params = {'beta': {6: 0.09, 7: 0.09,
-                            8: 0.78, 9: 0.27},
-                   'r_0': {6: 0.15, 7: 0.15,
-                           8: 0.26, 9: 0.74}}
-kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
+kawa_fit = lambda l, r0, b: r0 * (l / Lstar) ** b
 
 
 def m_to_M(m, cosmo, z):

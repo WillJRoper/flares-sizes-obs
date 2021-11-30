@@ -76,11 +76,20 @@ def fit(z, C, m):
 def norm_fit(z, m):
     return (1 + z) ** -m
 
+# Bouwens et al. (2004, 2006) claim that the relation is roughly (1 + z)−1,
+# suggestive that the sizes of disks scale with constant halo mass,
+# while Ferguson et al. (2004) and Hathi et al. (2008) argue that (1  +  z)−1.5
+
 oesch_up_m = (1.12, 0.17, 0.17)  # (0.3-1)L*
 hol_up_m = (1.3, 0.4, 0.4)  # L<0.3L*
 oesch_low_m = (1.32, 0.52, 0.52)  # L<0.3L*
-hol_low_m = (0.8, 0.1, 0.1)   # 0.3L*<L
+hol_low_m = (0.76, 0.12, 0.12)   # 0.3L*<L
 bt_up_m = (0.559, 0.008, 0.008)  # (0.3-1)L*
+bouwens_m = (1.05, 0.21, 0.21)  # (0.3-1)L* https://iopscience.iop.org/article/10.1086/423786/pdf
+ono_low_m = (1.3, 0.12, 0.14)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+ono_up_m = (1.3, 0.12, 0.14)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+ono_low_norm = (1.3, 0.12, 0.14)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+ono_up_norm = (1.3, 0.12, 0.14)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
@@ -311,7 +320,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     slopes = []
     slope_errors = []
 
-    for ls, col in zip(["-", "--", "dotted"], ["r", "g", "b"]):
+    for ls, col in zip(["-", "-", "-"], ["r", "g", "b"]):
 
         print("Linestyle:", ls)
 
@@ -353,6 +362,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
                 linestyle=ls, color=col)
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], -1),
+                linestyle="dotted", color=col, alpha=0.8)
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], -1.5),
+                linestyle="--", color=col, alpha=0.8)
         hlr_16 = []
         hlr_84 = []
         med = []
@@ -413,20 +426,24 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     legend_elements.append(Line2D([0], [0], color='g',
                                   label="$0.3L^{*}_{z=3}\leq L "
                                         "\leq L^{*}_{z=3}$",
-                                  linestyle="--"))
+                                  linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='b',
                                   label="$L < 0.3 L^{*}_{z=3}$",
+                                  linestyle="-"))
+
+    legend_elements.append(Line2D([0], [0], color='grey',
+                                  label="FLARES",
+                                  linestyle="-"))
+
+    legend_elements.append(Line2D([0], [0], color='grey',
+                                  label="$m=-1$",
                                   linestyle="dotted"))
 
-    # legend_elements.append(Line2D([0], [0], color='r',
-    #                               label="FLARES",
-    #                               linestyle="-"))
-    #
-    # legend_elements.append(Line2D([0], [0], color='b',
-    #                               label="BlueTides+21",
-    #                               linestyle="-"))
-    #
+    legend_elements.append(Line2D([0], [0], color='grey',
+                                  label="$m=-1.5$",
+                                  linestyle="--"))
+    
     # legend_elements.append(Line2D([0], [0], color='g',
     #                               label="Oesch+10",
     #                               linestyle="-"))
