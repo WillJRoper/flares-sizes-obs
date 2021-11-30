@@ -31,7 +31,8 @@ Lstar = 10**28.51
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
-kawa_fit = lambda l, r0, b: r0 * (l / Lstar) ** b
+r_fit = lambda l, r0, b: r0 * (l / Lstar) ** b
+kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 
 
 def m_to_M(m, cosmo, z):

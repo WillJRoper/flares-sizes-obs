@@ -29,6 +29,11 @@ kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
 bt_params = {'beta': {7: 0.13, 8: 0.12, 9: 0.10, 10: 0.11, 11: 0.09},
                'r_0': {7: 0.67, 8: 0.63, 9: 0.58, 10: 0.56, 11: 0.51},}
+
+# Lstar = M_to_lum(-21)
+Lstar = 10**28.51
+
+r_fit = lambda l, r0, b: r0 * (l / Lstar) ** b
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 
 
@@ -202,7 +207,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
 
             try:
 
-                popt, pcov = curve_fit(kawa_fit, lumins[complete],
+                popt, pcov = curve_fit(r_fit, lumins[complete],
                                        hlrs[complete],
                                        p0=(kawa_params['r_0'][7],
                                            kawa_params['beta'][7]),
@@ -211,7 +216,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                 print(e)
 
             try:
-                popt1, pcov1 = curve_fit(kawa_fit, lumins[compact_com],
+                popt1, pcov1 = curve_fit(r_fit, lumins[compact_com],
                                          hlrs[compact_com],
                                          p0=(kawa_params['r_0'][7],
                                              kawa_params['beta'][7]),
@@ -220,7 +225,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                 print(e)
 
             try:
-                popt2, pcov2 = curve_fit(kawa_fit, lumins,
+                popt2, pcov2 = curve_fit(r_fit, lumins,
                                          hlrs,
                                          p0=(kawa_params['r_0'][7],
                                              kawa_params['beta'][7]),
@@ -254,7 +259,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                                          np.log10(np.max(lumins[complete])),
                                          1000)
 
-                fit = kawa_fit(fit_lumins, popt[0], popt[1])
+                fit = r_fit(fit_lumins, popt[0], popt[1])
 
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dotted', color="m",
@@ -265,7 +270,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                              alpha=0, zorder=3,
                              linewidth=2)
 
-                fit = kawa_fit(fit_lumins, popt1[0], popt1[1])
+                fit = r_fit(fit_lumins, popt1[0], popt1[1])
 
                 axes[i].plot(fit_lumins, fit,
                              linestyle='-', color="m",
@@ -307,7 +312,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                                          np.log10(np.max(lumins[complete])),
                                          1000)
 
-                fit = kawa_fit(fit_lumins, bt_params['r_0'][int(z)],
+                fit = r_fit(fit_lumins, bt_params['r_0'][int(z)],
                                bt_params['beta'][int(z)])
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dashed', color="m",
