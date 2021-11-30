@@ -96,6 +96,7 @@ kawa_up_norm = (1.28, 0.11, 0.11)  # (0.3-1)L* https://iopscience.iop.org/articl
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
+ono_fit = lambda z, m, a: 10**(m * np.log0(1 + z) + a)
 
 L_star = 10**29.03
 
@@ -390,9 +391,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     fit_plt_zs = np.linspace(12, 4.5, 1000)
 
-    ax.plot(fit_plt_zs, fit(fit_plt_zs, ono_low_norm[0], ono_low_m[0]),
+    ax.plot(fit_plt_zs, ono_fit(fit_plt_zs, ono_low_norm[0], ono_low_m[0]),
             linestyle="--", color="b")
-    ax.plot(fit_plt_zs, fit(fit_plt_zs, ono_up_norm[0], ono_up_m[0]),
+    ax.plot(fit_plt_zs, ono_fit(fit_plt_zs, ono_up_norm[0], ono_up_m[0]),
             linestyle="--", color="g")
 
     bar_ax = ax.inset_axes([0.35, 0.65, 0.65, 0.35])
