@@ -475,19 +475,21 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
                 linestyle=ls, color=col)
-        # hlr_16 = []
-        # hlr_84 = []
-        # for i in range(len(plt_z)):
-        #     print(plt_z)
-        #     zokinds = np.logical_and(fitting_zs[okinds] > plt_z[i] - 0.5,
-        #                              fitting_zs[okinds] <= plt_z[i] + 0.5)
-        #     if fitting_hlrs[okinds][zokinds].size == 0:
-        #         hlr_16.append(np.nan)
-        #         hlr_84.append(np.nan)
-        #         continue
-        #     hlr_16.append(np.percentile(fitting_hlrs[okinds][zokinds], 16))
-        #     hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
-        # ax.fill_between(plt_z, hlr_16, hlr_84, color=col, alpha=0.3)
+        hlr_16 = []
+        hlr_84 = []
+        med = []
+        for i in range(len(plt_z)):
+            print(plt_z)
+            zokinds = np.logical_and(fitting_zs[okinds] > plt_z[i] - 0.5,
+                                     fitting_zs[okinds] <= plt_z[i] + 0.5)
+            med.append(np.median(fitting_hlrs[okinds][zokinds]))
+            if fitting_hlrs[okinds][zokinds].size == 0:
+                hlr_16.append(np.nan)
+                hlr_84.append(np.nan)
+                continue
+            hlr_16.append(np.percentile(fitting_hlrs[okinds][zokinds], 16))
+            hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
+        ax.errorbar(plt_z, med, yerr=(hlr_16, hlr_84), color=col, marker="s")
 
     bar_ax = ax.inset_axes([0.35, 0.65, 0.65, 0.35])
 
