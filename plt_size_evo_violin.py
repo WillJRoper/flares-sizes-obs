@@ -483,8 +483,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
                                      fitting_zs[okinds] <= plt_z[i] + 0.5)
             med.append(np.median(fitting_hlrs[okinds][zokinds]))
             print(plt_z[i], fitting_hlrs[okinds][zokinds].size,
-                  np.median(fitting_hlrs[okinds][zokinds]),
-                  np.min(fitting_lums[okinds][zokinds]))
+                  np.median(fitting_hlrs[okinds][zokinds]))
             if fitting_hlrs[okinds][zokinds].size == 0:
                 hlr_16.append(np.nan)
                 hlr_84.append(np.nan)
