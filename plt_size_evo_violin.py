@@ -391,9 +391,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     fit_plt_zs = np.linspace(12, 4.5, 1000)
 
-    ax.plot(fit_plt_zs, ono_fit(fit_plt_zs, ono_low_norm[0], ono_low_m[0]),
+    ax.plot(fit_plt_zs, ono_fit(fit_plt_zs, ono_low_norm[0], -ono_low_m[0]),
             linestyle="--", color="b")
-    ax.plot(fit_plt_zs, ono_fit(fit_plt_zs, ono_up_norm[0], ono_up_m[0]),
+    ax.plot(fit_plt_zs, ono_fit(fit_plt_zs, ono_up_norm[0], -ono_up_m[0]),
             linestyle="--", color="g")
 
     bar_ax = ax.inset_axes([0.35, 0.65, 0.65, 0.35])
@@ -475,7 +475,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     ax.tick_params(axis='y', which='minor', left=True)
 
-    ax.set_xlim(4.77, 11.5)
+    ax.set_xlim(4.77, 12.5)
     # ax.set_ylim(10 ** -0.8, 10 ** 1.)
 
     ax.legend(handles=legend_elements, loc='upper center',
