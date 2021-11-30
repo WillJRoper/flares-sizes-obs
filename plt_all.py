@@ -19,6 +19,8 @@ snaps = ['006_z009p000', '007_z008p000', '008_z007p000', '009_z006p000',
 all_snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
              '006_z009p000', '007_z008p000', '008_z007p000',
              '009_z006p000', '010_z005p000']
+limed_snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
+             '006_z009p000', '007_z008p000', '008_z007p000']
 
 # Define filter
 all_filters = ['FAKE.TH.' + f
@@ -193,7 +195,9 @@ weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
 for f in filters:
     print(f)
     print("--------------------------- Evolution ---------------------------")
-    size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "Total",
+    size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "All",
+                    "default")
+    size_evo_violin(data, intr_data, limed_snaps, f, "pix", "sim", "Limited",
                     "default")
     for snap in snaps:
         print(snap)

@@ -479,17 +479,20 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         hlr_84 = []
         med = []
         for i in range(len(plt_z)):
-            print(plt_z)
             zokinds = np.logical_and(fitting_zs[okinds] > plt_z[i] - 0.5,
                                      fitting_zs[okinds] <= plt_z[i] + 0.5)
             med.append(np.median(fitting_hlrs[okinds][zokinds]))
+            print(plt_z[i], fitting_hlrs[okinds][zokinds].size,
+                  np.median(fitting_hlrs[okinds][zokinds]),
+                  np.minimum(fitting_lums[okinds][zokinds]))
             if fitting_hlrs[okinds][zokinds].size == 0:
                 hlr_16.append(np.nan)
                 hlr_84.append(np.nan)
                 continue
             hlr_16.append(np.percentile(fitting_hlrs[okinds][zokinds], 16))
             hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
-        ax.errorbar(plt_z, med, yerr=(hlr_16, hlr_84), capsize=5, color=col, marker="s")
+        ax.errorbar(plt_z, med, yerr=(hlr_16, hlr_84), capsize=5, color=col,
+                    marker="s", linestyle="none")
 
     bar_ax = ax.inset_axes([0.35, 0.65, 0.65, 0.35])
 
@@ -510,9 +513,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
                     yerr=[slope_errors[2], hol_up_m[1]],
                     color="r", fmt=".", markersize=0, capsize=3)
-    bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.5)
-    bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.5)
-    bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.5)
+    bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
+    bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
+    bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
 
     bar_ax.set_xlim(-0.5, 11.5)
 
@@ -524,20 +527,20 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+", "Holwerda+"])
 
     bar_ax.grid(False)
-    bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.5)
+    bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
 
     legend_elements.append(Line2D([0], [0], color='r',
                                   label="$0.3 L^{*}_{z=3} \leq L$",
-                                  linestyle="-"))
+                                  linestyle="-", marker="s"))
 
     legend_elements.append(Line2D([0], [0], color='g',
                                   label="$0.3L^{*}_{z=3}\leq L "
                                         "\leq L^{*}_{z=3}$",
-                                  linestyle="--"))
+                                  linestyle="--", marker="s"))
 
     legend_elements.append(Line2D([0], [0], color='b',
                                   label="$L < 0.3 L^{*}_{z=3}$",
-                                  linestyle="dotted"))
+                                  linestyle="dotted", marker="s"))
 
     # legend_elements.append(Line2D([0], [0], color='r',
     #                               label="FLARES",
@@ -569,7 +572,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     fig.savefig(
         'plots/Violin_ObsCompHalfLightRadius_evolution_' + mtype + '_' + f + '_'
-        + orientation + "_" + extinction + ".png",
+        + orientation + "_" + extinction + "_" + Type + ".png",
         bbox_inches='tight')
 
     plt.close(fig)
