@@ -413,6 +413,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
+    bar_ax.axvline(11.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
+
+    bar_ax.axhline(1, linestyle="--", color="grey", alpha=0.7)
+    bar_ax.axhline(1.5, linestyle="dotted", color="grey", alpha=0.7)
 
     bar_ax.set_xlim(-0.5, 14.5)
 
