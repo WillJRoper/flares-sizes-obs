@@ -318,11 +318,12 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     slopes = []
     slope_errors = []
+    print(np.min(fitting_lums), np.max(fitting_lums))
 
     for ls, bin, col in zip(["-", "-", "-"], ["high", "mid", "low"],
                             ["r", "g", "b"]):
 
-        print("Linestyle:", ls)
+        print("Bin:", bin)
 
         if bin == "high":
             okinds = fitting_lums >= 0.3 * L_star
@@ -331,6 +332,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
                                 fitting_lums <= L_star)
         else:
             okinds = fitting_lums < 0.3 * L_star
+
+        if fitting_zs[okinds].size == 0:
+            continue
 
         uni_z = np.unique(fitting_zs[okinds])
 
