@@ -88,8 +88,8 @@ bt_up_m = (0.559, 0.008, 0.008)  # (0.3-1)L*
 bouwens_m = (1.05, 0.21, 0.21)  # (0.3-1)L* https://iopscience.iop.org/article/10.1086/423786/pdf
 ono_low_m = (1.3, 0.12, 0.14)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
 ono_up_m = (1.3, 0.12, 0.14)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
-ono_low_norm = (1.3, 0.12, 0.14)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
-ono_up_norm = (1.3, 0.12, 0.14)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+ono_low_norm = (1., 0.09, 0.07)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+ono_up_norm = (0.88, 0.08, 0.09)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
 kawa_up_norm = (1.28, 0.11, 0.11)  # (0.3-1)L* https://iopscience.iop.org/article/10.3847/1538-4357/aaa6cf
 
 # Define Kawamata17 fit and parameters
@@ -316,8 +316,6 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.semilogy()
     # ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
 
-    fit_plt_zs = np.linspace(12, 4.5, 1000)
-
     slopes = []
     slope_errors = []
 
@@ -334,7 +332,11 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         else:
             okinds = fitting_lums < 0.3 * L_star
 
-        print("Redshifts in sample:", np.unique(fitting_zs[okinds]))
+        uni_z = np.unique(fitting_zs[okinds])
+
+        print("Redshifts in sample:", uni_z)
+
+        fit_plt_zs = np.linspace(np.max(uni_z), np.min(uni_z), 1000)
 
         popt, pcov = curve_fit(fit, fitting_zs[okinds], fitting_hlrs[okinds],
                                p0=(1, 0.5), sigma=fitting_ws[okinds],
@@ -364,10 +366,6 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
                 linestyle=ls, color=col)
-        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], 1),
-                linestyle="dotted", color=col, alpha=0.8)
-        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], 1.5),
-                linestyle="--", color=col, alpha=0.8)
         hlr_16 = []
         hlr_84 = []
         med = []
@@ -385,6 +383,13 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
             hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
         ax.errorbar(plt_z, med, yerr=(hlr_16, hlr_84), capsize=5, color=col,
                     marker="s", linestyle="none")
+
+    fit_plt_zs = np.linspace(12, 4.5, 1000)
+
+    ax.plot(fit_plt_zs, fit(fit_plt_zs, ono_low_norm[0], ono_low_m[0]),
+            linestyle="--", color="b")
+    ax.plot(fit_plt_zs, fit(fit_plt_zs, ono_up_norm[0], ono_up_m[0]),
+            linestyle="--", color="g")
 
     bar_ax = ax.inset_axes([0.35, 0.65, 0.65, 0.35])
 
@@ -439,12 +444,12 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
                                   label="FLARES",
                                   linestyle="-"))
 
-    legend_elements.append(Line2D([0], [0], color='grey',
-                                  label="$m=-1$",
-                                  linestyle="dotted"))
+    # legend_elements.append(Line2D([0], [0], color='grey',
+    #                               label="$m=-1$",
+    #                               linestyle="dotted"))
 
-    legend_elements.append(Line2D([0], [0], color='grey',
-                                  label="$m=-1.5$",
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="Ono+13",
                                   linestyle="--"))
 
     # legend_elements.append(Line2D([0], [0], color='g',
@@ -462,7 +467,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.tick_params(axis='y', which='minor', left=True)
 
     ax.set_xlim(4.77, 11.5)
-    # ax.set_ylim(10 ** -0.8, 10 ** 1.)
+    ax.set_ylim(10 ** -0.8, 10 ** 1.)
 
     ax.legend(handles=legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
