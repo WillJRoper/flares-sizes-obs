@@ -264,8 +264,9 @@ if run:
                                            spline_func=util.cubic_spline,
                                            spline_cut_off=1)
 
-                no_smooth_img = np.histogram2d(this_pos[:, 0], this_pos[:, 1],
-                                               range=imgrange, bins=res)
+                no_smooth_img, _, _ = np.histogram2d(this_pos[:, 0],
+                                                     this_pos[:, 1],
+                                                     range=imgrange, bins=res)
 
             else:
 
@@ -283,8 +284,9 @@ if run:
                                            spline_func=util.cubic_spline,
                                            spline_cut_off=1)
 
-                no_smooth_img = np.histogram2d(this_pos[:, 2], this_pos[:, 0],
-                                               range=imgrange, bins=res)
+                no_smooth_img, _, _ = np.histogram2d(this_pos[:, 2],
+                                                     this_pos[:, 0],
+                                                     range=imgrange, bins=res)
 
             surf_den = np.sum(img) / (img[img > 0].size * single_pixel_area)
 

@@ -270,11 +270,10 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
         # --- calculate rest-frame Luminosity. In units of erg/s/Hz
         for f in filters:
-            print()
             Lnu = models.generate_Lnu_array(model=model, Masses=Masses,
                                             Ages=Ages,
                                             Metallicities=Metallicities,
-                                            tauVs_ISM=tauVs_ISM, 
+                                            tauVs_ISM=tauVs_ISM,
                                             tauVs_BC=tauVs_BC, F=F, f=f,
                                             fesc=fesc, log10t_BC=log10t_BC)
             Lums[f][begin[jj]: end[jj]] = Lnu
