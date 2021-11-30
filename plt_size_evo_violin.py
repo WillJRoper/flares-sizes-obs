@@ -363,9 +363,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
                 linestyle=ls, color=col)
-        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], -1),
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], 1),
                 linestyle="dotted", color=col, alpha=0.8)
-        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], -1.5),
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], 1.5),
                 linestyle="--", color=col, alpha=0.8)
         hlr_16 = []
         hlr_84 = []
