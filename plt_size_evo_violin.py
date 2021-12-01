@@ -383,7 +383,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bt_rs = [0.6333, 0.58632, 0.5292567, 0.51400117, 0.475394]
     bt_zs = [7, 8, 9, 10, 11]
 
-    ax.scatter(bt_zs, bt_rs, marker="*", zorder=5, marker=10)
+    ax.scatter(bt_zs, bt_rs, marker="*", zorder=5, markersize=10)
 
     fit_plt_zs = np.linspace(12, 4.5, 1000)
 
@@ -416,7 +416,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     bar_ax.set_xlim(-0.5, 14.5)
 
-    bar_ax.tick_params(reset=bool, bottom=True, left=True,
+    bar_ax.tick_params(reset=True, bottom=True, left=True,
                        top=False, right=False)
 
     bar_ax.set_ylabel("$m$")
