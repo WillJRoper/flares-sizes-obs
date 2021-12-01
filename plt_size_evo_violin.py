@@ -398,23 +398,23 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     bar_ax = ax.inset_axes([0.35, 0.65, 0.65, 0.35])
 
-    bar_ax.bar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]], width=1,
-               color="b", alpha=0.6)
+    # bar_ax.bar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]], width=1,
+    #            color="b", alpha=0.6)
     bar_ax.errorbar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]],
                     yerr=[slope_errors[0], oesch_low_m[1], hol_low_m[1]],
-                    color="b", fmt=".", markersize=0, capsize=3)
+                    color="b", fmt="s", markersize=0, capsize=3)
 
-    bar_ax.bar([1, 4, 7, 13], [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0]], width=1,
-               color="g", alpha=0.6)
+    # bar_ax.bar([1, 4, 7, 13], [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0]], width=1,
+    #            color="g", alpha=0.6)
     bar_ax.errorbar([1, 4, 7, 13], [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0]],
                     yerr=[slope_errors[1], bt_up_m[1], oesch_up_m[1], kawa_up_norm[1]],
-                    color="g", fmt=".", markersize=0, capsize=3)
+                    color="g", fmt="s", markersize=0, capsize=3)
 
-    bar_ax.bar([2, 11], [slopes[2], hol_up_m[0]], width=1,
-               color="r", alpha=0.6)
+    # bar_ax.bar([2, 11], [slopes[2], hol_up_m[0]], width=1,
+    #            color="r", alpha=0.6)
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
                     yerr=[slope_errors[2], hol_up_m[1]],
-                    color="r", fmt=".", markersize=0, capsize=3)
+                    color="r", fmt="s", markersize=0, capsize=3)
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
@@ -476,7 +476,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.tick_params(axis='y', which='minor', left=True)
 
     ax.set_xlim(4.77, 12.5)
-    ax.set_ylim(10 ** -0.8, 10 ** 1.)
+    ax.set_ylim(10 ** -1.1, 10 ** 1.)
 
     ax.legend(handles=legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
