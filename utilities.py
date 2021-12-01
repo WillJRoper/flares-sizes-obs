@@ -511,7 +511,8 @@ def lumin_weighted_centre(poss, ls, i, j):
 
 
 def calc_light_mass_rad(rs, ls, radii_frac=0.5):
-    if ls.size < 100:
+
+    if ls.size < 10:
         return 0.0
 
     # Sort the radii and masses
@@ -519,7 +520,7 @@ def calc_light_mass_rad(rs, ls, radii_frac=0.5):
     rs = rs[sinds]
     ls = ls[sinds]
 
-    if ls.size < 100:
+    if ls.size < 10:
         return 0.0
 
     # Get the cumalative sum of masses
