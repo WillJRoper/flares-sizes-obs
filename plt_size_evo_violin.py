@@ -396,7 +396,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.plot(fit_plt_zs, ono_fit(fit_plt_zs, ono_up_norm[0], -ono_up_m[0]),
             linestyle="--", color="g")
 
-    bar_ax = ax.inset_axes([0.35, 0.65, 0.65, 0.35])
+    bar_ax = ax.inset_axes([0.5, 0.65, 0.5, 0.35])
 
     # bar_ax.bar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]], width=1,
     #            color="b", alpha=0.6)
@@ -429,13 +429,14 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     # bar_ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
     # bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
 
-    bar_ax.set_ylabel("$m$")
+    bar_ax.set_ylabel("$m$", fontsize=5)
     bar_ax.set_xticks([1, 4, 7, 10, 13])
     bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+",
-                            "Holwerda+", "Kawamata+"])
+                            "Holwerda+", "Kawamata+"], fontsize=5)
 
     bar_ax.grid(False)
     bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
+    bar_ax.tick_params(reset=bool, bottom=True, left=True)
 
     legend_elements.append(Line2D([0], [0], color='r',
                                   label="$0.3 L^{*}_{z=3} \leq L$",
