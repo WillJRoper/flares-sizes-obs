@@ -70,8 +70,7 @@ def custom_violin_stats(data, weights):
     return results
 
 
-def fit(z, C, m):
-    return C * (1 + z) ** -m
+fit = lambda z, C, m: C * (1 + z) ** -m
 
 def norm_fit(z, m):
     return (1 + z) ** -m
@@ -84,7 +83,7 @@ oesch_up_m = (1.12, 0.17, 0.17)  # (0.3-1)L*
 hol_up_m = (1.3, 0.4, 0.4)  # L<0.3L*
 oesch_low_m = (1.32, 0.52, 0.52)  # L<0.3L*
 hol_low_m = (0.76, 0.12, 0.12)   # 0.3L*<L
-bt_up_m = (0.559, 0.008, 0.008)  # (0.3-1)L*
+bt_up_m = (0.664, 0.008, 0.008)  # (0.3-1)L*
 bouwens_m = (1.05, 0.21, 0.21)  # (0.3-1)L* https://iopscience.iop.org/article/10.1086/423786/pdf
 ono_low_m = (1.3, 0.12, 0.14)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
 ono_up_m = (1.3, 0.12, 0.14)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155

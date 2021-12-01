@@ -24,11 +24,12 @@ import pandas as pd
 sns.set_context("paper")
 sns.set_style('whitegrid')
 
+
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
-bt_params = {'beta': {7: 0.13, 8: 0.12, 9: 0.10, 10: 0.11, 11: 0.09},
-               'r_0': {7: 0.67, 8: 0.63, 9: 0.58, 10: 0.56, 11: 0.51},}
+bt_params = {'beta': {7: 0.24, 8: 0.17, 9: 0.16, 10: 0.12, 11: 0.11},
+             'r_0': {7: 0.75, 8: 0.67, 9: 0.60, 10: 0.57, 11: 0.52}}
 
 # Lstar = M_to_lum(-21)
 Lstar = 10**28.51

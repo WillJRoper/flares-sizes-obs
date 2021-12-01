@@ -28,26 +28,20 @@ sns.set_style('whitegrid')
 
 filter_path = "/cosma7/data/dp004/dc-wilk2/flare/data/filters/"
 
-# Lstar = M_to_lum(-21)
 Lstar = 10**28.51
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
-kawa_fit = lambda l, r0, b: r0 * (l / Lstar) ** b
+kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
+r_fit = lambda l, r0, b: r0 * (l / Lstar) ** b
 st_line_fit = lambda x, m, c: m * np.log10(x) + c
 
-bt_fits = {7: {"FUV": (0.134, -4.05), "NUV": (0.093, -2.897),
-               "U": (0.060, -1.979), "B": (0.038, -1.316),
-               "V": (0.011, -0.548), "I": (-0.013, 0.133),
-               "Z": (-0.014, 0.151), "Y": (-0.011, 0.066),
-               "J": (-0.032, 0.678), "H": (-0.044, 1.014)},
-           8: {"FUV": (0.120, -3.682), "NUV": (0.077, -2.461),
-               "U": (0.047, -1.609), "B": (0.025, -0.972),
-               "V": (-0.001, -0.225), "I": (-0.019, 0.298),
-               "Z": (-0.019, 0.285), "Y": (-0.012, 0.072),
-               "J": (-0.033, 0.681), "H": (-0.044, 0.979)}
-           }
+bt_fits = {7: {"FUV": (0.2421, 0.7544), "NUV": (0.1579, 0.6701),
+               "U": (0.0714, 0.6064), "B": (0.0208, 0.5980),
+               "V": (0.0016, 0.5898), "I": (-0.0244, 0.5660),
+               "Z": (-0.0282, 0.5521), "Y": (-0.0326, 0.5545),
+               "J": (-0.0482, 0.5457), "H": (-0.0596, 0.5353 )}}
 
 
 def m_to_M(m, cosmo, z):
@@ -62,37 +56,6 @@ def M_to_m(M, cosmo, z):
     flux = photconv.lum_to_flux(lum, cosmo, z)
     m = photconv.flux_to_m(flux)
     return m
-
-
-def kawa_fit_err(y, l, ro, b, ro_err, b_err, uplow="up"):
-    ro_term = ro_err * (l / M_to_lum(-21)) ** b
-    beta_term = b_err * ro * (l / M_to_lum(-21)) ** b \
-                * np.log(l / M_to_lum(-21))
-
-    if uplow == "up":
-        return y + np.sqrt(ro_term ** 2 + beta_term ** 2)
-    else:
-        return y - np.sqrt(ro_term ** 2 + beta_term ** 2)
-
-
-def plot_meidan_stat(xs, ys, ax, lab, color, bins=None, ls='-'):
-    if bins == None:
-        bin = np.logspace(np.log10(xs.min()), np.log10(xs.max()), 15)
-    else:
-        bin = bins
-
-    # Compute binned statistics
-    y_stat, binedges, bin_ind = binned_statistic(xs, ys, statistic='median',
-                                                 bins=bin)
-
-    # Compute bincentres
-    bin_wid = binedges[1] - binedges[0]
-    bin_cents = binedges[1:] - bin_wid / 2
-
-    okinds = np.logical_and(~np.isnan(bin_cents), ~np.isnan(y_stat))
-
-    axes[i].plot(bin_cents[okinds], y_stat[okinds], color=color, linestyle=ls,
-                 label=lab)
 
 
 def r_from_surf_den(lum, s_den):
@@ -281,14 +244,14 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                          np.log10(np.max(lumins)),
                                          1000)
 
-                popt, pcov = curve_fit(kawa_fit, lumins,
+                popt, pcov = curve_fit(r_fit, lumins,
                                        hlrs,
                                        p0=(1, 1),
                                        sigma=w, absolute_sigma=True)
 
                 print(f, np.log10(np.min(lumins)), np.log10(np.max(lumins)))
 
-                fit = kawa_fit(fit_lumins, popt[0], popt[1])
+                fit = r_fit(fit_lumins, popt[0], popt[1])
                 print("Total", popt)
                 axes[i].plot(fit_lumins, fit,
                              linestyle='-', color=cmap(norm(trans[f][1])),
@@ -299,11 +262,11 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                   linestyle='-', color="m",
                                   zorder=3,
                                   linewidth=2, alpha=0)
-                if int(z) in [7, 8]:
+                if int(z) in [7, ]:
                     if f.split(".")[-1] in bt_fits[int(z)].keys():
-                        fit = 10 ** st_line_fit(fit_lumins,
-                                          bt_fits[int(z)][f.split(".")[-1]][0],
-                                          bt_fits[int(z)][f.split(".")[-1]][1])
+                        fit = r_fit(fit_lumins,
+                                    bt_fits[int(z)][f.split(".")[-1]][1],
+                                    bt_fits[int(z)][f.split(".")[-1]][0])
                         print("BT", bt_fits[int(z)][f.split(".")[-1]])
                         axes[i].plot(fit_lumins, fit,
                                      linestyle='--',

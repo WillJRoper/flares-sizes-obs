@@ -339,22 +339,22 @@ for f in filters:
                 #     axes_log[i, j].set_ylabel(f.split(".")[-1], fontsize=6)
                 if i == 0:
                     if bins[j + 1] == np.inf:
-                        axes[i, j].set_title("$10^{%d} \leq "
+                        axes[i, j].set_title("$10^{%.1f} \leq "
                                              "M/M_\odot$"
                                              % (np.log10(bins[j])),
                                              fontsize=5)
-                        axes_log[i, j].set_title("$10^{%d} \leq "
+                        axes_log[i, j].set_title("$10^{%.1f} \leq "
                                                  "M/M_\odot$"
                                                  % (np.log10(bins[j])),
                                                  fontsize=5)
                     else:
-                        axes[i, j].set_title("$10^{%d} \leq M/M_\odot "
-                                             "< 10^{%d}$"
+                        axes[i, j].set_title("$10^{%.1f} \leq M/M_\odot "
+                                             "< 10^{%.1f}$"
                                              % (np.log10(bins[j]),
                                                 np.log10(bins[j + 1])),
                                              fontsize=5)
-                        axes_log[i, j].set_title("$10^{%d} \leq M/M_\odot "
-                                                 "< 10^{%d}$"
+                        axes_log[i, j].set_title("$10^{%.1f} \leq M/M_\odot "
+                                                 "< 10^{%.1f}$"
                                                  % (np.log10(bins[j]),
                                                     np.log10(bins[j + 1])),
                                                  fontsize=5)
