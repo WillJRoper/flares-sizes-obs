@@ -185,19 +185,28 @@ weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
 print("--------------------------- Size-Lumin ---------------------------")
 size_lumin_grid(data, snaps, filters, orientation, "Total",
                 "default", "pix", weight_norm)
-# print("--------------------------- Fits ---------------------------")
-# fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
-#                     "default",
-#                     "pix")
-# print("--------------------------- All filters ---------------------------")
-# size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
-#                      "Total", "default",
-#                      "pix", weight_norm)
+size_lumin_grid(data, snaps, filters, orientation, "Total",
+                "default", "app", weight_norm)
+print("--------------------------- Fits ---------------------------")
+fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
+                    "default",
+                    "pix")
+fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
+                    "default",
+                    "app")
+print("--------------------------- All filters ---------------------------")
+size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
+                     "Total", "default",
+                     "pix", weight_norm)
 
 for f in filters:
     print(f)
     print("--------------------------- Evolution ---------------------------")
     size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "All",
+                    "default")
+    size_evo_violin(data, intr_data, all_snaps, f, "part", "sim", "All",
+                    "default")
+    size_evo_violin(data, intr_data, all_snaps, f, "app", "sim", "All",
                     "default")
     size_evo_violin(data, intr_data, limed_snaps, f, "pix", "sim", "Limited",
                     "default")
