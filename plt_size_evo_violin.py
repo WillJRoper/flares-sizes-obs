@@ -429,14 +429,20 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     # bar_ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
     # bar_ax.set_xticklabels([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
 
-    bar_ax.set_ylabel("$m$", fontsize=5)
+    bar_ax.tick_params(reset=bool, bottom=True, left=True,
+                       top=False, right=False)
+
+    bar_ax.set_ylabel("$m$")
     bar_ax.set_xticks([1, 4, 7, 10, 13])
     bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+",
                             "Holwerda+", "Kawamata+"], fontsize=5)
+    bar_ax.tick_params(axis='x', which='minor', bottom=True)
+
+    bar_ax.set_yticks([0.5, 1, 1.5])
+    bar_ax.set_yticklabels([0.5, 1, 1.5], fontsize=5)
 
     bar_ax.grid(False)
     bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
-    bar_ax.tick_params(reset=bool, bottom=True, left=True)
 
     legend_elements.append(Line2D([0], [0], color='r',
                                   label="$0.3 L^{*}_{z=3} \leq L$",
@@ -475,7 +481,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.set_xlabel(r'$z$')
     ax.set_ylabel('$R_{1/2}/ [\mathrm{pkpc}]$')
 
-    ax.tick_params(axis='y', which='minor', left=True)
+    ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
     ax.set_xlim(4.77, 12.5)
     ax.set_ylim(10 ** -1.7, 10 ** 1.3)
