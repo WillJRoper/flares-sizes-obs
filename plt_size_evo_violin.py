@@ -414,7 +414,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     #            color="r", alpha=0.6)
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
                     yerr=[slope_errors[2], hol_up_m[1]],
-                    color="r", fmt="s", markersize=0, capsize=3)
+                    color="r", fmt="s", capsize=3)
+
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
@@ -479,7 +480,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.set_ylim(10 ** -1.7, 10 ** 1.3)
 
     ax.legend(handles=legend_elements, loc='upper center',
-              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
+              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=5)
 
     fig.savefig(
         'plots/Violin_ObsCompHalfLightRadius_evolution_' + mtype + '_' + f + '_'
