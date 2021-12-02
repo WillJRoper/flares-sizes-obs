@@ -398,7 +398,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     bar_ax.errorbar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]],
                     yerr=[slope_errors[0], oesch_low_m[1], hol_low_m[1]],
-                    color="b", fmt="s", capsize=3)
+                    color="r", fmt="s", capsize=3)
 
     bar_ax.errorbar([1, 4, 7, 13], [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0]],
                     yerr=[slope_errors[1], bt_up_m[1], oesch_up_m[1], kawa_up_norm[1]],
@@ -406,7 +406,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
                     yerr=[slope_errors[2], hol_up_m[1]],
-                    color="r", fmt="s", capsize=3)
+                    color="b", fmt="s", capsize=3)
 
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
