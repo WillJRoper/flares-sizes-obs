@@ -62,7 +62,7 @@ for reg, snap in reg_snaps:
                                                             orientation),
             "r")
     except OSError as e:
-        print(e)
+        print(reg, snap, e)
         continue
 
     data.setdefault(snap, {})
@@ -103,6 +103,25 @@ for reg, snap in reg_snaps:
             intr_data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
 
     hdf.close()
+
+# Count the number of galaxies in FLARES
+all_n_gals = 0
+all_n_gals_above_100 = 0
+for snap in intr_data.keys():
+    okinds = np.array(intr_data[snap][filters[0]]["Mass"]) > 10**8
+    n_gals = np.array(intr_data[snap][filters[0]]["Mass"])[okinds].size
+    all_n_gals += n_gals
+    okinds = np.array(intr_data[snap][filters[0]]["nStar"]) > 100
+    n_gals_above_100 = np.array(intr_data[snap][filters[0]]["Mass"])[okinds].size
+    all_n_gals_above_100 += n_gals_above_100
+
+    print("Galaxies with M_star/M_sun>10**8 in snapshot %s: %d"
+          % (snap, n_gals))
+    print("Galaxies with N_star>100 in snapshot %s: %d"
+          % (snap, n_gals_above_100))
+
+print("Total galaxies with M_star/M_sun>10**8: %d" % all_n_gals)
+print("Total galaxies with N_star>100: %d" % all_n_gals_above_100)
 
 for snap in all_snaps:
 
