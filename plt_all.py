@@ -107,8 +107,6 @@ for reg, snap in reg_snaps:
 for snap in all_snaps:
 
     for f in all_filters:
-        print(np.min(intr_data[snap][f]["nStar"]),
-              np.min(data[snap][f]["nStar"]))
         okinds = np.ones(len(intr_data[snap][f]["nStar"]), dtype=bool)
         for key in keys:
             okinds = np.logical_and(okinds, np.logical_and(
@@ -121,8 +119,6 @@ for snap in all_snaps:
         for key in intr_data[snap][f].keys():
             intr_data[snap][f][key] = np.array(intr_data[snap][f][key])[okinds]
 
-        print(np.min(intr_data[snap][f]["nStar"]),
-              np.min(data[snap][f]["nStar"]))
         okinds = intr_data[snap][f]["nStar"] > 100
 
         data[snap][f]["okinds"] = okinds

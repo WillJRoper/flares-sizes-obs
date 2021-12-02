@@ -333,6 +333,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
             okinds = fitting_lums < 0.3 * L_star
 
         if fitting_zs[okinds].size == 0:
+            slopes.append(np.nan)
+            slope_errors.append(np.nan)
             continue
 
         uni_z = np.unique(fitting_zs[okinds])
@@ -348,7 +350,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         slopes.append(popt[1])
         slope_errors.append(np.sqrt(pcov[1, 1]))
 
-        print("--------------", "Total", "Complete", ls,
+        print("--------------", "Total", "Complete", bin,
               mtype, f, "--------------")
         print("C=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
         print("m=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
