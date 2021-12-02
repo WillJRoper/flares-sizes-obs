@@ -380,10 +380,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         ax.errorbar(plt_z, med, yerr=(hlr_16, hlr_84), capsize=5, color=col,
                     marker="s", linestyle="none")
 
-    bt_rs = [0.6333, 0.58632, 0.5292567, 0.51400117, 0.475394]
-    bt_zs = [7, 8, 9, 10, 11]
-
-    ax.scatter(bt_zs, bt_rs, marker="*", zorder=5, markersize=10)
+    # bt_rs = [0.6333, 0.58632, 0.5292567, 0.51400117, 0.475394]
+    # bt_zs = [7, 8, 9, 10, 11]
+    #
+    # ax.scatter(bt_zs, bt_rs, marker="*", zorder=5, s=10)
 
     fit_plt_zs = np.linspace(12, 4.5, 1000)
 
