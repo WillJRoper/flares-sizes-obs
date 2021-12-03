@@ -87,8 +87,8 @@ bt_up_m = (0.664, 0.008, 0.008)  # (0.3-1)L*
 bouwens_m = (1.05, 0.21, 0.21)  # (0.3-1)L* https://iopscience.iop.org/article/10.1086/423786/pdf
 ono_low_m = (1.3, 0.12, 0.14)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
 ono_up_m = (1.3, 0.12, 0.14)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
-ono_low_norm = (1., 0.09, 0.07)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
-ono_up_norm = (0.88, 0.08, 0.09)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+ono_up_norm = (1., 0.09, 0.07)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+ono_low_norm = (0.88, 0.08, 0.09)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
 kawa_up_norm = (1.28, 0.11, 0.11)  # (0.3-1)L* https://iopscience.iop.org/article/10.3847/1538-4357/aaa6cf
 
 # Define Kawamata17 fit and parameters
@@ -365,10 +365,12 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         hlr_16 = []
         hlr_84 = []
         med = []
+        cnts = []
         for i in range(len(plt_z)):
 
             zokinds = np.logical_and(fitting_zs[okinds] > plt_z[i] - 0.5,
                                      fitting_zs[okinds] <= plt_z[i] + 0.5)
+            cnts.append(fitting_hlrs[okinds][zokinds].size)
             med.append(np.median(fitting_hlrs[okinds][zokinds]))
 
             print(plt_z[i], fitting_hlrs[okinds][zokinds].size,
@@ -382,8 +384,20 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
             hlr_16.append(np.percentile(fitting_hlrs[okinds][zokinds], 16))
             hlr_84.append(np.percentile(fitting_hlrs[okinds][zokinds], 84))
 
-        ax.errorbar(plt_z, med, yerr=(hlr_16, hlr_84), capsize=5, color=col,
+        cnts = np.array(cnts)
+        med = np.array(med)
+        hlr_16 = np.array(hlr_16)
+        hlr_84 = np.array(hlr_84)
+
+        cnt_okinds = cnts > 10
+        ax.errorbar(plt_z[cnt_okinds], med[cnt_okinds],
+                    yerr=(hlr_16[cnt_okinds], hlr_84[cnt_okinds]),
+                    capsize=5, color=col,
                     marker="s", linestyle="none")
+        ax.errorbar(plt_z[~cnt_okinds], med[~cnt_okinds],
+                    yerr=(hlr_16[~cnt_okinds], hlr_84[~cnt_okinds]),
+                    capsize=5, color=col,
+                    marker="^", linestyle="none", apha=0.8)
 
     # bt_rs = [0.6333, 0.58632, 0.5292567, 0.51400117, 0.475394]
     # bt_zs = [7, 8, 9, 10, 11]
@@ -464,7 +478,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
     ax.set_xlim(4.77, 12.5)
-    ax.set_ylim(10 ** -1.7, 10 ** 1.3)
+    ax.set_ylim(10 ** -1.6, 10 ** 1.5)
 
     ax.legend(handles=legend_elements, loc='upper center',
               bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=5)
