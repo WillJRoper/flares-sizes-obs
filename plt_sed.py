@@ -113,7 +113,7 @@ int_cmap = mpl.cm.get_cmap('plasma', len(filters))
 tot_cmap = mpl.cm.get_cmap('plasma', len(filters))
 znorm = cm.Normalize(vmin=5, vmax=10)
 
-fig = plt.figure()
+fig = plt.figure(figsize=())
 ax = fig.add_subplot(111)
 ax.loglog()
 

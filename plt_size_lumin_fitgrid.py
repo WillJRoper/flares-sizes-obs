@@ -30,6 +30,7 @@ kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
 bt_params = {'beta': {7: 0.24, 8: 0.17, 9: 0.16, 10: 0.12, 11: 0.11},
              'r_0': {7: 0.75, 8: 0.67, 9: 0.60, 10: 0.57, 11: 0.52}}
+bt_fit_uplims = {7: 30, 8: 29.8, 9: 29.72, 10: 29.61, 11: 29.6}
 
 # Lstar = M_to_lum(-21)
 Lstar = 10**28.51
@@ -173,7 +174,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
             if i > 0:
                 axes[-1].tick_params(axis='y', left=False, right=False,
                                      labelleft=False, labelright=False)
-            if i < len(snaps):
+            if i < len(snaps) - 1:
                 axes_twin[-1].tick_params(axis='y', left=False, right=False,
                                           labelleft=False, labelright=False)
             i += 1
@@ -309,8 +310,8 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
 
             if int(z) in [7, 8, 9, 10, 11]:
 
-                fit_lumins = np.logspace(np.log10(np.min(lumins[complete])),
-                                         np.log10(np.max(lumins[complete])),
+                fit_lumins = np.logspace(28.5,
+                                         bt_fit_uplims[int(z)],
                                          1000)
 
                 fit = r_fit(fit_lumins, bt_params['r_0'][int(z)],

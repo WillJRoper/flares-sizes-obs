@@ -167,7 +167,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             if i > 0:
                 axes[-1].tick_params(axis='y', left=False, right=False,
                                      labelleft=False, labelright=False)
-            if i < len(snaps):
+            if i < len(snaps) - 1:
                 axes_twin[-1].tick_params(axis='y', left=False, right=False,
                                           labelleft=False, labelright=False)
             i += 1
