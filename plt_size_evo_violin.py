@@ -322,8 +322,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     slope_errors = []
     print(np.min(fitting_lums), np.max(fitting_lums))
 
-    for ls, bin, col in zip(["-", "-", "-"], ["high", "mid", "low"],
-                            ["r", "g", "b"]):
+    for ls, bin, col in zip(["-", "-", "-"], ["low", "mid", "high"],
+                            ["b", "g", "r"]):
 
         print("Bin:", bin)
 
@@ -401,7 +401,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     bar_ax.errorbar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]],
                     yerr=[slope_errors[0], oesch_low_m[1], hol_low_m[1]],
-                    color="r", fmt="s", capsize=3)
+                    color="b", fmt="s", capsize=3)
 
     bar_ax.errorbar([1, 4, 7, 13], [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0]],
                     yerr=[slope_errors[1], bt_up_m[1], oesch_up_m[1], kawa_up_norm[1]],
@@ -409,7 +409,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
                     yerr=[slope_errors[2], hol_up_m[1]],
-                    color="b", fmt="s", capsize=3)
+                    color="r", fmt="s", capsize=3)
 
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
@@ -436,8 +436,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax.grid(False)
     bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
 
-    legend_elements.append(Line2D([0], [0], color='r',
-                                  label="$0.3 L^{*}_{z=3} \leq L$",
+    legend_elements.append(Line2D([0], [0], color='b',
+                                  label="$L < 0.3 L^{*}_{z=3}$",
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='g',
@@ -445,8 +445,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
                                         "\leq L^{*}_{z=3}$",
                                   linestyle="-"))
 
-    legend_elements.append(Line2D([0], [0], color='b',
-                                  label="$L < 0.3 L^{*}_{z=3}$",
+    legend_elements.append(Line2D([0], [0], color='r',
+                                  label="$0.3 L^{*}_{z=3} \leq L$",
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='grey',
