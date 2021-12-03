@@ -161,22 +161,14 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
         gs = gridspec.GridSpec(1, len(snaps))
         gs.update(wspace=0.0, hspace=0.0)
         axes = []
-        axes_twin = []
         ylims = []
-        ylims_twin = []
         i = 0
         while i < len(snaps):
             axes.append(fig.add_subplot(gs[0, i]))
-            axes_twin.append(axes[-1].twinx())
-            axes_twin[-1].grid(False)
             axes[-1].loglog()
-            axes_twin[-1].loglog()
             if i > 0:
                 axes[-1].tick_params(axis='y', left=False, right=False,
                                      labelleft=False, labelright=False)
-            if i < len(snaps) - 1:
-                axes_twin[-1].tick_params(axis='y', left=False, right=False,
-                                          labelleft=False, labelright=False)
             i += 1
 
         legend_elements = []
@@ -267,10 +259,6 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                              linestyle='dotted', color="m",
                              zorder=3,
                              linewidth=2)
-                axes_twin[i].plot(fit_lumins, fit,
-                             linestyle='dotted', color="m",
-                             alpha=0, zorder=3,
-                             linewidth=2)
 
                 fit = r_fit(fit_lumins, popt1[0], popt1[1])
 
@@ -278,12 +266,6 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                              linestyle='-', color="m",
                              zorder=3,
                              linewidth=2)
-
-                axes_twin[i].plot(fit_lumins,
-                                  fit * cosmo.arcsec_per_kpc_proper(z),
-                             linestyle='-', color="m",
-                             zorder=3,
-                             linewidth=2, alpha=0)
 
             except ValueError as e:
                 print(e)
@@ -332,7 +314,6 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
             axes[i].tick_params(axis='x', which='minor', bottom=True)
 
             ylims.append(axes[i].get_ylim())
-            ylims_twin.append(axes_twin[i].get_ylim())
 
             # Label axes
             axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
@@ -342,11 +323,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
 
         for i in range(len(axes)):
             axes[i].set_ylim(np.min(ylims), np.max(ylims))
-            axes_twin[i].set_ylim(
-                np.min(ylims) * cosmo.arcsec_per_kpc_proper(z).value,
-                np.max(ylims) * cosmo.arcsec_per_kpc_proper(z).value)
 
-        axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
         axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
         uni_legend_elements = []

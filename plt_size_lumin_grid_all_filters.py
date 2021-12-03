@@ -178,19 +178,14 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
     axes_ratio = []
-    axes_twin = []
     ylims = []
-    ylims_twin = []
     ylims_ratio = []
     xlims = [np.inf, 0]
     i = 0
     while i < len(snaps):
         axes.append(fig.add_subplot(gs[0, i]))
         axes_ratio.append(fig.add_subplot(gs[1, i]))
-        axes_twin.append(axes[-1].twinx())
-        axes_twin[-1].grid(False)
         axes[-1].loglog()
-        axes_twin[-1].loglog()
         axes_ratio[-1].semilogx()
         if i > 0:
             axes[-1].tick_params(axis='y', left=False, right=False,
@@ -199,9 +194,6 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                  labeltop=False, labelbottom=False)
             axes_ratio[-1].tick_params(axis='y', left=False, right=False,
                                        labelleft=False, labelright=False)
-        if i < len(snaps) - 1:
-            axes_twin[-1].tick_params(axis='y', left=False, right=False,
-                                      labelleft=False, labelright=False)
         i += 1
 
     legend_elements = []
@@ -263,11 +255,6 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                              linestyle='-', color=cmap(norm(trans[f][1])),
                              alpha=0.9, zorder=2,
                              label=f.split(".")[-1])
-                axes_twin[i].plot(fit_lumins,
-                                  fit * cosmo.arcsec_per_kpc_proper(z),
-                                  linestyle='-', color="m",
-                                  zorder=3,
-                                  linewidth=2, alpha=0)
                 if int(z) in [7, 8]:
                     if f.split(".")[-1] in bt_fits[int(z)].keys():
                         bt_fit_lumins = np.logspace(28.5,
@@ -324,7 +311,6 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes_ratio[i].tick_params(axis='x', which='minor', bottom=True)
 
         ylims.append(axes[i].get_ylim())
-        ylims_twin.append(axes_twin[i].get_ylim())
         ylims_ratio.append(axes_ratio[i].get_ylim())
 
         this_xlims = axes[i].get_xlim()
@@ -343,10 +329,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
     for i in range(len(axes)):
         axes[i].set_ylim(np.min(ylims), np.max(ylims))
-        axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
         axes_ratio[i].set_ylim(np.min(ylims_ratio), np.max(ylims_ratio))
 
-    axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
     axes_ratio[0].set_ylabel('$R_{1/2, Att}/ R_{1/2, Int}$')
 

@@ -156,20 +156,13 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         gs = gridspec.GridSpec(1, len(snaps))
         gs.update(wspace=0.0, hspace=0.0)
         axes = []
-        axes_twin = []
         ylims = []
-        ylims_twin = []
         i = 0
         while i < len(snaps):
             axes.append(fig.add_subplot(gs[0, i]))
-            axes_twin.append(axes[-1].twinx())
-            axes_twin[-1].grid(False)
             if i > 0:
                 axes[-1].tick_params(axis='y', left=False, right=False,
                                      labelleft=False, labelright=False)
-            if i < len(snaps) - 1:
-                axes_twin[-1].tick_params(axis='y', left=False, right=False,
-                                          labelleft=False, labelright=False)
             i += 1
 
         legend_elements = []
@@ -281,16 +274,6 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                cmap='plasma')
             except ValueError as e:
                 print(e, "Compact complete", snap, f)
-            try:
-                axes_twin[i].hexbin(lumins, hlrs
-                                    * cosmo.arcsec_per_kpc_proper(z).value,
-                                    gridsize=50, mincnt=1, C=w,
-                                    reduce_C_function=np.sum, xscale='log',
-                                    yscale='log', norm=weight_norm,
-                                    linewidths=0.2,
-                                    cmap='plasma', alpha=0)
-            except ValueError as e:
-                print(e, "All", snap, f)
 
                 # popt, pcov = curve_fit(kawa_fit, lumins, hlrs,
                 #                        p0=(kawa_params['r_0'][7],
@@ -408,7 +391,6 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             axes[i].tick_params(axis='x', which='minor', bottom=True)
 
             ylims.append(axes[i].get_ylim())
-            ylims_twin.append(axes_twin[i].get_ylim())
 
             # Label axes
             axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
@@ -417,10 +399,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             axes[i].set_xlim(10 ** 27.2, 10 ** 30.5)
 
         for i in range(len(axes)):
-            axes[i].set_ylim(np.min(ylims), 10**0.5)
-            axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
+            axes[i].set_ylim(np.min(ylims), 10**0.8)
 
-        axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
         axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
         uni_legend_elements = []
