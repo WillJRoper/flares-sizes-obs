@@ -388,6 +388,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         med = np.array(med)
         hlr_16 = np.array(hlr_16)
         hlr_84 = np.array(hlr_84)
+        plt_z = np.array(plt_z)
 
         cnt_okinds = cnts > 10
         ax.errorbar(plt_z[cnt_okinds], med[cnt_okinds],
