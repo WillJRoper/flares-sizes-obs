@@ -417,7 +417,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             axes[i].set_xlim(10 ** 27.2, 10 ** 30.5)
 
         for i in range(len(axes)):
-            axes[i].set_ylim(np.min(ylims), np.max(ylims))
+            axes[i].set_ylim(np.min(ylims), 10**0.5)
             axes_twin[i].set_ylim(np.min(ylims_twin), np.max(ylims_twin))
 
         axes_twin[-1].set_ylabel('$R_{1/2}/ [arcsecond]$')
