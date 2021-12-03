@@ -257,7 +257,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                              label=f.split(".")[-1])
                 if int(z) in [7, 8]:
                     if f.split(".")[-1] in bt_fits[int(z)].keys():
-                        bt_fit_lumins = np.logspace(28.5,
+                        bt_fit_lumins = np.logspace(np.log10(np.min(lumins)),
                                                  np.log10(np.max(lumins)),
                                                  1000)
                         fit = r_fit(fit_lumins,
