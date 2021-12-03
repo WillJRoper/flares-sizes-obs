@@ -238,7 +238,7 @@ for snap in snaps:
     # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
     # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
-ax.errorbar(nc_piv, nc_ys, xerr=np.array([nc_down - nc_piv, nc_up - nc_piv]),
+ax.errorbar(nc_piv, nc_ys, xerr=np.array([nc_piv - nc_down, nc_up - nc_piv]),
             capsize=5, color="m", linestyle="none", marker="s")
 
 ax.set_xlim(0.05, None)
