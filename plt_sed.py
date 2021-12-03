@@ -151,7 +151,7 @@ for snap in snaps:
                     hdf[f]["SED_intrinsic"][...])
                 sedtot_dict.setdefault(f, []).extend(hdf[f]["SED_total"][...])
                 sedlam_dict.setdefault(f, []).extend(
-                    hdf[f]["SED_lambda"][...] * 1E4)
+                    hdf[f]["SED_lambda"][...])
             except KeyError as e:
                 print(e)
                 continue
@@ -196,7 +196,7 @@ for snap in snaps:
     ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
             color="g", label="Intrinsic")
 
-    ax.set_xlim(10 ** 6.6, None)
+    # ax.set_xlim(10 ** 6.6, None)
     ax.set_ylim(10 ** 20., 10 ** 33.)
 
     # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
