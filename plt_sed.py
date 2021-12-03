@@ -78,7 +78,7 @@ for f in filters:
     for snap in all_snaps:
         z_str = snap.split('z')[1].split('p')
         z = float(z_str[0] + '.' + z_str[1])
-
+        print(reddest_NIRCam / (1 + z))
         if np.min(l[t > 0]) < reddest_NIRCam / (1 + z) and np.max(
                 l[t > 0]) > reddest_NIRCam / (1 + z):
             print(z, f.split(".")[-1], reddest_NIRCam / (1 + z))
