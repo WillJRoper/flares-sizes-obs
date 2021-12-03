@@ -154,7 +154,7 @@ for snap in snaps:
                     hdf[f]["SED_intrinsic"][...])
                 sedtot_dict.setdefault(f, []).extend(hdf[f]["SED_total"][...])
                 sedlam_dict.setdefault(f, []).extend(
-                    hdf[f]["SED_lambda"][...])
+                    hdf[f]["SED_lambda"][...] / 10000)
             except KeyError as e:
                 print(e)
                 continue
