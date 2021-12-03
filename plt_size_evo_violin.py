@@ -426,7 +426,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                    (ono_low_m[2], ono_low_m[1])]).T,
                     color="b", fmt="s", capsize=3)
 
-    bar_ax.errorbar([1, 4, 7, 13, 15],
+    bar_ax.errorbar([1, 4, 7, 13, 16],
                     [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0],
                      ono_up_m[0]],
                     yerr=np.array([(slope_errors[1], slope_errors[1]),
@@ -445,17 +445,18 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(11.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
+    bar_ax.axvline(14.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
 
     bar_ax.axhline(1, linestyle="--", color="grey", alpha=0.7)
     bar_ax.axhline(1.5, linestyle="dotted", color="grey", alpha=0.7)
 
-    bar_ax.set_xlim(-0.5, 14.5)
+    bar_ax.set_xlim(-0.5, 17.5)
 
     bar_ax.tick_params(reset=True, bottom=True, left=True,
                        top=False, right=False)
 
     bar_ax.set_ylabel("$m$", fontsize=7)
-    bar_ax.set_xticks([1, 4, 7, 10, 13, 15])
+    bar_ax.set_xticks([1, 4, 7, 10, 13, 16])
     bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+",
                             "Holwerda+", "Kawamata+", "Ono+"], fontsize=5)
     bar_ax.tick_params(axis='x', which='minor', bottom=True)
