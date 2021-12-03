@@ -261,7 +261,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         diffuse_ncom = data[snap][f]["Diffuse_Population_NotComplete"]
         compact_com = data[snap][f]["Compact_Population_Complete"]
         diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
-        complete = np.logical_or(compact_com, diffuse_com)
+        if Type == "NonComplete":
+            complete = np.ones(compact_com.size, dtype=bool)
+        else:
+            complete = np.logical_or(compact_com, diffuse_com)
 
         if len(w[complete]) == 0:
             continue

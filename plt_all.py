@@ -223,6 +223,8 @@ for f in filters:
     print("--------------------------- Evolution ---------------------------")
     size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "All",
                     "default")
+    size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "NonComplete",
+                    "default")
     size_evo_violin(data, intr_data, all_snaps, f, "part", "sim", "All",
                     "default")
     # size_evo_violin(data, intr_data, all_snaps, f, "app", "sim", "All",
