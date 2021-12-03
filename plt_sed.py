@@ -42,6 +42,9 @@ orientation = "sim"
 # Define luminosity and dust model types
 extinction = 'default'
 
+all_snaps = ['006_z009p000', '007_z008p000', '008_z007p000', '009_z006p000',
+             '010_z005p000']
+
 # Define filter
 # filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
 filters = ['FAKE.TH.' + f
@@ -49,6 +52,8 @@ filters = ['FAKE.TH.' + f
                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 
 cmap = mpl.cm.get_cmap('viridis', len(filters))
+
+reddest_NIRCam = 4.44 * 1E4
 
 trans = {}
 plt_lams = []
@@ -69,6 +74,15 @@ for f in filters:
     cents.append(i)
     bounds.append(i - 0.5)
     print(f.split(".")[-1], np.min(l[t > 0]), np.max(l[t > 0]))
+
+    for snap in all_snaps:
+        z_str = snap.split('z')[1].split('p')
+        z = float(z_str[0] + '.' + z_str[1])
+
+        if np.min(l[t > 0]) < reddest_NIRCam / (1 + z) and np.max(
+                l[t > 0]) > reddest_NIRCam / (1 + z):
+            print(z, f.split(".")[-1], reddest_NIRCam / (1 + z))
+
     if np.max(l[t > 0]) > lam_max:
         lam_max = np.max(l[t > 0])
     i += 1
@@ -113,7 +127,7 @@ int_cmap = mpl.cm.get_cmap('plasma', len(filters))
 tot_cmap = mpl.cm.get_cmap('plasma', len(filters))
 znorm = cm.Normalize(vmin=5, vmax=10)
 
-fig = plt.figure(figsize=())
+fig = plt.figure(figsize=(6.4, 3.8))
 ax = fig.add_subplot(111)
 ax.loglog()
 
@@ -183,7 +197,7 @@ for snap in snaps:
             color="g", label="Intrinsic")
 
     ax.set_xlim(10 ** 6.6, None)
-    ax.set_ylim(10 ** 20., 10**33.)
+    ax.set_ylim(10 ** 20., 10 ** 33.)
 
     # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
     # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
