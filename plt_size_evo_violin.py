@@ -12,13 +12,10 @@ matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import seaborn as sns
 import matplotlib as mpl
-import matplotlib.gridspec as gridspec
 from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
 from flare.photom import M_to_lum
 import flare.photom as photconv
-import h5py
-import sys
 import pandas as pd
 import weighted
 from matplotlib.cbook import violin_stats
@@ -72,8 +69,10 @@ def custom_violin_stats(data, weights):
 
 fit = lambda z, C, m: C * (1 + z) ** -m
 
+
 def norm_fit(z, m):
     return (1 + z) ** -m
+
 
 # Bouwens et al. (2004, 2006) claim that the relation is roughly (1 + z)−1,
 # suggestive that the sizes of disks scale with constant halo mass,
@@ -82,22 +81,28 @@ def norm_fit(z, m):
 oesch_up_m = (1.12, 0.17, 0.17)  # (0.3-1)L*
 hol_up_m = (1.3, 0.4, 0.4)  # L<0.3L*
 oesch_low_m = (1.32, 0.52, 0.52)  # L<0.3L*
-hol_low_m = (0.76, 0.12, 0.12)   # 0.3L*<L
+hol_low_m = (0.76, 0.12, 0.12)  # 0.3L*<L
 bt_up_m = (0.664, 0.008, 0.008)  # (0.3-1)L*
-bouwens_m = (1.05, 0.21, 0.21)  # (0.3-1)L* https://iopscience.iop.org/article/10.1086/423786/pdf
-ono_low_m = (1.3, 0.12, 0.14)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
-ono_up_m = (1.3, 0.12, 0.14)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
-ono_up_norm = (1., 0.09, 0.07)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
-ono_low_norm = (0.88, 0.08, 0.09)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
-kawa_up_norm = (1.28, 0.11, 0.11)  # (0.3-1)L* https://iopscience.iop.org/article/10.3847/1538-4357/aaa6cf
+bouwens_m = (1.05, 0.21,
+             0.21)  # (0.3-1)L* https://iopscience.iop.org/article/10.1086/423786/pdf
+ono_low_m = (1.3, 0.12,
+             0.14)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+ono_up_m = (1.3, 0.12,
+            0.14)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+ono_up_norm = (1., 0.09,
+               0.07)  # (0.3-1)L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+ono_low_norm = (0.88, 0.08,
+                0.09)  # L<0.3L* https://iopscience.iop.org/article/10.1088/0004-637X/777/2/155
+kawa_up_norm = (1.28, 0.11,
+                0.11)  # (0.3-1)L* https://iopscience.iop.org/article/10.3847/1538-4357/aaa6cf
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
-ono_fit = lambda z, a, m: 10**(m * np.log10(1 + z) + a)
+ono_fit = lambda z, a, m: 10 ** (m * np.log10(1 + z) + a)
 
-L_star = 10**29.03
+L_star = 10 ** 29.03
 
 
 def m_to_M(m, cosmo, z):
@@ -219,8 +224,8 @@ def M_to_m(M, cosmo, z):
     return m
 
 
-def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinction):
-
+def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
+                    extinction):
     print("Plotting for:")
     print("Orientation =", orientation)
     print("Filter =", f)
@@ -311,7 +316,6 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
         else:
             soft.append(0.001802390 / (0.6777 * (1 + z)) * 1e3)
 
-
     legend_elements = []
 
     fig = plt.figure()
@@ -331,7 +335,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
             okinds = fitting_lums >= 0.3 * L_star
         elif bin == "mid":
             okinds = np.logical_and(fitting_lums >= 0.3 * L_star,
-                                fitting_lums <= L_star)
+                                    fitting_lums <= L_star)
         else:
             okinds = fitting_lums < 0.3 * L_star
 
@@ -414,24 +418,27 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     bar_ax = ax.inset_axes([0.5, 0.65, 0.5, 0.35])
 
-    bar_ax.errorbar([0, 6, 9, 15], [slopes[0], oesch_low_m[0], hol_low_m[0], ono_low_m[0]],
-                    yerr=[(slope_errors[0], slope_errors[0]),
-                          (oesch_low_m[1], oesch_low_m[1]),
-                          (hol_low_m[1], hol_low_m[1]),
-                          (ono_low_m[2], ono_low_m[1])],
+    bar_ax.errorbar([0, 6, 9, 15],
+                    [slopes[0], oesch_low_m[0], hol_low_m[0], ono_low_m[0]],
+                    yerr=np.array([(slope_errors[0], slope_errors[0]),
+                                   (oesch_low_m[1], oesch_low_m[1]),
+                                   (hol_low_m[1], hol_low_m[1]),
+                                   (ono_low_m[2], ono_low_m[1])]),
                     color="b", fmt="s", capsize=3)
 
-    bar_ax.errorbar([1, 4, 7, 13, 15], [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0], ono_up_m[0]],
-                    yerr=[(slope_errors[1], slope_errors[1]),
-                          (bt_up_m[1], bt_up_m[1]),
-                          (oesch_up_m[1], oesch_up_m[1]),
-                          (kawa_up_norm[1], kawa_up_norm[1]),
-                          (ono_up_m[2], ono_up_m[1])],
+    bar_ax.errorbar([1, 4, 7, 13, 15],
+                    [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0],
+                     ono_up_m[0]],
+                    yerr=np.array([(slope_errors[1], slope_errors[1]),
+                                   (bt_up_m[1], bt_up_m[1]),
+                                   (oesch_up_m[1], oesch_up_m[1]),
+                                   (kawa_up_norm[1], kawa_up_norm[1]),
+                                   (ono_up_m[2], ono_up_m[1])]),
                     color="g", fmt="s", capsize=3)
 
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
-                    yerr=[(slope_errors[2], slope_errors[2]),
-                          (hol_up_m[1], hol_up_m[1])],
+                    yerr=np.array([(slope_errors[2], slope_errors[2]),
+                                   (hol_up_m[1], hol_up_m[1])]),
                     color="r", fmt="s", capsize=3)
 
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
