@@ -53,7 +53,7 @@ filters = ['FAKE.TH.' + f
 
 cmap = mpl.cm.get_cmap('viridis', len(filters))
 
-reddest_NIRCam = 4.44 * 10000
+reddest_NIRCam = 4.44
 
 trans = {}
 plt_lams = []
@@ -64,7 +64,7 @@ i = 1
 for f in filters:
     l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt',
                       skiprows=1).T
-    l *= 10000  # microns to Angstrom
+    # l *= 10000  # microns to Angstrom
     wid = np.max(l[t > 0]) - np.min(l[t > 0])
     trans[f] = []
     trans[f].append(np.min(l[t > 0]))
@@ -224,7 +224,7 @@ for snap in snaps:
     # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
     # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
-ax.set_xlabel("$\lambda / [\AA]$")
+ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
 ax.set_ylabel("$L_{" + f.split(".")[-1]
               + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
 
