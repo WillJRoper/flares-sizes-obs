@@ -264,11 +264,14 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                   linewidth=2, alpha=0)
                 if int(z) in [7, ]:
                     if f.split(".")[-1] in bt_fits[int(z)].keys():
+                        bt_fit_lumins = np.logspace(28.5,
+                                                 np.log10(np.max(lumins)),
+                                                 1000)
                         fit = r_fit(fit_lumins,
                                     bt_fits[int(z)][f.split(".")[-1]][1],
                                     bt_fits[int(z)][f.split(".")[-1]][0])
                         print("BT", bt_fits[int(z)][f.split(".")[-1]])
-                        axes[i].plot(fit_lumins, fit,
+                        axes[i].plot(bt_fit_lumins, fit,
                                      linestyle='--',
                                      color=cmap(norm(trans[f][1])),
                                      alpha=0.6, zorder=1)
