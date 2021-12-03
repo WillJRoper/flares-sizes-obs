@@ -224,7 +224,7 @@ for snap in snaps:
     # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
     # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
-# ax.set_xlim(10 ** 2.5, None)
+ax.set_xlim(10 ** 0.05, None)
 ax.set_ylim(10 ** 20., 10 ** 33.)
 
 ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
