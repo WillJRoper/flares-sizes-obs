@@ -65,7 +65,7 @@ i = 1
 for f in filters:
     l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt',
                       skiprows=1).T
-    # l *= 10000  # microns to Angstrom
+    l /= 10000  # Angstrom to microns
     wid = np.max(l[t > 0]) - np.min(l[t > 0])
     trans[f] = []
     trans[f].append(np.min(l[t > 0]))
@@ -224,7 +224,7 @@ for snap in snaps:
     # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
     # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
-ax.set_xlim(10 ** 2.5, None)
+# ax.set_xlim(10 ** 2.5, None)
 ax.set_ylim(10 ** 20., 10 ** 33.)
 
 ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
