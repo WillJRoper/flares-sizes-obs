@@ -414,16 +414,24 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
 
     bar_ax = ax.inset_axes([0.5, 0.65, 0.5, 0.35])
 
-    bar_ax.errorbar([0, 6, 9], [slopes[0], oesch_low_m[0], hol_low_m[0]],
-                    yerr=[slope_errors[0], oesch_low_m[1], hol_low_m[1]],
+    bar_ax.errorbar([0, 6, 9, 15], [slopes[0], oesch_low_m[0], hol_low_m[0], ono_low_m[0]],
+                    yerr=[(slope_errors[0], slope_errors[0]),
+                          (oesch_low_m[1], oesch_low_m[1]),
+                          (hol_low_m[1], hol_low_m[1]),
+                          (ono_low_m[2], ono_low_m[1])],
                     color="b", fmt="s", capsize=3)
 
-    bar_ax.errorbar([1, 4, 7, 13], [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0]],
-                    yerr=[slope_errors[1], bt_up_m[1], oesch_up_m[1], kawa_up_norm[1]],
+    bar_ax.errorbar([1, 4, 7, 13, 15], [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0], ono_up_m[0]],
+                    yerr=[(slope_errors[1], slope_errors[1]),
+                          (bt_up_m[1], bt_up_m[1]),
+                          (oesch_up_m[1], oesch_up_m[1]),
+                          (kawa_up_norm[1], kawa_up_norm[1]),
+                          (ono_up_m[2], ono_up_m[1])],
                     color="g", fmt="s", capsize=3)
 
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
-                    yerr=[slope_errors[2], hol_up_m[1]],
+                    yerr=[(slope_errors[2], slope_errors[2]),
+                          (hol_up_m[1], hol_up_m[1])],
                     color="r", fmt="s", capsize=3)
 
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
@@ -439,10 +447,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type, extinct
     bar_ax.tick_params(reset=True, bottom=True, left=True,
                        top=False, right=False)
 
-    bar_ax.set_ylabel("$m$")
-    bar_ax.set_xticks([1, 4, 7, 10, 13])
+    bar_ax.set_ylabel("$m$", fontsize=7)
+    bar_ax.set_xticks([1, 4, 7, 10, 13, 15])
     bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+",
-                            "Holwerda+", "Kawamata+"], fontsize=5)
+                            "Holwerda+", "Kawamata+", "Ono+"], fontsize=5)
     bar_ax.tick_params(axis='x', which='minor', bottom=True)
 
     bar_ax.set_yticks([0.5, 1, 1.5])
