@@ -53,8 +53,25 @@ filters = ['FAKE.TH.' + f
 
 cmap = mpl.cm.get_cmap('viridis', len(filters))
 
+reddest_NIRCam = 4.408
 reddest_NIRCam_low = 3.880
 reddest_NIRCam_high = 4.986
+
+nc_ys = np.logspace(22, 26.5, len(all_snaps))
+nc_piv = []
+nc_up = []
+nc_down = []
+
+for snap in all_snaps:
+    z_str = snap.split('z')[1].split('p')
+    z = float(z_str[0] + '.' + z_str[1])
+    nc_piv.append(reddest_NIRCam / (1 + z))
+    nc_up.append(reddest_NIRCam_high / (1 + z))
+    nc_down.append(reddest_NIRCam_low / (1 + z))
+
+nc_piv = np.array(nc_piv)
+nc_up = np.array(nc_up)
+nc_down = np.array(nc_down)
 
 trans = {}
 plt_lams = []
@@ -79,9 +96,6 @@ for f in filters:
     for snap in all_snaps:
         z_str = snap.split('z')[1].split('p')
         z = float(z_str[0] + '.' + z_str[1])
-        print("Shifted:",
-              np.min(l[t > 0]) * (1 + z),
-              np.max(l[t > 0]) * (1 + z))
         if np.min(l[t > 0]) * (1 + z) < reddest_NIRCam_high and np.max(
                 l[t > 0]) * (1 + z) > reddest_NIRCam_low:
             print(z, f.split(".")[-1])
@@ -223,6 +237,9 @@ for snap in snaps:
     #
     # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
     # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
+
+ax.errorbar(nc_piv, nc_ys, xerr=np.array([nc_down - nc_piv, nc_up - nc_piv]),
+            capsize=5, color="m", linestyle="none", marker="s")
 
 ax.set_xlim(0.05, None)
 ax.set_ylim(10 ** 20., 10 ** 33.)
