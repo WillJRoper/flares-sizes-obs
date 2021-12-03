@@ -307,8 +307,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                      horizontalalignment='right',
                      fontsize=8)
 
-        axes[i].tick_params(axis='x', which='minor', bottom=True)
-        axes_ratio[i].tick_params(axis='x', which='minor', bottom=True)
+        axes[i].tick_params(axis='y', which='minor', bottom=True)
+        axes_ratio[i].tick_params(axis='both', which='minor', bottom=True)
 
         ylims.append(axes[i].get_ylim())
         ylims_ratio.append(axes_ratio[i].get_ylim())

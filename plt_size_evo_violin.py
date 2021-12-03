@@ -480,7 +480,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                   label="$0.3 L^{*}_{z=3} \leq L$",
                                   linestyle="-"))
 
-    legend_elements.append(Line2D([0], [0], color='grey',
+    legend_elements.append(Line2D([0], [0], color='k',
                                   label="FLARES",
                                   linestyle="-"))
 

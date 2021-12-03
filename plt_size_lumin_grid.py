@@ -388,7 +388,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                          horizontalalignment='right',
                          fontsize=8)
 
-            axes[i].tick_params(axis='x', which='minor', bottom=True)
+            axes[i].tick_params(axis='both', which='minor', bottom=True)
 
             ylims.append(axes[i].get_ylim())
 
