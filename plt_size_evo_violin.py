@@ -423,7 +423,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                     yerr=np.array([(slope_errors[0], slope_errors[0]),
                                    (oesch_low_m[1], oesch_low_m[1]),
                                    (hol_low_m[1], hol_low_m[1]),
-                                   (ono_low_m[2], ono_low_m[1])]),
+                                   (ono_low_m[2], ono_low_m[1])]).T,
                     color="b", fmt="s", capsize=3)
 
     bar_ax.errorbar([1, 4, 7, 13, 15],
@@ -433,12 +433,12 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                    (bt_up_m[1], bt_up_m[1]),
                                    (oesch_up_m[1], oesch_up_m[1]),
                                    (kawa_up_norm[1], kawa_up_norm[1]),
-                                   (ono_up_m[2], ono_up_m[1])]),
+                                   (ono_up_m[2], ono_up_m[1])]).T,
                     color="g", fmt="s", capsize=3)
 
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
                     yerr=np.array([(slope_errors[2], slope_errors[2]),
-                                   (hol_up_m[1], hol_up_m[1])]),
+                                   (hol_up_m[1], hol_up_m[1])]).T,
                     color="r", fmt="s", capsize=3)
 
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
