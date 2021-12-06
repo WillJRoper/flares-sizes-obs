@@ -335,7 +335,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
 
             if Type != "Intrinsic":
 
-                for p in labels.keys():
+                for p in colors_in_order:
                     okinds = papers == p
                     plt_m = mags[okinds]
                     plt_r_es = r_es[okinds]
@@ -415,7 +415,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         #     Line2D([0], [0], color="g", linestyle="--",
         #            label=labels["K18"]))
         included = []
-        for l in colors_in_order:
+        for l in legend_elements:
             if (l.get_label(), l.get_marker()) not in included:
                 print((l.get_label(), l.get_marker()))
                 uni_legend_elements.append(l)
