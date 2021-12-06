@@ -58,7 +58,7 @@ mass_dict = {}
 sd_dict = {}
 
 regions = []
-for reg in range(0, 3):
+for reg in range(0, 40):
     if reg < 10:
         regions.append('0' + str(reg))
     else:
@@ -223,7 +223,7 @@ for f in filters:
     sd_dict = {}
 
     regions = []
-    for reg in range(0, 3):
+    for reg in range(0, 40):
         if reg < 10:
             regions.append('0' + str(reg))
         else:
