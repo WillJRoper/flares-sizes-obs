@@ -58,13 +58,16 @@ reddest_NIRCam_low = 3.880
 reddest_NIRCam_high = 4.986
 
 nc_ys = np.logspace(22, 26.5, len(all_snaps))
+nc_y_labels = np.logspace(22 + 0.1, 26.5 + 0.1, len(all_snaps))
 nc_piv = []
 nc_up = []
 nc_down = []
+nc_zs = []
 
 for snap in all_snaps:
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
+    nc_zs.append(z)
     nc_piv.append(reddest_NIRCam / (1 + z))
     nc_up.append(reddest_NIRCam_high / (1 + z))
     nc_down.append(reddest_NIRCam_low / (1 + z))
@@ -149,7 +152,7 @@ ax = fig.add_subplot(111)
 ax.loglog()
 
 for f in filters:
-    ax.axvspan(trans[f][0], trans[f][2], alpha=0.5,
+    ax.axvspan(trans[f][0], trans[f][2], alpha=0.8,
                color=cmap(norm(trans[f][1])))
 
 for snap in snaps:
@@ -239,7 +242,8 @@ for snap in snaps:
     # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
 ax.errorbar(nc_piv, nc_ys, xerr=np.array([nc_piv - nc_down, nc_up - nc_piv]),
-            capsize=5, color="m", linestyle="none", marker="s")
+            capsize=5, color="k", linestyle="none", marker="s", markersize=0)
+ax.annotate(nc_zs, (nc_piv, nc_y_labels))
 
 ax.set_xlim(0.05, None)
 ax.set_ylim(10 ** 20., 10 ** 33.)
