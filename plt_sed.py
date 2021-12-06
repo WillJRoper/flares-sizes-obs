@@ -57,8 +57,8 @@ reddest_NIRCam = 4.408
 reddest_NIRCam_low = 3.880
 reddest_NIRCam_high = 4.986
 
-nc_ys = np.logspace(22, 26.5, len(all_snaps))
-nc_y_labels = np.logspace(22 + 0.15, 26.5 + 0.15, len(all_snaps))
+nc_ys = np.logspace(24, 28.5, len(all_snaps))
+nc_y_labels = np.logspace(24 + 0.15, 24.5 + 0.15, len(all_snaps))
 nc_piv = []
 nc_up = []
 nc_down = []
@@ -248,7 +248,7 @@ for ind, s in enumerate(nc_zs):
                 horizontalalignment="center", fontsize=6)
 
 ax.set_xlim(0.05, None)
-ax.set_ylim(10 ** 20., 10 ** 33.)
+ax.set_ylim(10 ** 22., 10 ** 33.)
 
 ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
 ax.set_ylabel("$L_{" + f.split(".")[-1]
