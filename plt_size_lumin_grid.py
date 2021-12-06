@@ -123,10 +123,12 @@ labels = {"G11": "Grazian+2011",
           "B19": "Bridge+2019",
           "O16": "Oesch+2016",
           "S18": "Salmon+2018",
-          "H20": "Holwerda+2020"}
+          "H20": "Holwerda+2020",
+          "H07": "Hathi+2007"}
 markers = {"G11": "s", "G12": "v", "C16": "D",
            "K18": "o", "M18": "X", "MO18": "o",
-           "B19": "^", "O16": "P", "S18": "<", "H20": "*"}
+           "B19": "^", "O16": "P", "S18": "<", "H20": "*",
+           "H07": "H"}
 colors = {}
 for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
     colors[key] = cmap(norm(col))
