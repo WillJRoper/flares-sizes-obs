@@ -115,12 +115,12 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
 cmap = mpl.cm.get_cmap("winter")
 norm = plt.Normalize(vmin=0, vmax=1)
 
-labels = {"G11": "Grazian+2011",
-          "G12": "Grazian+2012",
-          "C16": "Calvi+2016",
+labels = {"C16": "Calvi+2016",
           "K18": "Kawamata+2018",
           "MO18": "Morishita+2018",
           "B19": "Bridge+2019",
+          "G11": "Grazian+2011",
+          "G12": "Grazian+2012",
           #"O16": "Oesch+2016",
           # "S18": "Salmon+2018",
           # "H20": "Holwerda+2020",
