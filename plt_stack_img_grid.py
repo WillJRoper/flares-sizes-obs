@@ -404,10 +404,10 @@ for f in filters:
             'plots/Image_grids/StackImgRow_' + f + '_' + reg
             + '_' + snap + '_' + orientation + '_' + Type
             + "_" + extinction + "".replace(".", "p") + ".png",
-            bbox_inches='tight', dpi=fig.dpi)
+            bbox_inches='tight', dpi=fig.dpi, pad_inches=0.0)
         fig_log.savefig(
             'plots/Image_grids/StackLogImgRow_' + f + '_' + reg
             + '_' + snap + '_' + orientation + '_' + Type
             + "_" + extinction + "".replace(".", "p") + ".png",
-            bbox_inches='tight', dpi=fig_log.dpi)
+            bbox_inches='tight', dpi=fig_log.dpi, pad_inches=0.0)
         plt.close(fig)
