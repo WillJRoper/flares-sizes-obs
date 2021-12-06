@@ -244,8 +244,8 @@ for snap in snaps:
 ax.errorbar(nc_piv, nc_ys, xerr=np.array([nc_piv - nc_down, nc_up - nc_piv]),
             capsize=5, color="k", linestyle="none", marker="s", markersize=0)
 for ind, s in enumerate(nc_zs):
-    ax.annotate(str(s), (nc_piv[ind], nc_y_labels[ind]),
-                horizontalalignment="center", fontsize=5)
+    ax.annotate(str(int(s)), (nc_piv[ind], nc_y_labels[ind]),
+                horizontalalignment="center", fontsize=6)
 
 ax.set_xlim(0.05, None)
 ax.set_ylim(10 ** 20., 10 ** 33.)
