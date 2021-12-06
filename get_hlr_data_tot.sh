@@ -3,7 +3,7 @@
 #SBATCH --array=1-480%40
 #SBATCH -p cosma7 #or some other partition, e.g. cosma, cosma6, etc.
 #SBATCH -A dp004
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=12
 #SBATCH -J FLARES-Sizes #Give it something meaningful.
 #SBATCH -o logs/output_hlr_job.%A_%a.out
 #SBATCH -e logs/error_hlr_job.%A_%a.err
@@ -21,7 +21,7 @@ source activate flares-env
 i=$(($SLURM_ARRAY_TASK_ID - 1))
 
 # Run the program
-./UV_size_lumin_relation_distributed.py $i sim Total
+mpirun -np 12 python UV_size_lumin_relation_distributed.py $i sim Total
 
 source deactivate
 
