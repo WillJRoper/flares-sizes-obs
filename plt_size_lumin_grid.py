@@ -150,7 +150,8 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                     mtype, weight_norm, xlims, ylims):
 
-    extent = (xlims[0], xlims[1], ylims[0], ylims[1])
+    extent = (np.log10(xlims[0]), np.log10(xlims[1]),
+              np.log10(ylims[0]), np.log10(ylims[1]))
 
     for f in filters:
 
