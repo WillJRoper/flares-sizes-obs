@@ -339,25 +339,52 @@ for f in filters:
                 #     axes_log[i, j].set_ylabel(f.split(".")[-1], fontsize=6)
                 if i == 0:
                     if bins[j + 1] == np.inf:
-                        axes[i, j].set_title("$10^{%.1f} \leq "
-                                             "M/M_\odot$"
-                                             % (np.log10(bins[j])),
-                                             fontsize=5)
-                        axes_log[i, j].set_title("$10^{%.1f} \leq "
-                                                 "M/M_\odot$"
-                                                 % (np.log10(bins[j])),
-                                                 fontsize=5)
+
+                        axes[i, j].text(0.05, 0.95,
+                                        "$10^{%.1f} \leq M/M_\odot$" % (
+                                            np.log10(bins[j])),
+                                        bbox=dict(boxstyle="round,pad=0.3",
+                                                  fc='grey',
+                                                  ec="w", lw=1, alpha=0.7),
+                                        transform=axes[i].transAxes,
+                                        horizontalalignment='left', color="w",
+                                        fontsize=3)
+
+                        axes_log[i, j].text(0.05, 0.95,
+                                            "$10^{%.1f} \leq M/M_\odot$" % (
+                                                np.log10(bins[j])),
+                                            bbox=dict(boxstyle="round,pad=0.3",
+                                                      fc='grey',
+                                                      ec="w", lw=1, alpha=0.7),
+                                            transform=axes[i].transAxes,
+                                            horizontalalignment='left',
+                                            color="w",
+                                            fontsize=3)
                     else:
-                        axes[i, j].set_title("$10^{%.1f} \leq M/M_\odot "
-                                             "< 10^{%.1f}$"
-                                             % (np.log10(bins[j]),
-                                                np.log10(bins[j + 1])),
-                                             fontsize=5)
-                        axes_log[i, j].set_title("$10^{%.1f} \leq M/M_\odot "
-                                                 "< 10^{%.1f}$"
-                                                 % (np.log10(bins[j]),
-                                                    np.log10(bins[j + 1])),
-                                                 fontsize=5)
+                        axes[i, j].text(0.05, 0.95,
+                                        "$10^{%.1f} \leq M/M_\odot "
+                                        "< 10^{%.1f}$"
+                                        % (np.log10(bins[j]),
+                                           np.log10(bins[j + 1])),
+                                        bbox=dict(boxstyle="round,pad=0.3",
+                                                  fc='grey',
+                                                  ec="w", lw=1, alpha=0.7),
+                                        transform=axes[i].transAxes,
+                                        horizontalalignment='left', color="w",
+                                        fontsize=3)
+
+                        axes_log[i, j].text(0.05, 0.95,
+                                            "$10^{%.1f} \leq M/M_\odot "
+                                            "< 10^{%.1f}$"
+                                            % (np.log10(bins[j]),
+                                               np.log10(bins[j + 1])),
+                                            bbox=dict(boxstyle="round,pad=0.3",
+                                                      fc='grey',
+                                                      ec="w", lw=1, alpha=0.7),
+                                            transform=axes[i].transAxes,
+                                            horizontalalignment='left',
+                                            color="w",
+                                            fontsize=3)
 
                 size = stacks[f][b].shape[0]
                 axes[i, j].imshow(
@@ -369,7 +396,9 @@ for f in filters:
                     stacks[f][b][int(0.3 * size):-int(0.3 * size),
                     int(0.3 * size):-int(0.3 * size)],
                     cmap=cmr.neutral,
-                    norm=cm.LogNorm(vmin=np.percentile(stacks[f][b][int(0.3 * size):-int(0.3 * size), int(0.3 * size):-int(0.3 * size)], 16)))
+                    norm=cm.LogNorm(vmin=np.percentile(
+                        stacks[f][b][int(0.3 * size):-int(0.3 * size),
+                        int(0.3 * size):-int(0.3 * size)], 16)))
 
         fig.savefig(
             'plots/Image_grids/StackImgRow_' + f + '_' + reg

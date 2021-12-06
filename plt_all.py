@@ -69,7 +69,6 @@ for reg, snap in reg_snaps:
             "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
                                                             orientation),
             "r")
-        print(reg, snap, list(hdf[filters[0]].keys()))
     except OSError as e:
         print(reg, snap, e)
         continue
@@ -87,7 +86,7 @@ for reg, snap in reg_snaps:
                 data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
             except KeyError as e:
                 print(reg, snap, e)
-                
+
         img_shape = hdf[f]["Images"].shape
         if len(img_shape) > 2:
             img_shapes[snap] = (img_shape[1],
