@@ -205,15 +205,16 @@ for snap in all_snaps:
 weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
 print("--------------------------- Size-Lumin ---------------------------")
 size_lumin_grid(data, snaps, filters, orientation, "Total",
-                "default", "pix", weight_norm, sample="Complete")
-size_lumin_grid(data, snaps, filters, orientation, "Total",
-                "default", "pix", weight_norm, sample="All")
+                "default", "pix", weight_norm)
 # size_lumin_grid(data, snaps, filters, orientation, "Total",
 #                 "default", "app", weight_norm)
 print("--------------------------- Fits ---------------------------")
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
-                    "pix")
+                    "pix", sample="Complete")
+fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
+                    "default",
+                    "pix", sample="All")
 # fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
 #                     "default",
 #                     "app")
