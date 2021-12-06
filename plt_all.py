@@ -203,9 +203,14 @@ for snap in all_snaps:
 
 # Define the norm
 weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
+
+# Define size luminosity limits
+xlims = (10 ** 27.2, 10 ** 30.5)
+ylims = (10**-1.1, 10**0.8)
+
 print("--------------------------- Size-Lumin ---------------------------")
 size_lumin_grid(data, snaps, filters, orientation, "Total",
-                "default", "pix", weight_norm)
+                "default", "pix", weight_norm, xlims, ylims)
 # size_lumin_grid(data, snaps, filters, orientation, "Total",
 #                 "default", "app", weight_norm)
 print("--------------------------- Fits ---------------------------")

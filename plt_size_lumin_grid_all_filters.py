@@ -129,7 +129,7 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
-                         Type, extinction, mtype, weight_norm):
+                         Type, extinction, mtype, weight_norm, xlims, ylims):
     trans = {}
     plt_lams = []
     cents = []
@@ -178,9 +178,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
     axes_ratio = []
-    ylims = []
     ylims_ratio = []
-    xlims = [np.inf, 0]
     i = 0
     while i < len(snaps):
         axes.append(fig.add_subplot(gs[0, i]))
@@ -307,10 +305,10 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                      horizontalalignment='right',
                      fontsize=8)
 
-        axes[i].tick_params(axis='y', which='minor', bottom=True)
-        axes_ratio[i].tick_params(axis='both', which='minor', bottom=True)
+        axes[i].tick_params(axis='y', which='minor', left=True)
+        axes_ratio[i].tick_params(axis='both', which='minor',
+                                  bottom=True, left=True)
 
-        ylims.append(axes[i].get_ylim())
         ylims_ratio.append(axes_ratio[i].get_ylim())
 
         this_xlims = axes[i].get_xlim()
@@ -328,7 +326,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes_ratio[i].set_xlim(xlims[0], xlims[1])
 
     for i in range(len(axes)):
-        axes[i].set_ylim(np.min(ylims), np.max(ylims))
+        axes[i].set_ylim(ylims[0], ylims[1])
         axes_ratio[i].set_ylim(np.min(ylims_ratio), np.max(ylims_ratio))
 
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')

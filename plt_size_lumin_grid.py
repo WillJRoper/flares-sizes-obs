@@ -121,7 +121,7 @@ labels = {"C16": "Calvi+2016",
           "B19": "Bridge+2019",
           "G11": "Grazian+2011",
           "G12": "Grazian+2012",
-          #"O16": "Oesch+2016",
+          # "O16": "Oesch+2016",
           # "S18": "Salmon+2018",
           # "H20": "Holwerda+2020",
           "H07": "Hathi+2007"}
@@ -148,7 +148,10 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
-                    mtype, weight_norm):
+                    mtype, weight_norm, xlims, ylims):
+
+    extent = (xlims[0], xlims[1], ylims[0], ylims[1])
+
     for f in filters:
 
         print("Plotting for:")
@@ -160,7 +163,6 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         gs = gridspec.GridSpec(1, len(snaps))
         gs.update(wspace=0.0, hspace=0.0)
         axes = []
-        ylims = []
         i = 0
         while i < len(snaps):
             axes.append(fig.add_subplot(gs[0, i]))
@@ -239,7 +241,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                       reduce_C_function=np.sum,
                                       xscale='log', yscale='log',
                                       norm=weight_norm, linewidths=0.2,
-                                      cmap='Greys', alpha=0.2)
+                                      cmap='Greys', alpha=0.2, extent=extent)
             except ValueError as e:
                 print(e, "Diffuse incomplete", snap, f)
                 print(lumins[diffuse_ncom][lumins[diffuse_ncom] <= 0],
@@ -252,7 +254,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                reduce_C_function=np.sum,
                                xscale='log', yscale='log',
                                norm=weight_norm, linewidths=0.2,
-                               cmap='plasma', alpha=0.2)
+                               cmap='plasma', alpha=0.2, extent=extent)
             except ValueError as e:
                 print(e, "Compact incomplete", snap, f)
                 print(lumins[compact_ncom][lumins[compact_ncom] <= 0],
@@ -264,7 +266,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                       reduce_C_function=np.sum,
                                       xscale='log', yscale='log',
                                       norm=weight_norm, linewidths=0.2,
-                                      cmap='Greys')
+                                      cmap='Greys', extent=extent)
             except ValueError as e:
                 print(e, "Diffuse complete", snap, f)
             try:
@@ -275,7 +277,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                reduce_C_function=np.sum,
                                xscale='log', yscale='log',
                                norm=weight_norm, linewidths=0.2,
-                               cmap='plasma')
+                               cmap='plasma', extent=extent)
             except ValueError as e:
                 print(e, "Compact complete", snap, f)
 
@@ -392,18 +394,17 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                          horizontalalignment='right',
                          fontsize=8)
 
-            axes[i].tick_params(axis='both', which='minor', bottom=True)
-
-            ylims.append(axes[i].get_ylim())
+            axes[i].tick_params(axis='both', which='minor',
+                                bottom=True, left=True)
 
             # Label axes
             axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
                                + "}/$ [erg $/$ s $/$ Hz]")
 
-            axes[i].set_xlim(10 ** 27.2, 10 ** 30.5)
+            axes[i].set_xlim(xlims[0], xlims[1])
 
         for i in range(len(axes)):
-            axes[i].set_ylim(np.min(ylims), 10**0.8)
+            axes[i].set_ylim(ylims[0], ylims[1])
 
         axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 

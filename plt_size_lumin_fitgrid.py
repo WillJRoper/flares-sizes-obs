@@ -152,7 +152,7 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
-                        extinction, mtype, sample):
+                        extinction, mtype, sample, xlims, ylims):
     for f in filters:
 
         print("Plotting for:")
@@ -164,7 +164,6 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
         gs = gridspec.GridSpec(1, len(snaps))
         gs.update(wspace=0.0, hspace=0.0)
         axes = []
-        ylims = []
         i = 0
         while i < len(snaps):
             axes.append(fig.add_subplot(gs[0, i]))
@@ -321,7 +320,6 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                              zorder=2,
                              label="Liu+17")
 
-
             axes[i].text(0.95, 0.05, f'$z={z}$',
                          bbox=dict(boxstyle="round,pad=0.3", fc='w',
                                    ec="k", lw=1, alpha=0.8),
@@ -329,18 +327,17 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                          horizontalalignment='right',
                          fontsize=8)
 
-            axes[i].tick_params(axis='both', which='minor', bottom=True)
-
-            ylims.append(axes[i].get_ylim())
+            axes[i].tick_params(axis='both', which='minor',
+                                bottom=True, left=True)
 
             # Label axes
             axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
                                + "}/$ [erg $/$ s $/$ Hz]")
 
-            axes[i].set_xlim(10 ** 27.2, 10 ** 31.)
+            axes[i].set_xlim(xlims[0], xlims[1])
 
         for i in range(len(axes)):
-            axes[i].set_ylim(np.min(ylims), np.max(ylims))
+            axes[i].set_ylim(ylims[0], ylims[1])
 
         axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
