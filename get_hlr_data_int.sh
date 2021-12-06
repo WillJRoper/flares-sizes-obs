@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --ntasks 1 # The number of cores you need...
+#SBATCH --ntasks 12 # The number of cores you need...
 #SBATCH --array=1-480%40
 #SBATCH -p cosma7 #or some other partition, e.g. cosma, cosma6, etc.
 #SBATCH -A dp004

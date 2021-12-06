@@ -340,3 +340,11 @@ for f in filters:
                          data[snap][f]["Compact_Population_NotComplete"],
                          data[snap][f]["Diffuse_Population_NotComplete"],
                          weight_norm, orientation, "Total", "default")
+        size_comp_smooth(f, snap, intr_data[snap][f]["HLR_Pixel_0.5"],
+                         intr_data[snap][f]["HLR_Pixel_0.5_No_Smooth"],
+                         data[snap][f]["Weight"],
+                         intr_data[snap][f]["Compact_Population_Complete"],
+                         intr_data[snap][f]["Diffuse_Population_Complete"],
+                         intr_data[snap][f]["Compact_Population_NotComplete"],
+                         intr_data[snap][f]["Diffuse_Population_NotComplete"],
+                         weight_norm, orientation, "Intrinsic", "default")

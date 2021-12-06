@@ -1,9 +1,9 @@
 #!/bin/bash -l
-#SBATCH --ntasks 1 # The number of cores you need...
+#SBATCH --ntasks 12 # The number of cores you need...
 #SBATCH --array=1-480%40
 #SBATCH -p cosma7 #or some other partition, e.g. cosma, cosma6, etc.
 #SBATCH -A dp004
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=1
 #SBATCH -J FLARES-Sizes #Give it something meaningful.
 #SBATCH -o logs/output_hlr_job.%A_%a.out
 #SBATCH -e logs/error_hlr_job.%A_%a.err
