@@ -152,7 +152,7 @@ ax = fig.add_subplot(111)
 ax.loglog()
 
 for f in filters:
-    ax.axvspan(trans[f][0], trans[f][2], alpha=0.8,
+    ax.axvspan(trans[f][0], trans[f][2],
                color=cmap(norm(trans[f][1])))
 
 for snap in snaps:
