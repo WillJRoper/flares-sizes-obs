@@ -59,6 +59,9 @@ for reg in reversed(regions):
     for snap in all_snaps:
         reg_snaps.append((reg, snap))
 
+# Define dictionary for image size
+img_shapes = {}
+
 for reg, snap in reg_snaps:
 
     try:
@@ -85,7 +88,8 @@ for reg, snap in reg_snaps:
             except KeyError as e:
                 print(reg, snap, e)
 
-        print(snap, "image shape:", hdf[f]["Images"].shape)
+        img_shapes[snap] = (hdf[f]["Images"].shape[1],
+                            hdf[f]["Images"].shape[2])
 
         data[snap][f].setdefault("Weight", []).extend(
             np.full(hdf[f]["Mass"][...].size, weights[int(reg)]))
@@ -136,6 +140,9 @@ for snap in intr_data.keys():
 
 print("Total galaxies with M_star/M_sun>10**8: %d" % all_n_gals)
 print("Total galaxies with N_star>100: %d" % all_n_gals_above_100)
+
+print("Image Dimensions:")
+print(img_shapes)
 
 for snap in all_snaps:
 
@@ -236,7 +243,7 @@ fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
 print("--------------------------- All filters ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
-                     "pix", weight_norm, xlims, ylims)
+                     "pix", weight_norm, list(xlims), list(ylims))
 
 for f in filters:
     print(f)
