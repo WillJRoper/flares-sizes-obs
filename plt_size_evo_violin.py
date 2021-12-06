@@ -396,11 +396,11 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         cnt_okinds = cnts > 10
         ax.errorbar(plt_z[cnt_okinds], med[cnt_okinds],
                     yerr=(hlr_16[cnt_okinds], hlr_84[cnt_okinds]),
-                    capsize=7, color=col,
+                    capsize=5, color=col,
                     marker="s", linestyle="none")
         ax.errorbar(plt_z[~cnt_okinds], med[~cnt_okinds],
                     yerr=(hlr_16[~cnt_okinds], hlr_84[~cnt_okinds]),
-                    capsize=7, color=col,
+                    capsize=5, color=col,
                     marker="^", linestyle="none", alpha=0.8)
 
     # bt_rs = [0.6333, 0.58632, 0.5292567, 0.51400117, 0.475394]
@@ -423,7 +423,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                    (oesch_low_m[1], oesch_low_m[1]),
                                    (hol_low_m[1], hol_low_m[1]),
                                    (ono_low_m[2], ono_low_m[1])]).T,
-                    color="b", fmt="s", capsize=3)
+                    color="b", fmt="s", capsize=3, markersize=5)
 
     bar_ax.errorbar([1, 4, 7, 13, 16],
                     [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0],
@@ -433,12 +433,12 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                    (oesch_up_m[1], oesch_up_m[1]),
                                    (kawa_up_norm[1], kawa_up_norm[1]),
                                    (ono_up_m[2], ono_up_m[1])]).T,
-                    color="g", fmt="s", capsize=3)
+                    color="g", fmt="s", capsize=3, markersize=5)
 
     bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
                     yerr=np.array([(slope_errors[2], slope_errors[2]),
                                    (hol_up_m[1], hol_up_m[1])]).T,
-                    color="r", fmt="s", capsize=3)
+                    color="r", fmt="s", capsize=3, markersize=5)
 
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
