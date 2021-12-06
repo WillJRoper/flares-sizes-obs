@@ -16,6 +16,15 @@ import h5py
 import sys
 from synthobs.sed import models
 import flare.filters
+import mpi4py
+from mpi4py import MPI
+
+mpi4py.rc.recv_mprobe = False
+
+# Initializations and preliminaries
+comm = MPI.COMM_WORLD  # get MPI communicator object
+size = comm.size  # total number of processes
+rank = comm.rank  # rank of this process
 
 
 regions = []
@@ -52,9 +61,11 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
 
 # Define filter
 # filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
-filters = ['FAKE.TH.' + f
+rank_filters = ['FAKE.TH.' + f
            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
+
+filters = [rank_filters[rank], ]
 
 run = True
 
@@ -363,8 +374,8 @@ if run:
         print("There are", len(img_dict[tag][f]), "images")
 
     hdf = h5py.File(
-        "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
-                                                        orientation),
+        "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
+                                                        orientation, f),
         "w")
 
     for f in filters:
