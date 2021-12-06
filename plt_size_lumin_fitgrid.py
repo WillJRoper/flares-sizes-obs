@@ -237,11 +237,11 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                 print("R_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
                 print("beta=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
                 print(pcov)
-                print("--------------", "Total", "Compact", mtype, f,
-                      "--------------")
-                print("R_0=", popt1[0], "+/-", np.sqrt(pcov1[0, 0]))
-                print("beta=", popt1[1], "+/-", np.sqrt(pcov1[1, 1]))
-                print(pcov1)
+                # print("--------------", "Total", "Compact", mtype, f,
+                #       "--------------")
+                # print("R_0=", popt1[0], "+/-", np.sqrt(pcov1[0, 0]))
+                # print("beta=", popt1[1], "+/-", np.sqrt(pcov1[1, 1]))
+                # print(pcov1)
                 print("--------------", "Kawamata", "All", mtype, f,
                       "--------------")
                 if int(z) in [6, 7, 8, 9]:
@@ -260,9 +260,8 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                 fit = r_fit(fit_lumins, popt[0], popt[1])
 
                 axes[i].plot(fit_lumins, fit,
-                             linestyle='dotted', color="m",
-                             zorder=3,
-                             linewidth=2)
+                             linestyle='-', color="r",
+                             zorder=3)
 
                 # fit = r_fit(fit_lumins, popt1[0], popt1[1])
                 #
