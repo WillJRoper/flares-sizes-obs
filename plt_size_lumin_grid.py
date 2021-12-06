@@ -121,14 +121,14 @@ labels = {"G11": "Grazian+2011",
           "K18": "Kawamata+2018",
           "MO18": "Morishita+2018",
           "B19": "Bridge+2019",
-          "O16": "Oesch+2016",
-          "S18": "Salmon+2018",
-          "H20": "Holwerda+2020",
+          #"O16": "Oesch+2016",
+          # "S18": "Salmon+2018",
+          # "H20": "Holwerda+2020",
           "H07": "Hathi+2007"}
 markers = {"G11": "s", "G12": "v", "C16": "D",
            "K18": "o", "M18": "X", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*",
-           "H07": "H"}
+           "H07": "P"}
 colors = {}
 for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
     colors[key] = cmap(norm(col))
@@ -364,24 +364,24 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                     marker=markers[p], label=labels[p], s=10,
                                     color=colors[p], alpha=0.7)
 
-                if int(z) in [6, 7, 8, 9]:
-
-                    if z == 7 or z == 6:
-                        low_lim = -16
-                    elif z == 8:
-                        low_lim = -16.8
-                    else:
-                        low_lim = -15.4
-                    fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
-                                             np.log10(M_to_lum(low_lim)),
-                                             1000)
-
-                    fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
-                                   kawa_params['beta'][int(z)])
-                    axes[i].plot(fit_lumins, fit,
-                                 linestyle='dashed', color="g",
-                                 alpha=0.9, zorder=2,
-                                 label="Kawamata+18", linewidth=4)
+                # if int(z) in [6, 7, 8, 9]:
+                #
+                #     if z == 7 or z == 6:
+                #         low_lim = -16
+                #     elif z == 8:
+                #         low_lim = -16.8
+                #     else:
+                #         low_lim = -15.4
+                #     fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                #                              np.log10(M_to_lum(low_lim)),
+                #                              1000)
+                #
+                #     fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
+                #                    kawa_params['beta'][int(z)])
+                #     axes[i].plot(fit_lumins, fit,
+                #                  linestyle='dashed', color="g",
+                #                  alpha=0.9, zorder=2,
+                #                  label="Kawamata+18", linewidth=4)
 
             axes[i].text(0.95, 0.05, f'$z={z}$',
                          bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -409,9 +409,9 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         uni_legend_elements.append(
             Line2D([0], [0], color="k", linestyle="none", marker="h",
                    label="FLARES"))
-        uni_legend_elements.append(
-            Line2D([0], [0], color="g", linestyle="--",
-                   label=labels["K18"]))
+        # uni_legend_elements.append(
+        #     Line2D([0], [0], color="g", linestyle="--",
+        #            label=labels["K18"]))
         included = []
         for l in legend_elements:
             if (l.get_label(), l.get_marker()) not in included:

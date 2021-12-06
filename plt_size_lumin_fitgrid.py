@@ -30,6 +30,8 @@ kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
 bt_params = {'beta': {7: 0.24, 8: 0.17, 9: 0.16, 10: 0.12, 11: 0.11},
              'r_0': {7: 0.75, 8: 0.67, 9: 0.60, 10: 0.57, 11: 0.52}}
+mer_params = {'beta': {5: 0.25, 6: 0.23, 7: 0.25, 8: 0.28, 9: 0.30, 10: 0.36},
+             'r_0': {5: 1.17, 6: 0.80, 7: 0.61, 8: 0.53, 9: 0.42, 10: 0.45}}
 bt_fit_uplims = {7: 30, 8: 29.8, 9: 29.72, 10: 29.61, 11: 29.6}
 
 # Lstar = M_to_lum(-21)
@@ -260,12 +262,12 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                              zorder=3,
                              linewidth=2)
 
-                fit = r_fit(fit_lumins, popt1[0], popt1[1])
-
-                axes[i].plot(fit_lumins, fit,
-                             linestyle='-', color="m",
-                             zorder=3,
-                             linewidth=2)
+                # fit = r_fit(fit_lumins, popt1[0], popt1[1])
+                #
+                # axes[i].plot(fit_lumins, fit,
+                #              linestyle='-', color="m",
+                #              zorder=3,
+                #              linewidth=2)
 
             except ValueError as e:
                 print(e)
@@ -288,7 +290,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dashed', color="g",
                              zorder=2,
-                             label="Kawamata+18", linewidth=4)
+                             label="Kawamata+18")
 
             if int(z) in [7, 8, 9, 10, 11]:
 
@@ -299,9 +301,22 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                 fit = r_fit(fit_lumins, bt_params['r_0'][int(z)],
                                bt_params['beta'][int(z)])
                 axes[i].plot(fit_lumins, fit,
+                             linestyle='dashed', color="b",
+                             zorder=2,
+                             label="Marshall+21")
+
+            if int(z) in [5, 6, 7, 8, 9, 10]:
+
+                fit_lumins = np.logspace(np.log10(M_to_lum(-22)),
+                                         np.log10(M_to_lum(-14)),
+                                         1000)
+
+                fit = r_fit(fit_lumins, mer_params['r_0'][int(z)],
+                               mer_params['beta'][int(z)])
+                axes[i].plot(fit_lumins, fit,
                              linestyle='dashed', color="m",
                              zorder=2,
-                             label="BlueTides+21", linewidth=4)
+                             label="Liu+17")
 
 
             axes[i].text(0.95, 0.05, f'$z={z}$',
@@ -327,12 +342,12 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
         axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
 
         uni_legend_elements = []
+        # uni_legend_elements.append(
+        #     Line2D([0], [0], color="m", linestyle="dotted",
+        #            label="FLARES (All)"))
         uni_legend_elements.append(
-            Line2D([0], [0], color="m", linestyle="dotted",
-                   label="FLARES (All)"))
-        uni_legend_elements.append(
-            Line2D([0], [0], color="m", linestyle="-",
-                   label="FLARES (Complete)"))
+            Line2D([0], [0], color="r", linestyle="-",
+                   label="FLARES"))
         # uni_legend_elements.append(
         #     Line2D([0], [0], color="m", linestyle="--",
         #            label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
@@ -340,8 +355,11 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
             Line2D([0], [0], color="g", linestyle="--",
                    label=labels["K18"]))
         uni_legend_elements.append(
+            Line2D([0], [0], color="b", linestyle="--",
+                   label="Marshall+2021"))
+        uni_legend_elements.append(
             Line2D([0], [0], color="m", linestyle="--",
-                   label="BlueTides+21"))
+                   label="Liu+2017"))
         included = []
         for l in legend_elements:
             if (l.get_label(), l.get_marker()) not in included:
