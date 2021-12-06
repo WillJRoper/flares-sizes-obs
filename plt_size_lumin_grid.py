@@ -130,8 +130,10 @@ markers = {"G11": "s", "G12": "v", "C16": "D",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*",
            "H07": "P"}
 colors = {}
-for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
+colors_in_order = []
+for key, col in zip(labels.keys(), np.linspace(0, 1, len(labels.keys()))):
     colors[key] = cmap(norm(col))
+    colors_in_order.append(key)
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -413,7 +415,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         #     Line2D([0], [0], color="g", linestyle="--",
         #            label=labels["K18"]))
         included = []
-        for l in legend_elements:
+        for l in colors_in_order:
             if (l.get_label(), l.get_marker()) not in included:
                 print((l.get_label(), l.get_marker()))
                 uni_legend_elements.append(l)
