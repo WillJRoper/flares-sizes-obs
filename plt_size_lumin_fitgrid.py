@@ -152,8 +152,7 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
-                        extinction,
-                        mtype):
+                        extinction, mtype, sample):
     for f in filters:
 
         print("Plotting for:")
@@ -201,7 +200,10 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
             diffuse_ncom = data[snap][f]["Diffuse_Population_NotComplete"]
             compact_com = data[snap][f]["Compact_Population_Complete"]
             diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
-            complete = np.logical_or(compact_com, diffuse_com)
+            if sample == "Complete":
+                complete = np.logical_or(compact_com, diffuse_com)
+            else:
+                complete = np.ones(compact_com.size, dtype=bool)
 
             try:
 
@@ -374,7 +376,8 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
 
         fig.savefig(
             'plots/FitHalfLightRadius_' + mtype + "_" + f + '_'
-            + orientation + '_' + Type + "_" + extinction + ".png",
+            + orientation + '_' + Type + "_" + extinction + "_"
+            + sample + ".png",
             bbox_inches='tight', dpi=300)
 
         plt.close(fig)
