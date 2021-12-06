@@ -223,7 +223,7 @@ for f in filters:
     sd_dict = {}
 
     regions = []
-    for reg in range(0, 40):
+    for reg in range(0, 3):
         if reg < 10:
             regions.append('0' + str(reg))
         else:
@@ -346,7 +346,7 @@ for f in filters:
                                         bbox=dict(boxstyle="round,pad=0.3",
                                                   fc='grey',
                                                   ec="w", lw=1, alpha=0.7),
-                                        transform=axes[i].transAxes,
+                                        transform=axes[i, j].transAxes,
                                         horizontalalignment='left', color="w",
                                         fontsize=3)
 
@@ -356,7 +356,7 @@ for f in filters:
                                             bbox=dict(boxstyle="round,pad=0.3",
                                                       fc='grey',
                                                       ec="w", lw=1, alpha=0.7),
-                                            transform=axes[i].transAxes,
+                                            transform=axes[i, j].transAxes,
                                             horizontalalignment='left',
                                             color="w",
                                             fontsize=3)
@@ -369,7 +369,7 @@ for f in filters:
                                         bbox=dict(boxstyle="round,pad=0.3",
                                                   fc='grey',
                                                   ec="w", lw=1, alpha=0.7),
-                                        transform=axes[i].transAxes,
+                                        transform=axes_log[i, j].transAxes,
                                         horizontalalignment='left', color="w",
                                         fontsize=3)
 
@@ -381,7 +381,7 @@ for f in filters:
                                             bbox=dict(boxstyle="round,pad=0.3",
                                                       fc='grey',
                                                       ec="w", lw=1, alpha=0.7),
-                                            transform=axes[i].transAxes,
+                                            transform=axes_log[i, j].transAxes,
                                             horizontalalignment='left',
                                             color="w",
                                             fontsize=3)
