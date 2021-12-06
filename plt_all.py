@@ -111,7 +111,10 @@ for reg, snap in reg_snaps:
                                       []).extend(surf_dens)
 
         for key in keys:
-            intr_data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
+            try:
+                intr_data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
+            except KeyError as e:
+                print(reg, snap, e)
 
     hdf.close()
 
