@@ -7,10 +7,8 @@ from photutils import CircularAperture
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 warnings.filterwarnings('ignore')
-from scipy.stats import binned_statistic
 import phot_modules as phot
 import utilities as util
-from flare.photom import M_to_lum
 from scipy.spatial import cKDTree
 import h5py
 import sys
@@ -55,9 +53,6 @@ Type = sys.argv[3]
 extinction = 'default'
 
 reg, tag = reg_snaps[ind]
-print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
-      "for region {x} and snapshot {u}".format(o=orientation, t=Type,
-                                               e=extinction, x=reg, u=tag))
 
 # Define filter
 # filters = ('FAKE.TH.FUV', 'FAKE.TH.NUV', 'FAKE.TH.V')
@@ -66,6 +61,13 @@ rank_filters = ['FAKE.TH.' + f
                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 
 filters = [rank_filters[rank], ]
+
+print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
+      "for region {x} filter {filt} and snapshot {u}".format(o=orientation,
+                                                             t=Type,
+                                                             e=extinction,
+                                                             x=reg, u=tag,
+                                                             filt=filters[0]))
 
 run = True
 

@@ -80,7 +80,12 @@ for reg, snap in reg_snaps:
         intr_data[snap].setdefault(f, {})
 
         for key in keys:
-            data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
+            try:
+                data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
+            except KeyError as e:
+                print(reg, snap, e)
+
+        print(snap, "image shape:", hdf[f]["Images"].shape)
 
         data[snap][f].setdefault("Weight", []).extend(
             np.full(hdf[f]["Mass"][...].size, weights[int(reg)]))
