@@ -340,7 +340,7 @@ for f in filters:
                 if i == 0:
                     if bins[j + 1] == np.inf:
 
-                        axes[i, j].text(0.05, 0.9,
+                        axes[i, j].text(0.05, 0.875,
                                         "$10^{%.1f} \leq M/M_\odot$" % (
                                             np.log10(bins[j])),
                                         bbox=dict(boxstyle="round,pad=0.3",
@@ -350,7 +350,7 @@ for f in filters:
                                         horizontalalignment='left', color="w",
                                         fontsize=3)
 
-                        axes_log[i, j].text(0.05, 0.9,
+                        axes_log[i, j].text(0.05, 0.875,
                                             "$10^{%.1f} \leq M/M_\odot$" % (
                                                 np.log10(bins[j])),
                                             bbox=dict(boxstyle="round,pad=0.3",
@@ -361,7 +361,7 @@ for f in filters:
                                             color="w",
                                             fontsize=3)
                     else:
-                        axes[i, j].text(0.05, 0.9,
+                        axes[i, j].text(0.05, 0.875,
                                         "$10^{%.1f} \leq M/M_\odot "
                                         "< 10^{%.1f}$"
                                         % (np.log10(bins[j]),
@@ -373,7 +373,7 @@ for f in filters:
                                         horizontalalignment='left', color="w",
                                         fontsize=3)
 
-                        axes_log[i, j].text(0.05, 0.9,
+                        axes_log[i, j].text(0.05, 0.875,
                                             "$10^{%.1f} \leq M/M_\odot "
                                             "< 10^{%.1f}$"
                                             % (np.log10(bins[j]),
