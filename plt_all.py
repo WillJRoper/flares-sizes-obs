@@ -66,7 +66,7 @@ for reg, snap in reg_snaps:
             "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
                                                             orientation),
             "r")
-        print(reg, snap, list(hdf.keys()))
+        print(reg, snap, list(hdf[filters[0]].keys()))
     except OSError as e:
         print(reg, snap, e)
         continue
