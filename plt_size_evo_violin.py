@@ -351,8 +351,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         fit_plt_zs = np.linspace(np.max(uni_z), np.min(uni_z), 1000)
 
         popt, pcov = curve_fit(fit, fitting_zs[okinds], fitting_hlrs[okinds],
-                               p0=(1, 0.5), sigma=fitting_ws[okinds],
-                               absolute_sigma=True)
+                               p0=(1, 0.5), sigma=fitting_ws[okinds])
 
         slopes.append(popt[1])
         slope_errors.append(np.sqrt(pcov[1, 1]))

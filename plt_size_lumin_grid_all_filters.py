@@ -245,7 +245,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 popt, pcov = curve_fit(r_fit, lumins,
                                        hlrs,
                                        p0=(1, 1),
-                                       sigma=w, absolute_sigma=True)
+                                       sigma=w)
 
                 print(f, np.log10(np.min(lumins)), np.log10(np.max(lumins)))
 
@@ -276,7 +276,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 popt, pcov = curve_fit(st_line_fit, lumins,
                                        hlrs / intr_hlrs,
                                        p0=(1, 1),
-                                       sigma=w, absolute_sigma=True)
+                                       sigma=w)
 
                 print("Ratio", popt)
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
