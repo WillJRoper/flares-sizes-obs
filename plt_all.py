@@ -9,6 +9,7 @@ from plt_size_lumin_fitgrid import fit_size_lumin_grid
 from plt_size_lumin_grid import size_lumin_grid
 from plt_size_lumin_grid_all_filters import size_lumin_grid_allf
 from plt_size_lumin_intrinsic import size_lumin_intrinsic
+from plt_size_smooth_comp import size_comp_smooth
 from plt_size_type_comp import size_comp
 
 # Set orientation
@@ -34,7 +35,7 @@ filters = ['FAKE.TH.' + f for f in ['FUV', 'MUV', 'NUV']]
 
 keys = ["Mass", "Image_Luminosity", "HLR_0.5",
         "HLR_Pixel_0.5", "Luminosity",
-        "HDR", "nStar"]
+        "HDR", "nStar", "HLR_Pixel_0.5_No_Smooth"]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -216,17 +217,17 @@ size_lumin_grid(data, snaps, filters, orientation, "Total",
 print("--------------------------- Fits ---------------------------")
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
-                    "pix", sample="Complete")
+                    "pix", "Complete", xlims, ylims)
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
-                    "pix", sample="All")
+                    "pix", "All", xlims, ylims)
 # fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
 #                     "default",
 #                     "app")
 print("--------------------------- All filters ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
-                     "pix", weight_norm)
+                     "pix", weight_norm, xlims, ylims)
 
 for f in filters:
     print(f)
@@ -313,3 +314,12 @@ for f in filters:
                   data[snap][f]["Compact_Population_NotComplete"],
                   data[snap][f]["Diffuse_Population_NotComplete"],
                   weight_norm, orientation, "Total", "default")
+
+        size_comp_smooth(f, snap, data[snap][f]["HLR_Pixel_0.5"],
+                         data[snap][f]["HLR_Pixel_0.5_No_Smooth"],
+                         data[snap][f]["Weight"],
+                         data[snap][f]["Compact_Population_Complete"],
+                         data[snap][f]["Diffuse_Population_Complete"],
+                         data[snap][f]["Compact_Population_NotComplete"],
+                         data[snap][f]["Diffuse_Population_NotComplete"],
+                         weight_norm, orientation, "Total", "default")
