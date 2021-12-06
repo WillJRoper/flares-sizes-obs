@@ -87,9 +87,11 @@ for reg, snap in reg_snaps:
                 data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
             except KeyError as e:
                 print(reg, snap, e)
-
-        img_shapes[snap] = (hdf[f]["Images"].shape[1],
-                            hdf[f]["Images"].shape[2])
+                
+        img_shape = hdf[f]["Images"].shape
+        if len(img_shape) > 2:
+            img_shapes[snap] = (img_shape[1],
+                                img_shape[2])
 
         data[snap][f].setdefault("Weight", []).extend(
             np.full(hdf[f]["Mass"][...].size, weights[int(reg)]))
