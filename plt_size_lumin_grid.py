@@ -359,7 +359,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                markersize=8, alpha=0.7))
 
                     axes[i].scatter(plt_lumins, plt_r_es,
-                                    marker=markers[p], label=labels[p], s=20,
+                                    marker=markers[p], label=labels[p], s=10,
                                     color=colors[p], alpha=0.7)
 
                 if int(z) in [6, 7, 8, 9]:
@@ -405,14 +405,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
 
         uni_legend_elements = []
         uni_legend_elements.append(
-            Line2D([0], [0], color="m", linestyle="dotted",
-                   label="FLARES (All)"))
-        uni_legend_elements.append(
-            Line2D([0], [0], color="m", linestyle="-",
-                   label="FLARES ($M_{\star}/M_\odot\geq10^{9}$)"))
-        uni_legend_elements.append(
-            Line2D([0], [0], color="m", linestyle="--",
-                   label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
+            Line2D([0], [0], color="k", linestyle="none", marker="h",
+                   label="FLARES"))
         uni_legend_elements.append(
             Line2D([0], [0], color="g", linestyle="--",
                    label=labels["K18"]))
