@@ -196,7 +196,7 @@ def fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, Type,
             else:
                 hlrs = np.array(data[snap][f]["HLR_Pixel_0.5_No_Smooth"])
                 lumins = np.array(data[snap][f]["Image_Luminosity"])
-                intr_lumins = np.array(data[snap][f]["Image_Luminosity"])
+                intr_lumins = np.array(data[snap][f]["Image_Luminosity_No_Smooth"])
             w = np.array(data[snap][f]["Weight"])
             mass = np.array(data[snap][f]["Mass"])
 
