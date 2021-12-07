@@ -279,7 +279,8 @@ if run:
 
                 no_smooth_img, _, _ = np.histogram2d(this_pos[:, 0],
                                                      this_pos[:, 1],
-                                                     range=imgrange, bins=res)
+                                                     range=imgrange, bins=res,
+                                                     weights=this_lumin)
 
             else:
 
@@ -299,7 +300,9 @@ if run:
 
                 no_smooth_img, _, _ = np.histogram2d(this_pos[:, 2],
                                                      this_pos[:, 0],
-                                                     range=imgrange, bins=res)
+                                                     range=imgrange, bins=res,
+                                                     weights=this_lumin)
+
 
             surf_den = np.sum(img) / (img[img > 0].size * single_pixel_area)
 
