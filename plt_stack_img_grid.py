@@ -237,31 +237,31 @@ for f in filters:
 
     for snap in snaps:
 
-        reg = regions[0]
-
-        hdf = h5py.File(
-            "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
-                                                        orientation),
-            "r")
-
-        f = row_filters[0]
-        img_shape = hdf[f]["Images"].shape[-1]
-
-        hdf.close()
-
-        dpi = img_shape * 2
-        fig = plt.figure(figsize=(4, len(row_filters)), dpi=dpi)
-        fig_log = plt.figure(figsize=(4, len(row_filters)), dpi=dpi)
-        gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters))
-        gs.update(wspace=0.0, hspace=0.0)
-        axes = np.empty((len(row_filters), 4), dtype=object)
-        axes_log = np.empty((len(row_filters), 4), dtype=object)
-        bins = [10 ** 8, 10 ** 9, 10 ** 9.5, 10 ** 10, np.inf]
-
-        stacks = {}
-        num_stacked = {}
-
         for f in row_filters:
+
+            reg = regions[0]
+
+            hdf = h5py.File(
+                "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
+                                                            orientation),
+                "r")
+
+            f = row_filters[0]
+            img_shape = hdf[f]["Images"].shape[-1]
+
+            hdf.close()
+
+            dpi = img_shape * 2
+            fig = plt.figure(figsize=(4, len(row_filters)), dpi=dpi)
+            fig_log = plt.figure(figsize=(4, len(row_filters)), dpi=dpi)
+            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters))
+            gs.update(wspace=0.0, hspace=0.0)
+            axes = np.empty((len(row_filters), 4), dtype=object)
+            axes_log = np.empty((len(row_filters), 4), dtype=object)
+            bins = [10 ** 8, 10 ** 9, 10 ** 9.5, 10 ** 10, np.inf]
+
+            stacks = {}
+            num_stacked = {}
 
             stacks[f] = {}
             num_stacked[f] = {}
