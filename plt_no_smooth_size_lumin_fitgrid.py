@@ -407,12 +407,12 @@ def fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, Type,
         uni_legend_elements.append(
             Line2D([0], [0], color="g", linestyle="--",
                    label=labels["K18"]))
-        uni_legend_elements.append(
-            Line2D([0], [0], color="b", linestyle="--",
-                   label="Marshall+2021"))
-        uni_legend_elements.append(
-            Line2D([0], [0], color="m", linestyle="--",
-                   label="Liu+2017"))
+        # uni_legend_elements.append(
+        #     Line2D([0], [0], color="b", linestyle="--",
+        #            label="Marshall+2021"))
+        # uni_legend_elements.append(
+        #     Line2D([0], [0], color="m", linestyle="--",
+        #            label="Liu+2017"))
         included = []
         for l in legend_elements:
             if (l.get_label(), l.get_marker()) not in included:
