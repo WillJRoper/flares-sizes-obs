@@ -274,7 +274,7 @@ for f in filters:
     for snap in snaps:
         print(snap)
         print(
-            "--------------------------- Mass Lumin ---------------------------")
+            "--------------------------- Mass Lumin", snap, "---------------------------")
         mass_lumin(intr_data[snap][f]["Mass"],
                    intr_data[snap][f]["Image_Luminosity"],
                    intr_data[snap][f]["Compact_Population_Complete"],
@@ -297,7 +297,7 @@ for f in filters:
                    f, snap, orientation, "Total", "default",
                    data[snap][f]["Complete_Luminosity"],
                    data[snap][f]["Complete_Mass"], weight_norm)
-        print("--------------------------- HDR ---------------------------")
+        print("--------------------------- HDR", snap, "---------------------------")
         hdr_comp(data[snap][f]["HDR"], data[snap][f]["HLR_0.5"],
                  intr_data[snap][f]["HLR_0.5"], data[snap][f]["Weight"],
                  data[snap][f]["Compact_Population_Complete"],
@@ -306,7 +306,7 @@ for f in filters:
                  data[snap][f]["Diffuse_Population_NotComplete"],
                  f, orientation, snap, "Intrinsic", "default", weight_norm)
         print(
-            "--------------------------- Intrinsic ---------------------------")
+            "--------------------------- Intrinsic", snap, "---------------------------")
         size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
                              intr_data[snap][f]["Image_Luminosity"],
                              data[snap][f]["Weight"],
@@ -329,7 +329,7 @@ for f in filters:
                                  "Diffuse_Population_NotComplete"],
                              f, snap, "part", orientation, "Intrinsic",
                              "default", weight_norm)
-        print("--------------------------- Comp ---------------------------")
+        print("--------------------------- Comp", snap, "---------------------------")
         size_comp(f, snap, intr_data[snap][f]["HLR_0.5"],
                   intr_data[snap][f]["HLR_Pixel_0.5"], data[snap][f]["Weight"],
                   intr_data[snap][f]["Compact_Population_Complete"],

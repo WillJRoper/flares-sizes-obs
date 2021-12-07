@@ -285,7 +285,8 @@ def fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, Type,
                 print(e)
 
             try:
-                print("--------------", "Total", "All", mtype, f,
+                print("--------------", "Total", "No smooth", Type, mtype,
+                      f, snap,
                       "--------------")
                 print("R_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
                 print("beta=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
