@@ -246,7 +246,7 @@ fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "pix", "Complete", xlims, ylims)
 fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, "Total",
                              "default",
-                             "pix", "Complete", xlims, ylims)
+                             "pix", "Complete", xlims, ylims, weight_norm)
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix", "All", xlims, ylims)

@@ -152,7 +152,8 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, Type,
-                                 extinction, mtype, sample, xlims, ylims):
+                                 extinction, mtype, sample, xlims, ylims,
+                                 weight_norm):
     for f in filters:
 
         print("Plotting for:")
