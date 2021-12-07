@@ -64,19 +64,22 @@ img_shapes = {}
 
 for reg, snap in reg_snaps:
 
-    try:
-        hdf = h5py.File(
-            "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
-                                                            orientation),
-            "r")
-    except OSError as e:
-        print(reg, snap, e)
-        continue
-
-    data.setdefault(snap, {})
-    intr_data.setdefault(snap, {})
-
     for f in all_filters:
+
+        try:
+            hdf = h5py.File(
+                "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, tag,
+                                                                   "Total",
+                                                                   orientation,
+                                                                   f.split(".")[-1]),
+                "r")
+        except OSError as e:
+            print(reg, snap, e)
+            continue
+
+        data.setdefault(snap, {})
+        intr_data.setdefault(snap, {})
+
 
         data[snap].setdefault(f, {})
         intr_data[snap].setdefault(f, {})
@@ -95,19 +98,19 @@ for reg, snap in reg_snaps:
         data[snap][f].setdefault("Weight", []).extend(
             np.full(hdf[f]["Mass"][...].size, weights[int(reg)]))
 
-    hdf.close()
+        hdf.close()
 
-    try:
-        hdf = h5py.File(
-            "data/flares_sizes_all_{}_{}_{}_{}.hdf5".format(reg, snap,
-                                                            "Intrinsic",
-                                                            orientation),
-            "r")
-    except OSError as e:
-        print(e)
-        continue
+        try:
+            hdf = h5py.File(
+                "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, tag,
+                                                                   "Intrinsic",
+                                                                   orientation,
+                                                                   f.split(".")[-1]),
+                "r")
+        except OSError as e:
+            print(e)
+            continue
 
-    for f in all_filters:
 
         surf_dens = hdf[f]["Image_Luminosity"][...] \
                     / (np.pi * (2 * hdf[f]["HLR_0.5"][...]) ** 2)
@@ -121,7 +124,7 @@ for reg, snap in reg_snaps:
             except KeyError as e:
                 print(reg, snap, e)
 
-    hdf.close()
+        hdf.close()
 
 # Count the number of galaxies in FLARES
 all_n_gals = 0
