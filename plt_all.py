@@ -4,11 +4,13 @@ import pandas as pd
 from matplotlib.colors import LogNorm
 from plt_half_dust_radius_comp import hdr_comp
 from plt_mass_lumin import mass_lumin
+from plt_no_smooth_size_lumin_fitgrid import fit_size_lumin_grid
 from plt_size_evo_violin import size_evo_violin
-from plt_size_lumin_fitgrid import fit_size_lumin_grid
+from plt_size_lumin_fitgrid import fit_size_lumin_grid_nosmooth
 from plt_size_lumin_grid import size_lumin_grid
 from plt_size_lumin_grid_all_filters import size_lumin_grid_allf
 from plt_size_lumin_intrinsic import size_lumin_intrinsic
+from plt_size_part_smooth_comp import size_comp_smooth_part
 from plt_size_smooth_comp import size_comp_smooth
 from plt_size_type_comp import size_comp
 
@@ -21,9 +23,9 @@ all_snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
              '006_z009p000', '007_z008p000', '008_z007p000',
              '009_z006p000', '010_z005p000']  # used for fitting
 total_snaps = ['000_z015p000', '001_z014p000', '002_z013p000',
-             '003_z012p000', '004_z011p000', '005_z010p000',
-             '006_z009p000', '007_z008p000', '008_z007p000',
-             '009_z006p000', '010_z005p000']  # every output
+               '003_z012p000', '004_z011p000', '005_z010p000',
+               '006_z009p000', '007_z008p000', '008_z007p000',
+               '009_z006p000', '010_z005p000']  # every output
 limed_snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
                '006_z009p000', '007_z008p000', '008_z007p000']
 
@@ -71,7 +73,9 @@ for reg, snap in reg_snaps:
                 "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
                                                                    "Total",
                                                                    orientation,
-                                                                   f.split(".")[-1]),
+                                                                   f.split(
+                                                                       ".")[
+                                                                       -1]),
                 "r")
         except OSError as e:
             print(reg, snap, e)
@@ -79,7 +83,6 @@ for reg, snap in reg_snaps:
 
         data.setdefault(snap, {})
         intr_data.setdefault(snap, {})
-
 
         data[snap].setdefault(f, {})
         intr_data[snap].setdefault(f, {})
@@ -105,12 +108,13 @@ for reg, snap in reg_snaps:
                 "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
                                                                    "Intrinsic",
                                                                    orientation,
-                                                                   f.split(".")[-1]),
+                                                                   f.split(
+                                                                       ".")[
+                                                                       -1]),
                 "r")
         except OSError as e:
             print(e)
             continue
-
 
         surf_dens = hdf[f]["Image_Luminosity"][...] \
                     / (np.pi * (2 * hdf[f]["HLR_0.5"][...]) ** 2)
@@ -130,11 +134,12 @@ for reg, snap in reg_snaps:
 all_n_gals = 0
 all_n_gals_above_100 = 0
 for snap in intr_data.keys():
-    okinds = np.array(intr_data[snap][filters[0]]["Mass"]) > 10**8
+    okinds = np.array(intr_data[snap][filters[0]]["Mass"]) > 10 ** 8
     n_gals = np.array(intr_data[snap][filters[0]]["Mass"])[okinds].size
     all_n_gals += n_gals
     okinds = np.array(intr_data[snap][filters[0]]["nStar"]) > 100
-    n_gals_above_100 = np.array(intr_data[snap][filters[0]]["Mass"])[okinds].size
+    n_gals_above_100 = np.array(intr_data[snap][filters[0]]["Mass"])[
+        okinds].size
     all_n_gals_above_100 += n_gals_above_100
 
     print("Galaxies with M_star/M_sun>10**8 in snapshot %s: %d"
@@ -178,8 +183,9 @@ for snap in all_snaps:
             intr_data[snap][f]["Mass"][~okinds])
 
         print("Intrinsic: complete luminosity/mass for", snap, f,
-              "%.2f/%.2f" % (np.log10(intr_data[snap][f]["Complete_Luminosity"]),
-                             np.log10(intr_data[snap][f]["Complete_Mass"])))
+              "%.2f/%.2f" % (
+              np.log10(intr_data[snap][f]["Complete_Luminosity"]),
+              np.log10(intr_data[snap][f]["Complete_Mass"])))
         print("Total: complete luminosity/mass for", snap, f,
               "%.2f/%.2f" % (np.log10(data[snap][f]["Complete_Luminosity"]),
                              np.log10(data[snap][f]["Complete_Mass"])))
@@ -227,7 +233,7 @@ weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
 
 # Define size luminosity limits
 xlims = (10 ** 27.2, 10 ** 30.5)
-ylims = (10**-1.1, 10**0.8)
+ylims = (10 ** -1.1, 10 ** 0.8)
 
 print("--------------------------- Size-Lumin ---------------------------")
 size_lumin_grid(data, snaps, filters, orientation, "Total",
@@ -238,6 +244,9 @@ print("--------------------------- Fits ---------------------------")
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix", "Complete", xlims, ylims)
+fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, "Total",
+                             "default",
+                             "pix", "Complete", xlims, ylims)
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix", "All", xlims, ylims)
@@ -296,7 +305,8 @@ for f in filters:
                  data[snap][f]["Compact_Population_NotComplete"],
                  data[snap][f]["Diffuse_Population_NotComplete"],
                  f, orientation, snap, "Intrinsic", "default", weight_norm)
-        print("--------------------------- Intrinsic ---------------------------")
+        print(
+            "--------------------------- Intrinsic ---------------------------")
         size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
                              intr_data[snap][f]["Image_Luminosity"],
                              data[snap][f]["Weight"],
@@ -351,3 +361,24 @@ for f in filters:
                          intr_data[snap][f]["Compact_Population_NotComplete"],
                          intr_data[snap][f]["Diffuse_Population_NotComplete"],
                          weight_norm, orientation, "Intrinsic", "default")
+
+        size_comp_smooth_part(f, snap, data[snap][f]["HLR_0.5"],
+                              data[snap][f]["HLR_Pixel_0.5_No_Smooth"],
+                              data[snap][f]["Weight"],
+                              data[snap][f]["Compact_Population_Complete"],
+                              data[snap][f]["Diffuse_Population_Complete"],
+                              data[snap][f]["Compact_Population_NotComplete"],
+                              data[snap][f]["Diffuse_Population_NotComplete"],
+                              weight_norm, orientation, "Total", "default")
+        size_comp_smooth_part(f, snap, intr_data[snap][f]["HLR_0.5"],
+                              intr_data[snap][f]["HLR_Pixel_0.5_No_Smooth"],
+                              data[snap][f]["Weight"],
+                              intr_data[snap][f][
+                                  "Compact_Population_Complete"],
+                              intr_data[snap][f][
+                                  "Diffuse_Population_Complete"],
+                              intr_data[snap][f][
+                                  "Compact_Population_NotComplete"],
+                              intr_data[snap][f][
+                                  "Diffuse_Population_NotComplete"],
+                              weight_norm, orientation, "Intrinsic", "default")
