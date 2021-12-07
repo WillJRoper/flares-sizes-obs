@@ -157,7 +157,7 @@ def fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, Type,
 
     extent = (np.log10(xlims[0]), np.log10(xlims[1]),
               np.log10(ylims[0]), np.log10(ylims[1]))
-    
+
     for f in filters:
 
         print("Plotting for:")

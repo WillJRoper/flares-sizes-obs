@@ -388,8 +388,8 @@ for f in filters:
 
                 size = stacks[f][b].shape[0]
                 axes[i, j].imshow(
-                    stacks[f][b][int(0.4 * size):-int(0.4 * size),
-                    int(0.4 * size):-int(0.4 * size)],
+                    stacks[f][b][int(0.3 * size):-int(0.3 * size),
+                    int(0.3 * size):-int(0.3 * size)],
                     cmap=cmr.neutral_r)
 
                 axes_log[i, j].imshow(
@@ -399,6 +399,16 @@ for f in filters:
                     norm=cm.LogNorm(vmin=np.percentile(
                         stacks[f][b][int(0.3 * size):-int(0.3 * size),
                         int(0.3 * size):-int(0.3 * size)], 16)))
+
+                if z <= 2.8:
+                    csoft = 0.000474390 / 0.6777 * 1e3
+                else:
+                    csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
+
+                print("Image size:",
+                      csoft *
+                      stacks[f][b][int(0.3 * size):-int(0.3 * size),
+                      int(0.3 * size):-int(0.3 * size)].shape[0], "pkpc")
 
         fig.savefig(
             'plots/Image_grids/StackImgRow_' + f + '_' + reg
