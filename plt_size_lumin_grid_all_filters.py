@@ -129,7 +129,8 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
-                         Type, extinction, mtype, weight_norm, xlims, ylims):
+                         Type, extinction, mtype, weight_norm, xlims, ylims,
+                         sample):
     trans = {}
     plt_lams = []
     cents = []
@@ -209,7 +210,10 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             compact_com = data[snap][f]["Compact_Population_Complete"]
             diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
 
-            complete = np.logical_or(compact_com, diffuse_com)
+            if sample == "Complete":
+                complete = np.logical_or(compact_com, diffuse_com)
+            else:
+                complete = data[snap][f]["okinds"]
 
             if mtype == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])[complete]
@@ -355,7 +359,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                          ncol=len(uni_legend_elements))
 
     fig.savefig(
-        'plots/FilterCompHalfLightRadius_' + mtype + "_" + f + '_'
+        'plots/FilterCompHalfLightRadius_' + mtype + "_" + sample + '_'
         + orientation + '_' + Type + "_" + extinction + ".png",
         bbox_inches='tight', dpi=300)
 

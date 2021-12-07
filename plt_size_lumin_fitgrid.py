@@ -202,7 +202,7 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
             if sample == "Complete":
                 complete = np.logical_or(compact_com, diffuse_com)
             else:
-                complete = np.ones(compact_com.size, dtype=bool)
+                complete = data[snap][f]["okinds"]
 
             try:
 

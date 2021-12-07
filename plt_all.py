@@ -256,7 +256,10 @@ fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
 print("--------------------------- All filters ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
-                     "pix", weight_norm, list(xlims), list(ylims))
+                     "pix", weight_norm, list(xlims), list(ylims), "Complete")
+size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
+                     "Total", "default",
+                     "pix", weight_norm, list(xlims), list(ylims), "All")
 
 for f in filters:
     print(f)
