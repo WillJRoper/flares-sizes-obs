@@ -4,9 +4,9 @@ import pandas as pd
 from matplotlib.colors import LogNorm
 from plt_half_dust_radius_comp import hdr_comp
 from plt_mass_lumin import mass_lumin
-from plt_no_smooth_size_lumin_fitgrid import fit_size_lumin_grid
+from plt_size_lumin_fitgrid import fit_size_lumin_grid
+from plt_no_smooth_size_lumin_fitgrid import fit_size_lumin_grid_nosmooth
 from plt_size_evo_violin import size_evo_violin
-from plt_size_lumin_fitgrid import fit_size_lumin_grid_nosmooth
 from plt_size_lumin_grid import size_lumin_grid
 from plt_size_lumin_grid_all_filters import size_lumin_grid_allf
 from plt_size_lumin_intrinsic import size_lumin_intrinsic
