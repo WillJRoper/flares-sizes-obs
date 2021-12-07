@@ -3,7 +3,6 @@ import warnings
 
 import astropy.units as u
 import matplotlib
-import numba as nb
 import numpy as np
 from astropy.cosmology import Planck13 as cosmo
 from photutils import aperture_photometry
@@ -297,38 +296,6 @@ def img_loop(star_tup, imgrange, Ndim):
 
 
 def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth, numThreads=1):
-    # if numThreads != 1:
-    #     pool = schwimmbad.MultiPool(processes=numThreads)
-    #
-    #     img_func = partial(img_loop, imgrange=imgrange, Ndim=Ndim)
-    #     gsmooth_img = np.sum(list(pool.map(img_func,
-    #                                        zip(pos[:, i], pos[:, j],
-    #                                            ls, smooth))), axis=0)
-    #     pool.close()
-    #
-    # else:
-    #
-    #     # Define x and y positions for the gaussians
-    #     Gx, Gy = np.meshgrid(np.linspace(imgrange[0][0], imgrange[0][1], Ndim),
-    #                          np.linspace(imgrange[1][0], imgrange[1][1], Ndim))
-    #
-    #     # Initialise the image array
-    #     gsmooth_img = np.zeros((Ndim, Ndim))
-    #
-    #     # Loop over each star computing the smoothed gaussian
-    #     # distribution for this particle
-    #     for x, y, l, sml in zip(pos[:, i], pos[:, j], ls, smooth):
-    #
-    #         # Compute the image
-    #         g = np.exp(-(((Gx - x) ** 2 + (Gy - y) ** 2) / (2.0 * sml ** 2)))
-    #
-    #         # Get the sum of the gaussian
-    #         gsum = np.sum(g)
-    #
-    #         # If there are stars within the image in this gaussian
-    #         # add it to the image array
-    #         if gsum > 0:
-    #             gsmooth_img += g * l / gsum
 
     # Define x and y positions for the gaussians
     Gx, Gy = np.meshgrid(np.linspace(imgrange[0][0], imgrange[0][1], Ndim),
@@ -351,11 +318,6 @@ def make_soft_img(pos, Ndim, i, j, imgrange, ls, smooth, numThreads=1):
         # add it to the image array
         if gsum > 0:
             gsmooth_img += g * l / gsum
-
-    # gsmooth_img, xedges, yedges = np.histogram2d(pos[:, i], pos[:, j],
-    #                                      bins=Ndim,
-    #                                      range=imgrange,
-    #                                      weights=ls)
 
     return gsmooth_img
 
@@ -432,7 +394,6 @@ def make_spline_img(pos, Ndim, i, j, tree, ls, smooth,
     return smooth_img
 
 
-@nb.jit(nogil=True, parallel=True)
 def get_img_hlr(img, apertures, app_rs, res, csoft, radii_frac=0.5):
     # Apply the apertures
     phot_table = aperture_photometry(img, apertures, method='subpixel',
@@ -488,7 +449,7 @@ def get_pixel_hlr(img, single_pix_area, radii_frac=0.5):
     return hlr
 
 
-@nb.njit(nogil=True, parallel=True)
+
 def calc_rad(poss, i, j):
     # Get galaxy particle indices
     rs = np.sqrt(poss[:, i] ** 2 + poss[:, j] ** 2)
@@ -496,7 +457,6 @@ def calc_rad(poss, i, j):
     return rs
 
 
-@nb.njit(nogil=True, parallel=True)
 def calc_3drad(poss):
     # Get galaxy particle indices
     rs = np.sqrt(poss[:, 0] ** 2 + poss[:, 1] ** 2 + poss[:, 2] ** 2)
