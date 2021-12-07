@@ -242,8 +242,12 @@ for f in filters:
             reg = regions[0]
 
             hdf = h5py.File(
-                "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
-                                                            orientation),
+                "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
+                                                                   Type,
+                                                                   orientation,
+                                                                   f.split(
+                                                                       ".")[
+                                                                       -1]),
                 "r")
 
             f = row_filters[0]
