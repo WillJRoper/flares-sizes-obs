@@ -199,6 +199,9 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
     for i, snap in enumerate(snaps):
 
+        print(
+            "---------------------------", snap, "---------------------------")
+
         z_str = snap.split('z')[1].split('p')
         z = float(z_str[0] + '.' + z_str[1])
 
@@ -249,10 +252,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                                        p0=(1, 1),
                                        sigma=w)
 
-                print(f, np.log10(np.min(lumins)), np.log10(np.max(lumins)))
-
                 fit = r_fit(fit_lumins, popt[0], popt[1])
-                print("Total", popt)
+                print(snap, "Total [R_0, Beta] [cov]", popt, np.sqrt(pcov))
                 axes[i].plot(fit_lumins, fit,
                              linestyle='-', color=cmap(norm(trans[f][1])),
                              alpha=0.9, zorder=2,

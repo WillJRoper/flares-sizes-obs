@@ -237,6 +237,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     plt_z = []
     ms = []
     lums = []
+    intr_lums = []
 
     for snap in snaps:
 
@@ -262,51 +263,60 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         hdrs = np.array(data[snap][f]["HDR"])
         w = np.array(data[snap][f]["Weight"])
 
-        compact_ncom = data[snap][f]["Compact_Population_NotComplete"]
-        diffuse_ncom = data[snap][f]["Diffuse_Population_NotComplete"]
         compact_com = data[snap][f]["Compact_Population_Complete"]
         diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
+        intr_compact_com = intr_data[snap][f]["Compact_Population_Complete"]
+        intr_diffuse_com = intr_data[snap][f]["Diffuse_Population_Complete"]
         if Type == "NonComplete":
-            complete = np.ones(compact_com.size, dtype=bool)
+            complete = data[snap][f]["okinds"]
+            intr_complete = intr_data[snap][f]["okinds"]
         else:
             complete = np.logical_or(compact_com, diffuse_com)
+            intr_complete = np.logical_or(intr_compact_com, intr_diffuse_com)
 
         if len(w[complete]) == 0:
             continue
 
         hlr.append(hlrs[complete])
         hdr.append(hdrs[complete])
-        intr_hlr.append(intr_hlrs[complete])
+        intr_hlr.append(intr_hlrs[intr_complete])
         ws.append(w[complete])
         ms.append(m[complete])
         lums.append(lumins[complete])
+        intr_lums.append(intr_lumins[intr_complete])
 
         plt_z.append(z)
 
     fitting_lums = []
+    fitting_intr_lums = []
     fitting_hlrs = []
     fitting_intr_hlrs = []
     fitting_hdrs = []
+    fitting_intr_zs = []
     fitting_zs = []
     fitting_ws = []
     fitting_ms = []
 
     for i in range(len(hlr)):
         fitting_zs.extend(np.full(len(hlr[i]), plt_z[i]))
+        fitting_intr_zs.extend(np.full(len(intr_hlr[i]), plt_z[i]))
         fitting_hlrs.extend(hlr[i])
         fitting_intr_hlrs.extend(intr_hlr[i])
         fitting_hdrs.extend(hdr[i])
         fitting_ws.extend(ws[i])
         fitting_ms.extend(ms[i])
         fitting_lums.extend(lums[i])
+        fitting_intr_lums.extend(intr_lums[i])
 
     fitting_hlrs = np.array(fitting_hlrs)
     fitting_intr_hlrs = np.array(fitting_intr_hlrs)
     fitting_hdrs = np.array(fitting_hdrs)
     fitting_zs = np.array(fitting_zs)
+    fitting_intr_zs = np.array(fitting_intr_zs)
     fitting_ws = np.array(fitting_ws)
     fitting_ms = np.array(fitting_ms)
     fitting_lums = np.array(fitting_lums)
+    fitting_intr_lums = np.array(fitting_intr_lums)
 
     soft = []
     for z in plt_z:
@@ -324,7 +334,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
     slopes = []
     slope_errors = []
-    print(np.min(fitting_lums), np.max(fitting_lums))
+    intr_slopes = []
+    intr_slope_errors = []
 
     for ls, bin, col in zip(["-", "-", "-"], ["low", "mid", "high"],
                             ["b", "g", "r"]):
@@ -333,15 +344,21 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
         if bin == "high":
             okinds = fitting_lums >= 0.3 * L_star
+            intr_okinds = fitting_intr_lums >= 0.3 * L_star
         elif bin == "mid":
             okinds = np.logical_and(fitting_lums >= 0.3 * L_star,
                                     fitting_lums <= L_star)
+            intr_okinds = np.logical_and(fitting_intr_lums >= 0.3 * L_star,
+                                    fitting_intr_lums <= L_star)
         else:
             okinds = fitting_lums < 0.3 * L_star
+            intr_okinds = fitting_intr_lums < 0.3 * L_star
 
         if fitting_zs[okinds].size == 0:
             slopes.append(np.nan)
             slope_errors.append(np.nan)
+            intr_slopes.append(np.nan)
+            intr_slope_errors.append(np.nan)
             continue
 
         uni_z = np.unique(fitting_zs[okinds])
@@ -353,18 +370,30 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         popt, pcov = curve_fit(fit, fitting_zs[okinds], fitting_hlrs[okinds],
                                p0=(1, 0.5), sigma=fitting_ws[okinds])
 
+        intr_popt, intr_pcov = curve_fit(fit, fitting_intr_zs[intr_okinds],
+                                         fitting_intr_hlrs[intr_okinds],
+                                         p0=(1, 0.5),
+                                         sigma=fitting_ws[intr_okinds])
+
         slopes.append(popt[1])
         slope_errors.append(np.sqrt(pcov[1, 1]))
 
-        print("--------------", "Total", "Complete", bin,
+        print("--------------", "Total", Type, bin,
               mtype, f, "--------------")
         print("C=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
         print("m=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
-        print(pcov)
+        print("----------------------------------------------------------")
+
+        print("--------------", "Intrinsic", Type, bin,
+              mtype, f, "--------------")
+        print("C=", intr_popt[0], "+/-", np.sqrt(intr_pcov[0, 0]))
+        print("m=", intr_popt[1], "+/-", np.sqrt(intr_pcov[1, 1]))
         print("----------------------------------------------------------")
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
                 linestyle=ls, color=col)
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, intr_popt[0], intr_popt[1]),
+                linestyle="--", color=col)
         hlr_16 = []
         hlr_84 = []
         med = []
@@ -375,9 +404,6 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                      fitting_zs[okinds] <= plt_z[i] + 0.5)
             cnts.append(fitting_hlrs[okinds][zokinds].size)
             med.append(np.median(fitting_hlrs[okinds][zokinds]))
-
-            print(plt_z[i], fitting_hlrs[okinds][zokinds].size,
-                  np.median(fitting_hlrs[okinds][zokinds]))
 
             if fitting_hlrs[okinds][zokinds].size == 0:
                 hlr_16.append(np.nan)
@@ -440,6 +466,20 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                    (hol_up_m[1], hol_up_m[1])]).T,
                     color="r", fmt="s", capsize=5, markersize=3)
 
+    bar_ax.errorbar([0, ],
+                    [intr_slopes[0], ],
+                    yerr=intr_slope_errors[0],
+                    color="b", fmt="^", capsize=5, markersize=3)
+
+    bar_ax.errorbar([1, ],
+                    [intr_slopes[1], ],
+                    yerr=intr_slope_errors[1],
+                    color="g", fmt="^", capsize=5, markersize=3)
+
+    bar_ax.errorbar([2,], [intr_slopes[2], ],
+                    yerr=intr_slope_errors[2],
+                    color="r", fmt="^", capsize=5, markersize=3)
+
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
@@ -480,12 +520,20 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="FLARES",
+                                  label="FLARES (Attenuated)",
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="Ono+13",
+                                  label="FLARES (Intrinsic)",
                                   linestyle="--"))
+
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="Attenuated",
+                                  marker="s"))
+
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="Intrinsic",
+                                  marker="^"))
 
     # Label axes
     ax.set_xlabel(r'$z$')

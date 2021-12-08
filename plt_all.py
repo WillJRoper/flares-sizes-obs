@@ -37,7 +37,8 @@ filters = ['FAKE.TH.' + f for f in ['FUV', 'MUV', 'NUV']]
 
 keys = ["Mass", "Image_Luminosity", "HLR_0.5",
         "HLR_Pixel_0.5", "Luminosity",
-        "HDR", "nStar", "HLR_Pixel_0.5_No_Smooth"]
+        "HDR", "nStar", "HLR_Pixel_0.5_No_Smooth",
+        "Image_Luminosity_No_Smooth"]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 

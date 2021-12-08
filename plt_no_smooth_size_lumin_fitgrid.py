@@ -207,7 +207,7 @@ def fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, Type,
             if sample == "Complete":
                 complete = np.logical_or(compact_com, diffuse_com)
             else:
-                complete = np.ones(compact_com.size, dtype=bool)
+                complete = data[snap][f]["okinds"]
 
             try:
                 cbar = axes[i].hexbin(lumins[diffuse_ncom], hlrs[diffuse_ncom],
@@ -290,7 +290,7 @@ def fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, Type,
                       "--------------")
                 print("R_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
                 print("beta=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
-                print(pcov)
+
                 # print("--------------", "Total", "Compact", mtype, f,
                 #       "--------------")
                 # print("R_0=", popt1[0], "+/-", np.sqrt(pcov1[0, 0]))
