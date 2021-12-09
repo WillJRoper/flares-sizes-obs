@@ -54,7 +54,7 @@ def get_data(ii, tag, inp='FLARES'):
 
     with h5py.File(sim, 'r') as hf:
         s_len = hf[tag + '/Galaxy'].get('S_Length')
-        if s_len.size > 0:
+        if s_len is not None:
             S_len = np.array(s_len,
                              dtype=np.int64)
             G_len = np.array(hf[tag + '/Galaxy'].get('G_Length'),
@@ -99,7 +99,7 @@ def get_data(ii, tag, inp='FLARES'):
             gend = np.cumsum(G_len)
 
         else:
-            
+
             S_len = np.array([])
             G_len = np.array([])
             cops = np.array([])
