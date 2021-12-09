@@ -69,7 +69,12 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
                                                              x=reg, u=tag,
                                                              filt=filters[0]))
 
-run = True
+exists = os.path.isfile("data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
+                                                           orientation, filters[0].split(".")[-1]))
+if not exists:
+    run = True
+else:
+    run = False
 
 model = models.define_model(
     F'BPASSv2.2.1.binary/Chabrier_300')  # DEFINE SED GRID -
