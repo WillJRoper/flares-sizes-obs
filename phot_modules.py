@@ -54,9 +54,9 @@ def get_data(ii, tag, inp='FLARES'):
 
     with h5py.File(sim, 'r') as hf:
         s_len = hf[tag + '/Galaxy'].get('S_Length')
-        print(s_len.size)
         if s_len.size > 0:
-            S_len = np.array(s_len, dtype=np.int64)
+            S_len = np.array(s_len,
+                             dtype=np.int64)
             G_len = np.array(hf[tag + '/Galaxy'].get('G_Length'),
                              dtype=np.int64)
             cops = np.array(hf[tag + '/Galaxy'].get("COP"),
@@ -97,7 +97,9 @@ def get_data(ii, tag, inp='FLARES'):
             gend = np.zeros(len(G_len), dtype=np.int64)
             gbegin[1:] = np.cumsum(G_len)[:-1]
             gend = np.cumsum(G_len)
+
         else:
+            
             S_len = np.array([])
             G_len = np.array([])
             cops = np.array([])
@@ -115,11 +117,11 @@ def get_data(ii, tag, inp='FLARES'):
             S_vels = np.array([])
             G_vels = np.array([])
 
-        begin = np.array([])
-        end = np.array([])
+            begin = np.array([])
+            end = np.array([])
 
-        gbegin = np.array([])
-        gend = np.array([])
+            gbegin = np.array([])
+            gend = np.array([])
 
     return S_mass_ini, S_Z, S_age, S_los, G_Z, S_len, \
            G_len, G_sml, S_sml, G_mass, S_coords, G_coords, \
