@@ -54,6 +54,7 @@ def get_data(ii, tag, inp='FLARES'):
 
     with h5py.File(sim, 'r') as hf:
         s_len = hf[tag + '/Galaxy'].get('S_Length')
+        print(s_len)
         if s_len.size > 0:
             S_len = np.array(s_len, dtype=np.int64)
             G_len = np.array(hf[tag + '/Galaxy'].get('G_Length'),
