@@ -53,48 +53,72 @@ def get_data(ii, tag, inp='FLARES'):
               rF"EAGLE_{inp}_sp_info.hdf5"
 
     with h5py.File(sim, 'r') as hf:
-        S_len = np.array(hf[tag + '/Galaxy'].get('S_Length'),
-                         dtype=np.int64)
-        G_len = np.array(hf[tag + '/Galaxy'].get('G_Length'),
-                         dtype=np.int64)
-        cops = np.array(hf[tag + '/Galaxy'].get("COP"),
-                        dtype=np.float64)
-        S_mass_ini = np.array(hf[tag + '/Particle'].get('S_MassInitial'),
+        s_len = hf[tag + '/Galaxy'].get('S_Length')
+        if s_len.size > 0:
+            S_len = np.array(s_len, dtype=np.int64)
+            G_len = np.array(hf[tag + '/Galaxy'].get('G_Length'),
+                             dtype=np.int64)
+            cops = np.array(hf[tag + '/Galaxy'].get("COP"),
+                            dtype=np.float64)
+            S_mass_ini = np.array(hf[tag + '/Particle'].get('S_MassInitial'),
+                                  dtype=np.float64) * 10 ** 10
+            S_mass = np.array(hf[tag + '/Particle'].get('S_Mass'),
                               dtype=np.float64) * 10 ** 10
-        S_mass = np.array(hf[tag + '/Particle'].get('S_Mass'),
-                          dtype=np.float64) * 10 ** 10
-        S_Z = np.array(hf[tag + '/Particle'].get('S_Z_smooth'),
-                       dtype=np.float64)
-        S_age = np.array(hf[tag + '/Particle'].get('S_Age'),
-                         dtype=np.float64) * 1e3
-        S_los = np.array(hf[tag + '/Particle'].get('S_los'),
-                         dtype=np.float64)
-        G_Z = np.array(hf[tag + '/Particle'].get('G_Z_smooth'),
-                       dtype=np.float64)
-        S_sml = np.array(hf[tag + '/Particle'].get('S_sml'),
-                         dtype=np.float64)
-        G_sml = np.array(hf[tag + '/Particle'].get('G_sml'),
-                         dtype=np.float64)
-        G_mass = np.array(hf[tag + '/Particle'].get('G_Mass'),
-                          dtype=np.float64) * 10 ** 10
-        S_coords = np.array(hf[tag + '/Particle'].get('S_Coordinates'),
-                            dtype=np.float64)
-        G_coords = np.array(hf[tag + '/Particle'].get('G_Coordinates'),
-                            dtype=np.float64)
-        S_vels = np.array(hf[tag + '/Particle'].get('S_Vel'),
-                          dtype=np.float64)
-        G_vels = np.array(hf[tag + '/Particle'].get('G_Vel'),
-                          dtype=np.float64)
+            S_Z = np.array(hf[tag + '/Particle'].get('S_Z_smooth'),
+                           dtype=np.float64)
+            S_age = np.array(hf[tag + '/Particle'].get('S_Age'),
+                             dtype=np.float64) * 1e3
+            S_los = np.array(hf[tag + '/Particle'].get('S_los'),
+                             dtype=np.float64)
+            G_Z = np.array(hf[tag + '/Particle'].get('G_Z_smooth'),
+                           dtype=np.float64)
+            S_sml = np.array(hf[tag + '/Particle'].get('S_sml'),
+                             dtype=np.float64)
+            G_sml = np.array(hf[tag + '/Particle'].get('G_sml'),
+                             dtype=np.float64)
+            G_mass = np.array(hf[tag + '/Particle'].get('G_Mass'),
+                              dtype=np.float64) * 10 ** 10
+            S_coords = np.array(hf[tag + '/Particle'].get('S_Coordinates'),
+                                dtype=np.float64)
+            G_coords = np.array(hf[tag + '/Particle'].get('G_Coordinates'),
+                                dtype=np.float64)
+            S_vels = np.array(hf[tag + '/Particle'].get('S_Vel'),
+                              dtype=np.float64)
+            G_vels = np.array(hf[tag + '/Particle'].get('G_Vel'),
+                              dtype=np.float64)
 
-    begin = np.zeros(len(S_len), dtype=np.int64)
-    end = np.zeros(len(S_len), dtype=np.int64)
-    begin[1:] = np.cumsum(S_len)[:-1]
-    end = np.cumsum(S_len)
+            begin = np.zeros(len(S_len), dtype=np.int64)
+            end = np.zeros(len(S_len), dtype=np.int64)
+            begin[1:] = np.cumsum(S_len)[:-1]
+            end = np.cumsum(S_len)
 
-    gbegin = np.zeros(len(G_len), dtype=np.int64)
-    gend = np.zeros(len(G_len), dtype=np.int64)
-    gbegin[1:] = np.cumsum(G_len)[:-1]
-    gend = np.cumsum(G_len)
+            gbegin = np.zeros(len(G_len), dtype=np.int64)
+            gend = np.zeros(len(G_len), dtype=np.int64)
+            gbegin[1:] = np.cumsum(G_len)[:-1]
+            gend = np.cumsum(G_len)
+        else:
+            S_len = np.array([])
+            G_len = np.array([])
+            cops = np.array([])
+            S_mass_ini = np.array([])
+            S_mass = np.array([])
+            S_Z = np.array([])
+            S_age = np.array([])
+            S_los = np.array([])
+            G_Z = np.array([])
+            S_sml = np.array([])
+            G_sml = np.array([])
+            G_mass = np.array([])
+            S_coords = np.array([])
+            G_coords = np.array([])
+            S_vels = np.array([])
+            G_vels = np.array([])
+
+        begin = np.array([])
+        end = np.array([])
+
+        gbegin = np.array([])
+        gend = np.array([])
 
     return S_mass_ini, S_Z, S_age, S_los, G_Z, S_len, \
            G_len, G_sml, S_sml, G_mass, S_coords, G_coords, \
