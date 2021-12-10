@@ -283,7 +283,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         hdr.append(hdrs[complete])
         intr_hlr.append(intr_hlrs[intr_complete])
         ws.append(w[complete])
-        intr_ws.append(w[complete])
+        intr_ws.append(intr_w[intr_complete])
         ms.append(m[complete])
         lums.append(lumins[complete])
         intr_lums.append(intr_lumins[intr_complete])
