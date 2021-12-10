@@ -123,6 +123,9 @@ for reg, snap in reg_snaps:
         intr_data[snap][f].setdefault("Inner_Surface_Density",
                                       []).extend(surf_dens)
 
+        intr_data[snap][f].setdefault("Weight", []).extend(
+            np.full(hdf[f]["Mass"][...].size, weights[int(reg)]))
+
         for key in keys:
             try:
                 intr_data[snap][f].setdefault(key, []).extend(hdf[f][key][...])
