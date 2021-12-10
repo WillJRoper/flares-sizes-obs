@@ -234,6 +234,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     intr_hlr = []
     hdr = []
     ws = []
+    intr_ws = []
     plt_z = []
     ms = []
     lums = []
@@ -262,6 +263,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         m = np.array(data[snap][f]["Mass"])
         hdrs = np.array(data[snap][f]["HDR"])
         w = np.array(data[snap][f]["Weight"])
+        intr_w = np.array(intr_data[snap][f]["Weight"])
 
         compact_com = data[snap][f]["Compact_Population_Complete"]
         diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
@@ -281,6 +283,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         hdr.append(hdrs[complete])
         intr_hlr.append(intr_hlrs[intr_complete])
         ws.append(w[complete])
+        intr_ws.append(w[complete])
         ms.append(m[complete])
         lums.append(lumins[complete])
         intr_lums.append(intr_lumins[intr_complete])
@@ -295,6 +298,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     fitting_intr_zs = []
     fitting_zs = []
     fitting_ws = []
+    fitting_intr_ws = []
     fitting_ms = []
 
     for i in range(len(hlr)):
@@ -304,6 +308,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         fitting_intr_hlrs.extend(intr_hlr[i])
         fitting_hdrs.extend(hdr[i])
         fitting_ws.extend(ws[i])
+        fitting_intr_ws.extend(intr_ws[i])
         fitting_ms.extend(ms[i])
         fitting_lums.extend(lums[i])
         fitting_intr_lums.extend(intr_lums[i])
@@ -314,6 +319,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     fitting_zs = np.array(fitting_zs)
     fitting_intr_zs = np.array(fitting_intr_zs)
     fitting_ws = np.array(fitting_ws)
+    fitting_intr_ws = np.array(fitting_intr_ws)
     fitting_ms = np.array(fitting_ms)
     fitting_lums = np.array(fitting_lums)
     fitting_intr_lums = np.array(fitting_intr_lums)
@@ -373,10 +379,13 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         intr_popt, intr_pcov = curve_fit(fit, fitting_intr_zs[intr_okinds],
                                          fitting_intr_hlrs[intr_okinds],
                                          p0=(1, 0.5),
-                                         sigma=fitting_ws[intr_okinds])
+                                         sigma=fitting_intr_ws[intr_okinds])
 
         slopes.append(popt[1])
         slope_errors.append(np.sqrt(pcov[1, 1]))
+
+        intr_slopes.append(intr_popt[1])
+        intr_slope_errors.append(np.sqrt(intr_pcov[1, 1]))
 
         print("--------------", "Total", Type, bin,
               mtype, f, "--------------")
