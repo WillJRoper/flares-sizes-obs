@@ -114,7 +114,7 @@ for reg, snap in reg_snaps:
                                                                        -1]),
                 "r")
         except OSError as e:
-            print(e)
+            print(reg, snap, e)
             continue
 
         surf_dens = hdf[f]["Image_Luminosity"][...] \
@@ -134,6 +134,8 @@ for reg, snap in reg_snaps:
 # Count the number of galaxies in FLARES
 all_n_gals = 0
 all_n_gals_above_100 = 0
+all_comp_gals = 0
+all_diffuse_gals = 0
 for snap in intr_data.keys():
     okinds = np.array(intr_data[snap][filters[0]]["Mass"]) > 10 ** 8
     n_gals = np.array(intr_data[snap][filters[0]]["Mass"])[okinds].size
@@ -143,13 +145,31 @@ for snap in intr_data.keys():
         okinds].size
     all_n_gals_above_100 += n_gals_above_100
 
+    okinds = np.array(intr_data[snap][filters[0]]["Mass"]) > 10 ** 8
+    sample = np.array(intr_data[snap][filters[0]][
+                          "Inner_Surface_Density"])[okinds]
+    sfd_okinds = sample >= 10 ** 29
+    comp_gals = sample[sfd_okinds].size
+    diffuse_gals = sample[~sfd_okinds].size
+
+    all_comp_gals += comp_gals
+    all_diffuse_gals += diffuse_gals
+
+
     print("Galaxies with M_star/M_sun>10**8 in snapshot %s: %d"
           % (snap, n_gals))
     print("Galaxies with N_star>100 in snapshot %s: %d"
           % (snap, n_gals_above_100))
+    print("Compact galaxies in snapshot %s: %d"
+          % (snap, comp_gals))
+    print("Diffuse galaxies in snapshot %s: %d"
+          % (snap, diffuse_gals))
+
 
 print("Total galaxies with M_star/M_sun>10**8: %d" % all_n_gals)
 print("Total galaxies with N_star>100: %d" % all_n_gals_above_100)
+print("Total compact galaxies: %d" % all_comp_gals)
+print("Total diffuse galaxies: %d" % all_diffuse_gals)
 
 print("Image Dimensions:")
 print(img_shapes)
@@ -229,12 +249,26 @@ for snap in all_snaps:
         intr_data[snap][f]["Diffuse_Population_NotComplete"] = np.logical_and(
             diffuse_pop, ~intr_okinds)
 
+# Count the number of galaxies in FLARES
+all_complete_gals = 0
+for snap in intr_data.keys():
+    okinds = np.logical_or(data[snap][filters[0]]["Compact_Population_Complete"],
+                           data[snap][filters[0]]["Diffuse_Population_Complete"])
+    complete_gals = data[snap][filters[0]]["Mass"][okinds].size
+    all_complete_gals += complete_gals
+
+    print("Complete Galaxies in snapshot %s: %d"
+          % (snap, complete_gals))
+
+
+print("Total Complete galaxies: %d" % all_complete_gals)
+
 # Define the norm
 weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
 
 # Define size luminosity limits
-xlims = (10 ** 27.2, 10 ** 30.5)
-ylims = (10 ** -1.1, 10 ** 0.8)
+xlims = (10 ** 27.2, 10 ** 30.7)
+ylims = (10 ** -1.1, 10 ** 1.1)
 
 print("--------------------------- Size-Lumin ---------------------------")
 size_lumin_grid(data, snaps, filters, orientation, "Total",
