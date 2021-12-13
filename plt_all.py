@@ -148,7 +148,7 @@ for snap in intr_data.keys():
         okinds].size
     all_n_gals_above_100 += n_gals_above_100
 
-    okinds = np.array(intr_data[snap][filters[0]]["Mass"]) > 10 ** 8
+    okinds = np.array(intr_data[snap][filters[0]]["nStar"]) > 100
     sample = np.array(intr_data[snap][filters[0]][
                           "Inner_Surface_Density"])[okinds]
     sfd_okinds = sample >= 10 ** 29
