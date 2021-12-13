@@ -363,29 +363,31 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         if fitting_zs[okinds].size == 0:
             slopes.append(np.nan)
             slope_errors.append(np.nan)
+        else:
+            popt, pcov = curve_fit(fit, fitting_zs[okinds], fitting_hlrs[okinds],
+                                   p0=(1, 0.5), sigma=fitting_ws[okinds])
+            slopes.append(popt[1])
+            slope_errors.append(np.sqrt(pcov[1, 1]))
+
+        if fitting_zs[intr_okinds].size == 0:
             intr_slopes.append(np.nan)
             intr_slope_errors.append(np.nan)
+        else:
+            intr_popt, intr_pcov = curve_fit(fit, fitting_intr_zs[intr_okinds],
+                                             fitting_intr_hlrs[intr_okinds],
+                                             p0=(1, 0.5),
+                                             sigma=fitting_intr_ws[intr_okinds])
+            intr_slopes.append(intr_popt[1])
+            intr_slope_errors.append(np.sqrt(intr_pcov[1, 1]))
+
+        if fitting_zs[okinds].size == 0:
             continue
 
         uni_z = np.unique(fitting_zs[okinds])
 
-        print("Redshifts in sample:", uni_z)
-
         fit_plt_zs = np.linspace(np.max(uni_z), np.min(uni_z), 1000)
 
-        popt, pcov = curve_fit(fit, fitting_zs[okinds], fitting_hlrs[okinds],
-                               p0=(1, 0.5), sigma=fitting_ws[okinds])
-
-        intr_popt, intr_pcov = curve_fit(fit, fitting_intr_zs[intr_okinds],
-                                         fitting_intr_hlrs[intr_okinds],
-                                         p0=(1, 0.5),
-                                         sigma=fitting_intr_ws[intr_okinds])
-
-        slopes.append(popt[1])
-        slope_errors.append(np.sqrt(pcov[1, 1]))
-
-        intr_slopes.append(intr_popt[1])
-        intr_slope_errors.append(np.sqrt(intr_pcov[1, 1]))
+        print("Redshifts in sample:", uni_z)
 
         print("--------------", "Total", Type, bin,
               mtype, f, "--------------")
