@@ -249,11 +249,14 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
                 popt, pcov = curve_fit(r_fit, lumins,
                                        hlrs,
-                                       p0=(1, 1),
+                                       p0=(0.5, 0),
                                        sigma=w)
 
                 fit = r_fit(fit_lumins, popt[0], popt[1])
-                print(snap, "Total [R_0, Beta] [cov]", popt, np.sqrt(pcov))
+                print(snap, "Total [R_0, Beta]",
+                      "[%.2f +/- %.2f, %.2f +/- %.2f]"
+                      % (popt[0], popt[1],
+                         np.sqrt(pcov[0, 0]), np.sqrt(pcov[1, 1])))
                 axes[i].plot(fit_lumins, fit,
                              linestyle='-', color=cmap(norm(trans[f][1])),
                              alpha=0.9, zorder=2,

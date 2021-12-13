@@ -355,7 +355,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
                 linestyle=ls, color=col)
-        
+
         hlr_16 = []
         hlr_84 = []
         med = []
