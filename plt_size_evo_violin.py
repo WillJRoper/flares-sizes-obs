@@ -369,7 +369,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
             slopes.append(popt[1])
             slope_errors.append(np.sqrt(pcov[1, 1]))
 
-        if fitting_zs[intr_okinds].size == 0:
+        if fitting_intr_zs[intr_okinds].size == 0:
             intr_slopes.append(np.nan)
             intr_slope_errors.append(np.nan)
         else:
