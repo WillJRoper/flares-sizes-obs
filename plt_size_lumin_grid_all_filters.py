@@ -34,7 +34,7 @@ Lstar = 10**28.51
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
-r_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
+r_fit = lambda l, r0, b: r0 * (l / Lstar) ** b
 st_line_fit = lambda x, m, c: m * np.log10(x) + c
 
 bt_fits = {7: {"FUV": (0.2421, 0.7544), "NUV": (0.1558, 0.6697),
