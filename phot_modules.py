@@ -219,7 +219,6 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
         Lums[f][begin[jj]: end[jj]][~sbool] = np.nan
         Lums[f + "tauVs_ISM"][begin[jj]: end[jj]][~sbool] = np.nan
         Lums[f + "tauVs_BC"][begin[jj]: end[jj]][~sbool] = np.nan
-        Lums[f + "log10t_BC"][jj][~sbool] = np.nan
 
         if orientation == "sim":
 
