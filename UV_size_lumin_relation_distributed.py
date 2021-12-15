@@ -249,8 +249,8 @@ if run:
             b, e = begin[ind], end[ind]
             gb, ge = gbegin[ind], gend[ind]
 
-            sbool = reg_dict["S_bool"]
-            gbool = reg_dict["G_bool"]
+            sbool = reg_dict["S_bool"][b: e]
+            gbool = reg_dict["G_bool"][gb: ge]
 
             this_pos = poss[:, b: e].T[sbool]
             this_gpos = gposs[:, gb: ge].T[gbool]
