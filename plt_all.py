@@ -225,9 +225,9 @@ for snap in all_snaps:
             intr_data[snap][f]["Mass"] >= intr_data[snap][f]["Complete_Mass"])
 
         compact_pop = np.array(
-            intr_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 28
+            intr_data[snap][f]["Inner_Surface_Density"]) >= 10 ** 28.5
         diffuse_pop = np.array(
-            intr_data[snap][f]["Inner_Surface_Density"]) < 10 ** 28
+            intr_data[snap][f]["Inner_Surface_Density"]) < 10 ** 28.5
 
         data[snap][f]["Compact_Population"] = compact_pop
         data[snap][f]["Diffuse_Population"] = diffuse_pop
