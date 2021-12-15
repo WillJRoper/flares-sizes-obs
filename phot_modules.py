@@ -89,7 +89,7 @@ def get_data(ii, tag, inp='FLARES'):
                               dtype=np.float64)
             S_bool = np.array(hf[tag + '/Particle/Apertures/'].get('Star'),
                               dtype=bool)[5, :]
-            G_bool = np.array(hf[tag + '/Particle/Apertures/Gas/'].get('30'),
+            G_bool = np.array(hf[tag + '/Particle/Apertures/'].get('Gas'),
                               dtype=bool)[5, :]
 
             begin = np.zeros(len(S_len), dtype=np.int64)
