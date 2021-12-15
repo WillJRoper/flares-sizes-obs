@@ -216,10 +216,6 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
                     Lums[f][begin[jj]: end[jj]] = np.nan
                 continue
 
-        Lums[f][begin[jj]: end[jj]][~sbool] = np.nan
-        Lums[f + "tauVs_ISM"][begin[jj]: end[jj]][~sbool] = np.nan
-        Lums[f + "tauVs_BC"][begin[jj]: end[jj]][~sbool] = np.nan
-
         if orientation == "sim":
 
             starCoords = S_coords[:, begin[jj]: end[jj]].T[sbool]
@@ -315,10 +311,14 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
                                             tauVs_ISM=tauVs_ISM,
                                             tauVs_BC=tauVs_BC, F=F, f=f,
                                             fesc=fesc, log10t_BC=log10t_BC)
-            Lums[f][begin[jj]: end[jj]] = Lnu
-            Lums[f + "tauVs_ISM"][begin[jj]: end[jj]] = tauVs_ISM
-            Lums[f + "tauVs_BC"][begin[jj]: end[jj]] = tauVs_BC
+            Lums[f][begin[jj]: end[jj]][sbool] = Lnu
+            Lums[f + "tauVs_ISM"][begin[jj]: end[jj]][sbool] = tauVs_ISM
+            Lums[f + "tauVs_BC"][begin[jj]: end[jj]][sbool] = tauVs_BC
             Lums[f + "log10t_BC"][jj] = log10t_BC
+
+            Lums[f][begin[jj]: end[jj]][~sbool] = np.nan
+            Lums[f + "tauVs_ISM"][begin[jj]: end[jj]][~sbool] = np.nan
+            Lums[f + "tauVs_BC"][begin[jj]: end[jj]][~sbool] = np.nan
 
     Lums["coords"] = S_coords
     Lums["gcoords"] = G_coords
