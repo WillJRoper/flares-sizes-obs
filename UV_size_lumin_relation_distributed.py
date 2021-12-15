@@ -257,8 +257,8 @@ if run:
             this_lumin = reg_dict[f][b: e][sbool]
             this_smls = smls[b: e][sbool]
             this_mass = np.nansum(masses[b: e][sbool])
-            this_gmass = np.nansum(gas_masses[b: e][gbool])
-            this_met = star_Z[gb: ge][sbool] * masses[gb: ge][sbool]
+            this_gmass = np.nansum(gas_masses[gb: ge][gbool])
+            this_met = star_Z[b: e][sbool] * masses[b: e][sbool]
             this_metals = gas_Z[gb: ge][gbool] * gas_masses[gb: ge][gbool]
             this_nstar = nstars[ind]
             this_age = reg_dict["S_age"][b: e][sbool]

@@ -243,21 +243,20 @@ if run:
             b, e = begin[ind], end[ind]
             gb, ge = gbegin[ind], gend[ind]
 
-            sbool = reg_dict["S_bool"]
-            gbool = reg_dict["G_bool"]
+            sbool = reg_dict["S_bool"][b: e]
+            gbool = reg_dict["G_bool"][gb: ge]
 
             this_pos = poss[:, b: e].T[sbool]
             this_gpos = gposs[:, gb: ge].T[gbool]
             this_lumin = reg_dict[f][b: e][sbool]
             this_smls = smls[b: e][sbool]
             this_mass = np.nansum(masses[b: e][sbool])
-            this_gmass = np.nansum(gas_masses[b: e][gbool])
-            this_met = star_Z[gb: ge][sbool] * masses[gb: ge][sbool]
+            this_gmass = np.nansum(gas_masses[gb: ge][gbool])
+            this_met = star_Z[b: e][sbool] * masses[b: e][sbool]
             this_metals = gas_Z[gb: ge][gbool] * gas_masses[gb: ge][gbool]
             this_nstar = nstars[ind]
             this_age = reg_dict["S_age"][b: e][sbool]
             this_Sz = reg_dict["S_Z"][b: e][sbool]
-
 
             if np.nansum(this_lumin) == 0:
                 continue
