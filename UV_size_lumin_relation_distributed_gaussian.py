@@ -243,17 +243,21 @@ if run:
             b, e = begin[ind], end[ind]
             gb, ge = gbegin[ind], gend[ind]
 
-            this_pos = poss[:, b: e].T
-            this_gpos = gposs[:, gb: ge].T
-            this_lumin = reg_dict[f][b: e]
-            this_smls = smls[b: e]
-            this_mass = np.nansum(masses[b: e])
-            this_gmass = np.nansum(gas_masses[b: e])
-            this_met = star_Z[gb: ge] * masses[gb: ge]
-            this_metals = gas_Z[gb: ge] * gas_masses[gb: ge]
+            sbool = reg_dict["S_bool"]
+            gbool = reg_dict["G_bool"]
+
+            this_pos = poss[:, b: e].T[sbool]
+            this_gpos = gposs[:, gb: ge].T[gbool]
+            this_lumin = reg_dict[f][b: e][sbool]
+            this_smls = smls[b: e][sbool]
+            this_mass = np.nansum(masses[b: e][sbool])
+            this_gmass = np.nansum(gas_masses[b: e][gbool])
+            this_met = star_Z[gb: ge][sbool] * masses[gb: ge][sbool]
+            this_metals = gas_Z[gb: ge][gbool] * gas_masses[gb: ge][gbool]
             this_nstar = nstars[ind]
-            this_age = reg_dict["S_age"][b: e]
-            this_Sz = reg_dict["S_Z"][b: e]
+            this_age = reg_dict["S_age"][b: e][sbool]
+            this_Sz = reg_dict["S_Z"][b: e][sbool]
+
 
             if np.nansum(this_lumin) == 0:
                 continue
@@ -329,7 +333,7 @@ if run:
 
             # Generate SED
             if this_mass > 10 ** 10.5:
-                sed = models.generate_SED(model, masses[b: e], this_age,
+                sed = models.generate_SED(model, masses[b: e][sbool], this_age,
                                           this_Sz,
                                           tauVs_ISM=reg_dict[f + "tauVs_ISM"][
                                                     b: e],

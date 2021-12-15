@@ -343,7 +343,7 @@ if run:
 
             # Generate SED
             if this_mass > 10 ** 10.5:
-                sed = models.generate_SED(model, masses[b: e], this_age,
+                sed = models.generate_SED(model, masses[b: e][sbool], this_age,
                                           this_Sz,
                                           tauVs_ISM=reg_dict[f + "tauVs_ISM"][
                                                     b: e],
