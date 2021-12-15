@@ -87,6 +87,10 @@ def get_data(ii, tag, inp='FLARES'):
                               dtype=np.float64)
             G_vels = np.array(hf[tag + '/Particle'].get('G_Vel'),
                               dtype=np.float64)
+            S_bool = np.array(hf[tag + '/Particle/Apertures/Star/'].get('30'),
+                              dtype=bool)
+            G_bool = np.array(hf[tag + '/Particle/Apertures/Gas/'].get('30'),
+                              dtype=bool)
 
             begin = np.zeros(len(S_len), dtype=np.int64)
             end = np.zeros(len(S_len), dtype=np.int64)
@@ -116,6 +120,8 @@ def get_data(ii, tag, inp='FLARES'):
             G_coords = np.array([])
             S_vels = np.array([])
             G_vels = np.array([])
+            S_bool = np.array([])
+            G_bool = np.array([])
 
             begin = np.array([])
             end = np.array([])
@@ -125,7 +131,7 @@ def get_data(ii, tag, inp='FLARES'):
 
     return S_mass_ini, S_Z, S_age, S_los, G_Z, S_len, \
            G_len, G_sml, S_sml, G_mass, S_coords, G_coords, \
-           S_vels, G_vels, S_mass, cops, \
+           S_vels, G_vels, S_mass, cops, S_bool, G_bool, \
            begin, end, gbegin, gend
 
 
@@ -141,7 +147,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
     S_mass_ini, S_Z, S_age, S_los, G_Z, S_len, \
     G_len, G_sml, S_sml, G_mass, S_coords, G_coords, \
-    S_vels, G_vels, S_mass, cops, \
+    S_vels, G_vels, S_mass, cops, S_bool, G_bool, \
     begin, end, gbegin, gend = get_data(sim, tag, inp)
 
     print("Got data, there are ", len(begin), "galaxies")
@@ -189,12 +195,14 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     for jj in range(len(begin)):
 
         # Extract values for this galaxy
-        Masses = S_mass_ini[begin[jj]: end[jj]]
-        Ages = S_age[begin[jj]: end[jj]]
-        Metallicities = S_Z[begin[jj]: end[jj]]
-        gasMetallicities = G_Z[gbegin[jj]: gend[jj]]
-        gasSML = G_sml[gbegin[jj]: gend[jj]]
-        gasMasses = G_mass[gbegin[jj]: gend[jj]]
+        sbool = S_bool[begin[jj]: end[jj]]
+        gbool = G_bool[gbegin[jj]: gend[jj]]
+        Masses = S_mass_ini[begin[jj]: end[jj]][sbool]
+        Ages = S_age[begin[jj]: end[jj]][sbool]
+        Metallicities = S_Z[begin[jj]: end[jj]][sbool]
+        gasMetallicities = G_Z[gbegin[jj]: gend[jj]][gbool]
+        gasSML = G_sml[gbegin[jj]: gend[jj]][gbool]
+        gasMasses = G_mass[gbegin[jj]: gend[jj]][gbool]
 
         if masslim != None:
             if np.sum(Masses) < masslim:
@@ -208,24 +216,29 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
                     Lums[f][begin[jj]: end[jj]] = np.nan
                 continue
 
+        Lums[f][begin[jj]: end[jj]][~sbool] = np.nan
+        Lums[f + "tauVs_ISM"][begin[jj]: end[jj]][~sbool] = np.nan
+        Lums[f + "tauVs_BC"][begin[jj]: end[jj]][~sbool] = np.nan
+        Lums[f + "log10t_BC"][jj][~sbool] = np.nan
+
         if orientation == "sim":
 
-            starCoords = S_coords[:, begin[jj]: end[jj]].T
-            gasCoords = G_coords[:, gbegin[jj]: gend[jj]].T
+            starCoords = S_coords[:, begin[jj]: end[jj]].T[sbool]
+            gasCoords = G_coords[:, gbegin[jj]: gend[jj]].T[gbool]
 
             MetSurfaceDensities = util.get_Z_LOS(starCoords, gasCoords,
                                                  gasMasses, gasMetallicities,
                                                  gasSML, (0, 1, 2),
                                                  lkernel, kbins)
 
-            S_coords[:, begin[jj]: end[jj]] = (starCoords - cops[:, jj]).T
-            G_coords[:, gbegin[jj]: gend[jj]] = (gasCoords - cops[:, jj]).T
+            S_coords[:, begin[jj]: end[jj]][:, sbool] = (starCoords - cops[:, jj]).T
+            G_coords[:, gbegin[jj]: gend[jj]][:, gbool] = (gasCoords - cops[:, jj]).T
 
         elif orientation == "face-on":
 
-            starCoords = S_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
-            gasCoords = G_coords[:, gbegin[jj]: gend[jj]].T - cops[:, jj]
-            gasVels = G_vels[gbegin[jj]: gend[jj], :]
+            starCoords = S_coords[:, begin[jj]: end[jj]][:, sbool].T - cops[:, jj]
+            gasCoords = G_coords[:, gbegin[jj]: gend[jj]][:, gbool].T - cops[:, jj]
+            gasVels = G_vels[gbegin[jj]: gend[jj], :][gbool]
 
             # Get angular momentum vector
             ang_vec = util.ang_mom_vector(gasMasses, gasCoords, gasVels)
@@ -233,7 +246,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             # Rotate positions
             starCoords = util.get_rotated_coords(ang_vec, starCoords)
             gasCoords = util.get_rotated_coords(ang_vec, gasCoords)
-            S_coords[:, begin[jj]: end[jj]] = starCoords.T
+            S_coords[:, begin[jj]: end[jj]][:, sbool] = starCoords.T
 
             MetSurfaceDensities = util.get_Z_LOS(starCoords, gasCoords,
                                                  gasMasses, gasMetallicities,
@@ -241,9 +254,9 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
                                                  lkernel, kbins)
         elif orientation == "side-on":
 
-            starCoords = S_coords[:, begin[jj]: end[jj]].T - cops[:, jj]
-            gasCoords = G_coords[:, gbegin[jj]: gend[jj]].T - cops[:, jj]
-            gasVels = G_vels[:, gbegin[jj]: gend[jj]]
+            starCoords = S_coords[:, begin[jj]: end[jj]][:, sbool].T - cops[:, jj]
+            gasCoords = G_coords[:, gbegin[jj]: gend[jj]][:, gbool].T - cops[:, jj]
+            gasVels = G_vels[gbegin[jj]: gend[jj], :][gbool]
 
             # Get angular momentum vector
             ang_vec = util.ang_mom_vector(gasMasses, gasCoords, gasVels)
@@ -251,7 +264,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             # Rotate positions
             starCoords = util.get_rotated_coords(ang_vec, starCoords)
             gasCoords = util.get_rotated_coords(ang_vec, gasCoords)
-            S_coords[:, begin[jj]: end[jj]] = starCoords.T
+            S_coords[:, begin[jj]: end[jj]][:, sbool] = starCoords.T
 
             MetSurfaceDensities = util.get_Z_LOS(starCoords, gasCoords,
                                                  gasMasses, gasMetallicities,
@@ -321,6 +334,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     Lums["end"] = end
     Lums["gbegin"] = gbegin
     Lums["gend"] = gend
+    Lums["S_bool"] = S_bool
+    Lums["G_bool"] = G_bool
 
     return Lums  # , S_len + G_len
 
