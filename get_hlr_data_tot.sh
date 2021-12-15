@@ -7,7 +7,7 @@
 #SBATCH -J FLARES-Sizes #Give it something meaningful.
 #SBATCH -o logs/output_hlr_job.%A_%a.out
 #SBATCH -e logs/error_hlr_job.%A_%a.err
-#SBATCH -t 72:00:00
+#SBATCH -t 02:00:00
 
 # Run the job from the following directory - change this to point to your own personal space on /lustre
 cd /cosma7/data/dp004/dc-rope1/FLARES/flares-sizes-obs
