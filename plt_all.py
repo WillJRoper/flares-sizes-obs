@@ -117,7 +117,7 @@ for reg, snap in reg_snaps:
             print(reg, snap, e)
             continue
 
-        surf_dens = hdf[f]["Image_Luminosity"][...] \
+        surf_dens = hdf[f]["Luminosity"][...] \
                     / (np.pi * (2 * hdf[f]["HLR_0.5"][...]) ** 2)
 
         intr_data[snap][f].setdefault("Inner_Surface_Density",
