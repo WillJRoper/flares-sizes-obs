@@ -118,6 +118,8 @@ if run:
     sed_tot = {}
     sed_lam = {}
     surf_dens = {}
+    grps = {}
+    subgrps = {}
 
     # Set mass limit
     masslim = 10 ** 8
@@ -147,6 +149,8 @@ if run:
     sed_tot.setdefault(tag, {})
     sed_lam.setdefault(tag, {})
     surf_dens.setdefault(tag, {})
+    grps.setdefault(tag, {})
+    subgrps.setdefault(tag, {})
 
     # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
     reg_dict = phot.get_lum(reg, kappa=0.0795, tag=tag, BC_fac=1,
@@ -172,7 +176,7 @@ if run:
     # Compute the new width
     width = csoft * res
 
-    print(width, res)
+    print("Image width and resolution", width, res)
 
     single_pixel_area = csoft * csoft
 
@@ -245,6 +249,8 @@ if run:
         sed_tot[tag].setdefault(f, [])
         sed_lam[tag].setdefault(f, [])
         surf_dens[tag].setdefault(f, [])
+        grps[tag].setdefault(f, [])
+        subgrps[tag].setdefault(f, [])
 
         for ind in range(len(begin)):
 
@@ -263,10 +269,10 @@ if run:
             this_met = star_Z[b: e][sbool] * masses[b: e][sbool]
             this_metals = gas_Z[gb: ge][gbool] * gas_masses[gb: ge][gbool]
             this_nstar = this_smls.size
-            if this_nstar > 100:
-                print(this_nstar, nstars[ind])
             this_age = reg_dict["S_age"][b: e][sbool]
             this_Sz = reg_dict["S_Z"][b: e][sbool]
+            this_grp = reg_dict["grpid"][ind]
+            this_subgrp = reg_dict["subgrpid"][ind]
 
             if np.nansum(this_lumin) == 0:
                 continue
@@ -371,6 +377,9 @@ if run:
             nstar_dict[tag][f].append(this_nstar)
             img_dict[tag][f].append(img)
             nosmooth_img_dict[tag][f].append(img)
+            
+            grps[tag][f].append(this_grp)
+            subgrps[tag][f].append(this_subgrp)
 
             # fig = plt.figure()
             # ax = fig.add_subplot(111)
@@ -413,11 +422,41 @@ if run:
         sed_tots = np.array(sed_tot[tag][f])
         sed_lams = np.array(sed_lam[tag][f])
         surfdens = np.array(surf_dens[tag][f])
-
-        print(imgs.shape)
-        print(sed_ints.shape)
+        
+        grpids = np.array(grps[tag][f])
+        subgrpids = np.array(subgrps[tag][f])
 
         f_group = hdf.create_group(f)
+        
+        try:
+            dset = f_group.create_dataset("GroupNumber", data=grpids,
+                                          dtype=grpids.dtype,
+                                          shape=grpids.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "None"
+        except RuntimeError:
+            print("GroupNumber already exists: Overwriting...")
+            del f_group["GroupNumber"]
+            dset = f_group.create_dataset("GroupNumber", data=grpids,
+                                          dtype=grpids.dtype,
+                                          shape=grpids.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "None"
+            
+        try:
+            dset = f_group.create_dataset("SubGroupNumber", data=subgrpids,
+                                          dtype=subgrpids.dtype,
+                                          shape=subgrpids.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "None"
+        except RuntimeError:
+            print("SubGroupNumber already exists: Overwriting...")
+            del f_group["SubGroupNumber"]
+            dset = f_group.create_dataset("SubGroupNumber", data=subgrpids,
+                                          dtype=subgrpids.dtype,
+                                          shape=subgrpids.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "None"
 
         try:
             dset = f_group.create_dataset("HDR", data=hdr,

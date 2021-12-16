@@ -57,6 +57,8 @@ def get_data(ii, tag, inp='FLARES'):
         if s_len is not None:
             S_len = np.array(s_len,
                              dtype=np.int64)
+            grpid = hf[tag + '/Galaxy'].get('GroupNumber')
+            subgrpid = hf[tag + '/Galaxy'].get('SubGroupNumber')
             G_len = np.array(hf[tag + '/Galaxy'].get('G_Length'),
                              dtype=np.int64)
             cops = np.array(hf[tag + '/Galaxy'].get("COP"),
@@ -106,6 +108,8 @@ def get_data(ii, tag, inp='FLARES'):
 
             S_len = np.array([])
             G_len = np.array([])
+            grpid = np.array([])
+            subgrpid = np.array([])
             cops = np.array([])
             S_mass_ini = np.array([])
             S_mass = np.array([])
@@ -132,7 +136,7 @@ def get_data(ii, tag, inp='FLARES'):
     return S_mass_ini, S_Z, S_age, S_los, G_Z, S_len, \
            G_len, G_sml, S_sml, G_mass, S_coords, G_coords, \
            S_vels, G_vels, S_mass, cops, S_bool, G_bool, \
-           begin, end, gbegin, gend
+           begin, end, gbegin, gend, grpid, subgrpid
 
 
 def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
@@ -148,7 +152,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     S_mass_ini, S_Z, S_age, S_los, G_Z, S_len, \
     G_len, G_sml, S_sml, G_mass, S_coords, G_coords, \
     S_vels, G_vels, S_mass, cops, S_bool, G_bool, \
-    begin, end, gbegin, gend = get_data(sim, tag, inp)
+    begin, end, gbegin, gend, grpid, subgrpid = get_data(sim, tag, inp)
 
     print("Got data, there are ", len(begin), "galaxies")
 
@@ -322,6 +326,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
     Lums["coords"] = S_coords
     Lums["gcoords"] = G_coords
+    Lums["grpid"] = grpid
+    Lums["subgrpid"] = subgrpid
     Lums["smls"] = S_sml
     Lums["masses"] = S_mass
     Lums["gmasses"] = G_mass
