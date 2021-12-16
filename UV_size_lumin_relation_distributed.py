@@ -262,7 +262,8 @@ if run:
             this_gmass = np.nansum(gas_masses[gb: ge][gbool])
             this_met = star_Z[b: e][sbool] * masses[b: e][sbool]
             this_metals = gas_Z[gb: ge][gbool] * gas_masses[gb: ge][gbool]
-            this_nstar = nstars[ind]
+            this_nstar = this_smls.size
+            print(this_nstar, nstars[ind])
             this_age = reg_dict["S_age"][b: e][sbool]
             this_Sz = reg_dict["S_Z"][b: e][sbool]
 
