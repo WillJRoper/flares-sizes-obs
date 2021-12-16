@@ -57,8 +57,10 @@ def get_data(ii, tag, inp='FLARES'):
         if s_len is not None:
             S_len = np.array(s_len,
                              dtype=np.int64)
-            grpid = hf[tag + '/Galaxy'].get('GroupNumber')
-            subgrpid = hf[tag + '/Galaxy'].get('SubGroupNumber')
+            grpid = np.array(hf[tag + '/Galaxy'].get('GroupNumber'),
+                             dtype=np.int64)
+            subgrpid = np.array(hf[tag + '/Galaxy'].get('SubGroupNumber'), 
+                                dtype=np.int64)
             G_len = np.array(hf[tag + '/Galaxy'].get('G_Length'),
                              dtype=np.int64)
             cops = np.array(hf[tag + '/Galaxy'].get("COP"),
