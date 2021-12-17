@@ -33,7 +33,8 @@ limed_snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
 all_filters = ['FAKE.TH.' + f
                for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
                          'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
-filters = ['FAKE.TH.' + f for f in ['FUV', 'MUV', 'NUV']]
+# filters = ['FAKE.TH.' + f for f in ['FUV', 'MUV', 'NUV']]
+filters = ['FAKE.TH.' + f for f in ['FUV', ]]
 
 keys = ["Mass", "Image_Luminosity", "HLR_0.5",
         "HLR_Pixel_0.5", "Luminosity",
@@ -282,9 +283,11 @@ print("--------------------------- Fits ---------------------------")
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix", "Complete", xlims, ylims)
+print("--------------------------- Fits No Smooth ---------------------------")
 fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, "Total",
                              "default",
                              "pix", "Complete", xlims, ylims, weight_norm)
+print("--------------------------- Fits Incomplete ---------------------------")
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix", "All", xlims, ylims)
@@ -295,6 +298,7 @@ print("--------------------------- All filters ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
                      "pix", weight_norm, list(xlims), list(ylims), "Complete")
+print("--------------------------- All filters Incomplete ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
                      "pix", weight_norm, list(xlims), list(ylims), "All")
@@ -304,12 +308,17 @@ for f in filters:
     print("--------------------------- Evolution ---------------------------")
     size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "All",
                     "default")
+    print("--------------------------- Evolution Incomplete ---------------------------")
     size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "NonComplete",
                     "default")
+    print(
+        "--------------------------- Evolution Incomplete Particle ---------------------------")
     size_evo_violin(data, intr_data, all_snaps, f, "part", "sim", "All",
                     "default")
     # size_evo_violin(data, intr_data, all_snaps, f, "app", "sim", "All",
     #                 "default")
+    print(
+        "--------------------------- Evolution Limited ---------------------------")
     size_evo_violin(data, intr_data, limed_snaps, f, "pix", "sim", "Limited",
                     "default")
     for snap in snaps:

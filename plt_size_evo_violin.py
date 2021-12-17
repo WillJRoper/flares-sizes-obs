@@ -67,7 +67,7 @@ def custom_violin_stats(data, weights):
     return results
 
 
-fit = lambda z, C, m: C * (1 + z) ** -m
+fit = lambda z, C, m: C * (1 + 5) * (1 + z) ** -m
 
 
 def norm_fit(z, m):
