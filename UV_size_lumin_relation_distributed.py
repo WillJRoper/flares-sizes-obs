@@ -399,6 +399,8 @@ if run:
 
         print("There are", len(img_dict[tag][f]), "images")
 
+    f = filters[0]
+
     hdf = h5py.File(
         "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
                                                            orientation,

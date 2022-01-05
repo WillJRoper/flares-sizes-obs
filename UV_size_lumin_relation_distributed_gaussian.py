@@ -68,6 +68,13 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
                                                              x=reg, u=tag,
                                                              filt=filters[0]))
 
+# exists = os.path.isfile("data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
+#                                                            orientation, filters[0].split(".")[-1]))
+# if not exists:
+#     run = True
+# else:
+#     run = False
+
 run = True
 
 model = models.define_model(
@@ -110,6 +117,8 @@ if run:
     sed_tot = {}
     sed_lam = {}
     surf_dens = {}
+    grps = {}
+    subgrps = {}
 
     # Set mass limit
     masslim = 10 ** 8
@@ -139,6 +148,8 @@ if run:
     sed_tot.setdefault(tag, {})
     sed_lam.setdefault(tag, {})
     surf_dens.setdefault(tag, {})
+    grps.setdefault(tag, {})
+    subgrps.setdefault(tag, {})
 
     # Kappa with DTM 0.0795, BC_fac=1., without 0.0063 BC_fac=1.25
     reg_dict = phot.get_lum(reg, kappa=0.0795, tag=tag, BC_fac=1,
@@ -164,7 +175,7 @@ if run:
     # Compute the new width
     width = csoft * res
 
-    print(width, res)
+    print("Image width and resolution", width, res)
 
     single_pixel_area = csoft * csoft
 
@@ -237,6 +248,8 @@ if run:
         sed_tot[tag].setdefault(f, [])
         sed_lam[tag].setdefault(f, [])
         surf_dens[tag].setdefault(f, [])
+        grps[tag].setdefault(f, [])
+        subgrps[tag].setdefault(f, [])
 
         for ind in range(len(begin)):
 
@@ -254,9 +267,11 @@ if run:
             this_gmass = np.nansum(gas_masses[gb: ge][gbool])
             this_met = star_Z[b: e][sbool] * masses[b: e][sbool]
             this_metals = gas_Z[gb: ge][gbool] * gas_masses[gb: ge][gbool]
-            this_nstar = nstars[ind]
+            this_nstar = this_smls.size
             this_age = reg_dict["S_age"][b: e][sbool]
             this_Sz = reg_dict["S_Z"][b: e][sbool]
+            this_grp = reg_dict["grpid"][ind]
+            this_subgrp = reg_dict["subgrpid"][ind]
 
             if np.nansum(this_lumin) == 0:
                 continue
@@ -293,7 +308,7 @@ if run:
                 this_radii = util.calc_rad(this_pos, i=2, j=0)
                 this_gradii = util.calc_rad(this_gpos, i=2, j=0)
 
-                img = util.make_soft_img(this_pos, res, 2, 0, imgrange,
+                img = util.make_soft_img(this_pos, res, 0, 1, imgrange,
                                          this_lumin, this_smls, numThreads=1)
 
                 no_smooth_img, _, _ = np.histogram2d(this_pos[:, 2],
@@ -357,6 +372,9 @@ if run:
             img_dict[tag][f].append(img)
             nosmooth_img_dict[tag][f].append(img)
 
+            grps[tag][f].append(this_grp)
+            subgrps[tag][f].append(this_subgrp)
+
             # fig = plt.figure()
             # ax = fig.add_subplot(111)
             # ax.imshow(np.log10(img), extent=imgextent)
@@ -374,6 +392,8 @@ if run:
             # plt.close(fig)
 
         print("There are", len(img_dict[tag][f]), "images")
+
+    f = filters[0]
 
     hdf = h5py.File(
         "data/flares_sizes_gaussian_{}_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
@@ -400,10 +420,40 @@ if run:
         sed_lams = np.array(sed_lam[tag][f])
         surfdens = np.array(surf_dens[tag][f])
 
-        print(imgs.shape)
-        print(sed_ints.shape)
+        grpids = np.array(grps[tag][f])
+        subgrpids = np.array(subgrps[tag][f])
 
         f_group = hdf.create_group(f)
+
+        try:
+            dset = f_group.create_dataset("GroupNumber", data=grpids,
+                                          dtype=grpids.dtype,
+                                          shape=grpids.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "None"
+        except RuntimeError:
+            print("GroupNumber already exists: Overwriting...")
+            del f_group["GroupNumber"]
+            dset = f_group.create_dataset("GroupNumber", data=grpids,
+                                          dtype=grpids.dtype,
+                                          shape=grpids.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "None"
+
+        try:
+            dset = f_group.create_dataset("SubGroupNumber", data=subgrpids,
+                                          dtype=subgrpids.dtype,
+                                          shape=subgrpids.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "None"
+        except RuntimeError:
+            print("SubGroupNumber already exists: Overwriting...")
+            del f_group["SubGroupNumber"]
+            dset = f_group.create_dataset("SubGroupNumber", data=subgrpids,
+                                          dtype=subgrpids.dtype,
+                                          shape=subgrpids.shape,
+                                          compression="gzip")
+            dset.attrs["units"] = "None"
 
         try:
             dset = f_group.create_dataset("HDR", data=hdr,
