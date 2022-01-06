@@ -2,12 +2,12 @@
 import os
 import warnings
 
+import cmasher as cmr
 import h5py
 import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 import matplotlib.colors as cm
-import cmasher as cmr
+import matplotlib.gridspec as gridspec
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -38,7 +38,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     gauss_imgs = []
     sph_imgs = []
 
-    for reg in regions[:2]:
+    for reg in regions:
         hdf_gauss = h5py.File(
             "data/flares_sizes_gaussian_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
                                                                     Type,
@@ -111,7 +111,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     okinds = np.logical_and(gauss_hlrs > 0,
                             np.logical_and(sph_hlrs > 0,
                                            np.logical_and(sph_lumins > 0,
-                                                          gauss_lumins >0)))
+                                                          gauss_lumins > 0)))
     gauss_hlrs = gauss_hlrs[okinds]
     sph_hlrs = sph_hlrs[okinds]
     gauss_lumins = gauss_lumins[okinds]
@@ -120,9 +120,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     gimg = np.nansum(gauss_imgs, axis=0)
     simg = np.nansum(sph_imgs, axis=0)
-    resi = (gimg - simg) / np.sqrt(np.std(gimg)**2 + np.std(simg)**2)
-
-    print(resi, resi.min(), resi.max())
+    resi = (gimg - simg) / np.sqrt(np.std(gimg) ** 2 + np.std(simg) ** 2)
 
     dpi = gimg.shape[0] * 2
     fig = plt.figure(figsize=(6, 2), dpi=dpi)
@@ -134,12 +132,11 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     cax = fig.add_subplot(gs[0, 3])
 
     for ax in [ax1, ax2, ax3]:
-
         # Remove axis labels and ticks
         ax.tick_params(axis='x', top=False, bottom=False,
-                               labeltop=False, labelbottom=False)
+                       labeltop=False, labelbottom=False)
         ax.tick_params(axis='y', left=False, right=False,
-                               labelleft=False, labelright=False)
+                       labelleft=False, labelright=False)
         ax.grid(False)
 
     log_norm = cm.LogNorm(vmin=np.percentile(gimg, 16),
@@ -154,6 +151,33 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
                norm=log_norm)
     im = ax3.imshow(resi, cmap=cmr.iceburn,
                     norm=diverg_norm)
+
+    ax1.text(0.05, 0.875,
+             "Gaussian Smoothing",
+             bbox=dict(boxstyle="round,pad=0.3",
+                       fc='grey',
+                       ec="w", lw=1, alpha=0.7),
+             transform=ax1.transAxes,
+             horizontalalignment='left', color="w",
+             fontsize=3)
+
+    ax2.text(0.05, 0.875,
+             "Spline Smoothing",
+             bbox=dict(boxstyle="round,pad=0.3",
+                       fc='grey',
+                       ec="w", lw=1, alpha=0.7),
+             transform=ax2.transAxes,
+             horizontalalignment='left', color="w",
+             fontsize=3)
+
+    ax3.text(0.05, 0.875,
+             "Gaussian - Spline",
+             bbox=dict(boxstyle="round,pad=0.3",
+                       fc='grey',
+                       ec="w", lw=1, alpha=0.7),
+             transform=ax3.transAxes,
+             horizontalalignment='left', color="w",
+             fontsize=3)
 
     cbar = fig.colorbar(im, cax=cax)
     cbar.set_label("Normalised residual")
