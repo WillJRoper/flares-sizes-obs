@@ -152,7 +152,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
                norm=log_norm)
     ax2.imshow(simg, cmap=cmr.neutral,
                norm=log_norm)
-    im = ax3.imshow(resi, cmap="coolwarm",
+    im = ax3.imshow(resi, cmap=cmr.iceburn,
                     norm=diverg_norm)
 
     cbar = fig.colorbar(im, cax=cax)
