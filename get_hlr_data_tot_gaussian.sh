@@ -23,8 +23,6 @@ i=$(($SLURM_ARRAY_TASK_ID - 1))
 # Run the program
 mpirun -np 12 python3 UV_size_lumin_relation_distributed_gaussian.py $i sim Total
 
-source deactivate
-
 echo "Job done, info follows..."
 sacct -j $SLURM_JOBID --format=JobID,JobName,Partition,MaxRSS,Elapsed,ExitCode
 exit

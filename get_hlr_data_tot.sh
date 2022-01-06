@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #SBATCH --ntasks 12 # The number of cores you need...
 #SBATCH --array=1-480
-#SBATCH -p cosma7 #or some other partition, e.g. cosma, cosma6, etc.
+#SBATCH -p cosma6 #or some other partition, e.g. cosma, cosma6, etc.
 #SBATCH -A dp004
 #SBATCH --cpus-per-task=1
 #SBATCH -J FLARES-Sizes #Give it something meaningful.
@@ -22,8 +22,6 @@ i=$(($SLURM_ARRAY_TASK_ID - 1))
 
 # Run the program
 mpirun -np 12 python3 UV_size_lumin_relation_distributed.py $i sim Total
-
-source deactivate
 
 echo "Job done, info follows..."
 sacct -j $SLURM_JOBID --format=JobID,JobName,Partition,MaxRSS,Elapsed,ExitCode
