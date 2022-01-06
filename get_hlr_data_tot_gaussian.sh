@@ -9,21 +9,19 @@
 #SBATCH -e logs/error_hlr_job.%A_%a.err
 #SBATCH -t 72:00:00
 
-source /cosma/home/dp004/dc-rope1/.bash_profile
-
 # Run the job from the following directory - change this to point to your own personal space on /lustre
 cd /cosma7/data/dp004/dc-rope1/FLARES/flares-sizes-obs
 
 module purge
 #load the modules used to build your program.
-module load pythonconda3/4.5.4
+module load python/3.9.1-C7 gnu_comp/11.1.0 openmpi/4.1.1 ucx/1.10.1
 
-source activate flares-env
+source flares-size-env/bin/activate
 
 i=$(($SLURM_ARRAY_TASK_ID - 1))
 
 # Run the program
-mpirun -np 12 python UV_size_lumin_relation_distributed_gaussian.py $i sim Total
+mpirun -np 12 python3 UV_size_lumin_relation_distributed_gaussian.py $i sim Total
 
 source deactivate
 
