@@ -198,14 +198,23 @@ for snap in all_snaps:
         data[snap][f]["okinds"] = okinds
         intr_data[snap][f]["okinds"] = okinds
 
-        data[snap][f]["Complete_Luminosity"] = np.max(
-            data[snap][f]["Image_Luminosity"][~okinds])
-        data[snap][f]["Complete_Mass"] = np.max(
-            data[snap][f]["Mass"][~okinds])
-        intr_data[snap][f]["Complete_Luminosity"] = np.max(
-            intr_data[snap][f]["Image_Luminosity"][~okinds])
-        intr_data[snap][f]["Complete_Mass"] = np.max(
-            intr_data[snap][f]["Mass"][~okinds])
+        data[snap][f]["Complete_Luminosity"] = np.percentile(
+            data[snap][f]["Image_Luminosity"][~okinds], 95)
+        data[snap][f]["Complete_Mass"] = np.percentile(
+            data[snap][f]["Mass"][~okinds], 95)
+        intr_data[snap][f]["Complete_Luminosity"] = np.percentile(
+            intr_data[snap][f]["Image_Luminosity"][~okinds], 95)
+        intr_data[snap][f]["Complete_Mass"] = np.percentile(
+            intr_data[snap][f]["Mass"][~okinds], 95)
+
+        # data[snap][f]["Complete_Luminosity"] = np.max(
+        #     data[snap][f]["Image_Luminosity"][~okinds])
+        # data[snap][f]["Complete_Mass"] = np.max(
+        #     data[snap][f]["Mass"][~okinds])
+        # intr_data[snap][f]["Complete_Luminosity"] = np.max(
+        #     intr_data[snap][f]["Image_Luminosity"][~okinds])
+        # intr_data[snap][f]["Complete_Mass"] = np.max(
+        #     intr_data[snap][f]["Mass"][~okinds])
 
         print("Intrinsic: complete luminosity/mass for", snap, f,
               "%.2f/%.2f" % (
