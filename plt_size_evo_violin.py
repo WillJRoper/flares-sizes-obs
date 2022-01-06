@@ -389,7 +389,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         ax.errorbar(plt_z[~cnt_okinds], med[~cnt_okinds],
                     yerr=(hlr_16[~cnt_okinds], hlr_84[~cnt_okinds]),
                     capsize=5, color=col,
-                    marker="^", linestyle="none", alpha=0.8)
+                    marker="^", linestyle="none", alpha=0.6)
 
     # bt_rs = [0.6333, 0.58632, 0.5292567, 0.51400117, 0.475394]
     # bt_zs = [7, 8, 9, 10, 11]

@@ -363,11 +363,11 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                     legend_elements.append(
                         Line2D([0], [0], marker=markers[p], color='w',
                                label=labels[p], markerfacecolor=colors[p],
-                               markersize=8, alpha=0.7))
+                               markersize=8, alpha=0.9))
 
                     axes[i].scatter(plt_lumins, plt_r_es,
                                     marker=markers[p], label=labels[p], s=10,
-                                    color=colors[p], alpha=0.7)
+                                    color=colors[p], alpha=0.9)
 
                 # if int(z) in [6, 7, 8, 9]:
                 #
