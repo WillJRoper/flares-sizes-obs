@@ -47,8 +47,11 @@ extinction = 'default'
 # filters = ['FAKE.TH.' + f
 #            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
 #                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
+# filters = ['FAKE.TH.' + f
+#            for f in ['FUV', 'MUV', 'NUV']]
+#                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 filters = ['FAKE.TH.' + f
-           for f in ['FUV', 'MUV', 'NUV']]
+           for f in ['FUV', ]]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -115,10 +118,11 @@ for reg in regions:
 
             print(imgs.shape)
 
-            norm = cm.Normalize(vmin=0,
+            norm = cm.Normalize(vmin=np.percentile(imgs[imgs > 0], 16),
                                 vmax=np.percentile(imgs[imgs > 0], 99.99),
                                 clip=True)
-            norm_log = cm.Normalize(vmin=0,
+            norm_log = cm.Normalize(vmin=np.percentile(
+                                        np.log10(imgs[imgs > 0]), 16),
                                     vmax=np.percentile(
                                         np.log10(imgs[imgs > 0]), 99.99),
                                     clip=True)
