@@ -65,26 +65,31 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
         lumin_sph = hdf_sph[f]["Image_Luminosity"][...]
 
         hdf_sph.close()
-        print(grp_num_gauss, subgrp_num_gauss)
-        print(grp_num_gauss.size, subgrp_num_gauss.size,
-              grp_num_sph.size, subgrp_num_sph.size)
+        if subgrp_num_gauss.size == subgrp_num_sph.size:
 
-        for (sph_ind, grp), subgrp in zip(enumerate(grp_num_sph),
-                                          subgrp_num_sph):
+            w.extend(np.full_like(hlr_gauss, weights[int(reg)]))
+            gauss_hlrs.extend(hlr_gauss)
+            sph_hlrs.extend(hlr_sph)
+            gauss_lumins.extend(lumin_gauss)
+            sph_lumins.extend(lumin_sph)
 
-            print(grp, subgrp)
+        else:
 
-            gauss_ind = np.where(np.logical_and(grp_num_gauss == grp,
-                                                subgrp_num_gauss == subgrp))[0]
+            for (sph_ind, grp), subgrp in zip(enumerate(grp_num_sph),
+                                              subgrp_num_sph):
 
-            if gauss_ind.size == 0:
-                continue
+                gauss_ind = np.where(
+                    np.logical_and(grp_num_gauss == grp,
+                                   subgrp_num_gauss == subgrp))[0]
 
-            w.append(weights[int(reg)])
-            gauss_hlrs.append(hlr_gauss[gauss_ind])
-            sph_hlrs.append(hlr_sph[sph_ind])
-            gauss_lumins.append(lumin_gauss[gauss_ind])
-            sph_lumins.append(lumin_sph[sph_ind])
+                if gauss_ind.size == 0:
+                    continue
+
+                w.append(weights[int(reg)])
+                gauss_hlrs.append(hlr_gauss[gauss_ind])
+                sph_hlrs.append(hlr_sph[sph_ind])
+                gauss_lumins.append(lumin_gauss[gauss_ind])
+                sph_lumins.append(lumin_sph[sph_ind])
 
         print(reg, len(w))
 
