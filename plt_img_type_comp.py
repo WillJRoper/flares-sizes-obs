@@ -93,6 +93,22 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
         print(reg, len(w))
 
+    gauss_hlrs = np.array(gauss_hlrs)
+    sph_hlrs = np.array(sph_hlrs)
+    gauss_lumins = np.array(gauss_lumins)
+    sph_lumins = np.array(sph_lumins)
+    w = np.array(w)
+
+    okinds = np.logical_and(gauss_hlrs > 0,
+                            np.logical_and(sph_hlrs > 0,
+                                           np.logical_and(sph_lumins > 0,
+                                                          gauss_lumins >0)))
+    gauss_hlrs = gauss_hlrs[okinds]
+    sph_hlrs = sph_hlrs[okinds]
+    gauss_lumins = gauss_lumins[okinds]
+    sph_lumins = sph_lumins[okinds]
+    w = w[okinds]
+
     fig = plt.figure()
     ax = fig.add_subplot(111)
     try:
