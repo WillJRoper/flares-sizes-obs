@@ -13,6 +13,7 @@ from plt_size_lumin_intrinsic import size_lumin_intrinsic
 from plt_size_part_smooth_comp import size_comp_smooth_part
 from plt_size_smooth_comp import size_comp_smooth
 from plt_size_type_comp import size_comp
+from plt_img_type_comp import img_size_comp
 
 # Set orientation
 orientation = "sim"
@@ -453,3 +454,6 @@ for f in filters:
                               intr_data[snap][f][
                                   "Diffuse_Population_NotComplete"],
                               weight_norm, orientation, "Intrinsic", "default")
+
+img_size_comp(filters[0], regions, snaps[-1], weight_norm,
+              orientation, "Total", "default")
