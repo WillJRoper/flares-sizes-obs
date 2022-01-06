@@ -120,7 +120,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     gimg = np.nansum(gauss_imgs, axis=0)
     simg = np.nansum(sph_imgs, axis=0)
-    resi = (np.log10(gimg) - np.log10(simg)) / np.sqrt(np.nanstd(np.log10(gimg)) ** 2 + np.nanstd(np.log10(simg)) ** 2)
+    resi = (np.log10(gimg) - np.log10(simg))
 
     dpi = gimg.shape[0] * 2
     fig = plt.figure(figsize=(6, 2), dpi=dpi)
@@ -180,7 +180,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
              fontsize=6)
 
     cbar = fig.colorbar(im, cax=cax)
-    cbar.set_label("Normalised residual")
+    cbar.set_label("$\Delta L /$ [erg $/$ s $/$ Hz]")
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonImageCreation_Residual_'
@@ -238,8 +238,8 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
             color='k', linestyle="--")
 
     # Label axes
-    ax.set_xlabel('$L_{\mathrm{gauss}}/ [erg $/$ s $/$ Hz]"$')
-    ax.set_ylabel('$L_{\mathrm{spline}}/ [erg $/$ s $/$ Hz]"$')
+    ax.set_xlabel('$L_{\mathrm{gauss}}/$ [erg $/$ s $/$ Hz]')
+    ax.set_ylabel('$L_{\mathrm{spline}}/$ [erg $/$ s $/$ Hz]')
 
     plt.axis('scaled')
 
