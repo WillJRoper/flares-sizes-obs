@@ -73,13 +73,17 @@ np.random.seed(100)
 
 for reg in regions:
     for snap in snaps:
-
-        hdf = h5py.File(
-            "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, Type,
-                                                        orientation),
-            "r")
-
         for f in filters:
+
+            hdf = h5py.File(
+                "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
+                                                                   "Total",
+                                                                   orientation,
+                                                                   f.split(
+                                                                       ".")[
+                                                                       -1]),
+                "r")
+
             imgs_dict[f] = hdf[f]["Images"][...]
             mass_dict[f] = hdf[f]["Mass"][...]
             hlr_pix_dict[f] = hdf[f]["HLR_Pixel_0.5"][...]
