@@ -4,9 +4,9 @@ import pandas as pd
 from matplotlib.colors import LogNorm
 from plt_half_dust_radius_comp import hdr_comp
 from plt_mass_lumin import mass_lumin
-from plt_size_lumin_fitgrid import fit_size_lumin_grid
 from plt_no_smooth_size_lumin_fitgrid import fit_size_lumin_grid_nosmooth
 from plt_size_evo_violin import size_evo_violin
+from plt_size_lumin_fitgrid import fit_size_lumin_grid
 from plt_size_lumin_grid import size_lumin_grid
 from plt_size_lumin_grid_all_filters import size_lumin_grid_allf
 from plt_size_lumin_intrinsic import size_lumin_intrinsic
@@ -28,6 +28,8 @@ total_snaps = ['000_z015p000', '001_z014p000', '002_z013p000',
                '009_z006p000', '010_z005p000']  # every output
 limed_snaps = ['003_z012p000', '004_z011p000', '005_z010p000',
                '006_z009p000', '007_z008p000', '008_z007p000']
+low_limed_snaps = ['005_z010p000', '006_z009p000', '007_z008p000',
+                   '008_z007p000', '009_z006p000', '010_z005p000']
 
 # Define filter
 all_filters = ['FAKE.TH.' + f
@@ -159,7 +161,6 @@ for snap in intr_data.keys():
     all_comp_gals += comp_gals
     all_diffuse_gals += diffuse_gals
 
-
     print("Galaxies with M_star/M_sun>10**8 in snapshot %s: %d"
           % (snap, n_gals))
     print("Galaxies with N_star>100 in snapshot %s: %d"
@@ -168,7 +169,6 @@ for snap in intr_data.keys():
           % (snap, comp_gals))
     print("Diffuse galaxies in snapshot %s: %d"
           % (snap, diffuse_gals))
-
 
 print("Total galaxies with M_star/M_sun>10**8: %d" % all_n_gals)
 print("Total galaxies with N_star>100: %d" % all_n_gals_above_100)
@@ -218,8 +218,8 @@ for snap in all_snaps:
 
         print("Intrinsic: complete luminosity/mass for", snap, f,
               "%.2f/%.2f" % (
-              np.log10(intr_data[snap][f]["Complete_Luminosity"]),
-              np.log10(intr_data[snap][f]["Complete_Mass"])))
+                  np.log10(intr_data[snap][f]["Complete_Luminosity"]),
+                  np.log10(intr_data[snap][f]["Complete_Mass"])))
         print("Total: complete luminosity/mass for", snap, f,
               "%.2f/%.2f" % (np.log10(data[snap][f]["Complete_Luminosity"]),
                              np.log10(data[snap][f]["Complete_Mass"])))
@@ -265,14 +265,14 @@ for snap in all_snaps:
 # Count the number of galaxies in FLARES
 all_complete_gals = 0
 for snap in intr_data.keys():
-    okinds = np.logical_or(data[snap][filters[0]]["Compact_Population_Complete"],
-                           data[snap][filters[0]]["Diffuse_Population_Complete"])
+    okinds = np.logical_or(
+        data[snap][filters[0]]["Compact_Population_Complete"],
+        data[snap][filters[0]]["Diffuse_Population_Complete"])
     complete_gals = data[snap][filters[0]]["Mass"][okinds].size
     all_complete_gals += complete_gals
 
     print("Complete Galaxies in snapshot %s: %d"
           % (snap, complete_gals))
-
 
 print("Total Complete galaxies: %d" % all_complete_gals)
 
@@ -296,7 +296,8 @@ print("--------------------------- Fits No Smooth ---------------------------")
 fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, "Total",
                              "default",
                              "pix", "Complete", xlims, ylims, weight_norm)
-print("--------------------------- Fits Incomplete ---------------------------")
+print(
+    "--------------------------- Fits Incomplete ---------------------------")
 fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
                     "default",
                     "pix", "All", xlims, ylims)
@@ -307,7 +308,8 @@ print("--------------------------- All filters ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
                      "pix", weight_norm, list(xlims), list(ylims), "Complete")
-print("--------------------------- All filters Incomplete ---------------------------")
+print(
+    "--------------------------- All filters Incomplete ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
                      "pix", weight_norm, list(xlims), list(ylims), "All")
@@ -317,7 +319,8 @@ for f in filters:
     print("--------------------------- Evolution ---------------------------")
     size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "All",
                     "default")
-    print("--------------------------- Evolution Incomplete ---------------------------")
+    print(
+        "--------------------------- Evolution Incomplete ---------------------------")
     size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "NonComplete",
                     "default")
     print(
@@ -327,13 +330,19 @@ for f in filters:
     # size_evo_violin(data, intr_data, all_snaps, f, "app", "sim", "All",
     #                 "default")
     print(
-        "--------------------------- Evolution Limited ---------------------------")
+        "--------------------------- Evolution Limited to high ---------------------------")
     size_evo_violin(data, intr_data, limed_snaps, f, "pix", "sim", "Limited",
+                    "default")
+    print(
+        "--------------------------- Evolution Limited to low ---------------------------")
+    size_evo_violin(data, intr_data, low_limed_snaps, f, "pix", "sim",
+                    "Low-Limited",
                     "default")
     for snap in snaps:
         print(snap)
         print(
-            "--------------------------- Mass Lumin", snap, "---------------------------")
+            "--------------------------- Mass Lumin", snap,
+            "---------------------------")
         mass_lumin(intr_data[snap][f]["Mass"],
                    intr_data[snap][f]["Image_Luminosity"],
                    intr_data[snap][f]["Compact_Population_Complete"],
@@ -356,7 +365,8 @@ for f in filters:
                    f, snap, orientation, "Total", "default",
                    data[snap][f]["Complete_Luminosity"],
                    data[snap][f]["Complete_Mass"], weight_norm)
-        print("--------------------------- HDR", snap, "---------------------------")
+        print("--------------------------- HDR", snap,
+              "---------------------------")
         hdr_comp(data[snap][f]["HDR"], data[snap][f]["HLR_0.5"],
                  intr_data[snap][f]["HLR_0.5"], data[snap][f]["Weight"],
                  data[snap][f]["Compact_Population_Complete"],
@@ -365,7 +375,8 @@ for f in filters:
                  data[snap][f]["Diffuse_Population_NotComplete"],
                  f, orientation, snap, "Intrinsic", "default", weight_norm)
         print(
-            "--------------------------- Intrinsic", snap, "---------------------------")
+            "--------------------------- Intrinsic", snap,
+            "---------------------------")
         size_lumin_intrinsic(intr_data[snap][f]["HLR_Pixel_0.5"],
                              intr_data[snap][f]["Image_Luminosity"],
                              data[snap][f]["Weight"],
@@ -388,7 +399,8 @@ for f in filters:
                                  "Diffuse_Population_NotComplete"],
                              f, snap, "part", orientation, "Intrinsic",
                              "default", weight_norm)
-        print("--------------------------- Comp", snap, "---------------------------")
+        print("--------------------------- Comp", snap,
+              "---------------------------")
         size_comp(f, snap, intr_data[snap][f]["HLR_0.5"],
                   intr_data[snap][f]["HLR_Pixel_0.5"], data[snap][f]["Weight"],
                   intr_data[snap][f]["Compact_Population_Complete"],
