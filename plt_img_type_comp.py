@@ -118,12 +118,12 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     sph_lumins = sph_lumins[okinds]
     w = w[okinds]
 
-    gimg = np.sum(gauss_imgs, axis=0)
-    simg = np.sum(sph_imgs, axis=0)
+    gimg = np.nansum(gauss_imgs, axis=0)
+    simg = np.nansum(sph_imgs, axis=0)
     resi = (gimg - simg) / np.sqrt(np.std(gimg)**2 + np.std(simg)**2)
 
     dpi = gimg.shape[0] * 2
-    fig = plt.figure(figsize=(3, 1), dpi=dpi)
+    fig = plt.figure(figsize=(6, 2), dpi=dpi)
     gs = gridspec.GridSpec(ncols=4, nrows=1, width_ratios=[10, 10, 10, 1])
     gs.update(wspace=0.0, hspace=0.0)
     ax1 = fig.add_subplot(gs[0, 0])
@@ -138,6 +138,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
                                labeltop=False, labelbottom=False)
         ax.tick_params(axis='y', left=False, right=False,
                                labelleft=False, labelright=False)
+        ax.grid(False)
 
     log_norm = cm.LogNorm(vmin=np.percentile(gimg, 16),
                           vmax=np.percentile(simg, 99))
