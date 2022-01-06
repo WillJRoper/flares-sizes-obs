@@ -5,6 +5,9 @@ import warnings
 import h5py
 import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+import matplotlib.colors as cm
+import cmasher as cmr
 import numpy as np
 import pandas as pd
 
@@ -32,6 +35,8 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     gauss_lumins = []
     sph_lumins = []
     w = []
+    gauss_imgs = []
+    sph_imgs = []
 
     for reg in regions:
         hdf_gauss = h5py.File(
@@ -47,6 +52,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
         subgrp_num_gauss = hdf_gauss[f]["SubGroupNumber"][...]
         hlr_gauss = hdf_gauss[f]["HLR_Pixel_0.5"][...]
         lumin_gauss = hdf_gauss[f]["Image_Luminosity"][...]
+        gauss_img = hdf_gauss[f]["Images"][...]
 
         hdf_gauss.close()
 
@@ -63,6 +69,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
         subgrp_num_sph = hdf_sph[f]["SubGroupNumber"][...]
         hlr_sph = hdf_sph[f]["HLR_Pixel_0.5"][...]
         lumin_sph = hdf_sph[f]["Image_Luminosity"][...]
+        sph_img = hdf_sph[f]["Images"][...]
 
         hdf_sph.close()
         if subgrp_num_gauss.size == subgrp_num_sph.size:
@@ -72,6 +79,8 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
             sph_hlrs.extend(hlr_sph)
             gauss_lumins.extend(lumin_gauss)
             sph_lumins.extend(lumin_sph)
+            gauss_imgs.extend(gauss_img)
+            sph_imgs.extend(sph_img)
 
         else:
 
@@ -109,6 +118,51 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     sph_lumins = sph_lumins[okinds]
     w = w[okinds]
 
+    gimg = np.sum(gauss_imgs, axis=0)
+    simg = np.sum(sph_imgs, axis=0)
+    resi = (gimg - simg) / np.sqrt(np.std(gimg)**2 + np.std(simg)**2)
+
+    dpi = gimg.shape[0] * 2
+    fig = plt.figure(figsize=(3, 1), dpi=dpi)
+    gs = gridspec.GridSpec(ncols=4, nrows=1, width_ratios=[10, 10, 10, 1])
+    gs.update(wspace=0.0, hspace=0.0)
+    ax1 = fig.add_subplot(gs[0, 0])
+    ax2 = fig.add_subplot(gs[0, 1])
+    ax3 = fig.add_subplot(gs[0, 2])
+    cax = fig.add_subplot(gs[0, 3])
+
+    for ax in [ax1, ax2, ax3]:
+
+        # Remove axis labels and ticks
+        ax.tick_params(axis='x', top=False, bottom=False,
+                               labeltop=False, labelbottom=False)
+        ax.tick_params(axis='y', left=False, right=False,
+                               labelleft=False, labelright=False)
+
+    log_norm = cm.LogNorm(vmin=np.percentile(gimg, 16),
+                          vmax=np.percentile(simg, 99))
+    diverg_norm = cm.TwoSlopeNorm(vmin=np.min(resi),
+                                  vcenter=0.,
+                                  vmax=np.max(resi))
+
+    ax1.imshow(gimg, cmap=cmr.neutral,
+               norm=log_norm)
+    ax2.imshow(simg, cmap=cmr.neutral,
+               norm=log_norm)
+    im = ax3.imshow(resi, cmap="coolwarm",
+                    norm=diverg_norm)
+
+    cbar = fig.colorbar(im, cax=cax)
+    cbar.set_label("Normalised residual")
+
+    fig.savefig(
+        'plots/' + str(z) + '/ComparisonImageCreation_Residual_'
+        + f + '_' + str(z) + '_'
+        + orientation + '_' + Type + "_" + extinction + ".png",
+        bbox_inches='tight')
+
+    plt.close(fig)
+
     fig = plt.figure()
     ax = fig.add_subplot(111)
     try:
@@ -139,6 +193,8 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
         + orientation + '_' + Type + "_" + extinction + ".png",
         bbox_inches='tight')
 
+    plt.close(fig)
+
     fig = plt.figure()
     ax = fig.add_subplot(111)
     try:
@@ -151,7 +207,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
         print(e)
         return
 
-    ax.plot([10 ** 27, 10 ** 31], [10 ** 27, 10 ** 31],
+    ax.plot([10 ** 27., 10 ** 31.], [10 ** 27., 10 ** 31.],
             color='k', linestyle="--")
 
     # Label axes
@@ -160,8 +216,8 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     plt.axis('scaled')
 
-    ax.set_xlim(10 ** 27, 10 ** 31)
-    ax.set_ylim(10 ** 27, 10 ** 31)
+    ax.set_xlim(10 ** 27., 10 ** 31.)
+    ax.set_ylim(10 ** 27., 10 ** 31.)
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonImageCreation_Lumin_' + f + '_' + str(
