@@ -65,12 +65,17 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
         lumin_sph = hdf_sph[f]["Image_Luminosity"][...]
 
         hdf_sph.close()
+        print(grp_num_gauss, subgrp_num_gauss)
+        print(grp_num_gauss.size, subgrp_num_gauss.size,
+              grp_num_sph.size, subgrp_num_sph.size)
 
         for (sph_ind, grp), subgrp in zip(enumerate(grp_num_sph),
                                           subgrp_num_sph):
 
-            gauss_ind = np.where(grp_num_gauss == grp,
-                                 subgrp_num_gauss == subgrp)[0]
+            print(grp, subgrp)
+
+            gauss_ind = np.where(np.logical_and(grp_num_gauss == grp,
+                                                subgrp_num_gauss == subgrp))[0]
 
             if gauss_ind.size == 0:
                 continue
