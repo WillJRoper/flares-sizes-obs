@@ -144,9 +144,9 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     log_norm = cm.LogNorm(vmin=np.percentile(gimg, 16),
                           vmax=np.percentile(simg, 99), clip=True)
-    diverg_norm = cm.TwoSlopeNorm(vmin=np.min(resi),
+    diverg_norm = cm.TwoSlopeNorm(vmin=-np.max((np.abs(resi))),
                                   vcenter=0.,
-                                  vmax=np.max(resi))
+                                  vmax=np.max((np.abs(resi))))
 
     ax1.imshow(gimg, cmap=cmr.neutral,
                norm=log_norm)
