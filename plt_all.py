@@ -456,4 +456,7 @@ ylims = (10 ** -1.1, 10 ** 1.1)
 #                               weight_norm, orientation, "Intrinsic", "default")
 
 img_size_comp(filters[0], regions, snaps[-1], weight_norm,
+              orientation, "Intrinsic", "default")
+
+img_size_comp(filters[0], regions, snaps[-1], weight_norm,
               orientation, "Total", "default")
