@@ -122,7 +122,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     simg = np.nansum(sph_imgs, axis=0)
     resi = (gimg - simg) / np.sqrt(np.std(gimg)**2 + np.std(simg)**2)
 
-    print(resi)
+    print(resi, resi.min(), resi.max())
 
     dpi = gimg.shape[0] * 2
     fig = plt.figure(figsize=(6, 2), dpi=dpi)
