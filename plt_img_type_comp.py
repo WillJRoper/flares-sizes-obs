@@ -38,7 +38,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     gauss_imgs = []
     sph_imgs = []
 
-    for reg in regions:
+    for reg in regions[:2]:
         hdf_gauss = h5py.File(
             "data/flares_sizes_gaussian_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
                                                                     Type,
@@ -122,6 +122,8 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     simg = np.nansum(sph_imgs, axis=0)
     resi = (gimg - simg) / np.sqrt(np.std(gimg)**2 + np.std(simg)**2)
 
+    print(resi)
+
     dpi = gimg.shape[0] * 2
     fig = plt.figure(figsize=(6, 2), dpi=dpi)
     gs = gridspec.GridSpec(ncols=4, nrows=1, width_ratios=[10, 10, 10, 1])
@@ -141,7 +143,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
         ax.grid(False)
 
     log_norm = cm.LogNorm(vmin=np.percentile(gimg, 16),
-                          vmax=np.percentile(simg, 99))
+                          vmax=np.percentile(simg, 99), clip=True)
     diverg_norm = cm.TwoSlopeNorm(vmin=np.min(resi),
                                   vcenter=0.,
                                   vmax=np.max(resi))
