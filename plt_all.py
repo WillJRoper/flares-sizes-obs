@@ -290,19 +290,19 @@ size_lumin_grid(data, snaps, filters, orientation, "Total",
 # size_lumin_grid(data, snaps, filters, orientation, "Total",
 #                 "default", "app", weight_norm)
 print("--------------------------- Fits ---------------------------")
-fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
+fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, "Total",
                     "default",
                     "pix", "Complete", xlims, ylims)
 print("--------------------------- Fits No Smooth ---------------------------")
-fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, "Total",
+fit_size_lumin_grid_nosmooth(data, intr_data, snaps, filters, orientation, "Total",
                              "default",
                              "pix", "Complete", xlims, ylims, weight_norm)
 print(
     "--------------------------- Fits Incomplete ---------------------------")
-fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
+fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, "Total",
                     "default",
                     "pix", "All", xlims, ylims)
-# fit_size_lumin_grid(data, snaps, filters, orientation, "Total",
+# fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, "Total",
 #                     "default",
 #                     "app")
 print("--------------------------- All filters ---------------------------")
