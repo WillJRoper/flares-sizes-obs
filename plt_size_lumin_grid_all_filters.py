@@ -254,7 +254,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
                 fit = r_fit(fit_lumins, popt[0], popt[1])
                 print(snap, "Total [R_0, Beta]",
-                      "[%.3f +/- %.3f, %.3f +/- %.3f]"
+                      "[%.3f +/- %.3f & %.3f +/- %.3f]"
                       % (popt[0], np.sqrt(pcov[0, 0]),
                          popt[1], np.sqrt(pcov[1, 1])))
                 axes[i].plot(fit_lumins, fit,

@@ -67,7 +67,7 @@ def custom_violin_stats(data, weights):
     return results
 
 
-fit = lambda z, C, m: C * (1 + 5) * (1 + z) ** -m
+fit = lambda z, C, m: C * (1 + z) ** -m
 
 
 def norm_fit(z, m):
@@ -349,8 +349,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
         print("--------------", "Total", Type, bin,
               mtype, f, "--------------")
-        print("C=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
-        print("m=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
+        print("C=%.3f +/- %.3f " % (popt[0], np.sqrt(pcov[0, 0])))
+        print("m=%.3f +/- %.3f " % (popt[1], np.sqrt(pcov[1, 1])))
         print("Points fit on:", fitting_zs[okinds].size)
         print("----------------------------------------------------------")
 
