@@ -294,7 +294,7 @@ fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, "Total",
                     "default",
                     "pix", "Complete", xlims, ylims)
 print("--------------------------- Fits No Smooth ---------------------------")
-fit_size_lumin_grid_nosmooth(data, intr_data, snaps, filters, orientation, "Total",
+fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, "Total",
                              "default",
                              "pix", "Complete", xlims, ylims, weight_norm)
 print(
