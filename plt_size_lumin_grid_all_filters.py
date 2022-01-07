@@ -28,7 +28,7 @@ sns.set_style('whitegrid')
 
 filter_path = "/cosma7/data/dp004/dc-wilk2/flare/data/filters/"
 
-Lstar = 10**28.51
+Lstar = 10 ** 29.03
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},

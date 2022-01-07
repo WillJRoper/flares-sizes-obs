@@ -102,7 +102,7 @@ kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 ono_fit = lambda z, a, m: 10 ** (m * np.log10(1 + z) + a)
 
-L_star = 10 ** 29.03
+Lstar = 10 ** 29.03
 
 
 def m_to_M(m, cosmo, z):

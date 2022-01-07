@@ -34,7 +34,7 @@ mer_params = {'beta': {5: 0.25, 6: 0.23, 7: 0.25, 8: 0.28, 9: 0.30, 10: 0.36},
 bt_fit_uplims = {7: 30, 8: 29.8, 9: 29.72, 10: 29.61, 11: 29.6}
 
 # Lstar = M_to_lum(-21)
-Lstar = 10 ** 28.51
+Lstar = 10 ** 29.03
 
 r_fit = lambda l, r0, b: r0 * (l / Lstar) ** b
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
@@ -335,7 +335,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                 fit = r_fit(fit_lumins, mer_params['r_0'][int(z)],
                             mer_params['beta'][int(z)])
                 axes[i].plot(fit_lumins, fit,
-                             linestyle='dashed', color="m",
+                             linestyle='dashed', color="g",
                              zorder=2,
                              label="Liu+17")
 
@@ -377,7 +377,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
             Line2D([0], [0], color="b", linestyle="--",
                    label="Marshall+2021"))
         uni_legend_elements.append(
-            Line2D([0], [0], color="m", linestyle="--",
+            Line2D([0], [0], color="g", linestyle="--",
                    label="Liu+2017"))
         included = []
         for l in legend_elements:
