@@ -254,21 +254,26 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                 print(e)
 
             try:
-                print("--------------", "Total", Type, mtype, f, snap,
-                      "--------------")
-                print("R_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
-                print("beta=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
-                print(
-                    "-------------------------------------"
-                    "---------------------")
 
-                print("--------------", "Intrinsic", Type, mtype, f, snap,
+                print("--------------", "Intrinsic", mtype, f, snap,
                       "--------------")
-                print("R_0=", intr_popt[0], "+/-", np.sqrt(intr_pcov[0, 0]))
-                print("beta=", intr_popt[1], "+/-", np.sqrt(intr_pcov[1, 1]))
+                print("R_0=%.3f+/-%.3f" % (intr_popt[0],
+                                           np.sqrt(intr_pcov[0, 0])))
+                print("beta=%.3f+/-%.3f" % (intr_popt[1],
+                                            np.sqrt(intr_pcov[1, 1])))
                 print(
                     "------------------------------------------"
                     "----------------")
+
+                print("--------------", "Total", mtype, f, snap,
+                      "--------------")
+                print("R_0=%.3f+/-%.3f" % (popt[0],
+                                           np.sqrt(pcov[0, 0])))
+                print("beta=%.3f+/-%.3f" % (popt[1],
+                                           np.sqrt(pcov[1, 1])))
+                print(
+                    "-------------------------------------"
+                    "---------------------")
 
                 fit_lumins = np.logspace(np.log10(np.min(lumins[complete])),
                                          np.log10(np.max(lumins[complete])),
