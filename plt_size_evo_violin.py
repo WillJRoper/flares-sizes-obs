@@ -351,6 +351,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
               mtype, f, "--------------")
         print("C=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
         print("m=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
+        print("Points fit on:", fitting_zs[okinds].size)
         print("----------------------------------------------------------")
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
