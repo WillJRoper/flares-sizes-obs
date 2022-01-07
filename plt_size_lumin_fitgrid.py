@@ -117,7 +117,7 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
     if mags[ind] < 0:
         mags[ind] = M_to_m(mags[ind], cosmo, z)
 
-cmap = mpl.cm.get_cmap("winter")
+cmap = mpl.cm.get_cmap("plasma")
 norm = plt.Normalize(vmin=0, vmax=1)
 
 labels = {"G11": "Grazian+2011",
@@ -306,7 +306,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                 fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
                                kawa_params['beta'][int(z)])
                 axes[i].plot(fit_lumins, fit,
-                             linestyle='dashed', color="g",
+                             linestyle='dashed', color=colors["K18"],
                              zorder=2,
                              label="Kawamata+18")
 
@@ -366,7 +366,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
         #     Line2D([0], [0], color="m", linestyle="--",
         #            label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
         uni_legend_elements.append(
-            Line2D([0], [0], color="g", linestyle="--",
+            Line2D([0], [0], color=colors["K18"], linestyle="--",
                    label=labels["K18"]))
         uni_legend_elements.append(
             Line2D([0], [0], color="b", linestyle="--",

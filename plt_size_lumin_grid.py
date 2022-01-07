@@ -112,7 +112,7 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
     if mags[ind] < 0:
         mags[ind] = M_to_m(mags[ind], cosmo, z)
 
-cmap = mpl.cm.get_cmap("winter")
+cmap = mpl.cm.get_cmap("plasma")
 norm = plt.Normalize(vmin=0, vmax=1)
 
 labels = {"C16": "Calvi+2016",
@@ -255,7 +255,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                reduce_C_function=np.sum,
                                xscale='log', yscale='log',
                                norm=weight_norm, linewidths=0.2,
-                               cmap='plasma', alpha=0.2, extent=extent)
+                               cmap='viridis', alpha=0.2, extent=extent)
             except ValueError as e:
                 print(e, "Compact incomplete", snap, f)
                 print(lumins[compact_ncom][lumins[compact_ncom] <= 0],
@@ -278,7 +278,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                reduce_C_function=np.sum,
                                xscale='log', yscale='log',
                                norm=weight_norm, linewidths=0.2,
-                               cmap='plasma', extent=extent)
+                               cmap='viridis', extent=extent)
             except ValueError as e:
                 print(e, "Compact complete", snap, f)
 
