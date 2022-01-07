@@ -24,18 +24,17 @@ import pandas as pd
 sns.set_context("paper")
 sns.set_style('whitegrid')
 
-
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
                'r_0': {6: 0.94, 7: 0.94, 8: 0.81, 9: 1.2}}
 bt_params = {'beta': {7: 0.24, 8: 0.17, 9: 0.16, 10: 0.12, 11: 0.11},
              'r_0': {7: 0.75, 8: 0.67, 9: 0.60, 10: 0.57, 11: 0.52}}
 mer_params = {'beta': {5: 0.25, 6: 0.23, 7: 0.25, 8: 0.28, 9: 0.30, 10: 0.36},
-             'r_0': {5: 1.17, 6: 0.80, 7: 0.61, 8: 0.53, 9: 0.42, 10: 0.45}}
+              'r_0': {5: 1.17, 6: 0.80, 7: 0.61, 8: 0.53, 9: 0.42, 10: 0.45}}
 bt_fit_uplims = {7: 30, 8: 29.8, 9: 29.72, 10: 29.61, 11: 29.6}
 
 # Lstar = M_to_lum(-21)
-Lstar = 10**28.51
+Lstar = 10 ** 28.51
 
 r_fit = lambda l, r0, b: r0 * (l / Lstar) ** b
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
@@ -127,7 +126,7 @@ labels = {"G11": "Grazian+2011",
           "K18": "Kawamata+2018",
           "MO18": "Morishita+2018",
           "B19": "Bridge+2019",
-          #"O16": "Oesch+2016",
+          # "O16": "Oesch+2016",
           # "S18": "Salmon+2018",
           # "H20": "Holwerda+2020",
           "H07": "Hathi+2007"}
@@ -151,7 +150,7 @@ lumin_bin_cents = lumin_bins[1:] - (lumin_bin_wid / 2)
 M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
-def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
+def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                         extinction, mtype, sample, xlims, ylims):
     for f in filters:
 
@@ -183,26 +182,37 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
             if mtype == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])
                 lumins = np.array(data[snap][f]["Luminosity"])
-                intr_lumins = np.array(data[snap][f]["Luminosity"])
+                intr_hlrs = np.array(intr_data[snap][f]["HLR_0.5"])
+                intr_lumins = np.array(intr_data[snap][f]["Luminosity"])
             elif mtype == "app":
                 hlrs = np.array(data[snap][f]["HLR_Aperture_0.5"])
+                intr_hlrs = np.array(intr_data[snap][f]["HLR_Aperture_0.5"])
                 lumins = np.array(data[snap][f]["Image_Luminosity"])
-                intr_lumins = np.array(data[snap][f]["Image_Luminosity"])
+                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])
             else:
                 hlrs = np.array(data[snap][f]["HLR_Pixel_0.5"])
+                intr_hlrs = np.array(intr_data[snap][f]["HLR_Pixel_0.5"])
                 lumins = np.array(data[snap][f]["Image_Luminosity"])
-                intr_lumins = np.array(data[snap][f]["Image_Luminosity"])
+                intr_lumins = np.array(intr_data[snap][f]["Image_Luminosity"])
             w = np.array(data[snap][f]["Weight"])
+            intr_w = np.array(intr_data[snap][f]["Weight"])
             mass = np.array(data[snap][f]["Mass"])
 
             compact_ncom = data[snap][f]["Compact_Population_NotComplete"]
             diffuse_ncom = data[snap][f]["Diffuse_Population_NotComplete"]
             compact_com = data[snap][f]["Compact_Population_Complete"]
             diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
+            intr_compact_com = intr_data[snap][f][
+                "Compact_Population_Complete"]
+            intr_diffuse_com = intr_data[snap][f][
+                "Diffuse_Population_Complete"]
             if sample == "Complete":
                 complete = np.logical_or(compact_com, diffuse_com)
+                intr_complete = np.logical_or(intr_compact_com,
+                                              intr_diffuse_com)
             else:
                 complete = data[snap][f]["okinds"]
+                intr_complete = intr_data[snap][f]["okinds"]
 
             try:
 
@@ -211,6 +221,17 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                                        p0=(kawa_params['r_0'][7],
                                            kawa_params['beta'][7]),
                                        sigma=w[complete])
+            except ValueError as e:
+                print(e)
+
+            try:
+
+                intr_popt, intr_pcov = curve_fit(r_fit,
+                                                 intr_lumins[intr_complete],
+                                                 intr_hlrs[intr_complete],
+                                                 p0=(kawa_params['r_0'][7],
+                                                     kawa_params['beta'][7]),
+                                                 sigma=intr_w[intr_complete])
             except ValueError as e:
                 print(e)
 
@@ -238,7 +259,16 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                 print("R_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
                 print("beta=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
                 print(
-                    "----------------------------------------------------------")
+                    "-------------------------------------"
+                    "---------------------")
+
+                print("--------------", "Intrinsic", Type, mtype, f, snap,
+                      "--------------")
+                print("R_0=", intr_popt[0], "+/-", np.sqrt(intr_pcov[0, 0]))
+                print("beta=", intr_popt[1], "+/-", np.sqrt(intr_pcov[1, 1]))
+                print(
+                    "------------------------------------------"
+                    "----------------")
 
                 fit_lumins = np.logspace(np.log10(np.min(lumins[complete])),
                                          np.log10(np.max(lumins[complete])),
@@ -281,26 +311,24 @@ def fit_size_lumin_grid(data, snaps, filters, orientation, Type,
                              label="Kawamata+18")
 
             if int(z) in [7, 8, 9, 10, 11]:
-
                 fit_lumins = np.logspace(28.5,
                                          bt_fit_uplims[int(z)],
                                          1000)
 
                 fit = r_fit(fit_lumins, bt_params['r_0'][int(z)],
-                               bt_params['beta'][int(z)])
+                            bt_params['beta'][int(z)])
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dashed', color="b",
                              zorder=2,
                              label="Marshall+21")
 
             if int(z) in [5, 6, 7, 8, 9, 10]:
-
                 fit_lumins = np.logspace(np.log10(M_to_lum(-22)),
                                          np.log10(M_to_lum(-14)),
                                          1000)
 
                 fit = r_fit(fit_lumins, mer_params['r_0'][int(z)],
-                               mer_params['beta'][int(z)])
+                            mer_params['beta'][int(z)])
                 axes[i].plot(fit_lumins, fit,
                              linestyle='dashed', color="m",
                              zorder=2,

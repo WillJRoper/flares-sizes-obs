@@ -180,7 +180,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
              fontsize=6)
 
     cbar = fig.colorbar(im, cax=cax)
-    cbar.set_label("$\Delta L /$ [erg $/$ s $/$ Hz]")
+    cbar.set_label("$\Delta \log_{10}(L /$ [erg $/$ s $/$ Hz])")
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonImageCreation_Residual_'

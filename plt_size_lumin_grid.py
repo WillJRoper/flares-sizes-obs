@@ -126,13 +126,13 @@ labels = {"C16": "Calvi+2016",
           # "H20": "Holwerda+2020",
           "H07": "Hathi+2007"}
 markers = {"G11": "s", "G12": "v", "C16": "D",
-           "K18": "o", "M18": "X", "MO18": "o",
+           "K18": "o", "M18": "X", "MO18": "p",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*",
            "H07": "P"}
 colors = {}
 colors_in_order = []
 for key, col in zip(labels.keys(), np.linspace(0, 1, len(labels.keys()))):
-    colors[key] = cmap(norm(col))
+    colors[key] = cmap(norm(0))
     colors_in_order.append(key)
 
 csoft = 0.001802390 / (0.6777) * 1e3
@@ -366,7 +366,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                markersize=8, alpha=0.9))
 
                     axes[i].scatter(plt_lumins, plt_r_es,
-                                    marker=markers[p], label=labels[p], s=10,
+                                    marker=markers[p], label=labels[p], s=15,
                                     color=colors[p], alpha=0.9)
 
                 # if int(z) in [6, 7, 8, 9]:
