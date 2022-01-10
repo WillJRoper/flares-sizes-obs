@@ -82,7 +82,7 @@ oesch_up_m = (1.12, 0.17, 0.17)  # (0.3-1)L*
 hol_up_m = (1.3, 0.4, 0.4)  # L<0.3L*
 oesch_low_m = (1.32, 0.52, 0.52)  # L<0.3L*
 hol_low_m = (0.76, 0.12, 0.12)  # 0.3L*<L
-bt_up_m = (0.664, 0.008, 0.008)  # (0.3-1)L*
+bt_up_m = (0.662, 0.008, 0.008)  # (0.3-1)L*
 bouwens_m = (1.05, 0.21,
              0.21)  # (0.3-1)L* https://iopscience.iop.org/article/10.1086/423786/pdf
 ono_low_m = (1.3, 0.12,
@@ -102,7 +102,7 @@ kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
 ono_fit = lambda z, a, m: 10 ** (m * np.log10(1 + z) + a)
 
-L_star = 10 ** 29.03
+L_star = M_to_lum(-21)
 
 
 def m_to_M(m, cosmo, z):

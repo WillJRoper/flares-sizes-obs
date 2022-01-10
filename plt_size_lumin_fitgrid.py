@@ -34,7 +34,7 @@ mer_params = {'beta': {5: 0.25, 6: 0.23, 7: 0.25, 8: 0.28, 9: 0.30, 10: 0.36},
 bt_fit_uplims = {7: 30, 8: 29.8, 9: 29.72, 10: 29.61, 11: 29.6}
 
 # Lstar = M_to_lum(-21)
-Lstar = 10 ** 29.03
+Lstar = M_to_lum(-21)
 
 r_fit = lambda l, r0, b: r0 * (l / Lstar) ** b
 kawa_fit = lambda l, r0, b: r0 * (l / M_to_lum(-21)) ** b
