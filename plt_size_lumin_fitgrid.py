@@ -261,6 +261,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                                            np.sqrt(intr_pcov[0, 0])))
                 print("beta=%.3f+/-%.3f" % (intr_popt[1],
                                             np.sqrt(intr_pcov[1, 1])))
+                print("N=", intr_lumins[intr_complete].size)
                 print(
                     "------------------------------------------"
                     "----------------")
@@ -271,6 +272,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                                            np.sqrt(pcov[0, 0])))
                 print("beta=%.3f+/-%.3f" % (popt[1],
                                            np.sqrt(pcov[1, 1])))
+                print("N=", lumins[complete].size)
                 print(
                     "-------------------------------------"
                     "---------------------")
