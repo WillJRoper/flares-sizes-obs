@@ -1,0 +1,1251 @@
+FLARE = /cosma7/data/dp004/dc-wilk2/flare
+Galaxies with M_star/M_sun>10**8 in snapshot 003_z012p000: 190
+Galaxies with N_star>100 in snapshot 003_z012p000: 110
+Compact galaxies in snapshot 003_z012p000: 87
+Diffuse galaxies in snapshot 003_z012p000: 23
+Galaxies with M_star/M_sun>10**8 in snapshot 004_z011p000: 412
+Galaxies with N_star>100 in snapshot 004_z011p000: 226
+Compact galaxies in snapshot 004_z011p000: 143
+Diffuse galaxies in snapshot 004_z011p000: 83
+Galaxies with M_star/M_sun>10**8 in snapshot 005_z010p000: 891
+Galaxies with N_star>100 in snapshot 005_z010p000: 492
+Compact galaxies in snapshot 005_z010p000: 240
+Diffuse galaxies in snapshot 005_z010p000: 252
+Galaxies with M_star/M_sun>10**8 in snapshot 006_z009p000: 2028
+Galaxies with N_star>100 in snapshot 006_z009p000: 1217
+Compact galaxies in snapshot 006_z009p000: 407
+Diffuse galaxies in snapshot 006_z009p000: 810
+Galaxies with M_star/M_sun>10**8 in snapshot 007_z008p000: 4449
+Galaxies with N_star>100 in snapshot 007_z008p000: 2863
+Compact galaxies in snapshot 007_z008p000: 696
+Diffuse galaxies in snapshot 007_z008p000: 2167
+Galaxies with M_star/M_sun>10**8 in snapshot 008_z007p000: 9344
+Galaxies with N_star>100 in snapshot 008_z007p000: 6381
+Compact galaxies in snapshot 008_z007p000: 1117
+Diffuse galaxies in snapshot 008_z007p000: 5264
+Galaxies with M_star/M_sun>10**8 in snapshot 009_z006p000: 18492
+Galaxies with N_star>100 in snapshot 009_z006p000: 13393
+Compact galaxies in snapshot 009_z006p000: 1781
+Diffuse galaxies in snapshot 009_z006p000: 11612
+Galaxies with M_star/M_sun>10**8 in snapshot 010_z005p000: 33329
+Galaxies with N_star>100 in snapshot 010_z005p000: 25556
+Compact galaxies in snapshot 010_z005p000: 2701
+Diffuse galaxies in snapshot 010_z005p000: 22855
+Total galaxies with M_star/M_sun>10**8: 69135
+Total galaxies with N_star>100: 50238
+Total compact galaxies: 7172
+Total diffuse galaxies: 43066
+Image Dimensions:
+{'006_z009p000': (226, 226), '007_z008p000': (204, 204), '008_z007p000': (181, 181), '009_z006p000': (158, 158), '010_z005p000': (136, 136), '004_z011p000': (271, 271), '005_z010p000': (249, 249), '003_z012p000': (294, 294)}
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.FUV 28.65/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.FUV 28.50/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.MUV 28.60/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.MUV 28.47/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.NUV 28.54/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.NUV 28.43/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.U 28.56/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.U 28.49/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.B 28.57/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.B 28.52/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.V 28.40/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.V 28.37/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.R 28.63/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.R 28.59/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.I 28.33/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.I 28.30/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.Z 28.41/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.Z 28.39/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.Y 28.46/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.Y 28.43/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.J 28.31/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.J 28.29/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 003_z012p000 FAKE.TH.H 28.26/8.16
+Total: complete luminosity/mass for 003_z012p000 FAKE.TH.H 28.23/8.16
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.FUV 28.61/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.FUV 28.45/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.MUV 28.55/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.MUV 28.42/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.NUV 28.49/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.NUV 28.38/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.U 28.50/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.U 28.42/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.B 28.53/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.B 28.47/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.V 28.37/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.V 28.34/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.R 28.58/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.R 28.53/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.I 28.31/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.I 28.29/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.Z 28.40/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.Z 28.36/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.Y 28.42/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.Y 28.40/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.J 28.30/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.J 28.28/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 004_z011p000 FAKE.TH.H 28.26/8.15
+Total: complete luminosity/mass for 004_z011p000 FAKE.TH.H 28.24/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.FUV 28.55/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.FUV 28.42/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.MUV 28.50/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.MUV 28.39/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.NUV 28.44/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.NUV 28.35/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.U 28.46/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.U 28.40/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.B 28.49/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.B 28.44/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.V 28.35/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.V 28.31/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.R 28.55/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.R 28.51/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.I 28.29/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.I 28.26/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.Z 28.36/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.Z 28.33/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.Y 28.39/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.Y 28.38/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.J 28.27/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.J 28.25/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 005_z010p000 FAKE.TH.H 28.22/8.15
+Total: complete luminosity/mass for 005_z010p000 FAKE.TH.H 28.21/8.15
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.FUV 28.46/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.FUV 28.35/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.MUV 28.41/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.MUV 28.31/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.NUV 28.35/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.NUV 28.27/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.U 28.37/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.U 28.32/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.B 28.41/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.B 28.37/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.V 28.27/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.V 28.24/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.R 28.48/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.R 28.45/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.I 28.22/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.I 28.20/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.Z 28.29/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.Z 28.27/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.Y 28.32/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.Y 28.31/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.J 28.21/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.J 28.20/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 006_z009p000 FAKE.TH.H 28.17/8.14
+Total: complete luminosity/mass for 006_z009p000 FAKE.TH.H 28.16/8.14
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.FUV 28.40/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.FUV 28.29/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.MUV 28.35/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.MUV 28.26/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.NUV 28.29/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.NUV 28.22/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.U 28.32/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.U 28.27/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.B 28.36/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.B 28.32/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.V 28.22/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.V 28.20/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.R 28.42/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.R 28.39/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.I 28.18/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.I 28.16/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.Z 28.24/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.Z 28.22/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.Y 28.28/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.Y 28.26/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.J 28.17/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.J 28.16/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 007_z008p000 FAKE.TH.H 28.13/8.13
+Total: complete luminosity/mass for 007_z008p000 FAKE.TH.H 28.12/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.FUV 28.32/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.FUV 28.19/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.MUV 28.26/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.MUV 28.17/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.NUV 28.21/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.NUV 28.13/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.U 28.24/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.U 28.18/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.B 28.28/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.B 28.24/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.V 28.15/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.V 28.13/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.R 28.35/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.R 28.32/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.I 28.12/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.I 28.10/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.Z 28.18/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.Z 28.16/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.Y 28.21/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.Y 28.20/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.J 28.11/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.J 28.10/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 008_z007p000 FAKE.TH.H 28.09/8.13
+Total: complete luminosity/mass for 008_z007p000 FAKE.TH.H 28.08/8.13
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.FUV 28.24/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.FUV 28.12/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.MUV 28.19/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.MUV 28.09/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.NUV 28.13/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.NUV 28.05/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.U 28.17/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.U 28.11/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.B 28.22/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.B 28.18/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.V 28.10/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.V 28.07/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.R 28.28/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.R 28.25/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.I 28.06/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.I 28.04/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.Z 28.12/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.Z 28.10/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.Y 28.15/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.Y 28.14/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.J 28.06/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.J 28.05/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 009_z006p000 FAKE.TH.H 28.04/8.12
+Total: complete luminosity/mass for 009_z006p000 FAKE.TH.H 28.03/8.12
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.FUV 28.16/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.FUV 28.03/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.MUV 28.11/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.MUV 28.00/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.NUV 28.05/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.NUV 27.97/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.U 28.09/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.U 28.03/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.B 28.14/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.B 28.10/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.V 28.03/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.V 28.00/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.R 28.21/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.R 28.18/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.I 28.00/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.I 27.98/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.Z 28.07/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.Z 28.04/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.Y 28.09/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.Y 28.08/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.J 28.00/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.J 27.99/8.11
+----------------------------------------------------------
+Intrinsic: complete luminosity/mass for 010_z005p000 FAKE.TH.H 27.99/8.11
+Total: complete luminosity/mass for 010_z005p000 FAKE.TH.H 27.98/8.11
+----------------------------------------------------------
+Complete Galaxies in snapshot 003_z012p000: 40
+Complete Galaxies in snapshot 004_z011p000: 124
+Complete Galaxies in snapshot 005_z010p000: 293
+Complete Galaxies in snapshot 006_z009p000: 753
+Complete Galaxies in snapshot 007_z008p000: 1717
+Complete Galaxies in snapshot 008_z007p000: 4141
+Complete Galaxies in snapshot 009_z006p000: 8512
+Complete Galaxies in snapshot 010_z005p000: 16244
+Total Complete galaxies: 31824
+--------------------------- Size-Lumin ---------------------------
+Plotting for:
+Orientation = sim
+Type = Total
+Filter = FAKE.TH.FUV
+('Calvi+2016', 'D')
+('Kawamata+2018', 'o')
+('Morishita+2018', 'p')
+('Bridge+2019', '^')
+('Grazian+2011', 's')
+('Grazian+2012', 'v')
+('Hathi+2008', 'P')
+--------------------------- Fits ---------------------------
+Plotting for:
+Orientation = sim
+Type = Total
+Filter = FAKE.TH.FUV
+-------------- Intrinsic pix FAKE.TH.FUV 006_z009p000 --------------
+R_0=0.350+/-0.009
+beta=-0.041+/-0.033
+N= 796
+----------------------------------------------------------
+-------------- Total pix FAKE.TH.FUV 006_z009p000 --------------
+R_0=0.643+/-0.018
+beta=0.417+/-0.030
+N= 753
+----------------------------------------------------------
+-------------- Intrinsic pix FAKE.TH.FUV 007_z008p000 --------------
+R_0=0.382+/-0.006
+beta=-0.257+/-0.016
+N= 1797
+----------------------------------------------------------
+-------------- Total pix FAKE.TH.FUV 007_z008p000 --------------
+R_0=0.677+/-0.011
+beta=0.197+/-0.015
+N= 1717
+----------------------------------------------------------
+-------------- Intrinsic pix FAKE.TH.FUV 008_z007p000 --------------
+R_0=0.496+/-0.007
+beta=-0.296+/-0.013
+N= 4152
+----------------------------------------------------------
+-------------- Total pix FAKE.TH.FUV 008_z007p000 --------------
+R_0=0.962+/-0.012
+beta=0.184+/-0.010
+N= 4141
+----------------------------------------------------------
+-------------- Intrinsic pix FAKE.TH.FUV 009_z006p000 --------------
+R_0=0.750+/-0.005
+beta=-0.047+/-0.005
+N= 8600
+----------------------------------------------------------
+-------------- Total pix FAKE.TH.FUV 009_z006p000 --------------
+R_0=1.255+/-0.007
+beta=0.221+/-0.005
+N= 8512
+----------------------------------------------------------
+-------------- Intrinsic pix FAKE.TH.FUV 010_z005p000 --------------
+R_0=0.878+/-0.004
+beta=-0.005+/-0.004
+N= 16411
+----------------------------------------------------------
+-------------- Total pix FAKE.TH.FUV 010_z005p000 --------------
+R_0=1.587+/-0.006
+beta=0.264+/-0.003
+N= 16244
+----------------------------------------------------------
+--------------------------- Fits No Smooth ---------------------------
+Plotting for:
+Orientation = sim
+Type = Total
+Filter = FAKE.TH.FUV
+-------------- Total No smooth Total pix FAKE.TH.FUV 006_z009p000 --------------
+R_0= 0.28679269676597013 +/- 0.0034301640679320314
+beta= 0.4025266055340005 +/- 0.017414348329095254
+-------------- Kawamata All pix FAKE.TH.FUV --------------
+R_0= 1.2
+beta= 0.56
+----------------------------------------------------------
+-------------- Total No smooth Total pix FAKE.TH.FUV 007_z008p000 --------------
+R_0= 0.375496195038356 +/- 0.0023866668583184653
+beta= 0.13652199784796082 +/- 0.008926321763897387
+-------------- Kawamata All pix FAKE.TH.FUV --------------
+R_0= 0.81
+beta= 0.38
+----------------------------------------------------------
+-------------- Total No smooth Total pix FAKE.TH.FUV 008_z007p000 --------------
+R_0= 0.4753891441312603 +/- 0.0026295889528354065
+beta= 0.29568546757178776 +/- 0.0059174913604744216
+-------------- Kawamata All pix FAKE.TH.FUV --------------
+R_0= 0.94
+beta= 0.46
+----------------------------------------------------------
+-------------- Total No smooth Total pix FAKE.TH.FUV 009_z006p000 --------------
+R_0= 0.6011062974723965 +/- 0.0018981866498081618
+beta= 0.3191369043649478 +/- 0.003125485698212617
+-------------- Kawamata All pix FAKE.TH.FUV --------------
+R_0= 0.94
+beta= 0.46
+----------------------------------------------------------
+-------------- Total No smooth Total pix FAKE.TH.FUV 010_z005p000 --------------
+R_0= 0.7639000432904687 +/- 0.0018780615291168552
+beta= 0.33857253698593065 +/- 0.0020471514448014237
+-------------- Kawamata All pix FAKE.TH.FUV --------------
+R_0= ---
+beta= ---
+----------------------------------------------------------
+--------------------------- Fits Incomplete ---------------------------
+Plotting for:
+Orientation = sim
+Type = Total
+Filter = FAKE.TH.FUV
+-------------- Intrinsic pix FAKE.TH.FUV 006_z009p000 --------------
+R_0=0.274+/-0.008
+beta=-0.502+/-0.015
+N= 1234
+----------------------------------------------------------
+-------------- Total pix FAKE.TH.FUV 006_z009p000 --------------
+R_0=0.287+/-0.011
+beta=-0.434+/-0.019
+N= 1234
+----------------------------------------------------------
+-------------- Intrinsic pix FAKE.TH.FUV 007_z008p000 --------------
+R_0=0.353+/-0.007
+beta=-0.391+/-0.010
+N= 2889
+----------------------------------------------------------
+-------------- Total pix FAKE.TH.FUV 007_z008p000 --------------
+R_0=0.438+/-0.009
+beta=-0.269+/-0.011
+N= 2889
+----------------------------------------------------------
+-------------- Intrinsic pix FAKE.TH.FUV 008_z007p000 --------------
+R_0=0.523+/-0.006
+beta=-0.237+/-0.006
+N= 6447
+----------------------------------------------------------
+-------------- Total pix FAKE.TH.FUV 008_z007p000 --------------
+R_0=0.746+/-0.009
+beta=-0.089+/-0.006
+N= 6447
+----------------------------------------------------------
+-------------- Intrinsic pix FAKE.TH.FUV 009_z006p000 --------------
+R_0=0.703+/-0.005
+beta=-0.127+/-0.003
+N= 13501
+----------------------------------------------------------
+-------------- Total pix FAKE.TH.FUV 009_z006p000 --------------
+R_0=1.058+/-0.007
+beta=0.022+/-0.004
+N= 13501
+----------------------------------------------------------
+-------------- Intrinsic pix FAKE.TH.FUV 010_z005p000 --------------
+R_0=0.827+/-0.004
+beta=-0.076+/-0.002
+N= 25748
+----------------------------------------------------------
+-------------- Total pix FAKE.TH.FUV 010_z005p000 --------------
+R_0=1.423+/-0.006
+beta=0.115+/-0.002
+N= 25748
+----------------------------------------------------------
+--------------------------- All filters ---------------------------
+FUV 1300.0 1700.0
+MUV 1700.0 2300.0
+NUV 2200.0 2800.0
+U 3300.0 4000.0
+B 4000.0 4900.0
+V 5050.0 5950.0
+R 5900.0 7300.0
+I 7300.0 8800.0
+Z 8400.0 9600.0
+Y 9600.0 11000.0
+J 11000.0 14000.0
+H 14000.0 17500.0
+Plotting for:
+Orientation = sim
+Type = Total
+--------------------------- 006_z009p000 ---------------------------
+FAKE.TH.FUV
+006_z009p000 Total [R_0, Beta] [0.643 +/- 0.018 & 0.417 +/- 0.030], N=753
+Ratio [  0.55220512 -14.55734113]
+FAKE.TH.MUV
+006_z009p000 Total [R_0, Beta] [0.599 +/- 0.018 & 0.354 +/- 0.031], N=775
+Ratio [  0.48869726 -12.77910991]
+FAKE.TH.NUV
+006_z009p000 Total [R_0, Beta] [0.569 +/- 0.019 & 0.296 +/- 0.031], N=791
+Ratio [  0.42613243 -11.01105512]
+FAKE.TH.U
+006_z009p000 Total [R_0, Beta] [0.505 +/- 0.015 & 0.231 +/- 0.032], N=806
+Ratio [ 0.30920733 -7.73599612]
+FAKE.TH.B
+006_z009p000 Total [R_0, Beta] [0.497 +/- 0.013 & 0.207 +/- 0.031], N=862
+Ratio [ 0.24132262 -5.83813013]
+FAKE.TH.V
+006_z009p000 Total [R_0, Beta] [0.493 +/- 0.015 & 0.123 +/- 0.029], N=945
+Ratio [ 0.18335708 -4.17892887]
+FAKE.TH.R
+006_z009p000 Total [R_0, Beta] [0.442 +/- 0.010 & 0.154 +/- 0.032], N=816
+Ratio [ 0.1652637  -3.69227047]
+FAKE.TH.I
+006_z009p000 Total [R_0, Beta] [0.403 +/- 0.015 & -0.118 +/- 0.030], N=988
+Ratio [ 0.10945048 -2.08339804]
+FAKE.TH.Z
+006_z009p000 Total [R_0, Beta] [0.402 +/- 0.012 & -0.029 +/- 0.029], N=946
+Ratio [ 0.09777328 -1.75479899]
+FAKE.TH.Y
+006_z009p000 Total [R_0, Beta] [0.430 +/- 0.012 & 0.038 +/- 0.030], N=901
+Ratio [ 0.09549519 -1.70279208]
+FAKE.TH.J
+006_z009p000 Total [R_0, Beta] [0.369 +/- 0.014 & -0.186 +/- 0.030], N=1000
+Ratio [ 0.06509113 -0.83352138]
+FAKE.TH.H
+006_z009p000 Total [R_0, Beta] [0.338 +/- 0.014 & -0.287 +/- 0.029], N=1050
+Ratio [ 0.0492668  -0.38652627]
+--------------------------- 007_z008p000 ---------------------------
+FAKE.TH.FUV
+007_z008p000 Total [R_0, Beta] [0.677 +/- 0.011 & 0.197 +/- 0.015], N=1717
+BT (0.1655, 0.6713)
+Ratio [  1.23364203 -33.95018436]
+FAKE.TH.MUV
+007_z008p000 Total [R_0, Beta] [0.627 +/- 0.011 & 0.142 +/- 0.015], N=1751
+Ratio [  1.05888683 -28.97835712]
+FAKE.TH.NUV
+007_z008p000 Total [R_0, Beta] [0.589 +/- 0.011 & 0.089 +/- 0.016], N=1779
+BT (0.1077, 0.6134)
+Ratio [  0.95873494 -26.13072242]
+FAKE.TH.U
+007_z008p000 Total [R_0, Beta] [0.532 +/- 0.010 & 0.006 +/- 0.016], N=1858
+BT (0.0406, 0.5652)
+Ratio [  0.72565406 -19.59366248]
+FAKE.TH.B
+007_z008p000 Total [R_0, Beta] [0.517 +/- 0.009 & -0.144 +/- 0.016], N=2009
+BT (0.0013, 0.5616)
+Ratio [  0.54450023 -14.48518405]
+FAKE.TH.V
+007_z008p000 Total [R_0, Beta] [0.470 +/- 0.011 & -0.271 +/- 0.016], N=2233
+BT (-0.0187, 0.5534)
+Ratio [  0.40595368 -10.51049719]
+FAKE.TH.R
+007_z008p000 Total [R_0, Beta] [0.484 +/- 0.008 & -0.140 +/- 0.017], N=1928
+Ratio [  0.39396842 -10.23520226]
+FAKE.TH.I
+007_z008p000 Total [R_0, Beta] [0.408 +/- 0.010 & -0.391 +/- 0.017], N=2338
+BT (-0.0328, 0.5316)
+Ratio [ 0.21926538 -5.20541127]
+FAKE.TH.Z
+007_z008p000 Total [R_0, Beta] [0.416 +/- 0.009 & -0.346 +/- 0.016], N=2257
+BT (-0.0367, 0.5171)
+Ratio [ 0.19228366 -4.44559457]
+FAKE.TH.Y
+007_z008p000 Total [R_0, Beta] [0.443 +/- 0.009 & -0.287 +/- 0.016], N=2175
+BT (-0.0395, 0.5215)
+Ratio [ 0.1700144  -3.82422922]
+FAKE.TH.J
+007_z008p000 Total [R_0, Beta] [0.391 +/- 0.010 & -0.429 +/- 0.016], N=2385
+BT (-0.0483, 0.5129)
+Ratio [ 0.10851717 -2.06727409]
+FAKE.TH.H
+007_z008p000 Total [R_0, Beta] [0.396 +/- 0.010 & -0.434 +/- 0.015], N=2509
+BT (-0.0544, 0.5026)
+Ratio [ 0.06975797 -0.96790578]
+--------------------------- 008_z007p000 ---------------------------
+FAKE.TH.FUV
+008_z007p000 Total [R_0, Beta] [0.962 +/- 0.012 & 0.184 +/- 0.010], N=4141
+BT (0.2421, 0.7544)
+Ratio [  1.51608181 -41.82059699]
+FAKE.TH.MUV
+008_z007p000 Total [R_0, Beta] [0.865 +/- 0.012 & 0.107 +/- 0.011], N=4169
+Ratio [  1.37161857 -37.74211661]
+FAKE.TH.NUV
+008_z007p000 Total [R_0, Beta] [0.793 +/- 0.012 & 0.039 +/- 0.011], N=4225
+BT (0.1558, 0.6697)
+Ratio [  1.24142771 -34.04609622]
+FAKE.TH.U
+008_z007p000 Total [R_0, Beta] [0.674 +/- 0.011 & -0.118 +/- 0.012], N=4403
+BT (0.0689, 0.6065)
+Ratio [  0.96590835 -26.33907084]
+FAKE.TH.B
+008_z007p000 Total [R_0, Beta] [0.702 +/- 0.010 & -0.194 +/- 0.011], N=4777
+BT (0.0266, 0.5983)
+Ratio [  0.79588277 -21.59162886]
+FAKE.TH.V
+008_z007p000 Total [R_0, Beta] [0.687 +/- 0.011 & -0.245 +/- 0.010], N=5196
+BT (-0.0058, 0.5906)
+Ratio [  0.62021371 -16.55503907]
+FAKE.TH.R
+008_z007p000 Total [R_0, Beta] [0.643 +/- 0.009 & -0.205 +/- 0.012], N=4545
+Ratio [  0.57910445 -15.47672639]
+FAKE.TH.I
+008_z007p000 Total [R_0, Beta] [0.649 +/- 0.010 & -0.286 +/- 0.010], N=5401
+BT (-0.0324, 0.5672)
+Ratio [  0.41208279 -10.65964272]
+FAKE.TH.Z
+008_z007p000 Total [R_0, Beta] [0.624 +/- 0.010 & -0.293 +/- 0.010], N=5210
+BT (-0.0367, 0.5542)
+Ratio [ 0.36791563 -9.42472239]
+FAKE.TH.Y
+008_z007p000 Total [R_0, Beta] [0.619 +/- 0.009 & -0.301 +/- 0.011], N=5080
+BT (-0.0405, 0.5568)
+Ratio [ 0.31776692 -8.01643508]
+FAKE.TH.J
+008_z007p000 Total [R_0, Beta] [0.617 +/- 0.009 & -0.321 +/- 0.010], N=5521
+BT (-0.0563, 0.5476)
+Ratio [ 0.22607269 -5.39972256]
+FAKE.TH.H
+008_z007p000 Total [R_0, Beta] [0.628 +/- 0.009 & -0.320 +/- 0.009], N=5778
+BT (-0.0669, 0.5372)
+Ratio [ 0.15755885 -3.45775056]
+--------------------------- 009_z006p000 ---------------------------
+FAKE.TH.FUV
+009_z006p000 Total [R_0, Beta] [1.255 +/- 0.007 & 0.221 +/- 0.005], N=8512
+Ratio [  0.78196814 -21.00592367]
+FAKE.TH.MUV
+009_z006p000 Total [R_0, Beta] [1.193 +/- 0.007 & 0.188 +/- 0.005], N=8679
+Ratio [  0.74393226 -19.94384399]
+FAKE.TH.NUV
+009_z006p000 Total [R_0, Beta] [1.160 +/- 0.008 & 0.157 +/- 0.005], N=8803
+Ratio [  0.70424743 -18.82165735]
+FAKE.TH.U
+009_z006p000 Total [R_0, Beta] [1.075 +/- 0.007 & 0.097 +/- 0.005], N=9212
+Ratio [  0.52558472 -13.82603566]
+FAKE.TH.B
+009_z006p000 Total [R_0, Beta] [1.100 +/- 0.007 & 0.019 +/- 0.005], N=10031
+Ratio [  0.45829557 -11.98089762]
+FAKE.TH.V
+009_z006p000 Total [R_0, Beta] [1.134 +/- 0.008 & -0.029 +/- 0.005], N=11046
+Ratio [  0.39069542 -10.04102705]
+FAKE.TH.R
+009_z006p000 Total [R_0, Beta] [1.000 +/- 0.006 & 0.027 +/- 0.005], N=9594
+Ratio [ 0.3270634  -8.28515127]
+FAKE.TH.I
+009_z006p000 Total [R_0, Beta] [1.090 +/- 0.008 & -0.067 +/- 0.004], N=11482
+Ratio [ 0.27803926 -6.85556623]
+FAKE.TH.Z
+009_z006p000 Total [R_0, Beta] [1.019 +/- 0.007 & -0.080 +/- 0.005], N=11089
+Ratio [ 0.25867645 -6.31686249]
+FAKE.TH.Y
+009_z006p000 Total [R_0, Beta] [1.017 +/- 0.007 & -0.074 +/- 0.005], N=10806
+Ratio [ 0.22763694 -5.4506214 ]
+FAKE.TH.J
+009_z006p000 Total [R_0, Beta] [1.028 +/- 0.007 & -0.108 +/- 0.004], N=11769
+Ratio [ 0.18157176 -4.13340369]
+FAKE.TH.H
+009_z006p000 Total [R_0, Beta] [1.024 +/- 0.007 & -0.131 +/- 0.004], N=12211
+Ratio [ 0.13036225 -2.68460957]
+--------------------------- 010_z005p000 ---------------------------
+FAKE.TH.FUV
+010_z005p000 Total [R_0, Beta] [1.587 +/- 0.006 & 0.264 +/- 0.003], N=16244
+Ratio [  0.89941086 -24.2391532 ]
+FAKE.TH.MUV
+010_z005p000 Total [R_0, Beta] [1.513 +/- 0.006 & 0.234 +/- 0.003], N=16555
+Ratio [  0.85925333 -23.13324123]
+FAKE.TH.NUV
+010_z005p000 Total [R_0, Beta] [1.478 +/- 0.006 & 0.206 +/- 0.003], N=16877
+Ratio [  0.79936984 -21.44399904]
+FAKE.TH.U
+010_z005p000 Total [R_0, Beta] [1.369 +/- 0.006 & 0.149 +/- 0.003], N=17717
+Ratio [  0.59550983 -15.76834161]
+FAKE.TH.B
+010_z005p000 Total [R_0, Beta] [1.394 +/- 0.005 & 0.078 +/- 0.003], N=19362
+Ratio [  0.49433256 -12.97591712]
+FAKE.TH.V
+010_z005p000 Total [R_0, Beta] [1.444 +/- 0.006 & 0.033 +/- 0.003], N=21214
+Ratio [  0.42014235 -10.85791971]
+FAKE.TH.R
+010_z005p000 Total [R_0, Beta] [1.271 +/- 0.005 & 0.082 +/- 0.003], N=18801
+Ratio [ 0.35954335 -9.18981601]
+FAKE.TH.I
+010_z005p000 Total [R_0, Beta] [1.392 +/- 0.006 & -0.004 +/- 0.003], N=22219
+Ratio [ 0.31147281 -7.79302271]
+FAKE.TH.Z
+010_z005p000 Total [R_0, Beta] [1.304 +/- 0.005 & -0.015 +/- 0.003], N=21533
+Ratio [ 0.29599699 -7.36754473]
+FAKE.TH.Y
+010_z005p000 Total [R_0, Beta] [1.295 +/- 0.005 & -0.018 +/- 0.003], N=21067
+Ratio [ 0.25995543 -6.35992436]
+FAKE.TH.J
+010_z005p000 Total [R_0, Beta] [1.303 +/- 0.005 & -0.051 +/- 0.003], N=22866
+Ratio [ 0.19933012 -4.63245778]
+FAKE.TH.H
+010_z005p000 Total [R_0, Beta] [1.290 +/- 0.005 & -0.074 +/- 0.003], N=23723
+Ratio [ 0.15439514 -3.36472801]
+--------------------------- All filters Incomplete ---------------------------
+FUV 1300.0 1700.0
+MUV 1700.0 2300.0
+NUV 2200.0 2800.0
+U 3300.0 4000.0
+B 4000.0 4900.0
+V 5050.0 5950.0
+R 5900.0 7300.0
+I 7300.0 8800.0
+Z 8400.0 9600.0
+Y 9600.0 11000.0
+J 11000.0 14000.0
+H 14000.0 17500.0
+Plotting for:
+Orientation = sim
+Type = Total
+--------------------------- 006_z009p000 ---------------------------
+FAKE.TH.FUV
+006_z009p000 Total [R_0, Beta] [0.287 +/- 0.011 & -0.434 +/- 0.019], N=1234
+Ratio [ 0.24481636 -5.7443588 ]
+FAKE.TH.MUV
+006_z009p000 Total [R_0, Beta] [0.260 +/- 0.010 & -0.474 +/- 0.018], N=1234
+Ratio [ 0.20933972 -4.77204421]
+FAKE.TH.NUV
+006_z009p000 Total [R_0, Beta] [0.240 +/- 0.009 & -0.498 +/- 0.018], N=1234
+Ratio [ 0.18978291 -4.24209342]
+FAKE.TH.U
+006_z009p000 Total [R_0, Beta] [0.242 +/- 0.009 & -0.542 +/- 0.018], N=1234
+Ratio [ 0.15437403 -3.28885929]
+FAKE.TH.B
+006_z009p000 Total [R_0, Beta] [0.275 +/- 0.010 & -0.562 +/- 0.020], N=1234
+Ratio [ 0.15283693 -3.28894299]
+FAKE.TH.V
+006_z009p000 Total [R_0, Beta] [0.249 +/- 0.010 & -0.586 +/- 0.023], N=1234
+Ratio [ 0.13804164 -2.87701707]
+FAKE.TH.R
+006_z009p000 Total [R_0, Beta] [0.270 +/- 0.008 & -0.584 +/- 0.018], N=1234
+Ratio [ 0.09131605 -1.55708799]
+FAKE.TH.I
+006_z009p000 Total [R_0, Beta] [0.228 +/- 0.010 & -0.628 +/- 0.023], N=1234
+Ratio [ 0.09378285 -1.633676  ]
+FAKE.TH.Z
+006_z009p000 Total [R_0, Beta] [0.225 +/- 0.008 & -0.662 +/- 0.021], N=1234
+Ratio [ 0.08224342 -1.30795938]
+FAKE.TH.Y
+006_z009p000 Total [R_0, Beta] [0.243 +/- 0.009 & -0.629 +/- 0.020], N=1234
+Ratio [ 0.06734052 -0.89177063]
+FAKE.TH.J
+006_z009p000 Total [R_0, Beta] [0.220 +/- 0.009 & -0.656 +/- 0.022], N=1234
+Ratio [ 0.05680215 -0.59536953]
+FAKE.TH.H
+006_z009p000 Total [R_0, Beta] [0.218 +/- 0.009 & -0.663 +/- 0.023], N=1234
+Ratio [ 0.04500621 -0.26410273]
+--------------------------- 007_z008p000 ---------------------------
+FAKE.TH.FUV
+007_z008p000 Total [R_0, Beta] [0.438 +/- 0.009 & -0.269 +/- 0.011], N=2889
+BT (0.1655, 0.6713)
+Ratio [  0.65995678 -17.48206151]
+FAKE.TH.MUV
+007_z008p000 Total [R_0, Beta] [0.399 +/- 0.009 & -0.308 +/- 0.011], N=2889
+Ratio [  0.58819086 -15.4771879 ]
+FAKE.TH.NUV
+007_z008p000 Total [R_0, Beta] [0.372 +/- 0.009 & -0.333 +/- 0.011], N=2889
+BT (0.1077, 0.6134)
+Ratio [  0.52876043 -13.80724693]
+FAKE.TH.U
+007_z008p000 Total [R_0, Beta] [0.369 +/- 0.008 & -0.376 +/- 0.011], N=2889
+BT (0.0406, 0.5652)
+Ratio [  0.41127729 -10.55843235]
+FAKE.TH.B
+007_z008p000 Total [R_0, Beta] [0.423 +/- 0.009 & -0.388 +/- 0.012], N=2889
+BT (0.0013, 0.5616)
+Ratio [ 0.35912533 -9.1417073 ]
+FAKE.TH.V
+007_z008p000 Total [R_0, Beta] [0.409 +/- 0.009 & -0.410 +/- 0.012], N=2889
+BT (-0.0187, 0.5534)
+Ratio [ 0.29887128 -7.43046064]
+FAKE.TH.R
+007_z008p000 Total [R_0, Beta] [0.392 +/- 0.008 & -0.418 +/- 0.012], N=2889
+Ratio [ 0.23737705 -5.71157036]
+FAKE.TH.I
+007_z008p000 Total [R_0, Beta] [0.385 +/- 0.009 & -0.443 +/- 0.013], N=2889
+BT (-0.0328, 0.5316)
+Ratio [ 0.17394772 -3.90182437]
+FAKE.TH.Z
+007_z008p000 Total [R_0, Beta] [0.371 +/- 0.008 & -0.468 +/- 0.012], N=2889
+BT (-0.0367, 0.5171)
+Ratio [ 0.15079697 -3.24980973]
+FAKE.TH.Y
+007_z008p000 Total [R_0, Beta] [0.383 +/- 0.008 & -0.450 +/- 0.012], N=2889
+BT (-0.0395, 0.5215)
+Ratio [ 0.12681548 -2.578191  ]
+FAKE.TH.J
+007_z008p000 Total [R_0, Beta] [0.374 +/- 0.009 & -0.466 +/- 0.013], N=2889
+BT (-0.0483, 0.5129)
+Ratio [ 0.0919152  -1.58907742]
+FAKE.TH.H
+007_z008p000 Total [R_0, Beta] [0.377 +/- 0.009 & -0.474 +/- 0.013], N=2889
+BT (-0.0544, 0.5026)
+Ratio [ 0.06494264 -0.8292575 ]
+--------------------------- 008_z007p000 ---------------------------
+FAKE.TH.FUV
+008_z007p000 Total [R_0, Beta] [0.746 +/- 0.009 & -0.089 +/- 0.006], N=6447
+BT (0.2421, 0.7544)
+Ratio [  0.78820205 -20.98228555]
+FAKE.TH.MUV
+008_z007p000 Total [R_0, Beta] [0.684 +/- 0.009 & -0.126 +/- 0.006], N=6447
+Ratio [  0.72532672 -19.24372101]
+FAKE.TH.NUV
+008_z007p000 Total [R_0, Beta] [0.645 +/- 0.009 & -0.152 +/- 0.006], N=6447
+BT (0.1558, 0.6697)
+Ratio [  0.66928871 -17.68129419]
+FAKE.TH.U
+008_z007p000 Total [R_0, Beta] [0.622 +/- 0.008 & -0.199 +/- 0.007], N=6447
+BT (0.0689, 0.6065)
+Ratio [  0.57215534 -15.04121545]
+FAKE.TH.B
+008_z007p000 Total [R_0, Beta] [0.690 +/- 0.008 & -0.220 +/- 0.007], N=6447
+BT (0.0266, 0.5983)
+Ratio [  0.55292309 -14.59564533]
+FAKE.TH.V
+008_z007p000 Total [R_0, Beta] [0.692 +/- 0.009 & -0.243 +/- 0.007], N=6447
+BT (-0.0058, 0.5906)
+Ratio [  0.48725253 -12.73408086]
+FAKE.TH.R
+008_z007p000 Total [R_0, Beta] [0.618 +/- 0.007 & -0.259 +/- 0.007], N=6447
+Ratio [ 0.37663677 -9.63336481]
+FAKE.TH.I
+008_z007p000 Total [R_0, Beta] [0.650 +/- 0.009 & -0.285 +/- 0.007], N=6447
+BT (-0.0324, 0.5672)
+Ratio [ 0.3377537  -8.52260758]
+FAKE.TH.Z
+008_z007p000 Total [R_0, Beta] [0.619 +/- 0.008 & -0.304 +/- 0.007], N=6447
+BT (-0.0367, 0.5542)
+Ratio [ 0.29238767 -7.24889802]
+FAKE.TH.Y
+008_z007p000 Total [R_0, Beta] [0.617 +/- 0.008 & -0.305 +/- 0.007], N=6447
+BT (-0.0405, 0.5568)
+Ratio [ 0.24581333 -5.94190292]
+FAKE.TH.J
+008_z007p000 Total [R_0, Beta] [0.616 +/- 0.009 & -0.325 +/- 0.007], N=6447
+BT (-0.0563, 0.5476)
+Ratio [ 0.19195021 -4.41692271]
+FAKE.TH.H
+008_z007p000 Total [R_0, Beta] [0.619 +/- 0.009 & -0.339 +/- 0.007], N=6447
+BT (-0.0669, 0.5372)
+Ratio [ 0.14160587 -2.99799793]
+--------------------------- 009_z006p000 ---------------------------
+FAKE.TH.FUV
+009_z006p000 Total [R_0, Beta] [1.058 +/- 0.007 & 0.022 +/- 0.004], N=13501
+Ratio [ 0.384009   -9.59895302]
+FAKE.TH.MUV
+009_z006p000 Total [R_0, Beta] [0.997 +/- 0.007 & -0.006 +/- 0.004], N=13501
+Ratio [ 0.38580614 -9.6836202 ]
+FAKE.TH.NUV
+009_z006p000 Total [R_0, Beta] [0.966 +/- 0.007 & -0.024 +/- 0.004], N=13501
+Ratio [ 0.37895398 -9.51024442]
+FAKE.TH.U
+009_z006p000 Total [R_0, Beta] [0.943 +/- 0.007 & -0.058 +/- 0.004], N=13501
+Ratio [ 0.32509284 -8.07046578]
+FAKE.TH.B
+009_z006p000 Total [R_0, Beta] [1.050 +/- 0.006 & -0.057 +/- 0.004], N=13501
+Ratio [ 0.32296074 -8.08167944]
+FAKE.TH.V
+009_z006p000 Total [R_0, Beta] [1.108 +/- 0.007 & -0.061 +/- 0.004], N=13501
+Ratio [ 0.30990246 -7.71836164]
+FAKE.TH.R
+009_z006p000 Total [R_0, Beta] [0.940 +/- 0.006 & -0.095 +/- 0.004], N=13501
+Ratio [ 0.21785093 -5.13056294]
+FAKE.TH.I
+009_z006p000 Total [R_0, Beta] [1.072 +/- 0.007 & -0.089 +/- 0.004], N=13501
+Ratio [ 0.23193842 -5.5296751 ]
+FAKE.TH.Z
+009_z006p000 Total [R_0, Beta] [0.998 +/- 0.007 & -0.112 +/- 0.004], N=13501
+Ratio [ 0.21028314 -4.92231574]
+FAKE.TH.Y
+009_z006p000 Total [R_0, Beta] [0.994 +/- 0.006 & -0.112 +/- 0.004], N=13501
+Ratio [ 0.17731199 -3.99899704]
+FAKE.TH.J
+009_z006p000 Total [R_0, Beta] [1.018 +/- 0.007 & -0.124 +/- 0.004], N=13501
+Ratio [ 0.15645291 -3.40980779]
+FAKE.TH.H
+009_z006p000 Total [R_0, Beta] [1.020 +/- 0.007 & -0.137 +/- 0.004], N=13501
+Ratio [ 0.11791795 -2.32592035]
+--------------------------- 010_z005p000 ---------------------------
+FAKE.TH.FUV
+010_z005p000 Total [R_0, Beta] [1.423 +/- 0.006 & 0.115 +/- 0.002], N=25748
+Ratio [  0.48350122 -12.33191238]
+FAKE.TH.MUV
+010_z005p000 Total [R_0, Beta] [1.342 +/- 0.006 & 0.086 +/- 0.002], N=25748
+Ratio [  0.47603567 -12.16297479]
+FAKE.TH.NUV
+010_z005p000 Total [R_0, Beta] [1.303 +/- 0.006 & 0.066 +/- 0.002], N=25748
+Ratio [  0.46089213 -11.7615418 ]
+FAKE.TH.U
+010_z005p000 Total [R_0, Beta] [1.255 +/- 0.006 & 0.030 +/- 0.002], N=25748
+Ratio [ 0.38641178 -9.76459496]
+FAKE.TH.B
+010_z005p000 Total [R_0, Beta] [1.355 +/- 0.005 & 0.022 +/- 0.002], N=25748
+Ratio [ 0.37185078 -9.44464777]
+FAKE.TH.V
+010_z005p000 Total [R_0, Beta] [1.423 +/- 0.006 & 0.009 +/- 0.002], N=25748
+Ratio [ 0.35101067 -8.86819699]
+FAKE.TH.R
+010_z005p000 Total [R_0, Beta] [1.232 +/- 0.005 & -0.007 +/- 0.002], N=25748
+Ratio [ 0.25875401 -6.27632137]
+FAKE.TH.I
+010_z005p000 Total [R_0, Beta] [1.379 +/- 0.006 & -0.021 +/- 0.002], N=25748
+Ratio [ 0.27272934 -6.67718855]
+FAKE.TH.Z
+010_z005p000 Total [R_0, Beta] [1.289 +/- 0.005 & -0.037 +/- 0.002], N=25748
+Ratio [ 0.25076503 -6.06225457]
+FAKE.TH.Y
+010_z005p000 Total [R_0, Beta] [1.281 +/- 0.005 & -0.040 +/- 0.002], N=25748
+Ratio [ 0.21515782 -5.06597151]
+FAKE.TH.J
+010_z005p000 Total [R_0, Beta] [1.297 +/- 0.005 & -0.060 +/- 0.002], N=25748
+Ratio [ 0.17935735 -4.0561882 ]
+FAKE.TH.H
+010_z005p000 Total [R_0, Beta] [1.288 +/- 0.005 & -0.078 +/- 0.002], N=25748
+Ratio [ 0.14300423 -3.03578444]
+FAKE.TH.FUV
+--------------------------- Evolution ---------------------------
+Plotting for:
+Orientation = sim
+Filter = FAKE.TH.FUV
+Bin: low
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10. 11. 12.]
+-------------- Total All low pix FAKE.TH.FUV --------------
+C=9.451 +/- 0.468 
+m=1.224 +/- 0.027 
+Points fit on: 18300
+----------------------------------------------------------
+Bin: mid
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10. 11. 12.]
+-------------- Total All mid pix FAKE.TH.FUV --------------
+C=26.434 +/- 1.385 
+m=1.720 +/- 0.028 
+Points fit on: 11406
+----------------------------------------------------------
+Bin: high
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10. 11. 12.]
+-------------- Total All high pix FAKE.TH.FUV --------------
+C=39.948 +/- 2.487 
+m=1.885 +/- 0.033 
+Points fit on: 13524
+----------------------------------------------------------
+--------------------------- Evolution Incomplete ---------------------------
+Plotting for:
+Orientation = sim
+Filter = FAKE.TH.FUV
+Bin: low
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10. 11. 12.]
+-------------- Total NonComplete low pix FAKE.TH.FUV --------------
+C=5.766 +/- 0.185 
+m=0.920 +/- 0.017 
+Points fit on: 37147
+----------------------------------------------------------
+Bin: mid
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10. 11. 12.]
+-------------- Total NonComplete mid pix FAKE.TH.FUV --------------
+C=26.430 +/- 1.386 
+m=1.719 +/- 0.028 
+Points fit on: 11394
+----------------------------------------------------------
+Bin: high
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10. 11. 12.]
+-------------- Total NonComplete high pix FAKE.TH.FUV --------------
+C=39.943 +/- 2.487 
+m=1.885 +/- 0.033 
+Points fit on: 13512
+----------------------------------------------------------
+--------------------------- Evolution Incomplete Particle ---------------------------
+Plotting for:
+Orientation = sim
+Filter = FAKE.TH.FUV
+Bin: low
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10. 11.]
+-------------- Total All low part FAKE.TH.FUV --------------
+C=18.784 +/- 1.759 
+m=1.241 +/- 0.050 
+Points fit on: 17525
+----------------------------------------------------------
+Bin: mid
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10. 11. 12.]
+-------------- Total All mid part FAKE.TH.FUV --------------
+C=49.832 +/- 5.199 
+m=1.876 +/- 0.056 
+Points fit on: 11295
+----------------------------------------------------------
+Bin: high
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10. 11. 12.]
+-------------- Total All high part FAKE.TH.FUV --------------
+C=98.953 +/- 10.616 
+m=2.196 +/- 0.058 
+Points fit on: 14299
+----------------------------------------------------------
+--------------------------- Evolution Limited to high ---------------------------
+Plotting for:
+Orientation = sim
+Filter = FAKE.TH.FUV
+Bin: low
+Redshifts in sample: [ 7.  8.  9. 10. 11. 12.]
+-------------- Total Limited low pix FAKE.TH.FUV --------------
+C=508.692 +/- 137.117 
+m=3.110 +/- 0.128 
+Points fit on: 3429
+----------------------------------------------------------
+Bin: mid
+Redshifts in sample: [ 7.  8.  9. 10. 11. 12.]
+-------------- Total Limited mid pix FAKE.TH.FUV --------------
+C=79.801 +/- 13.507 
+m=2.260 +/- 0.079 
+Points fit on: 3247
+----------------------------------------------------------
+Bin: high
+Redshifts in sample: [ 7.  8.  9. 10. 11. 12.]
+-------------- Total Limited high pix FAKE.TH.FUV --------------
+C=106.622 +/- 21.123 
+m=2.366 +/- 0.093 
+Points fit on: 3639
+----------------------------------------------------------
+--------------------------- Evolution Limited to low ---------------------------
+Plotting for:
+Orientation = sim
+Filter = FAKE.TH.FUV
+Bin: low
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10.]
+-------------- Total Low-Limited low pix FAKE.TH.FUV --------------
+C=9.162 +/- 0.457 
+m=1.207 +/- 0.027 
+Points fit on: 18263
+----------------------------------------------------------
+Bin: mid
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10.]
+-------------- Total Low-Limited mid pix FAKE.TH.FUV --------------
+C=25.827 +/- 1.388 
+m=1.707 +/- 0.029 
+Points fit on: 11281
+----------------------------------------------------------
+Bin: high
+Redshifts in sample: [ 5.  6.  7.  8.  9. 10.]
+-------------- Total Low-Limited high pix FAKE.TH.FUV --------------
+C=39.256 +/- 2.493 
+m=1.876 +/- 0.034 
+Points fit on: 13397
+----------------------------------------------------------
+006_z009p000
+--------------------------- Mass Lumin 006_z009p000 ---------------------------
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Snapshot = 006_z009p000
+Filter = FAKE.TH.FUV
+Plotting for:
+Orientation = sim
+Type = Total
+Snapshot = 006_z009p000
+Filter = FAKE.TH.FUV
+--------------------------- HDR 006_z009p000 ---------------------------
+Plotting for:
+Orientation = sim
+Filter = FAKE.TH.FUV
+Snapshot = 006_z009p000
+--------------------------- Intrinsic 006_z009p000 ---------------------------
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Filter = FAKE.TH.FUV
+Snap = 006_z009p000
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Filter = FAKE.TH.FUV
+Snap = 006_z009p000
+--------------------------- Comp 006_z009p000 ---------------------------
+007_z008p000
+--------------------------- Mass Lumin 007_z008p000 ---------------------------
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Snapshot = 007_z008p000
+Filter = FAKE.TH.FUV
+Plotting for:
+Orientation = sim
+Type = Total
+Snapshot = 007_z008p000
+Filter = FAKE.TH.FUV
+--------------------------- HDR 007_z008p000 ---------------------------
+Plotting for:
+Orientation = sim
+Filter = FAKE.TH.FUV
+Snapshot = 007_z008p000
+--------------------------- Intrinsic 007_z008p000 ---------------------------
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Filter = FAKE.TH.FUV
+Snap = 007_z008p000
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Filter = FAKE.TH.FUV
+Snap = 007_z008p000
+--------------------------- Comp 007_z008p000 ---------------------------
+008_z007p000
+--------------------------- Mass Lumin 008_z007p000 ---------------------------
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Snapshot = 008_z007p000
+Filter = FAKE.TH.FUV
+Plotting for:
+Orientation = sim
+Type = Total
+Snapshot = 008_z007p000
+Filter = FAKE.TH.FUV
+--------------------------- HDR 008_z007p000 ---------------------------
+Plotting for:
+Orientation = sim
+Filter = FAKE.TH.FUV
+Snapshot = 008_z007p000
+--------------------------- Intrinsic 008_z007p000 ---------------------------
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Filter = FAKE.TH.FUV
+Snap = 008_z007p000
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Filter = FAKE.TH.FUV
+Snap = 008_z007p000
+--------------------------- Comp 008_z007p000 ---------------------------
+009_z006p000
+--------------------------- Mass Lumin 009_z006p000 ---------------------------
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Snapshot = 009_z006p000
+Filter = FAKE.TH.FUV
+Plotting for:
+Orientation = sim
+Type = Total
+Snapshot = 009_z006p000
+Filter = FAKE.TH.FUV
+--------------------------- HDR 009_z006p000 ---------------------------
+Plotting for:
+Orientation = sim
+Filter = FAKE.TH.FUV
+Snapshot = 009_z006p000
+--------------------------- Intrinsic 009_z006p000 ---------------------------
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Filter = FAKE.TH.FUV
+Snap = 009_z006p000
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Filter = FAKE.TH.FUV
+Snap = 009_z006p000
+--------------------------- Comp 009_z006p000 ---------------------------
+010_z005p000
+--------------------------- Mass Lumin 010_z005p000 ---------------------------
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Snapshot = 010_z005p000
+Filter = FAKE.TH.FUV
+Plotting for:
+Orientation = sim
+Type = Total
+Snapshot = 010_z005p000
+Filter = FAKE.TH.FUV
+--------------------------- HDR 010_z005p000 ---------------------------
+Plotting for:
+Orientation = sim
+Filter = FAKE.TH.FUV
+Snapshot = 010_z005p000
+--------------------------- Intrinsic 010_z005p000 ---------------------------
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Filter = FAKE.TH.FUV
+Snap = 010_z005p000
+Plotting for:
+Orientation = sim
+Type = Intrinsic
+Filter = FAKE.TH.FUV
+Snap = 010_z005p000
+--------------------------- Comp 010_z005p000 ---------------------------
+00 2261
+01 4425
+02 6390
+03 8399
+04 10553
+05 12439
+06 14425
+07 16442
+08 18473
+09 20560
+10 22482
+11 24568
+12 26452
+13 28312
+14 30323
+15 32232
+16 33690
+17 35146
+18 36316
+19 37329
+20 38120
+21 38883
+22 39468
+23 39964
+24 40310
+25 40651
+26 40901
+27 41117
+28 41274
+29 41384
+30 41449
+31 41526
+32 41851
+33 42058
+34 42380
+35 42683
+36 43118
+37 43475
+38 43486
+39 43511

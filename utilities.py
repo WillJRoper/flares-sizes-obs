@@ -435,6 +435,7 @@ def make_spline_img_3d(part_pos, Ndim, i, j, k, tree, ls, smooth,
         # Place the kernel for this particle within the img
         kernel = w / sml ** 3
         norm_kernel = np.sum(kernel, axis=-1) / np.sum(kernel)
+        print(np.sum(norm_kernel))
         smooth_img[pix_pos[inds, 0], pix_pos[inds, 1]] += l * norm_kernel
 
     return smooth_img
