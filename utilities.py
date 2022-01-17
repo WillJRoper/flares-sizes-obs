@@ -394,6 +394,52 @@ def make_spline_img(pos, Ndim, i, j, tree, ls, smooth,
     return smooth_img
 
 
+def make_spline_img_3d(part_pos, Ndim, i, j, k, tree, ls, smooth,
+                       spline_func=quartic_spline, spline_cut_off=5 / 2):
+    # Define 2D projected particle position array
+    pos = np.zeros_like(part_pos)
+    pos[:, 0] = part_pos[:, i]
+    pos[:, 1] = part_pos[:, j]
+    pos[:, 2] = part_pos[:, k]
+
+    # Initialise the image array
+    smooth_img = np.zeros((Ndim, Ndim))
+
+    # Define x and y positions of pixels
+    X, Y, Z = np.meshgrid(np.arange(0, Ndim, 1),
+                          np.arange(0, Ndim, 1),
+                          np.arange(0, Ndim, 1))
+
+    # Define pixel position array for the KDTree
+    pix_pos = np.zeros((X.size, 3), dtype=int)
+    pix_pos[:, 0] = X.ravel()
+    pix_pos[:, 1] = Y.ravel()
+    pix_pos[:, 2] = Z.ravel()
+
+    for ipos, l, sml in zip(pos, ls, smooth):
+
+        # Query the tree for this particle
+        dist, inds = tree.query(ipos, k=pos.shape[0],
+                                distance_upper_bound=spline_cut_off * sml)
+
+        if type(dist) is float:
+            continue
+
+        okinds = dist < spline_cut_off * sml
+        dist = dist[okinds]
+        inds = inds[okinds]
+
+        # Get the kernel
+        w = spline_func(dist / sml)
+
+        # Place the kernel for this particle within the img
+        kernel = w / sml ** 3
+        norm_kernel = np.sum(kernel, axis=-1) / np.sum(kernel)
+        smooth_img[pix_pos[inds, 0], pix_pos[inds, 1]] += l * norm_kernel
+
+    return smooth_img
+
+
 def get_img_hlr(img, apertures, app_rs, res, csoft, radii_frac=0.5):
     # Apply the apertures
     phot_table = aperture_photometry(img, apertures, method='subpixel',
