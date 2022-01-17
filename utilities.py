@@ -395,7 +395,7 @@ def make_spline_img(pos, Ndim, i, j, tree, ls, smooth,
 
 
 def make_spline_img_3d(part_pos, Ndim, i, j, k, tree, ls, smooth,
-                       spline_func=quartic_spline, spline_cut_off=5 / 2):
+                       spline_func=cubic_spline, spline_cut_off=1):
     # Define 2D projected particle position array
     pos = np.zeros_like(part_pos)
     pos[:, 0] = part_pos[:, i]
@@ -403,7 +403,7 @@ def make_spline_img_3d(part_pos, Ndim, i, j, k, tree, ls, smooth,
     pos[:, 2] = part_pos[:, k]
 
     # Initialise the image array
-    smooth_img = np.zeros((Ndim, Ndim))
+    smooth_img = np.zeros((Ndim, Ndim, Ndim))
 
     # Define x and y positions of pixels
     X, Y, Z = np.meshgrid(np.arange(0, Ndim, 1),
@@ -434,11 +434,11 @@ def make_spline_img_3d(part_pos, Ndim, i, j, k, tree, ls, smooth,
 
         # Place the kernel for this particle within the img
         kernel = w / sml ** 3
-        norm_kernel = np.sum(kernel, axis=-1) / np.sum(kernel)
-        print(np.sum(norm_kernel))
-        smooth_img[pix_pos[inds, 0], pix_pos[inds, 1]] += l * norm_kernel
+        norm_kernel = kernel / np.sum(kernel)
+        smooth_img[pix_pos[inds, 0], pix_pos[inds, 1], pix_pos[
+            inds, 2]] += l * norm_kernel
 
-    return smooth_img
+    return np.sum(smooth_img, axis=-1)
 
 
 def get_img_hlr(img, apertures, app_rs, res, csoft, radii_frac=0.5):

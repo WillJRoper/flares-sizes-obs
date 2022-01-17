@@ -195,7 +195,7 @@ if run:
     pix_pos = np.zeros((X.size, 3))
     pix_pos[:, 0] = X.ravel()
     pix_pos[:, 1] = Y.ravel()
-    pix_pos[:, 1] = Z.ravel()
+    pix_pos[:, 2] = Z.ravel()
 
     # Build KDTree
     tree = cKDTree(pix_pos)
