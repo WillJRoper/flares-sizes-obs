@@ -185,13 +185,15 @@ if run:
     imgextent = [-width / 2, width / 2, -width / 2, width / 2]
 
     # Define x and y positions of pixels
-    X, Y = np.meshgrid(np.linspace(imgrange[0][0], imgrange[0][1], res),
-                       np.linspace(imgrange[1][0], imgrange[1][1], res))
+    X, Y, Z = np.meshgrid(np.linspace(imgrange[0][0], imgrange[0][1], res),
+                          np.linspace(imgrange[1][0], imgrange[1][1], res),
+                          np.linspace(imgrange[1][0], imgrange[1][1], res))
 
     # Define pixel position array for the KDTree
-    pix_pos = np.zeros((X.size, 2))
+    pix_pos = np.zeros((X.size, 3))
     pix_pos[:, 0] = X.ravel()
     pix_pos[:, 1] = Y.ravel()
+    pix_pos[:, 1] = Z.ravel()
 
     # Build KDTree
     tree = cKDTree(pix_pos)
@@ -290,7 +292,7 @@ if run:
                 this_radii = util.calc_rad(this_pos, i=0, j=1)
                 this_gradii = util.calc_rad(this_gpos, i=0, j=1)
 
-                img = util.make_spline_img(this_pos, res, 0, 1, tree,
+                img = util.make_spline_img_3d(this_pos, res, 0, 1, 2, tree,
                                            this_lumin, this_smls,
                                            spline_func=util.cubic_spline,
                                            spline_cut_off=1)
@@ -311,7 +313,7 @@ if run:
                 this_radii = util.calc_rad(this_pos, i=2, j=0)
                 this_gradii = util.calc_rad(this_gpos, i=2, j=0)
 
-                img = util.make_spline_img(this_pos, res, 2, 0, tree,
+                img = util.make_spline_img_3d(this_pos, res, 2, 0, 1, tree,
                                            this_lumin, this_smls,
                                            spline_func=util.cubic_spline,
                                            spline_cut_off=1)
@@ -402,9 +404,10 @@ if run:
     f = filters[0]
 
     hdf = h5py.File(
-        "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
-                                                           orientation,
-                                                           f.split(".")[-1]),
+        "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg, tag,
+                                                                     Type,
+                                                                     orientation,
+                                                                     f.split(".")[-1]),
         "w")
 
     for f in filters:
