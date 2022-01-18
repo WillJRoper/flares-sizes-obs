@@ -69,16 +69,16 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
                                                              x=reg, u=tag,
                                                              filt=filters[0]))
 
-exists = os.path.isfile("data/flares_sizes_highredproject"
-                        "_{}_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
-                                                      orientation,
-                        filters[0].split(".")[-1]))
-if not exists:
-    run = True
-else:
-    run = False
+# exists = os.path.isfile("data/flares_sizes_kernelproject"
+#                         "_{}_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
+#                                                       orientation,
+#                         filters[0].split(".")[-1]))
+# if not exists:
+#     run = True
+# else:
+#     run = False
 
-# run = True
+run = True
 
 model = models.define_model(
     F'BPASSv2.2.1.binary/Chabrier_300')  # DEFINE SED GRID -
@@ -172,7 +172,7 @@ if run:
     ini_width = 60
 
     # Compute the resolution
-    ini_res = ini_width / (csoft / 10)
+    ini_res = ini_width / (csoft)
     res = int(np.ceil(ini_res))
 
     # Compute the new width
@@ -356,7 +356,7 @@ if run:
                                                                     r))
 
             # Generate SED
-            if this_mass > 10 ** 10.5:
+            if this_mass > 10 ** 10:
                 sed = models.generate_SED(model, masses[b: e][sbool], this_age,
                                           this_Sz,
                                           tauVs_ISM=reg_dict[f + "tauVs_ISM"][
@@ -406,7 +406,7 @@ if run:
     f = filters[0]
 
     hdf = h5py.File(
-        "data/flares_sizes_highredproject_{}_{}_{}_{}_{}.hdf5".format(reg, tag,
+        "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg, tag,
                                                                      Type,
                                                                      orientation,
                                                                      f.split(".")[-1]),
