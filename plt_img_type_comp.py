@@ -141,9 +141,9 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     log_norm = cm.LogNorm(vmin=np.percentile(gimg, 16),
                           vmax=np.percentile(simg, 99), clip=True)
-    diverg_norm = cm.TwoSlopeNorm(vmin=-np.max((np.abs(resi))),
+    diverg_norm = cm.TwoSlopeNorm(vmin=-np.nanmax((np.abs(resi))),
                                   vcenter=0.,
-                                  vmax=np.max((np.abs(resi))))
+                                  vmax=np.nanmax((np.abs(resi))))
 
     ax1.imshow(gimg, cmap=cmr.neutral,
                norm=log_norm)
@@ -153,7 +153,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
                     norm=diverg_norm)
 
     ax1.text(0.05, 0.875,
-             "Gaussian Smoothing",
+             "Gaussian",
              bbox=dict(boxstyle="round,pad=0.3",
                        fc='grey',
                        ec="w", lw=1, alpha=0.7),
@@ -162,7 +162,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
              fontsize=6)
 
     ax2.text(0.05, 0.875,
-             "Spline Smoothing",
+             "Spline",
              bbox=dict(boxstyle="round,pad=0.3",
                        fc='grey',
                        ec="w", lw=1, alpha=0.7),
