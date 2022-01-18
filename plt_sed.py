@@ -254,6 +254,8 @@ ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
 ax.set_ylabel("$L_{" + f.split(".")[-1]
               + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
 
+ax.tick_params(axis='both', which='both', left=True, bottom=True)
+
 ax.legend()
 
 # create a second axes for the colorbar
