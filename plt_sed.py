@@ -162,8 +162,12 @@ for snap in snaps:
 
         try:
             hdf = h5py.File(
-                "data/flares_sizes_{}_{}_{}_{}.hdf5".format(reg, snap, "Total",
-                                                            orientation),
+                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
+                                                                   "Total",
+                                                                   orientation,
+                                                                   f.split(
+                                                                       ".")[
+                                                                       -1]),
                 "r")
 
             try:
