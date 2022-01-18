@@ -380,7 +380,7 @@ def fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, Type,
                          horizontalalignment='right',
                          fontsize=8)
 
-            axes[i].tick_params(axis='both', which='minor',
+            axes[i].tick_params(axis='both', which='both',
                                 bottom=True, left=True)
 
             # Label axes
@@ -393,6 +393,7 @@ def fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, Type,
             axes[i].set_ylim(ylims[0], ylims[1])
 
         axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
+        axes[0].tick_params(axis='y', which='both', left=True)
 
         uni_legend_elements = []
         # uni_legend_elements.append(

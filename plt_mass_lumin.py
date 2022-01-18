@@ -123,7 +123,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     ax.set_ylabel(r"$L_{" + f.split(".")[-1] + "}/$ [erg $/$ s $/$ Hz]")
     ax.set_xlabel('$M_\star/ M_\odot$')
 
-    ax.tick_params(axis='both', which='minor', bottom=True, left=True)
+    ax.tick_params(axis='both', which='both', bottom=True, left=True)
 
     ax.set_xlim(10 ** 7.5, 10 ** 11.5)
     axtop.set_xlim(10 ** 7.5, 10 ** 11.5)

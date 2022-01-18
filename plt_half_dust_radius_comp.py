@@ -107,6 +107,8 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
 
     plt.axis('scaled')
 
+    ax.tick_params(axis='both', which='both', left=True, bottom=True)
+
     ax.set_xlim(10 ** -1.1, 10 ** 1.3)
     ax.set_ylim(10 ** -1.1, 10 ** 1.3)
 
@@ -197,6 +199,8 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ R_{1/2, dust}$")
     ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
+    ax.tick_params(axis='both', which='both', left=True, bottom=True)
+
     ax.set_xlim(10 ** -1.1, 10 ** 1.3)
     ax.set_ylim([0.08, 50])
 
@@ -277,6 +281,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     max = np.max((ax.get_xlim(), ax.get_ylim()))
 
     ax.plot([min, max], [1, 1], color='k', linestyle="--")
+    ax.tick_params(axis='both', which='both', bottom=True, left=True)
 
     ax.text(0.95, 0.05, f'$z={z}$',
             bbox=dict(boxstyle="round,pad=0.3", fc='w',

@@ -59,6 +59,8 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
     ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
     ax.set_ylabel('$R_{1/2, \mathrm{pix}}/ [pkpc]$')
 
+    ax.tick_params(axis='both', which='both', left=True, bottom=True)
+
     plt.axis('scaled')
 
     ax.set_xlim(10 ** -1.1, 10 ** 1.3)

@@ -61,6 +61,8 @@ def size_comp_smooth_part(f, snap, hlrs_part, hlrs_pix_nosmooth, w, com_comp,
     ax.set_ylabel('$R_{\mathrm{No Smooth}}/ [pkpc]$')
     ax.set_xlabel('$R_{\mathrm{Part}}/ [pkpc]$')
 
+    ax.tick_params(axis='both', which='both', left=True, bottom=True)
+
     plt.axis('scaled')
 
     ax.set_xlim(10 ** -1.1, 10 ** 1.3)

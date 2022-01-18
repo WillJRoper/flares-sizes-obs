@@ -213,6 +213,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     ax.set_xlim(10 ** -1.1, 10 ** 1.3)
     ax.set_ylim(10 ** -1.1, 10 ** 1.3)
+    ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonImageCreation_HLR_' + f + '_' + str(
@@ -245,6 +246,8 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     ax.set_xlim(10 ** 27., 10 ** 31.)
     ax.set_ylim(10 ** 27., 10 ** 31.)
+
+    ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonImageCreation_Lumin_' + f + '_' + str(

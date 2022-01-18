@@ -130,14 +130,13 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     ax.set_xlabel(r"$L_{" + f.split(".")[-1]
                   + "}/$ [erg $/$ s $/$ Hz]")
     ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+    ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
     ax1.set_xlim(10 ** 26.5, 10 ** 31.2)
     ax.set_xlim(10 ** 26.5, 10 ** 31.2)
     ax.set_ylim(10 ** -1.5, 10 ** 1.5)
     ax1.set_ylim(10 ** -1.5 * cosmo.arcsec_per_kpc_proper(z).value,
                  10 ** 1.5 * cosmo.arcsec_per_kpc_proper(z).value)
-
-    ax.tick_params(axis='x', which='minor', bottom=True)
 
     fig.savefig(
         'plots/' + str(z) + '/HalfLightRadius_' + mtype + "_" + f + '_' + str(

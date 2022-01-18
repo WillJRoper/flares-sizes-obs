@@ -332,6 +332,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
         axes[i].set_xlim(xlims[0], xlims[1])
         axes_ratio[i].set_xlim(xlims[0], xlims[1])
+        axes_ratio[i].tick_params(axis='x', which='both', bottom=True)
 
     for i in range(len(axes)):
         axes[i].set_ylim(ylims[0], ylims[1])
@@ -339,6 +340,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
     axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
     axes_ratio[0].set_ylabel('$R_{1/2, Att}/ R_{1/2, Int}$')
+    axes[0].tick_params(axis='y', which='both', left=True)
+    axes_ratio[0].tick_params(axis='y', which='both', left=True)
 
     uni_legend_elements = []
     uni_legend_elements.append(
