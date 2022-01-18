@@ -24,24 +24,24 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
     ax = fig.add_subplot(111)
     try:
         cbar = ax.hexbin(hlrs[diff_ncomp], hlrs_pix[diff_ncomp],
-                         C=w[diff_ncomp], gridsize=100, mincnt=1,
+                         C=w[diff_ncomp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3),
                          alpha=0.2)
         cbar = ax.hexbin(hlrs[com_ncomp], hlrs_pix[com_ncomp],
-                         C=w[com_ncomp], gridsize=100, mincnt=1,
+                         C=w[com_ncomp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3),
                          alpha=0.2)
         cbar = ax.hexbin(hlrs[diff_comp], hlrs_pix[diff_comp],
-                         C=w[diff_comp], gridsize=100, mincnt=1,
+                         C=w[diff_comp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3))
         cbar = ax.hexbin(hlrs[com_comp], hlrs_pix[com_comp],
-                         C=w[com_comp], gridsize=100, mincnt=1,
+                         C=w[com_comp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3))
