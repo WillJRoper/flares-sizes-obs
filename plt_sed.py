@@ -217,8 +217,8 @@ for snap in snaps:
 
     ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
             color="r", label="Attenuated")
-    ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
-            color="g", label="Intrinsic")
+    # ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
+    #         color="g", label="Intrinsic")
 
     # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
     # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
