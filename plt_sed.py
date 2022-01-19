@@ -252,7 +252,7 @@ for ind, s in enumerate(nc_zs):
                 horizontalalignment="center", fontsize=6)
 
 ax.set_xlim(0.05, None)
-ax.set_ylim(10 ** 22., 10 ** 33.)
+# ax.set_ylim(10 ** 22., 10 ** 33.)
 
 ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
 ax.set_ylabel("$L_{" + f.split(".")[-1]
