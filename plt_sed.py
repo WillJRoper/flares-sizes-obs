@@ -214,7 +214,8 @@ for snap in snaps:
     #             color="r", alpha=0.01)
     #     ax.plot(sedlam, sedint,
     #             color="g", alpha=0.01)
-
+    print(sedtot.shape)
+    print(sedtot)
     ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
             color="r", label="Attenuated")
     # ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
@@ -251,7 +252,7 @@ for ind, s in enumerate(nc_zs):
     ax.annotate(str(int(s)), (nc_piv[ind], nc_y_labels[ind]),
                 horizontalalignment="center", fontsize=6)
 
-ax.set_xlim(0.05, None)
+# ax.set_xlim(0.05, None)
 # ax.set_ylim(10 ** 22., 10 ** 33.)
 
 ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
