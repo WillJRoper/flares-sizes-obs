@@ -360,9 +360,9 @@ if run:
                 sed = models.generate_SED(model, masses[b: e][sbool], this_age,
                                           this_Sz,
                                           tauVs_ISM=reg_dict[f + "tauVs_ISM"][
-                                                    b: e],
+                                                    b: e][sbool],
                                           tauVs_BC=reg_dict[f + "tauVs_BC"][
-                                                   b: e],
+                                                   b: e][sbool],
                                           fesc=0.0,
                                           log10t_BC=reg_dict[f + "log10t_BC"][
                                               ind])
