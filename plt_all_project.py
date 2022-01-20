@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 from matplotlib.colors import LogNorm
 from plt_half_dust_radius_comp import hdr_comp
+from plt_img_type_comp import img_size_comp
+from plt_lum_type_comp import lum_comp
 from plt_mass_lumin import mass_lumin
 from plt_no_smooth_size_lumin_fitgrid import fit_size_lumin_grid_nosmooth
 from plt_size_evo_violin import size_evo_violin
@@ -13,7 +15,6 @@ from plt_size_lumin_intrinsic import size_lumin_intrinsic
 from plt_size_part_smooth_comp import size_comp_smooth_part
 from plt_size_smooth_comp import size_comp_smooth
 from plt_size_type_comp import size_comp
-from plt_img_type_comp import img_size_comp
 
 # Set orientation
 orientation = "sim"
@@ -75,12 +76,13 @@ for reg, snap in reg_snaps:
 
         try:
             hdf = h5py.File(
-                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
-                                                                   "Total",
-                                                                   orientation,
-                                                                   f.split(
-                                                                       ".")[
-                                                                       -1]),
+                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(
+                    reg, snap,
+                    "Total",
+                    orientation,
+                    f.split(
+                        ".")[
+                        -1]),
                 "r")
         except OSError as e:
             print(reg, snap, e)
@@ -110,12 +112,13 @@ for reg, snap in reg_snaps:
 
         try:
             hdf = h5py.File(
-                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
-                                                                   "Intrinsic",
-                                                                   orientation,
-                                                                   f.split(
-                                                                       ".")[
-                                                                       -1]),
+                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(
+                    reg, snap,
+                    "Intrinsic",
+                    orientation,
+                    f.split(
+                        ".")[
+                        -1]),
                 "r")
         except OSError as e:
             print(reg, snap, e)
@@ -315,7 +318,7 @@ size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
                      "pix", weight_norm, list(xlims), list(ylims), "All")
 
-for f in filters:
+for f in all_filters:
     print(f)
     print("--------------------------- Evolution ---------------------------")
     size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "All",
@@ -416,6 +419,21 @@ for f in filters:
                   data[snap][f]["Compact_Population_NotComplete"],
                   data[snap][f]["Diffuse_Population_NotComplete"],
                   weight_norm, orientation, "Total", "default")
+        lum_comp(f, snap, intr_data[snap][f]["Luminosity"],
+                 intr_data[snap][f]["Image_Luminosity"],
+                 intr_data[snap][f]["Weight"],
+                 intr_data[snap][f]["Compact_Population_Complete"],
+                 intr_data[snap][f]["Diffuse_Population_Complete"],
+                 intr_data[snap][f]["Compact_Population_NotComplete"],
+                 intr_data[snap][f]["Diffuse_Population_NotComplete"],
+                 weight_norm, orientation, "Intrinsic", "default")
+        lum_comp(f, snap, data[snap][f]["Luminosity"],
+                 data[snap][f]["Image_Luminosity"], data[snap][f]["Weight"],
+                 data[snap][f]["Compact_Population_Complete"],
+                 data[snap][f]["Diffuse_Population_Complete"],
+                 data[snap][f]["Compact_Population_NotComplete"],
+                 data[snap][f]["Diffuse_Population_NotComplete"],
+                 weight_norm, orientation, "Total", "default")
 
         size_comp_smooth(f, snap, data[snap][f]["HLR_Pixel_0.5"],
                          data[snap][f]["HLR_Pixel_0.5_No_Smooth"],
