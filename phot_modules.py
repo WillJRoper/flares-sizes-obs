@@ -91,10 +91,10 @@ def get_data(ii, tag, inp='FLARES'):
                               dtype=np.float64)
             G_vels = np.array(hf[tag + '/Particle'].get('G_Vel'),
                               dtype=np.float64)
-            S_bool = np.array(hf[tag + '/Particle/Apertures/'].get('Star'),
-                              dtype=bool)[5, :]
-            G_bool = np.array(hf[tag + '/Particle/Apertures/'].get('Gas'),
-                              dtype=bool)[5, :]
+            S_bool = np.array(hf[tag + '/Particle/Apertures/Star'].get('30'),
+                              dtype=bool)
+            G_bool = np.array(hf[tag + '/Particle/Apertures/Gas'].get('30'),
+                              dtype=bool)
 
             begin = np.zeros(len(S_len), dtype=np.int64)
             end = np.zeros(len(S_len), dtype=np.int64)
