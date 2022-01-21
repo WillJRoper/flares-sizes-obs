@@ -69,7 +69,7 @@ print("Computing HLRs with orientation {o}, type {t}, and extinction {e} "
                                                              x=reg, u=tag,
                                                              filt=filters[0]))
 
-# exists = os.path.isfile("data/flares_sizes_kernelproject"
+# exists = os.path.isfile("data/flares_sizes_highresproject"
 #                         "_{}_{}_{}_{}_{}.hdf5".format(reg, tag, Type,
 #                                                       orientation,
 #                         filters[0].split(".")[-1]))
@@ -172,7 +172,7 @@ if run:
     ini_width = 60
 
     # Compute the resolution
-    ini_res = ini_width / (csoft)
+    ini_res = ini_width / (csoft / 2)
     res = int(np.ceil(ini_res))
 
     # Compute the new width
@@ -406,7 +406,7 @@ if run:
     f = filters[0]
 
     hdf = h5py.File(
-        "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg, tag,
+        "data/flares_sizes_highresproject_{}_{}_{}_{}_{}.hdf5".format(reg, tag,
                                                                      Type,
                                                                      orientation,
                                                                      f.split(".")[-1]),
