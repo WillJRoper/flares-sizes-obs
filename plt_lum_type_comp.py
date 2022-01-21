@@ -63,8 +63,8 @@ def lum_comp(f, snap, lums, lums_pix, w, com_comp, diff_comp, com_ncomp,
 
     plt.axis('scaled')
 
-    ax.set_xlim(10 ** -1.1, 10 ** 1.3)
-    ax.set_ylim(10 ** -1.1, 10 ** 1.3)
+    # ax.set_xlim(10 ** -1.1, 10 ** 1.3)
+    # ax.set_ylim(10 ** -1.1, 10 ** 1.3)
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonLuminosity_' + f + '_' + str(
