@@ -52,8 +52,8 @@ def lum_comp(f, snap, lums, lums_pix, w, com_comp, diff_comp, com_ncomp,
         print(e)
         return
 
-    ax.plot([10 ** -1.1, 10 ** 1.3], [10 ** -1.1, 10 ** 1.3],
-            color='k', linestyle="--")
+    # ax.plot([10 ** -1.1, 10 ** 1.3], [10 ** -1.1, 10 ** 1.3],
+    #         color='k', linestyle="--")
 
     # Label axes
     ax.set_xlabel(r"$L_{" + f.split(".")[-1] + ", \mathrm{part}}/$ [erg $/$ s $/$ Hz]")
