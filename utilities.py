@@ -403,7 +403,7 @@ def make_spline_img_3d(part_pos, Ndim, i, j, k, tree, ls, smooth,
     pos[:, 2] = part_pos[:, k]
 
     # Initialise the image array
-    smooth_img = np.zeros((Ndim, Ndim, Ndim))
+    smooth_img = np.zeros((Ndim, Ndim, Ndim), dtype=np.float32)
 
     # Define x and y positions of pixels
     X, Y, Z = np.meshgrid(np.arange(0, Ndim, 1),
