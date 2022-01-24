@@ -76,7 +76,7 @@ for reg, snap in reg_snaps:
 
         try:
             hdf = h5py.File(
-                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(
+                "data/flares_sizes_highresproject_{}_{}_{}_{}_{}.hdf5".format(
                     reg, snap,
                     "Total",
                     orientation,
@@ -112,7 +112,7 @@ for reg, snap in reg_snaps:
 
         try:
             hdf = h5py.File(
-                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(
+                "data/flares_sizes_highresproject_{}_{}_{}_{}_{}.hdf5".format(
                     reg, snap,
                     "Intrinsic",
                     orientation,
