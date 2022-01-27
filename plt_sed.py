@@ -18,6 +18,7 @@ import h5py
 import matplotlib.gridspec as gridspec
 from flare import plt as flareplt
 plt.rcParams['axes.grid'] = True
+plt.rcParams['font.size'] = 12
 
 filter_path = "/cosma7/data/dp004/dc-wilk2/flare/data/filters/"
 
