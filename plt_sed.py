@@ -10,14 +10,11 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
 import matplotlib.colors as cm
 import matplotlib as mpl
 import flare.photom as photconv
 import h5py
-
-sns.set_context("paper")
-sns.set_style('whitegrid')
+from flare import plt as flareplt
 
 filter_path = "/cosma7/data/dp004/dc-wilk2/flare/data/filters/"
 

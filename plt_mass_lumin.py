@@ -14,7 +14,7 @@ import h5py
 import pandas as pd
 from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
-from flare import plt
+from flare import plt as flareplt
 
 
 def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds, w,

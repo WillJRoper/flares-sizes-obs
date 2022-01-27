@@ -11,7 +11,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 
-from flare import plt
+from flare import plt as flareplt
 
 
 def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,

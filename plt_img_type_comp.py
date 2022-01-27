@@ -15,7 +15,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-from flare import plt
+from flare import plt as flareplt
 
 
 def img_size_comp(f, regions, snap, weight_norm, orientation, Type,

@@ -20,7 +20,7 @@ import flare.photom as photconv
 import pandas as pd
 from scipy.optimize import curve_fit
 import matplotlib.colors as cm
-from flare import plt
+from flare import plt as flareplt
 
 filter_path = "/cosma7/data/dp004/dc-wilk2/flare/data/filters/"
 

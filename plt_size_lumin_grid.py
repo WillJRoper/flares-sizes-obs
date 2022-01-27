@@ -19,7 +19,7 @@ from astropy.cosmology import Planck13 as cosmo
 from flare.photom import M_to_lum
 import flare.photom as photconv
 import pandas as pd
-from flare import plt
+from flare import plt as flareplt
 
 
 # Lstar = M_to_lum(-21)

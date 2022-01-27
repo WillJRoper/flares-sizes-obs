@@ -9,7 +9,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-from flare import plt
+from flare import plt as flareplt
 
 
 def size_comp_smooth(f, snap, hlrs_pix, hlrs_pix_nosmooth, w, com_comp,

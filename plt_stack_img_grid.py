@@ -10,16 +10,13 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
 import matplotlib.colors as cm
 import matplotlib.gridspec as gridspec
 import flare.photom as photconv
 import h5py
 import sys
 import cmasher as cmr
-
-sns.set_context("paper")
-sns.set_style('white')
+from flare import plt as flareplt
 
 
 def m_to_M(m, cosmo, z):

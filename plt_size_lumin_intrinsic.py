@@ -13,7 +13,7 @@ warnings.filterwarnings('ignore')
 from matplotlib.colors import LogNorm
 from astropy.cosmology import Planck13 as cosmo
 import flare.photom as photconv
-from flare import plt
+from flare import plt as flareplt
 
 
 def m_to_M(m, cosmo, z):

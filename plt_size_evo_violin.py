@@ -20,7 +20,7 @@ import weighted
 from matplotlib.cbook import violin_stats
 import statsmodels.api as sm
 from scipy.optimize import curve_fit
-from flare import plt
+from flare import plt as flareplt
 
 
 def vdensity_with_weights(weights):
