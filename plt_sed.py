@@ -219,9 +219,11 @@ for snap in snaps:
     #             color="g", alpha=0.01)
     print(sedtot.shape)
     print(sedtot)
-    ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
+    tot_norm = np.sum(np.percentile(sedtot, 50, axis=0))
+    int_norm = np.sum(np.percentile(sedint, 50, axis=0))
+    ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0) / tot_norm,
             color="r", label="Attenuated")
-    ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
+    ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0) / int_norm,
             color="g", label="Intrinsic")
 
     # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
@@ -249,6 +251,8 @@ for snap in snaps:
     # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
     # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
+nc_ys = np.array(nc_ys / tot_norm)
+
 ax.errorbar(nc_piv, nc_ys, xerr=np.array([nc_piv - nc_down, nc_up - nc_piv]),
             capsize=5, color="k", linestyle="none", marker="s", markersize=0)
 for ind, s in enumerate(nc_zs):
@@ -256,7 +260,7 @@ for ind, s in enumerate(nc_zs):
                 horizontalalignment="center", fontsize=6)
 
 ax.set_xlim(0.04, None)
-ax.set_ylim(10 ** 22., 10 ** 33.)
+# ax.set_ylim(10 ** 22., 10 ** 33.)
 
 ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
 ax.set_ylabel("$L_{" + f.split(".")[-1]
