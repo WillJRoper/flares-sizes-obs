@@ -254,14 +254,14 @@ for reg in regions:
                                               cmap=cmr.neutral,
                                               norm=norm_log)
 
-            axes[3, 3].plot([0.05, 0.15], [0.025, 0.025], lw=0.1, color='w',
+            axes[3, 3].plot([0.05, 0.15], [0.025, 0.025], lw=0.1, color='k',
                     clip_on=False,
                     transform=axes[3, 3].transAxes)
 
-            axes[3, 3].plot([0.05, 0.05], [0.022, 0.027], lw=0.15, color='w',
+            axes[3, 3].plot([0.05, 0.05], [0.022, 0.027], lw=0.15, color='k',
                     clip_on=False,
                     transform=axes[3, 3].transAxes)
-            axes[3, 3].plot([0.15, 0.15], [0.022, 0.027], lw=0.15, color='w',
+            axes[3, 3].plot([0.15, 0.15], [0.022, 0.027], lw=0.15, color='k',
                     clip_on=False,
                     transform=axes[3, 3].transAxes)
 
@@ -271,11 +271,11 @@ for reg in regions:
             right = axis_to_data.transform((0.15, 0.075))
             dist = extent[1] * (right[0] - left[0])
 
-            axes[3, 3].text(0.1, 0.055, "%.2f cMpc" % dist,
+            axes[3, 3].text(0.1, 0.055, "%.1f pkpc" % dist,
                     transform=axes[3, 3].transAxes, verticalalignment="top",
                     horizontalalignment='center', fontsize=SMALL_SIZE / 4,
                             color="k")
-            axes_log[3, 3].text(0.1, 0.055, "%.2f cMpc" % dist,
+            axes_log[3, 3].text(0.1, 0.055, "%.1f pkpc" % dist,
                     transform=axes[3, 3].transAxes, verticalalignment="top",
                     horizontalalignment='center', fontsize=SMALL_SIZE / 4,
                                 color="k")
