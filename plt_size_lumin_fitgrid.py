@@ -10,7 +10,6 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
 import matplotlib as mpl
 from scipy.optimize import curve_fit
 from scipy.stats import binned_statistic
@@ -20,9 +19,7 @@ from astropy.cosmology import Planck13 as cosmo
 from flare.photom import M_to_lum
 import flare.photom as photconv
 import pandas as pd
-
-sns.set_context("paper")
-sns.set_style('whitegrid')
+from flare import plt
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},

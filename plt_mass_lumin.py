@@ -10,14 +10,11 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
 import h5py
 import pandas as pd
 from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
-
-sns.set_context("paper")
-sns.set_style('whitegrid')
+from flare import plt
 
 
 def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds, w,

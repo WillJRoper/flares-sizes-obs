@@ -15,10 +15,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
-
-sns.set_context("paper")
-sns.set_style('whitegrid')
+from flare import plt
 
 
 def img_size_comp(f, regions, snap, weight_norm, orientation, Type,

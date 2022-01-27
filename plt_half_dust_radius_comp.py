@@ -10,10 +10,8 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
 
-sns.set_context("paper")
-sns.set_style('whitegrid')
+from flare import plt
 
 
 def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
@@ -61,17 +59,17 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax = fig.add_subplot(111)
     ax.loglog()
     try:
-        cbar = ax.hexbin(hdrs[diff_ncomp], hlrs[diff_ncomp], gridsize=50,
-                         mincnt=1,
-                         C=w[diff_ncomp], reduce_C_function=np.sum,
-                         xscale='log', yscale='log',
-                         norm=weight_norm, linewidths=0.2, cmap='Greys',
-                         alpha=0.2)
-        ax.hexbin(hdrs[com_ncomp], hlrs[com_ncomp], gridsize=50,
-                  mincnt=1,
-                  C=w[com_ncomp],
-                  reduce_C_function=np.sum, xscale='log', yscale='log',
-                  norm=weight_norm, linewidths=0.2, cmap='viridis', alpha=0.2)
+        # cbar = ax.hexbin(hdrs[diff_ncomp], hlrs[diff_ncomp], gridsize=50,
+        #                  mincnt=1,
+        #                  C=w[diff_ncomp], reduce_C_function=np.sum,
+        #                  xscale='log', yscale='log',
+        #                  norm=weight_norm, linewidths=0.2, cmap='Greys',
+        #                  alpha=0.2)
+        # ax.hexbin(hdrs[com_ncomp], hlrs[com_ncomp], gridsize=50,
+        #           mincnt=1,
+        #           C=w[com_ncomp],
+        #           reduce_C_function=np.sum, xscale='log', yscale='log',
+        #           norm=weight_norm, linewidths=0.2, cmap='viridis', alpha=0.2)
 
         cbar = ax.hexbin(hdrs[diff_comp], hlrs[diff_comp], gridsize=50,
                          mincnt=1,

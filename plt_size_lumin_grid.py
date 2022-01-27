@@ -10,7 +10,6 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
 import matplotlib as mpl
 from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
@@ -20,9 +19,7 @@ from astropy.cosmology import Planck13 as cosmo
 from flare.photom import M_to_lum
 import flare.photom as photconv
 import pandas as pd
-
-sns.set_context("paper")
-sns.set_style('whitegrid')
+from flare import plt
 
 
 # Lstar = M_to_lum(-21)
@@ -235,31 +232,31 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             #
             # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
-            try:
-                cbar = axes[i].hexbin(lumins[diffuse_ncom], hlrs[diffuse_ncom],
-                                      gridsize=50,
-                                      mincnt=1, C=w[diffuse_ncom],
-                                      reduce_C_function=np.sum,
-                                      xscale='log', yscale='log',
-                                      norm=weight_norm, linewidths=0.2,
-                                      cmap='Greys', alpha=0.2, extent=extent)
-            except ValueError as e:
-                print(e, "Diffuse incomplete", snap, f)
-                print(lumins[diffuse_ncom][lumins[diffuse_ncom] <= 0],
-                      lumins[diffuse_ncom][lumins[diffuse_ncom] <= 0].size)
-            try:
-                axes[i].hexbin(lumins[compact_ncom], hlrs[compact_ncom],
-                               gridsize=50,
-                               mincnt=1,
-                               C=w[compact_ncom],
-                               reduce_C_function=np.sum,
-                               xscale='log', yscale='log',
-                               norm=weight_norm, linewidths=0.2,
-                               cmap='viridis', alpha=0.2, extent=extent)
-            except ValueError as e:
-                print(e, "Compact incomplete", snap, f)
-                print(lumins[compact_ncom][lumins[compact_ncom] <= 0],
-                      lumins[compact_ncom][lumins[compact_ncom] <= 0].size)
+            # try:
+            #     cbar = axes[i].hexbin(lumins[diffuse_ncom], hlrs[diffuse_ncom],
+            #                           gridsize=50,
+            #                           mincnt=1, C=w[diffuse_ncom],
+            #                           reduce_C_function=np.sum,
+            #                           xscale='log', yscale='log',
+            #                           norm=weight_norm, linewidths=0.2,
+            #                           cmap='Greys', alpha=0.2, extent=extent)
+            # except ValueError as e:
+            #     print(e, "Diffuse incomplete", snap, f)
+            #     print(lumins[diffuse_ncom][lumins[diffuse_ncom] <= 0],
+            #           lumins[diffuse_ncom][lumins[diffuse_ncom] <= 0].size)
+            # try:
+            #     axes[i].hexbin(lumins[compact_ncom], hlrs[compact_ncom],
+            #                    gridsize=50,
+            #                    mincnt=1,
+            #                    C=w[compact_ncom],
+            #                    reduce_C_function=np.sum,
+            #                    xscale='log', yscale='log',
+            #                    norm=weight_norm, linewidths=0.2,
+            #                    cmap='viridis', alpha=0.2, extent=extent)
+            # except ValueError as e:
+            #     print(e, "Compact incomplete", snap, f)
+            #     print(lumins[compact_ncom][lumins[compact_ncom] <= 0],
+            #           lumins[compact_ncom][lumins[compact_ncom] <= 0].size)
             try:
                 cbar = axes[i].hexbin(lumins[diffuse_com], hlrs[diffuse_com],
                                       gridsize=50,

@@ -10,7 +10,6 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
 import matplotlib as mpl
 import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
@@ -21,10 +20,7 @@ import flare.photom as photconv
 import pandas as pd
 from scipy.optimize import curve_fit
 import matplotlib.colors as cm
-import scipy
-
-sns.set_context("paper")
-sns.set_style('whitegrid')
+from flare import plt
 
 filter_path = "/cosma7/data/dp004/dc-wilk2/flare/data/filters/"
 

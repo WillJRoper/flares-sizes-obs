@@ -10,7 +10,6 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
 import matplotlib as mpl
 from matplotlib.lines import Line2D
 from astropy.cosmology import Planck13 as cosmo
@@ -21,9 +20,7 @@ import weighted
 from matplotlib.cbook import violin_stats
 import statsmodels.api as sm
 from scipy.optimize import curve_fit
-
-sns.set_context("paper")
-sns.set_style('whitegrid')
+from flare import plt
 
 
 def vdensity_with_weights(weights):
@@ -405,6 +402,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     #         linestyle="--", color="g")
 
     bar_ax = ax.inset_axes([0.5, 0.65, 0.5, 0.35])
+
+    # Plot FIRE region
+    bar_ax.fill_between([0, 16], [1, 2], facecolor="k", alpha=0.4)
 
     bar_ax.errorbar([0, 6, 9, 15],
                     [slopes[0], oesch_low_m[0], hol_low_m[0], ono_low_m[0]],

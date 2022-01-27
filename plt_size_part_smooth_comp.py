@@ -9,10 +9,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
-
-sns.set_context("paper")
-sns.set_style('whitegrid')
+from flare import plt
 
 
 def size_comp_smooth_part(f, snap, hlrs_part, hlrs_pix_nosmooth, w, com_comp,
@@ -25,18 +22,18 @@ def size_comp_smooth_part(f, snap, hlrs_part, hlrs_pix_nosmooth, w, com_comp,
     fig = plt.figure()
     ax = fig.add_subplot(111)
     try:
-        cbar = ax.hexbin(hlrs_part[diff_ncomp], hlrs_pix_nosmooth[diff_ncomp],
-                         C=w[diff_ncomp], gridsize=100, mincnt=1,
-                         xscale='log', yscale='log',
-                         norm=weight_norm, linewidths=0.2,
-                         cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3),
-                         alpha=0.2)
-        cbar = ax.hexbin(hlrs_part[com_ncomp], hlrs_pix_nosmooth[com_ncomp],
-                         C=w[com_ncomp], gridsize=100, mincnt=1,
-                         xscale='log', yscale='log',
-                         norm=weight_norm, linewidths=0.2,
-                         cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3),
-                         alpha=0.2)
+        # cbar = ax.hexbin(hlrs_part[diff_ncomp], hlrs_pix_nosmooth[diff_ncomp],
+        #                  C=w[diff_ncomp], gridsize=100, mincnt=1,
+        #                  xscale='log', yscale='log',
+        #                  norm=weight_norm, linewidths=0.2,
+        #                  cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3),
+        #                  alpha=0.2)
+        # cbar = ax.hexbin(hlrs_part[com_ncomp], hlrs_pix_nosmooth[com_ncomp],
+        #                  C=w[com_ncomp], gridsize=100, mincnt=1,
+        #                  xscale='log', yscale='log',
+        #                  norm=weight_norm, linewidths=0.2,
+        #                  cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3),
+        #                  alpha=0.2)
         cbar = ax.hexbin(hlrs_part[diff_comp], hlrs_pix_nosmooth[diff_comp],
                          C=w[diff_comp], gridsize=100, mincnt=1,
                          xscale='log', yscale='log',

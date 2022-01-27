@@ -10,15 +10,10 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
-import seaborn as sns
 from matplotlib.colors import LogNorm
 from astropy.cosmology import Planck13 as cosmo
 import flare.photom as photconv
-import cmasher as cmr
-import scipy.ndimage
-
-sns.set_context("paper")
-sns.set_style('whitegrid')
+from flare import plt
 
 
 def m_to_M(m, cosmo, z):
@@ -79,18 +74,18 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     ax1 = ax.twinx()
     ax1.grid(False)
     try:
-        cbar = ax.hexbin(lumins[diff_ncomp], hlrs[diff_ncomp],
-                         C=w[diff_ncomp], gridsize=50, mincnt=1,
-                         xscale='log', yscale='log',
-                         norm=weight_norm, linewidths=0.2,
-                         cmap='Greys',
-                         extent=(26.8, 31.2, -1.5, 1.5), alpha=0.2)
-        cbar = ax.hexbin(lumins[com_ncomp], hlrs[com_ncomp],
-                         C=w[com_ncomp], gridsize=50, mincnt=1,
-                         xscale='log', yscale='log',
-                         norm=weight_norm, linewidths=0.2,
-                         cmap='viridis',
-                         extent=(26.8, 31.2, -1.5, 1.5), alpha=0.2)
+        # cbar = ax.hexbin(lumins[diff_ncomp], hlrs[diff_ncomp],
+        #                  C=w[diff_ncomp], gridsize=50, mincnt=1,
+        #                  xscale='log', yscale='log',
+        #                  norm=weight_norm, linewidths=0.2,
+        #                  cmap='Greys',
+        #                  extent=(26.8, 31.2, -1.5, 1.5), alpha=0.2)
+        # cbar = ax.hexbin(lumins[com_ncomp], hlrs[com_ncomp],
+        #                  C=w[com_ncomp], gridsize=50, mincnt=1,
+        #                  xscale='log', yscale='log',
+        #                  norm=weight_norm, linewidths=0.2,
+        #                  cmap='viridis',
+        #                  extent=(26.8, 31.2, -1.5, 1.5), alpha=0.2)
         cbar = ax.hexbin(lumins[diff_comp], hlrs[diff_comp],
                          C=w[diff_comp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
