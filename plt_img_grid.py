@@ -17,9 +17,21 @@ import flare.photom as photconv
 import h5py
 import sys
 import cmasher as cmr
+from flare import plt as flareplt
 
-sns.set_context("paper")
-sns.set_style('white')
+
+# Set plotting fontsizes
+SMALL_SIZE = 10
+MEDIUM_SIZE = 12
+BIGGER_SIZE = 14
+
+plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
 def m_to_M(m, cosmo, z):
@@ -53,8 +65,6 @@ extinction = 'default'
 filters = ['FAKE.TH.' + f
            for f in ['FUV', ]]
 
-csoft = 0.001802390 / (0.6777) * 1e3
-
 imgs_dict = {}
 hlr_pix_dict = {}
 lumin_dict = {}
@@ -79,7 +89,7 @@ for reg in regions:
         for f in filters:
 
             hdf = h5py.File(
-                "data/flares_sizes.pdf_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
+                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
                                                                    "Total",
                                                                    orientation,
                                                                    f.split(
@@ -109,6 +119,8 @@ for reg in regions:
 
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
+
+            csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
 
             imgs = np.array(imgs_dict[f])
             hlrs_pix = np.array(hlr_pix_dict[f])
@@ -190,10 +202,15 @@ for reg in regions:
 
                     if ind > -1:
                         size = this_imgs.shape[-1]
-                        axes[i, j].imshow(this_imgs[ind,
-                                          int(0.3 * size):-int(0.3 * size),
-                                          int(0.3 * size):-int(0.3 * size)],
-                                          cmap=cmr.neutral_r, norm=norm)
+                        plt_img = this_imgs[ind, 
+                                  int(0.3 * size):-int(0.3 * size), 
+                                  int(0.3 * size):-int(0.3 * size)]
+                        extent = [0, plt_img.shape[0] * csoft, 
+                                  0, plt_img.shape[1] * csoft]
+                        print(f, snap, extent)
+                        axes[i, j].imshow(plt_img,
+                                          cmap=cmr.neutral_r, norm=norm, 
+                                          extent=extent)
 
                         logimg = np.zeros_like(this_imgs[ind, :, :])
                         logimg[this_imgs[ind, :, :] > 0] = np.log10(
@@ -202,7 +219,7 @@ for reg in regions:
                         axes_log[i, j].imshow(
                             logimg[int(0.3 * size):-int(0.3 * size),
                             int(0.3 * size):-int(0.3 * size)],
-                            cmap=cmr.neutral, norm=norm_log)
+                            cmap=cmr.neutral, norm=norm_log, extent=extent)
 
                         string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(
                             this_mass[ind]) + "\n" \
@@ -221,13 +238,14 @@ for reg in regions:
                         axes[i, j].text(0.05, 0.95, string,
                                         transform=axes[i, j].transAxes,
                                         verticalalignment="top",
-                                        horizontalalignment='left', fontsize=2,
+                                        horizontalalignment='left', 
+                                        fontsize=SMALL_SIZE / 2,
                                         color="k")
                         axes_log[i, j].text(0.05, 0.95, string,
                                             transform=axes[i, j].transAxes,
                                             verticalalignment="top",
                                             horizontalalignment='left',
-                                            fontsize=2,
+                                            fontsize=SMALL_SIZE / 2,
                                             color="w")
                     else:
                         axes[i, j].imshow(np.zeros_like(imgs[0, :, :]),
@@ -236,15 +254,41 @@ for reg in regions:
                                               cmap=cmr.neutral,
                                               norm=norm_log)
 
+            axes[4, 4].plot([0.05, 0.15], [0.025, 0.025], lw=0.1, color='w',
+                    clip_on=False,
+                    transform=axes[4, 4].transAxes)
+
+            axes[4, 4].plot([0.05, 0.05], [0.022, 0.027], lw=0.15, color='w',
+                    clip_on=False,
+                    transform=axes[4, 4].transAxes)
+            axes[4, 4].plot([0.15, 0.15], [0.022, 0.027], lw=0.15, color='w',
+                    clip_on=False,
+                    transform=axes[4, 4].transAxes)
+
+            axis_to_data = axes[4, 4].transAxes \
+                           + axes[4, 4].transData.inverted()
+            left = axis_to_data.transform((0.05, 0.075))
+            right = axis_to_data.transform((0.15, 0.075))
+            dist = extent[1] * (right[0] - left[0])
+
+            axes[4, 4].text(0.1, 0.055, "%.2f cMpc" % dist,
+                    transform=axes[4, 4].transAxes, verticalalignment="top",
+                    horizontalalignment='center', fontsize=SMALL_SIZE / 2, 
+                            color="w")
+            axes_log[4, 4].text(0.1, 0.055, "%.2f cMpc" % dist,
+                    transform=axes[4, 4].transAxes, verticalalignment="top",
+                    horizontalalignment='center', fontsize=SMALL_SIZE / 2, 
+                                color="w")
+
             fig.savefig(
                 'plots/Image_grids/ImgGrid_' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + '_' + Type
-                + "_" + extinction + "".replace(".", "p") + ".png",
+                + "_" + extinction + "".replace(".", "p") + ".pdf",
                 bbox_inches='tight', dpi=fig.dpi)
             fig_log.savefig(
                 'plots/Image_grids/LogImgGrid_' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + '_' + Type
 
-                + "_" + extinction + "".replace(".", "p") + ".png",
+                + "_" + extinction + "".replace(".", "p") + ".pdf",
                 bbox_inches='tight', dpi=fig_log.dpi)
             plt.close(fig)

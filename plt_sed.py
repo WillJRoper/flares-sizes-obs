@@ -17,6 +17,9 @@ import flare.photom as photconv
 import h5py
 import matplotlib.gridspec as gridspec
 from flare import plt as flareplt
+
+
+# Set plotting fontsizes
 plt.rcParams['axes.grid'] = True
 
 SMALL_SIZE = 10
@@ -223,7 +226,7 @@ for snap in snaps:
     if sedint.size == 0:
         continue
 
-    print(f, sedint.shape, np.max(mass))
+    print(f, sedint.shape, np.log10(np.max(mass)))
 
     # if sedtot.shape[0] > 1:
     #     for i in range(sedtot.shape[0]):
