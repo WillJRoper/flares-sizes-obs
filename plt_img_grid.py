@@ -275,7 +275,7 @@ for reg in regions:
                     transform=axes[3, 3].transAxes, verticalalignment="top",
                     horizontalalignment='center', fontsize=SMALL_SIZE / 2, 
                             color="w")
-            axes_log[4, 4].text(0.1, 0.055, "%.2f cMpc" % dist,
+            axes_log[3, 3].text(0.1, 0.055, "%.2f cMpc" % dist,
                     transform=axes[3, 3].transAxes, verticalalignment="top",
                     horizontalalignment='center', fontsize=SMALL_SIZE / 2, 
                                 color="w")
