@@ -262,8 +262,8 @@ for ind, s in enumerate(nc_zs):
     ax.annotate(str(int(s)), (nc_piv[ind], nc_y_labels[ind]),
                 horizontalalignment="center", fontsize=6)
 
-ax.set_xlim(0.06, 2.1)
-ax1.set_xlim(0.06, 2.1)
+ax.set_xlim(0.01, 2.1)
+ax1.set_xlim(0.01, 2.1)
 ax.set_ylim(10 ** 22., 10 ** 33.)
 ax1.set_ylim(0.01, 1.09)
 
