@@ -152,7 +152,7 @@ tot_cmap = mpl.cm.get_cmap('plasma', len(filters))
 znorm = cm.Normalize(vmin=5, vmax=10)
 
 fig = plt.figure(figsize=(6.4, 3.8))
-gs = gridspec.GridSpec(2, 1)
+gs = gridspec.GridSpec(2, 1, height_ratios=[10, 7])
 gs.update(wspace=0.0, hspace=0.0)
 ax = fig.add_subplot(gs[0, 0])
 ax1 = fig.add_subplot(gs[1, 0])
@@ -261,15 +261,17 @@ for ind, s in enumerate(nc_zs):
     ax.annotate(str(int(s)), (nc_piv[ind], nc_y_labels[ind]),
                 horizontalalignment="center", fontsize=6)
 
-ax.set_xlim(0.04, None)
-ax1.set_xlim(0.04, None)
+ax.set_xlim(0.06, 7)
+ax1.set_xlim(0.06, 7)
 ax.set_ylim(10 ** 22., 10 ** 33.)
+ax.set_ylim(0.01, 1.09)
 
 ax1.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
 ax.set_ylabel("$L / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
 ax1.set_ylabel("$T$")
 
-ax.tick_params(axis='both', which='both', left=True, bottom=True)
+ax.tick_params(axis='y', which='both', left=True)
+ax1.tick_params(axis='both', which='both', left=True, bottom=True)
 
 ax.legend()
 
