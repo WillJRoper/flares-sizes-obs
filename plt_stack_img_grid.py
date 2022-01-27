@@ -346,7 +346,7 @@ for f in filters:
                     if bins[j + 1] == np.inf:
 
                         axes[i, j].text(0.05, 0.875,
-                                        "$10^{%.1f} \leq M/M_\odot$" % (
+                                        "$%.1f \leq \log_{10}(M/M_\odot)$" % (
                                             np.log10(bins[j])),
                                         bbox=dict(boxstyle="round,pad=0.3",
                                                   fc='grey',
@@ -356,7 +356,7 @@ for f in filters:
                                         fontsize=3)
 
                         axes_log[i, j].text(0.05, 0.875,
-                                            "$10^{%.1f} \leq M/M_\odot$" % (
+                                            "$%.1f \leq \log_{10}(M/M_\odot)$" % (
                                                 np.log10(bins[j])),
                                             bbox=dict(boxstyle="round,pad=0.3",
                                                       fc='grey',
@@ -367,8 +367,8 @@ for f in filters:
                                             fontsize=3)
                     else:
                         axes[i, j].text(0.05, 0.875,
-                                        "$10^{%.1f} \leq M/M_\odot "
-                                        "< 10^{%.1f}$"
+                                        "$%.1f \leq \log_{10}(M/M_\odot) "
+                                        "< %.1f$"
                                         % (np.log10(bins[j]),
                                            np.log10(bins[j + 1])),
                                         bbox=dict(boxstyle="round,pad=0.3",
@@ -379,8 +379,8 @@ for f in filters:
                                         fontsize=3)
 
                         axes_log[i, j].text(0.05, 0.875,
-                                            "$10^{%.1f} \leq M/M_\odot "
-                                            "< 10^{%.1f}$"
+                                            "$%.1f \leq \log_{10}(M/M_\odot) "
+                                            "< %.1f$"
                                             % (np.log10(bins[j]),
                                                np.log10(bins[j + 1])),
                                             bbox=dict(boxstyle="round,pad=0.3",
