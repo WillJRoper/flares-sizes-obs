@@ -273,8 +273,8 @@ for reg in regions:
 
             axis_to_data = axes[3, 3].transAxes \
                            + axes[3, 3].transData.inverted()
-            left = axis_to_data.transform((0.65, 0.075))
-            right = axis_to_data.transform((0.95, 0.075))
+            left = axis_to_data.transform(left_coord)
+            right = axis_to_data.transform(right_coord)
             dist = right[0] - left[0]
 
             axes[3, 3].text(cent_coord[0], cent_coord[1], "%.1f pkpc" % dist,
