@@ -261,10 +261,10 @@ for ind, s in enumerate(nc_zs):
     ax.annotate(str(int(s)), (nc_piv[ind], nc_y_labels[ind]),
                 horizontalalignment="center", fontsize=6)
 
-ax.set_xlim(0.06, 7)
-ax1.set_xlim(0.06, 7)
+ax.set_xlim(0.06, 6)
+ax1.set_xlim(0.06, 6)
 ax.set_ylim(10 ** 22., 10 ** 33.)
-ax.set_ylim(0.01, 1.09)
+ax1.set_ylim(0.01, 1.09)
 
 ax1.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
 ax.set_ylabel("$L / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
