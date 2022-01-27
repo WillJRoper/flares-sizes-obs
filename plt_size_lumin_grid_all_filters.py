@@ -21,6 +21,7 @@ import pandas as pd
 from scipy.optimize import curve_fit
 import matplotlib.colors as cm
 from flare import plt as flareplt
+plt.rcParams['axes.grid'] = True
 
 filter_path = "/cosma7/data/dp004/dc-wilk2/flare/data/filters/"
 
@@ -363,7 +364,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
     fig.savefig(
         'plots/FilterCompHalfLightRadius_' + mtype + "_" + sample + '_'
-        + orientation + '_' + Type + "_" + extinction + ".png",
+        + orientation + '_' + Type + "_" + extinction + ".pdf",
         bbox_inches='tight', dpi=300)
 
     plt.close(fig)

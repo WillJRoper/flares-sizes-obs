@@ -16,6 +16,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 from flare import plt as flareplt
+plt.rcParams['axes.grid'] = True
 
 
 def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
@@ -182,7 +183,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     fig.savefig(
         'plots/' + str(z) + '/ComparisonImageCreation_Residual_'
         + f + '_' + str(z) + '_'
-        + orientation + '_' + Type + "_" + extinction + ".png",
+        + orientation + '_' + Type + "_" + extinction + ".pdf",
         bbox_inches='tight')
 
     plt.close(fig)
@@ -215,7 +216,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     fig.savefig(
         'plots/' + str(z) + '/ComparisonImageCreation_HLR_' + f + '_' + str(
             z) + '_'
-        + orientation + '_' + Type + "_" + extinction + ".png",
+        + orientation + '_' + Type + "_" + extinction + ".pdf",
         bbox_inches='tight')
 
     plt.close(fig)
@@ -249,5 +250,5 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     fig.savefig(
         'plots/' + str(z) + '/ComparisonImageCreation_Lumin_' + f + '_' + str(
             z) + '_'
-        + orientation + '_' + Type + "_" + extinction + ".png",
+        + orientation + '_' + Type + "_" + extinction + ".pdf",
         bbox_inches='tight')

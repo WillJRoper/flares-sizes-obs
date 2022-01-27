@@ -10,6 +10,7 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 from flare import plt as flareplt
+plt.rcParams['axes.grid'] = True
 
 
 def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
@@ -66,5 +67,5 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
     fig.savefig(
         'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(
             z) + '_'
-        + orientation + '_' + Type + "_" + extinction + ".png",
+        + orientation + '_' + Type + "_" + extinction + ".pdf",
         bbox_inches='tight')

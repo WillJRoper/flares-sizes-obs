@@ -14,6 +14,7 @@ from matplotlib.colors import LogNorm
 from astropy.cosmology import Planck13 as cosmo
 import flare.photom as photconv
 from flare import plt as flareplt
+plt.rcParams['axes.grid'] = True
 
 
 def m_to_M(m, cosmo, z):
@@ -136,7 +137,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     fig.savefig(
         'plots/' + str(z) + '/HalfLightRadius_' + mtype + "_" + f + '_' + str(
             z) + '_'
-        + orientation + "_Intrinsic_" + extinction + ".png",
+        + orientation + "_Intrinsic_" + extinction + ".pdf",
         bbox_inches='tight')
 
     plt.close(fig)

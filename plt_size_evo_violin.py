@@ -21,6 +21,7 @@ from matplotlib.cbook import violin_stats
 import statsmodels.api as sm
 from scipy.optimize import curve_fit
 from flare import plt as flareplt
+plt.rcParams['axes.grid'] = True
 
 
 def vdensity_with_weights(weights):
@@ -404,7 +405,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     bar_ax = ax.inset_axes([0.5, 0.65, 0.5, 0.35])
 
     # Plot FIRE region
-    bar_ax.fill_between([0, 16], [1, 2], facecolor="k", alpha=0.4)
+    bar_ax.fill_between([0, 16], y1=[1, 1], y2=[2, 2], 
+                        facecolor="k", alpha=0.2)
 
     bar_ax.errorbar([0, 6, 9, 15],
                     [slopes[0], oesch_low_m[0], hol_low_m[0], ono_low_m[0]],
@@ -486,7 +488,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
     fig.savefig(
         'plots/Violin_ObsCompHalfLightRadius_evolution_' + mtype + '_' + f + '_'
-        + orientation + "_" + extinction + "_" + Type + ".png",
+        + orientation + "_" + extinction + "_" + Type + ".pdf",
         bbox_inches='tight')
 
     plt.close(fig)
@@ -611,7 +613,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     #
     # fig.savefig(
     #     'plots/Violin_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
-    #     + orientation + "_" + extinction + ".png",
+    #     + orientation + "_" + extinction + ".pdf",
     #     bbox_inches='tight')
     #
     # plt.close(fig)
@@ -749,7 +751,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     #
     # fig.savefig(
     #     'plots/ViolinComp_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
-    #     + orientation + "_" + extinction + ".png",
+    #     + orientation + "_" + extinction + ".pdf",
     #     bbox_inches='tight')
     #
     # plt.close(fig)
@@ -813,7 +815,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     #
     # fig.savefig(
     #     'plots/HalfLightRadius_evolution_' + mtype + '_' + f + '_'
-    #     + orientation + "_" + extinction + ".png",
+    #     + orientation + "_" + extinction + ".pdf",
     #     bbox_inches='tight')
     #
     # plt.close(fig)

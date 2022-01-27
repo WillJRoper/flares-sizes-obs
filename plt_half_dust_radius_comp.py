@@ -12,6 +12,7 @@ matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 
 from flare import plt as flareplt
+plt.rcParams['axes.grid'] = True
 
 
 def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
@@ -114,7 +115,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
 
     fig.savefig('plots/' + str(z) + '/HalfDustRadius_' + f + '_'
                 + str(z) + '_' + Type + '_' + orientation + "_"
-                + extinction + "".replace(".", "p") + ".png",
+                + extinction + "".replace(".", "p") + ".pdf",
                 bbox_inches='tight')
 
     plt.close(fig)
@@ -206,7 +207,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
 
     fig.savefig('plots/' + str(z) + '/HalfDustRadius_ratio_' + f + '_'
                 + str(z) + '_' + Type + '_' + orientation + "_"
-                + extinction + "".replace(".", "p") + ".png",
+                + extinction + "".replace(".", "p") + ".pdf",
                 bbox_inches='tight')
 
     plt.close(fig)
@@ -299,7 +300,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
 
     fig.savefig('plots/' + str(z) + '/HalfDustRadius_hlrratio_' + f + '_'
                 + str(z) + '_' + Type + '_' + orientation + "_"
-                + extinction + "".replace(".", "p") + ".png",
+                + extinction + "".replace(".", "p") + ".pdf",
                 bbox_inches='tight')
 
     plt.close(fig)

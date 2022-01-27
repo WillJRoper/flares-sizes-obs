@@ -20,7 +20,7 @@ from flare.photom import M_to_lum
 import flare.photom as photconv
 import pandas as pd
 from flare import plt as flareplt
-
+plt.rcParams['axes.grid'] = True
 
 # Lstar = M_to_lum(-21)
 Lstar = 10**28.51
@@ -429,7 +429,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
 
         fig.savefig(
             'plots/HalfLightRadius_' + mtype + "_" + f + '_'
-            + orientation + '_' + Type + "_" + extinction + ".png",
+            + orientation + '_' + Type + "_" + extinction + ".pdf",
             bbox_inches='tight', dpi=300)
 
         plt.close(fig)

@@ -79,7 +79,7 @@ for reg in regions:
         for f in filters:
 
             hdf = h5py.File(
-                "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
+                "data/flares_sizes.pdf_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
                                                                    "Total",
                                                                    orientation,
                                                                    f.split(

@@ -15,6 +15,7 @@ import pandas as pd
 from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
 from flare import plt as flareplt
+plt.rcParams['axes.grid'] = True
 
 
 def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds, w,
@@ -130,7 +131,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     fig.savefig(
         'plots/' + str(z) + '/MassLumin_' + f + '_' + str(
             z) + '_'
-        + orientation + '_' + Type + "_" + extinction + '.png',
+        + orientation + '_' + Type + "_" + extinction + '.pdf',
         bbox_inches='tight')
 
     plt.close(fig)

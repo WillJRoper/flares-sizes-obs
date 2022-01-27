@@ -15,6 +15,7 @@ import matplotlib as mpl
 import flare.photom as photconv
 import h5py
 from flare import plt as flareplt
+plt.rcParams['axes.grid'] = True
 
 filter_path = "/cosma7/data/dp004/dc-wilk2/flare/data/filters/"
 
@@ -268,6 +269,6 @@ cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
 cb.set_ticklabels(filter_labels)
 
 string = 'plots/SED/SED' + "_" + orientation + "_" + extinction
-fig.savefig(string.replace(".", "p") + ".png",
+fig.savefig(string.replace(".", "p") + ".pdf",
             bbox_inches='tight', dpi=100)
 plt.close(fig)

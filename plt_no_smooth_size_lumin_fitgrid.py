@@ -20,6 +20,7 @@ from flare.photom import M_to_lum
 import flare.photom as photconv
 import pandas as pd
 from flare import plt as flareplt
+plt.rcParams['axes.grid'] = True
 
 
 # Define Kawamata17 fit and parameters
@@ -425,7 +426,7 @@ def fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, Type,
         fig.savefig(
             'plots/FitHalfLightRadius_NoSmooth_' + mtype + "_" + f + '_'
             + orientation + '_' + Type + "_" + extinction + "_"
-            + sample + ".png",
+            + sample + ".pdf",
             bbox_inches='tight', dpi=300)
 
         plt.close(fig)

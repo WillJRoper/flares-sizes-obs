@@ -200,12 +200,12 @@ np.random.seed(100)
 #     fig.savefig(
 #         'plots/Image_grids/StackImgGrid_' + reg
 #         + '_' + snap + '_' + orientation + '_' + Type
-#         + "_" + extinction + "".replace(".", "p") + ".png",
+#         + "_" + extinction + "".replace(".", "p") + ".pdf",
 #         bbox_inches='tight', dpi=fig.dpi)
 #     fig_log.savefig(
 #         'plots/Image_grids/StackLogImgGrid_' + reg
 #         + '_' + snap + '_' + orientation + '_' + Type
-#         + "_" + extinction + "".replace(".", "p") + ".png",
+#         + "_" + extinction + "".replace(".", "p") + ".pdf",
 #         bbox_inches='tight', dpi=fig_log.dpi)
 #     plt.close(fig)
 
@@ -418,11 +418,11 @@ for f in filters:
         fig.savefig(
             'plots/Image_grids/StackImgRow_' + f + '_' + reg
             + '_' + snap + '_' + orientation + '_' + Type
-            + "_" + extinction + "".replace(".", "p") + ".png",
+            + "_" + extinction + "".replace(".", "p") + ".pdf",
             bbox_inches='tight', dpi=fig.dpi, pad_inches=0.0)
         fig_log.savefig(
             'plots/Image_grids/StackLogImgRow_' + f + '_' + reg
             + '_' + snap + '_' + orientation + '_' + Type
-            + "_" + extinction + "".replace(".", "p") + ".png",
+            + "_" + extinction + "".replace(".", "p") + ".pdf",
             bbox_inches='tight', dpi=fig_log.dpi, pad_inches=0.0)
         plt.close(fig)
