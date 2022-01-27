@@ -144,7 +144,7 @@ sedtot_dict = {}
 sedlam_dict = {}
 imgtot_dict = {}
 imgint_dict = {}
-mass_dict = {}
+mass = []
 
 regions = []
 for reg in range(0, 40):
@@ -198,6 +198,7 @@ for snap in snaps:
                 sedtot_dict.setdefault(f, []).extend(hdf[f]["SED_total"][...])
                 sedlam_dict.setdefault(f, []).extend(
                     hdf[f]["SED_lambda"][...] / 10000)
+                mass.extend(hdf[f]["Mass"][...])
             except KeyError as e:
                 print(e)
                 continue
@@ -222,7 +223,7 @@ for snap in snaps:
     if sedint.size == 0:
         continue
 
-    print(sedint.shape)
+    print(f, sedint.shape, np.max(mass))
 
     # if sedtot.shape[0] > 1:
     #     for i in range(sedtot.shape[0]):
