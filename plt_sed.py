@@ -79,11 +79,15 @@ plt_lams = []
 cents = []
 bounds = []
 lam_max = 0
+ls = {}
+ts = {}
 i = 1
 for f in filters:
     l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt',
                       skiprows=1).T
     l /= 10000  # Angstrom to microns
+    ls[f] = l
+    ts[f] = t
     wid = np.max(l[t > 0]) - np.min(l[t > 0])
     trans[f] = []
     trans[f].append(np.min(l[t > 0]))
@@ -150,8 +154,9 @@ ax = fig.add_subplot(111)
 ax.loglog()
 
 for f in filters:
-    ax.axvspan(trans[f][0], trans[f][2],
-               color=cmap(norm(trans[f][1])))
+    ax.plot(ls[f], ts[f], color=cmap(norm(trans[f][1])))
+    # ax.axvspan(trans[f][0], trans[f][2],
+    #            color=cmap(norm(trans[f][1])))
 
 for snap in snaps:
     for reg in regions:
@@ -250,7 +255,7 @@ for ind, s in enumerate(nc_zs):
     ax.annotate(str(int(s)), (nc_piv[ind], nc_y_labels[ind]),
                 horizontalalignment="center", fontsize=6)
 
-ax.set_xlim(0.05, None)
+ax.set_xlim(0.04, None)
 ax.set_ylim(10 ** 22., 10 ** 33.)
 
 ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
