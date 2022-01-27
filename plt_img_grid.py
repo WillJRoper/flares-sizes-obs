@@ -207,7 +207,6 @@ for reg in regions:
                                   int(0.3 * size):-int(0.3 * size)]
                         extent = [0, plt_img.shape[0] * csoft, 
                                   0, plt_img.shape[1] * csoft]
-                        print(f, snap, extent)
                         axes[i, j].imshow(plt_img,
                                           cmap=cmr.neutral_r, norm=norm, 
                                           extent=extent)
@@ -254,28 +253,28 @@ for reg in regions:
                                               cmap=cmr.neutral,
                                               norm=norm_log)
 
-            axes[3, 3].plot([0.75, 0.95], [0.05, 0.05], lw=1, color='k',
+            axes[3, 3].plot([0.65, 0.95], [0.05, 0.05], lw=0.5, color='k',
                     clip_on=False,
                     transform=axes[3, 3].transAxes)
 
-            axes[3, 3].plot([0.75, 0.75], [0.025, 0.075], lw=1, color='k',
+            axes[3, 3].plot([0.65, 0.65], [0.025, 0.075], lw=0.5, color='k',
                     clip_on=False,
                     transform=axes[3, 3].transAxes)
-            axes[3, 3].plot([0.95, 0.95], [0.025, 0.075], lw=1, color='k',
+            axes[3, 3].plot([0.95, 0.95], [0.025, 0.075], lw=0.5, color='k',
                     clip_on=False,
                     transform=axes[3, 3].transAxes)
 
             axis_to_data = axes[3, 3].transAxes \
                            + axes[3, 3].transData.inverted()
-            left = axis_to_data.transform((0.75, 0.075))
+            left = axis_to_data.transform((0.65, 0.075))
             right = axis_to_data.transform((0.95, 0.075))
             dist = extent[1] * (right[0] - left[0])
 
-            axes[3, 3].text(0.85, 0.075, "%.1f pkpc" % dist,
+            axes[3, 3].text(0.8, 0.08, "%.1f pkpc" % dist,
                     transform=axes[3, 3].transAxes, verticalalignment="top",
                     horizontalalignment='center', fontsize=SMALL_SIZE / 4,
                             color="k")
-            axes_log[3, 3].text(0.85, 0.055, "%.1f pkpc" % dist,
+            axes_log[3, 3].text(0.8, 0.08, "%.1f pkpc" % dist,
                     transform=axes[3, 3].transAxes, verticalalignment="top",
                     horizontalalignment='center', fontsize=SMALL_SIZE / 4,
                                 color="k")
