@@ -254,29 +254,29 @@ for reg in regions:
                                               cmap=cmr.neutral,
                                               norm=norm_log)
 
-            axes[4, 4].plot([0.05, 0.15], [0.025, 0.025], lw=0.1, color='w',
+            axes[3, 3].plot([0.05, 0.15], [0.025, 0.025], lw=0.1, color='w',
                     clip_on=False,
-                    transform=axes[4, 4].transAxes)
+                    transform=axes[3, 3].transAxes)
 
-            axes[4, 4].plot([0.05, 0.05], [0.022, 0.027], lw=0.15, color='w',
+            axes[3, 3].plot([0.05, 0.05], [0.022, 0.027], lw=0.15, color='w',
                     clip_on=False,
-                    transform=axes[4, 4].transAxes)
-            axes[4, 4].plot([0.15, 0.15], [0.022, 0.027], lw=0.15, color='w',
+                    transform=axes[3, 3].transAxes)
+            axes[3, 3].plot([0.15, 0.15], [0.022, 0.027], lw=0.15, color='w',
                     clip_on=False,
-                    transform=axes[4, 4].transAxes)
+                    transform=axes[3, 3].transAxes)
 
-            axis_to_data = axes[4, 4].transAxes \
-                           + axes[4, 4].transData.inverted()
+            axis_to_data = axes[3, 3].transAxes \
+                           + axes[3, 3].transData.inverted()
             left = axis_to_data.transform((0.05, 0.075))
             right = axis_to_data.transform((0.15, 0.075))
             dist = extent[1] * (right[0] - left[0])
 
-            axes[4, 4].text(0.1, 0.055, "%.2f cMpc" % dist,
-                    transform=axes[4, 4].transAxes, verticalalignment="top",
+            axes[3, 3].text(0.1, 0.055, "%.2f cMpc" % dist,
+                    transform=axes[3, 3].transAxes, verticalalignment="top",
                     horizontalalignment='center', fontsize=SMALL_SIZE / 2, 
                             color="w")
             axes_log[4, 4].text(0.1, 0.055, "%.2f cMpc" % dist,
-                    transform=axes[4, 4].transAxes, verticalalignment="top",
+                    transform=axes[3, 3].transAxes, verticalalignment="top",
                     horizontalalignment='center', fontsize=SMALL_SIZE / 2, 
                                 color="w")
 
