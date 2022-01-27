@@ -232,20 +232,20 @@ for reg in regions:
                                      -1] + r"} / [\mathrm{erg} / \mathrm{s} / " \
                                            r"\mathrm{Hz} / \mathrm{pkpc}^2]\right) =$ %.2f" % np.log10(
                             this_sd[
-                                ind]) + " \n $R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % \
+                                ind]) + " \n$R_{1/2} / [\mathrm{pkpc}] =$ %.2f" % \
                                  this_hlrs[ind]
 
                         axes[i, j].text(0.05, 0.95, string,
                                         transform=axes[i, j].transAxes,
                                         verticalalignment="top",
                                         horizontalalignment='left', 
-                                        fontsize=SMALL_SIZE / 2,
+                                        fontsize=SMALL_SIZE / 4,
                                         color="k")
                         axes_log[i, j].text(0.05, 0.95, string,
                                             transform=axes[i, j].transAxes,
                                             verticalalignment="top",
                                             horizontalalignment='left',
-                                            fontsize=SMALL_SIZE / 2,
+                                            fontsize=SMALL_SIZE / 4,
                                             color="w")
                     else:
                         axes[i, j].imshow(np.zeros_like(imgs[0, :, :]),
@@ -273,12 +273,12 @@ for reg in regions:
 
             axes[3, 3].text(0.1, 0.055, "%.2f cMpc" % dist,
                     transform=axes[3, 3].transAxes, verticalalignment="top",
-                    horizontalalignment='center', fontsize=SMALL_SIZE / 2, 
-                            color="w")
+                    horizontalalignment='center', fontsize=SMALL_SIZE / 4,
+                            color="k")
             axes_log[3, 3].text(0.1, 0.055, "%.2f cMpc" % dist,
                     transform=axes[3, 3].transAxes, verticalalignment="top",
-                    horizontalalignment='center', fontsize=SMALL_SIZE / 2, 
-                                color="w")
+                    horizontalalignment='center', fontsize=SMALL_SIZE / 4,
+                                color="k")
 
             fig.savefig(
                 'plots/Image_grids/ImgGrid_' + f + '_' + str(z) + '_' + reg
