@@ -156,8 +156,9 @@ gs = gridspec.GridSpec(2, 1, height_ratios=[10, 7])
 gs.update(wspace=0.0, hspace=0.0)
 ax = fig.add_subplot(gs[0, 0])
 ax1 = fig.add_subplot(gs[1, 0])
-ax.loglog()
-ax1.semilogx()
+ax.semilogy()
+# ax.loglog()
+# ax1.semilogx()
 
 for f in filters:
     ax1.plot(ls[f], ts[f], color=cmap(norm(trans[f][1])))
