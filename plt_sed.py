@@ -215,8 +215,8 @@ for snap in snaps:
     print(sedtot)
     ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
             color="r", label="Attenuated")
-    # ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
-    #         color="g", label="Intrinsic")
+    ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
+            color="g", label="Intrinsic")
 
     # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
     # xwidth = (ax.get_xlim()[1] - ax.get_xlim()[0]) * 0.1
@@ -249,8 +249,8 @@ for ind, s in enumerate(nc_zs):
     ax.annotate(str(int(s)), (nc_piv[ind], nc_y_labels[ind]),
                 horizontalalignment="center", fontsize=6)
 
-# ax.set_xlim(0.05, None)
-# ax.set_ylim(10 ** 22., 10 ** 33.)
+ax.set_xlim(0.05, None)
+ax.set_ylim(10 ** 22., 10 ** 33.)
 
 ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
 ax.set_ylabel("$L_{" + f.split(".")[-1]
