@@ -69,7 +69,7 @@ reddest_NIRCam = 4.408
 reddest_NIRCam_low = 3.880
 reddest_NIRCam_high = 4.986
 
-nc_ys = np.logspace(24, 28.5, len(all_snaps))
+nc_ys = np.logspace(23, 28.5, len(all_snaps))
 nc_y_labels = np.logspace(24 + 0.15, 28.5 + 0.15, len(all_snaps))
 nc_piv = []
 nc_up = []
