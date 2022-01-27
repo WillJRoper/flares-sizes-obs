@@ -405,7 +405,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     bar_ax = ax.inset_axes([0.5, 0.65, 0.5, 0.35])
 
     # Plot FIRE region
-    bar_ax.fill_between([0, 16], y1=[1, 1], y2=[2, 2], 
+    bar_ax.fill_between([-2, 30], y1=[1, 1], y2=[2, 2],
                         facecolor="k", alpha=0.2)
 
     bar_ax.errorbar([0, 6, 9, 15],
@@ -441,6 +441,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     bar_ax.axhline(1.5, linestyle="dotted", color="grey", alpha=0.7)
 
     bar_ax.set_xlim(-0.5, 17.5)
+    bar_ax.set_ylim(0.49, 2)
 
     bar_ax.tick_params(reset=True, bottom=True, left=True,
                        top=False, right=False)
@@ -448,11 +449,11 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     bar_ax.set_ylabel("$m$", fontsize=7)
     bar_ax.set_xticks([1, 4, 7, 10, 13, 16])
     bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+",
-                            "Holwerda+", "Kawamata+", "Ono+"], fontsize=5)
+                            "Holwerda+", "Kawamata+", "Ono+"], fontsize=7)
     bar_ax.tick_params(axis='x', which='minor', bottom=True)
 
     bar_ax.set_yticks([0.5, 1, 1.5])
-    bar_ax.set_yticklabels([0.5, 1, 1.5], fontsize=5)
+    bar_ax.set_yticklabels([0.5, 1, 1.5], fontsize=6)
 
     bar_ax.grid(False)
     bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)

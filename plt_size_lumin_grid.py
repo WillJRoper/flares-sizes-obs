@@ -401,7 +401,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
 
             axes[i].tick_params(axis='x', which='both', bottom=True)
 
-            axes[i].set_xlim(xlims[0], xlims[1])
+            axes[i].set_xlim(10 ** 27.8, 10 ** 31.)
 
         for i in range(len(axes)):
             axes[i].set_ylim(ylims[0], ylims[1])

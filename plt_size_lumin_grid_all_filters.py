@@ -327,8 +327,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
     for i, snap in enumerate(snaps):
 
-        axes[i].set_xlim(xlims[0], xlims[1])
-        axes_ratio[i].set_xlim(xlims[0], xlims[1])
+        axes[i].set_xlim(10**27.8, 10**31.)
+        axes_ratio[i].set_xlim(10**27.8, 10**31.)
         axes_ratio[i].tick_params(axis='x', which='both', bottom=True)
 
     for i in range(len(axes)):
