@@ -239,12 +239,12 @@ for reg in regions:
             fig.savefig(
                 'plots/Image_grids/ImgGrid_' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + '_' + Type
-                + "_" + extinction + "".replace(".", "p") + ".png",
+                + "_" + extinction + "".replace(".", "p") + ".pdf",
                 bbox_inches='tight', dpi=fig.dpi)
             fig_log.savefig(
                 'plots/Image_grids/LogImgGrid_' + f + '_' + str(z) + '_' + reg
                 + '_' + snap + '_' + orientation + '_' + Type
 
-                + "_" + extinction + "".replace(".", "p") + ".png",
+                + "_" + extinction + "".replace(".", "p") + ".pdf",
                 bbox_inches='tight', dpi=fig_log.dpi)
             plt.close(fig)

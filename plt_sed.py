@@ -11,9 +11,11 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import matplotlib.colors as cm
+import matplotlib.gridspec as gridspec
 import matplotlib as mpl
 import flare.photom as photconv
 import h5py
+import matplotlib.gridspec as gridspec
 from flare import plt as flareplt
 plt.rcParams['axes.grid'] = True
 
@@ -150,11 +152,15 @@ tot_cmap = mpl.cm.get_cmap('plasma', len(filters))
 znorm = cm.Normalize(vmin=5, vmax=10)
 
 fig = plt.figure(figsize=(6.4, 3.8))
+gs = gridspec.GridSpec(2, 1)
+gs.update(wspace=0.0, hspace=0.0)
 ax = fig.add_subplot(111)
+ax1 = fig.add_subplot(111)
 ax.loglog()
+ax1.semilogx()
 
 for f in filters:
-    ax.plot(ls[f], ts[f], color=cmap(norm(trans[f][1])))
+    ax1.plot(ls[f], ts[f], color=cmap(norm(trans[f][1])))
     # ax.axvspan(trans[f][0], trans[f][2],
     #            color=cmap(norm(trans[f][1])))
 
@@ -219,11 +225,9 @@ for snap in snaps:
     #             color="g", alpha=0.01)
     print(sedtot.shape)
     print(sedtot)
-    tot_norm = np.sum(np.percentile(sedtot, 50, axis=0))
-    int_norm = np.sum(np.percentile(sedint, 50, axis=0))
-    ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0) / tot_norm,
+    ax.plot(sedlam[0, :], np.percentile(sedtot, 50, axis=0),
             color="r", label="Attenuated")
-    ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0) / int_norm,
+    ax.plot(sedlam[0, :], np.percentile(sedint, 50, axis=0),
             color="g", label="Intrinsic")
 
     # ywidth = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.1
@@ -251,8 +255,6 @@ for snap in snaps:
     # axin1.imshow(imgtot[max_ind, :, :], cmap=cmr.cosmic)
     # axin2.imshow(imgint[max_ind, :, :], cmap=cmr.cosmic)
 
-nc_ys = np.array(nc_ys / tot_norm)
-
 ax.errorbar(nc_piv, nc_ys, xerr=np.array([nc_piv - nc_down, nc_up - nc_piv]),
             capsize=5, color="k", linestyle="none", marker="s", markersize=0)
 for ind, s in enumerate(nc_zs):
@@ -260,11 +262,12 @@ for ind, s in enumerate(nc_zs):
                 horizontalalignment="center", fontsize=6)
 
 ax.set_xlim(0.04, None)
-# ax.set_ylim(10 ** 22., 10 ** 33.)
+ax1.set_xlim(0.04, None)
+ax.set_ylim(10 ** 22., 10 ** 33.)
 
-ax.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
-ax.set_ylabel("$L_{" + f.split(".")[-1]
-              + r"} / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
+ax1.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
+ax.set_ylabel("$L / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
+ax1.set_ylabel("$T$")
 
 ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
