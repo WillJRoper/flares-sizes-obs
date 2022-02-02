@@ -328,7 +328,7 @@ for f in filters:
                             vmax=np.percentile(all_imgs[all_imgs > 0], 99.99),
                             clip=True)
         norm_log = cm.LogNorm(vmin=np.percentile(all_imgs[all_imgs > 0], 24),
-                              vmax=np.percentile(all_imgs[all_imgs > 0], 99),
+                              vmax=np.percentile(all_imgs[all_imgs > 0], 99.999),
                               clip=True)
 
         for i in range(len(row_filters)):
@@ -373,13 +373,13 @@ for f in filters:
                 if i == 0:
                     if bins[j + 1] == np.inf:
 
-                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])))
+                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])), fontsize=6)
 
-                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])))
+                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])), fontsize=6)
                     else:
-                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])))
+                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])), fontsize=6)
 
-                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])))
+                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])), fontsize=6)
 
                 # Get softening length
                 if z <= 2.8:
@@ -397,7 +397,7 @@ for f in filters:
                 # Plot images
                 axes[i, j].imshow(plt_img, cmap=cmr.neutral_r, extent=extent)
                 axes_log[i, j].imshow(plt_img, cmap=cmr.neutral,
-                                      norm=norm_log,
+                                      norm=cm.LogNorm(vmin=np.percentile(plt_img, 16)),
                                       extent=extent)
 
                 # Calculate a plot 1D profiles
