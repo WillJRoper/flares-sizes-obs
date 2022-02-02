@@ -421,8 +421,8 @@ for f in filters:
                       int(0.3 * size):-int(0.3 * size)].shape[0], "pkpc")
 
         for j, b in enumerate(bins[:-1]):
-            axes[1, 0].set_ylim(profile_lims[0], profile_lims[1])
-            axes_log[1, 0].set_ylim(profile_lims[0], profile_lims[1])
+            axes[1, j].set_ylim(profile_lims[0], profile_lims[1])
+            axes_log[1, j].set_ylim(profile_lims[0], profile_lims[1])
 
         axes[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
         axes_log[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
