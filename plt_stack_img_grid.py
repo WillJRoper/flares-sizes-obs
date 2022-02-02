@@ -441,8 +441,8 @@ for f in filters:
                       stacks[f][b][int(0.3 * size):-int(0.3 * size),
                       int(0.3 * size):-int(0.3 * size)].shape[0], "pkpc")
 
-        axes[1, 0].set_ylabel(r"$L_{\mathrm{FUV}/$ [erg $/$ s $/$ Hz]")
-        axes_log[1, 0].set_ylabel(r"$L_{\mathrm{FUV}/$ [erg $/$ s $/$ Hz]")
+        axes[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/$ [erg $/$ s $/$ Hz]")
+        axes_log[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/$ [erg $/$ s $/$ Hz]")
 
         fig.savefig(
             'plots/Image_grids/StackImgRow_' + f + '_' + reg
