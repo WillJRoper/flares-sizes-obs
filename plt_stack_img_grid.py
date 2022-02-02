@@ -334,6 +334,8 @@ for f in filters:
             for j in range(4):
                 axes[i, j] = fig.add_subplot(gs[i, j])
                 axes_log[i, j] = fig_log.add_subplot(gs[i, j])
+                axes[i + 1, j] = fig.add_subplot(gs[i + 1, j])
+                axes_log[i + 1, j] = fig_log.add_subplot(gs[i + 1, j])
 
                 # Remove axis labels and ticks
                 axes[i, j].tick_params(axis='x', top=False, bottom=False,
