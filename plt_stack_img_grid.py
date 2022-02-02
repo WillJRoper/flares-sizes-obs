@@ -267,12 +267,13 @@ for f in filters:
             hdf.close()
 
             dpi = img_shape * 2
-            fig = plt.figure(figsize=(4, len(row_filters)), dpi=dpi)
-            fig_log = plt.figure(figsize=(4, len(row_filters)), dpi=dpi)
-            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters))
+            fig = plt.figure(figsize=(4, len(row_filters) + 1), dpi=dpi)
+            fig_log = plt.figure(figsize=(4, len(row_filters) + 1), dpi=dpi)
+            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1,
+                                   height_ratios=[10, 5])
             gs.update(wspace=0.0, hspace=0.0)
-            axes = np.empty((len(row_filters), 4), dtype=object)
-            axes_log = np.empty((len(row_filters), 4), dtype=object)
+            axes = np.empty((len(row_filters) + 1, 4), dtype=object)
+            axes_log = np.empty((len(row_filters) + 1, 4), dtype=object)
             bins = [10 ** 8, 10 ** 9, 10 ** 9.5, 10 ** 10, np.inf]
 
             stacks = {}
@@ -405,24 +406,30 @@ for f in filters:
                                             color="w",
                                             fontsize=3)
 
-                size = stacks[f][b].shape[0]
-                axes[i, j].imshow(
-                    stacks[f][b][int(0.3 * size):-int(0.3 * size),
-                    int(0.3 * size):-int(0.3 * size)],
-                    cmap=cmr.neutral_r)
-
-                axes_log[i, j].imshow(
-                    stacks[f][b][int(0.3 * size):-int(0.3 * size),
-                    int(0.3 * size):-int(0.3 * size)],
-                    cmap=cmr.neutral,
-                    norm=cm.LogNorm(vmin=np.percentile(
-                        stacks[f][b][int(0.3 * size):-int(0.3 * size),
-                        int(0.3 * size):-int(0.3 * size)], 16)))
-
+                # Get softening length
                 if z <= 2.8:
                     csoft = 0.000474390 / 0.6777 * 1e3
                 else:
                     csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
+
+                # Extract central region of image
+                size = stacks[f][b].shape[0]
+                plt_img = stacks[f][b][int(0.3 * size):-int(0.3 * size),
+                          int(0.3 * size):-int(0.3 * size)]
+                extent = [0, plt_img.shape[0] * csoft,
+                          0, plt_img.shape[1] * csoft]
+
+                # Plot images
+                axes[i, j].imshow(plt_img, cmap=cmr.neutral_r, extent=extent)
+                axes_log[i, j].imshow(plt_img, cmap=cmr.neutral,
+                                      norm=norm_log,
+                                      extent=extent)
+
+                # Calculate a plot 1D profiles
+                xs = np.linspace(-(plt_img.shape[0] / 2) * csoft, (plt_img.shape[0] / 2) * csoft, plt_img.shape[0])
+                ys = np.sum(plt_img, axis=0)
+                axes[i + 1, j].plot(xs, ys, color="r")
+                axes_log[i + 1, j].plot(xs, ys, color="r")
 
                 print("Image size:",
                       csoft *
