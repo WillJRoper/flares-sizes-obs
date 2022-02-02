@@ -326,8 +326,8 @@ for f in filters:
         norm = cm.Normalize(vmin=0,
                             vmax=np.percentile(all_imgs[all_imgs > 0], 99.99),
                             clip=True)
-        norm_log = cm.LogNorm(vmin=np.percentile(all_imgs[all_imgs > 0], 24),
-                              vmax=np.percentile(all_imgs[all_imgs > 0], 99.999),
+        norm_log = cm.LogNorm(vmin=np.percentile(all_imgs[all_imgs > 0], 16),
+                              vmax=np.percentile(all_imgs[all_imgs > 0], 99.99),
                               clip=True)
 
         for i in range(len(row_filters)):
@@ -379,8 +379,7 @@ for f in filters:
                                                   fc='grey',
                                                   ec="w", lw=1, alpha=0.7),
                                         transform=axes[i, j].transAxes,
-                                        horizontalalignment='left', color="w",
-                                        fontsize=3)
+                                        horizontalalignment='left', color="w")
 
                         axes_log[i, j].text(0.05, 0.875,
                                             "$%.1f \leq \log_{10}(M/M_\odot)$" % (
@@ -390,8 +389,7 @@ for f in filters:
                                                       ec="w", lw=1, alpha=0.7),
                                             transform=axes_log[i, j].transAxes,
                                             horizontalalignment='left',
-                                            color="w",
-                                            fontsize=3)
+                                            color="w")
                     else:
                         axes[i, j].text(0.05, 0.875,
                                         "$%.1f \leq \log_{10}(M/M_\odot) "
@@ -402,8 +400,7 @@ for f in filters:
                                                   fc='grey',
                                                   ec="w", lw=1, alpha=0.7),
                                         transform=axes[i, j].transAxes,
-                                        horizontalalignment='left', color="w",
-                                        fontsize=3)
+                                        horizontalalignment='left', color="w")
 
                         axes_log[i, j].text(0.05, 0.875,
                                             "$%.1f \leq \log_{10}(M/M_\odot) "
@@ -415,8 +412,7 @@ for f in filters:
                                                       ec="w", lw=1, alpha=0.7),
                                             transform=axes_log[i, j].transAxes,
                                             horizontalalignment='left',
-                                            color="w",
-                                            fontsize=3)
+                                            color="w")
 
                 # Get softening length
                 if z <= 2.8:
@@ -439,9 +435,11 @@ for f in filters:
 
                 # Calculate a plot 1D profiles
                 xs = np.linspace(-(plt_img.shape[0] / 2) * csoft, (plt_img.shape[0] / 2) * csoft, plt_img.shape[0])
-                ys = np.sum(plt_img, axis=0)
+                ys = np.sum(plt_img, axis=0) / np.sum(plt_img)
                 axes[i + 1, j].semilogy(xs, ys, color="r")
                 axes_log[i + 1, j].semilogy(xs, ys, color="r")
+
+                axes[i + 1, j].set_yscale(0, 1)
 
                 axes[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
                 axes_log[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
@@ -451,8 +449,8 @@ for f in filters:
                       stacks[f][b][int(0.3 * size):-int(0.3 * size),
                       int(0.3 * size):-int(0.3 * size)].shape[0], "pkpc")
 
-        axes[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/$ [erg $/$ s $/$ Hz]")
-        axes_log[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/$ [erg $/$ s $/$ Hz]")
+        axes[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
+        axes_log[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
 
         fig.savefig(
             'plots/Image_grids/StackImgRow_' + f + '_' + reg
