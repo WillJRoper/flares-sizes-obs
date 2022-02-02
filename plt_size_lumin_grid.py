@@ -143,8 +143,10 @@ markers = {"G11": "s", "G12": "v", "C16": "D",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*",
            "H07": "P", }
 colors = {}
+colors_in_order = []
 for key, col in zip(labels.keys(), np.linspace(0, 1, len(labels.keys()))):
     colors[key] = cmap(norm(col))
+    colors_in_order.append(key)
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
