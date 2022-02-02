@@ -271,7 +271,7 @@ for f in filters:
             dpi = 300
             fig = plt.figure(dpi=dpi)
             fig_log = plt.figure(dpi=dpi)
-            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1)
+            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1, height_ratios=[9, 10])
             gs.update(wspace=0.0, hspace=0.0)
             axes = np.empty((len(row_filters) + 1, 4), dtype=object)
             axes_log = np.empty((len(row_filters) + 1, 4), dtype=object)
@@ -373,13 +373,13 @@ for f in filters:
                 if i == 0:
                     if bins[j + 1] == np.inf:
 
-                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])), fontsize=6)
+                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])), fontsize=8)
 
-                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])), fontsize=6)
+                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])), fontsize=8)
                     else:
-                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])), fontsize=6)
+                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])), fontsize=8)
 
-                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])), fontsize=6)
+                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])), fontsize=8)
 
                 # Get softening length
                 if z <= 2.8:
