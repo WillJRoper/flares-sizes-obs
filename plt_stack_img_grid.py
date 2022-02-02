@@ -269,8 +269,8 @@ for f in filters:
             hdf.close()
 
             dpi = 300
-            fig = plt.figure(dpi=dpi, figsize=(6, 2))
-            fig_log = plt.figure(dpi=dpi, figsize=(6, 2))
+            fig = plt.figure(dpi=dpi)
+            fig_log = plt.figure(dpi=dpi)
             gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1)
             gs.update(wspace=0.0, hspace=0.0)
             axes = np.empty((len(row_filters) + 1, 4), dtype=object)
