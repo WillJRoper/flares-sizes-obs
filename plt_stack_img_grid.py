@@ -248,6 +248,8 @@ for f in filters:
 
     for snap in snaps:
 
+        profile_lims = [1, 0]
+
         for f in row_filters:
 
             reg = regions[0]
@@ -379,7 +381,8 @@ for f in filters:
                                                   fc='grey',
                                                   ec="w", lw=1, alpha=0.7),
                                         transform=axes[i, j].transAxes,
-                                        horizontalalignment='left', color="w")
+                                        horizontalalignment='left', color="w",
+                                        fontsize=7)
 
                         axes_log[i, j].text(0.05, 0.875,
                                             "$%.1f \leq \log_{10}(M/M_\odot)$" % (
@@ -389,7 +392,7 @@ for f in filters:
                                                       ec="w", lw=1, alpha=0.7),
                                             transform=axes_log[i, j].transAxes,
                                             horizontalalignment='left',
-                                            color="w")
+                                            color="w", fontsize=7)
                     else:
                         axes[i, j].text(0.05, 0.875,
                                         "$%.1f \leq \log_{10}(M/M_\odot) "
@@ -400,7 +403,8 @@ for f in filters:
                                                   fc='grey',
                                                   ec="w", lw=1, alpha=0.7),
                                         transform=axes[i, j].transAxes,
-                                        horizontalalignment='left', color="w")
+                                        horizontalalignment='left', color="w",
+                                        fontsize=7)
 
                         axes_log[i, j].text(0.05, 0.875,
                                             "$%.1f \leq \log_{10}(M/M_\odot) "
@@ -412,7 +416,7 @@ for f in filters:
                                                       ec="w", lw=1, alpha=0.7),
                                             transform=axes_log[i, j].transAxes,
                                             horizontalalignment='left',
-                                            color="w")
+                                            color="w", fontsize=7)
 
                 # Get softening length
                 if z <= 2.8:
@@ -439,7 +443,11 @@ for f in filters:
                 axes[i + 1, j].semilogy(xs, ys, color="r")
                 axes_log[i + 1, j].semilogy(xs, ys, color="r")
 
-                axes[i + 1, j].set_ylim(0, 1)
+                ylims = axes[i + 1, j].get_ylim()
+                if ylims[0] < profile_lims[0]:
+                    profile_lims[0] = ylims[0]
+                if ylims[1] > profile_lims[1]:
+                    profile_lims[1] = ylims[1]
 
                 axes[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
                 axes_log[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
@@ -448,6 +456,10 @@ for f in filters:
                       csoft *
                       stacks[f][b][int(0.3 * size):-int(0.3 * size),
                       int(0.3 * size):-int(0.3 * size)].shape[0], "pkpc")
+
+        for j, b in enumerate(bins[:-1]):
+            axes[1, 0].set_ylim(profile_lims[0], profile_lims[1])
+            axes_log[1, 0].set_ylim(profile_lims[0], profile_lims[1])
 
         axes[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
         axes_log[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
