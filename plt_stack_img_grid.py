@@ -267,8 +267,8 @@ for f in filters:
             hdf.close()
 
             dpi = 300
-            fig = plt.figure(figsize=(2*4, (len(row_filters) + 1) * 2), dpi=dpi)
-            fig_log = plt.figure(figsize=(2*4, (len(row_filters) + 1) * 2), dpi=dpi)
+            fig = plt.figure(dpi=dpi)
+            fig_log = plt.figure(dpi=dpi)
             gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1,
                                    height_ratios=[10, 5])
             gs.update(wspace=0.0, hspace=0.0)
@@ -326,7 +326,7 @@ for f in filters:
         norm = cm.Normalize(vmin=0,
                             vmax=np.percentile(all_imgs[all_imgs > 0], 99.99),
                             clip=True)
-        norm_log = cm.LogNorm(vmin=np.percentile(all_imgs[all_imgs > 0], 16),
+        norm_log = cm.LogNorm(vmin=np.percentile(all_imgs[all_imgs > 0], 24),
                               vmax=np.percentile(all_imgs[all_imgs > 0], 99.999),
                               clip=True)
 
@@ -342,8 +342,6 @@ for f in filters:
                                        labeltop=False, labelbottom=False)
                 axes[i, j].tick_params(axis='y', left=False, right=False,
                                        labelleft=False, labelright=False)
-
-                # Remove axis labels and ticks
                 axes_log[i, j].tick_params(axis='x', top=False,
                                            bottom=False,
                                            labeltop=False,
@@ -352,6 +350,15 @@ for f in filters:
                                            right=False,
                                            labelleft=False,
                                            labelright=False)
+
+                if j > 0:
+                    # Remove axis labels and ticks
+                    axes[i + 1, j].tick_params(axis='y', left=False, right=False,
+                                           labelleft=False, labelright=False)
+                    axes_log[i + 1, j].tick_params(axis='y', left=False,
+                                               right=False,
+                                               labelleft=False,
+                                               labelright=False)
 
         for j, b in enumerate(bins[:-1]):
             for i, f in enumerate(row_filters):
