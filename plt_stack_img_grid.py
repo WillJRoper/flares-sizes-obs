@@ -430,13 +430,19 @@ for f in filters:
                 # Calculate a plot 1D profiles
                 xs = np.linspace(-(plt_img.shape[0] / 2) * csoft, (plt_img.shape[0] / 2) * csoft, plt_img.shape[0])
                 ys = np.sum(plt_img, axis=0)
-                axes[i + 1, j].plot(xs, ys, color="r")
-                axes_log[i + 1, j].plot(xs, ys, color="r")
+                axes[i + 1, j].semilogy(xs, ys, color="r")
+                axes_log[i + 1, j].semilogy(xs, ys, color="r")
+
+                axes[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
+                axes_log[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
 
                 print("Image size:",
                       csoft *
                       stacks[f][b][int(0.3 * size):-int(0.3 * size),
                       int(0.3 * size):-int(0.3 * size)].shape[0], "pkpc")
+
+        axes[1, 0].set_ylabel(r"$L_{\mathrm{FUV}/$ [erg $/$ s $/$ Hz]")
+        axes_log[1, 0].set_ylabel(r"$L_{\mathrm{FUV}/$ [erg $/$ s $/$ Hz]")
 
         fig.savefig(
             'plots/Image_grids/StackImgRow_' + f + '_' + reg
