@@ -269,10 +269,9 @@ for f in filters:
             hdf.close()
 
             dpi = 300
-            fig = plt.figure(dpi=dpi, figsize=(7, 2))
-            fig_log = plt.figure(dpi=dpi, figsize=(7, 2))
-            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1,
-                                   height_ratios=[10, 5])
+            fig = plt.figure(dpi=dpi, figsize=(6, 2))
+            fig_log = plt.figure(dpi=dpi, figsize=(6, 2))
+            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1)
             gs.update(wspace=0.0, hspace=0.0)
             axes = np.empty((len(row_filters) + 1, 4), dtype=object)
             axes_log = np.empty((len(row_filters) + 1, 4), dtype=object)
@@ -329,7 +328,7 @@ for f in filters:
                             vmax=np.percentile(all_imgs[all_imgs > 0], 99.99),
                             clip=True)
         norm_log = cm.LogNorm(vmin=np.percentile(all_imgs[all_imgs > 0], 24),
-                              vmax=np.percentile(all_imgs[all_imgs > 0], 99.99),
+                              vmax=np.percentile(all_imgs[all_imgs > 0], 99),
                               clip=True)
 
         for i in range(len(row_filters)):
