@@ -439,7 +439,7 @@ for f in filters:
                 axes[i + 1, j].semilogy(xs, ys, color="r")
                 axes_log[i + 1, j].semilogy(xs, ys, color="r")
 
-                axes[i + 1, j].set_yscale(0, 1)
+                axes[i + 1, j].set_ylim(0, 1)
 
                 axes[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
                 axes_log[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
