@@ -374,49 +374,13 @@ for f in filters:
                 if i == 0:
                     if bins[j + 1] == np.inf:
 
-                        axes[i, j].text(0.05, 0.875,
-                                        "$%.1f \leq \log_{10}(M/M_\odot)$" % (
-                                            np.log10(bins[j])),
-                                        bbox=dict(boxstyle="round,pad=0.3",
-                                                  fc='grey',
-                                                  ec="w", lw=1, alpha=0.7),
-                                        transform=axes[i, j].transAxes,
-                                        horizontalalignment='left', color="w",
-                                        fontsize=7)
+                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])))
 
-                        axes_log[i, j].text(0.05, 0.875,
-                                            "$%.1f \leq \log_{10}(M/M_\odot)$" % (
-                                                np.log10(bins[j])),
-                                            bbox=dict(boxstyle="round,pad=0.3",
-                                                      fc='grey',
-                                                      ec="w", lw=1, alpha=0.7),
-                                            transform=axes_log[i, j].transAxes,
-                                            horizontalalignment='left',
-                                            color="w", fontsize=7)
+                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])))
                     else:
-                        axes[i, j].text(0.05, 0.875,
-                                        "$%.1f \leq \log_{10}(M/M_\odot) "
-                                        "< %.1f$"
-                                        % (np.log10(bins[j]),
-                                           np.log10(bins[j + 1])),
-                                        bbox=dict(boxstyle="round,pad=0.3",
-                                                  fc='grey',
-                                                  ec="w", lw=1, alpha=0.7),
-                                        transform=axes[i, j].transAxes,
-                                        horizontalalignment='left', color="w",
-                                        fontsize=7)
+                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])))
 
-                        axes_log[i, j].text(0.05, 0.875,
-                                            "$%.1f \leq \log_{10}(M/M_\odot) "
-                                            "< %.1f$"
-                                            % (np.log10(bins[j]),
-                                               np.log10(bins[j + 1])),
-                                            bbox=dict(boxstyle="round,pad=0.3",
-                                                      fc='grey',
-                                                      ec="w", lw=1, alpha=0.7),
-                                            transform=axes_log[i, j].transAxes,
-                                            horizontalalignment='left',
-                                            color="w", fontsize=7)
+                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])))
 
                 # Get softening length
                 if z <= 2.8:
