@@ -271,7 +271,7 @@ for f in filters:
             dpi = 300
             fig = plt.figure(dpi=dpi)
             fig_log = plt.figure(dpi=dpi)
-            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1, height_ratios=[9, 10])
+            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1, height_ratios=[8, 10])
             gs.update(wspace=0.0, hspace=0.0)
             axes = np.empty((len(row_filters) + 1, 4), dtype=object)
             axes_log = np.empty((len(row_filters) + 1, 4), dtype=object)
