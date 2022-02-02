@@ -202,22 +202,19 @@ for reg in regions:
 
                     if ind > -1:
                         size = this_imgs.shape[-1]
-                        plt_img = this_imgs[ind, 
-                                  int(0.3 * size):-int(0.3 * size), 
-                                  int(0.3 * size):-int(0.3 * size)]
+                        plt_img = this_imgs[ind, :, :]
                         extent = [0, plt_img.shape[0] * csoft, 
                                   0, plt_img.shape[1] * csoft]
                         axes[i, j].imshow(plt_img,
                                           cmap=cmr.neutral_r, norm=norm, 
                                           extent=extent)
 
-                        logimg = np.zeros_like(this_imgs[ind, :, :])
-                        logimg[this_imgs[ind, :, :] > 0] = np.log10(
-                            this_imgs[ind, :, :][this_imgs[ind, :, :] > 0])
+                        logimg = np.zeros_like(plt_img)
+                        logimg[plt_img > 0] = np.log10(
+                            plt_img[plt_img > 0])
 
                         axes_log[i, j].imshow(
-                            logimg[int(0.3 * size):-int(0.3 * size),
-                            int(0.3 * size):-int(0.3 * size)],
+                            logimg,
                             cmap=cmr.neutral, norm=norm_log, extent=extent)
 
                         string = r"$\log_{10}\left(M_\star/M_\odot\right) =$ %.2f" % np.log10(
@@ -252,7 +249,7 @@ for reg in regions:
                         axes_log[i, j].imshow(np.zeros_like(imgs[0, :, :]),
                                               cmap=cmr.neutral,
                                               norm=norm_log)
-            left_coord = (0.545, 0.05)
+            left_coord = (0.65, 0.05)
             right_coord = (0.95, 0.05)
             cent_coord = ((left_coord[0] + right_coord[0]) / 2, 0.12)
             axes[3, 3].plot([left_coord[0], right_coord[0]],
