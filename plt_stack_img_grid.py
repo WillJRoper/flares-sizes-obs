@@ -272,7 +272,7 @@ for f in filters:
             fig = plt.figure(dpi=dpi)
             fig_log = plt.figure(dpi=dpi)
             gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1, height_ratios=[10, 6])
-            gs.update(wspace=0.0, hspace=0.0)
+            gs.update(wspace=0.0, hspace=-1.0)
             axes = np.empty((len(row_filters) + 1, 4), dtype=object)
             axes_log = np.empty((len(row_filters) + 1, 4), dtype=object)
             bins = [10 ** 8, 10 ** 9, 10 ** 9.5, 10 ** 10, np.inf]
