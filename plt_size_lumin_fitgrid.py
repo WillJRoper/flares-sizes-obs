@@ -45,6 +45,19 @@ bt_params = {'beta': {7: 0.24, 8: 0.17, 9: 0.16, 10: 0.12, 11: 0.11},
 mer_params = {'beta': {5: 0.32, 6: 0.34, 7: 0.32, 8: 0.33, 9: 0.32, 10: 0.36},
               'r_0': {5: 1.53, 6: 1.14, 7: 0.85, 8: 0.66, 9: 0.49, 10: 0.43}}
 bt_fit_uplims = {7: 30, 8: 29.8, 9: 29.72, 10: 29.61, 11: 29.6}
+# https://iopscience.iop.org/article/10.1088/0004-637X/765/1/68
+huang_params = {'beta': {5: 0.25, }, 'r_0': {5: 1.19, }}
+# https://iopscience.iop.org/article/10.1088/0004-637X/808/1/6
+holw_params = {'beta': {7: 0.24, 9: 0.12, 10: 0.12},
+               'r_0': {7: 0.86, 9: 0.57, 10: 0.57}}
+# https://arxiv.org/pdf/2201.08858.pdf
+yang_params = {'beta': {6: 0.48, 7: 0.48},
+               'r_0': {6: 0.69, 7: 0.69}}
+# https://arxiv.org/pdf/2112.02948.pdf
+bouw_params = {'beta': {6: 0.4, 7: 0.4, 8: 0.4},
+               'r_0': {6: 10**2.76 / 1000,
+                       7: 10**2.76 / 1000,
+                       8: 10**2.76 / 1000}}
 
 # Lstar = M_to_lum(-21)
 Lstar = M_to_lum(-21)
@@ -133,22 +146,23 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
 cmap = mpl.cm.get_cmap("plasma")
 norm = plt.Normalize(vmin=0, vmax=1)
 
-labels = {"G11": "Grazian+2011",
+labels = {"H07": "Hathi+2008",
+          "G11": "Grazian+2011",
           "G12": "Grazian+2012",
+          "Hu13": "Huang+2013",
+          "H15": "Holwerda+2015",
           "C16": "Calvi+2016",
           "K18": "Kawamata+2018",
           "MO18": "Morishita+2018",
           "B19": "Bridge+2019",
-          # "O16": "Oesch+2016",
-          # "S18": "Salmon+2018",
-          # "H20": "Holwerda+2020",
-          "H07": "Hathi+2008"}
+          "B21": "Bouwens+2021",
+          "Y22": "Yang+2022"}
 markers = {"G11": "s", "G12": "v", "C16": "D",
            "K18": "o", "M18": "X", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*",
-           "H07": "P"}
+           "H07": "P", }
 colors = {}
-for key, col in zip(markers.keys(), np.linspace(0, 1, len(markers.keys()))):
+for key, col in zip(labels.keys(), np.linspace(0, 1, len(labels.keys()))):
     colors[key] = cmap(norm(col))
 
 csoft = 0.001802390 / (0.6777) * 1e3
@@ -311,9 +325,8 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
 
             except ValueError as e:
                 print(e)
-                continue
 
-            if int(z) in [6, 7, 8, 9]:
+            if int(z) in kawa_params["beta"]:
 
                 if z == 7 or z == 6:
                     low_lim = -16
@@ -332,6 +345,58 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                              zorder=2,
                              label="Kawamata+18")
 
+            if int(z) in huang_params["beta"]:
+
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(-16)),
+                                         1000)
+
+                fit = kawa_fit(fit_lumins, huang_params['r_0'][int(z)],
+                               huang_params['beta'][int(z)])
+                axes[i].plot(fit_lumins, fit,
+                             linestyle='dashed', color=colors["Hu13"],
+                             zorder=2,
+                             label=labels["Hu13"])
+
+            if int(z) in holw_params["beta"]:
+
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(-16)),
+                                         1000)
+
+                fit = kawa_fit(fit_lumins, holw_params['r_0'][int(z)],
+                               holw_params['beta'][int(z)])
+                axes[i].plot(fit_lumins, fit,
+                             linestyle='dashed', color=colors["H15"],
+                             zorder=2,
+                             label=labels["H15"])
+
+            if int(z) in yang_params["beta"]:
+
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(-16)),
+                                         1000)
+
+                fit = kawa_fit(fit_lumins, yang_params['r_0'][int(z)],
+                               yang_params['beta'][int(z)])
+                axes[i].plot(fit_lumins, fit,
+                             linestyle='dashed', color=colors["Y22"],
+                             zorder=2,
+                             label=labels["Y22"])
+
+            if int(z) in bouw_params["beta"]:
+
+                fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
+                                         np.log10(M_to_lum(-16)),
+                                         1000)
+
+                fit = kawa_fit(fit_lumins, bouw_params['r_0'][int(z)],
+                               bouw_params['beta'][int(z)])
+                axes[i].plot(fit_lumins, fit,
+                             linestyle='dashed', color=colors["B21"],
+                             zorder=2,
+                             label=labels["B21"])
+
             if int(z) in [7, 8, 9, 10, 11]:
                 fit_lumins = np.logspace(28.5,
                                          bt_fit_uplims[int(z)],
@@ -340,7 +405,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                 fit = r_fit(fit_lumins, bt_params['r_0'][int(z)],
                             bt_params['beta'][int(z)])
                 axes[i].plot(fit_lumins, fit,
-                             linestyle='dashed', color="b",
+                             linestyle='dotted', color="b",
                              zorder=2,
                              label="Marshall+21")
 
@@ -352,9 +417,9 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                 fit = r_fit(fit_lumins, mer_params['r_0'][int(z)],
                             mer_params['beta'][int(z)])
                 axes[i].plot(fit_lumins, fit,
-                             linestyle='dashed', color="g",
+                             linestyle='dotted', color="g",
                              zorder=2,
-                             label="Liu+17")
+                             label="Marshall+19")
 
             axes[i].text(0.95, 0.05, f'$z={z}$',
                          bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -381,24 +446,33 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
         axes[0].tick_params(axis='y', which='both', left=True)
 
         uni_legend_elements = []
-        # uni_legend_elements.append(
-        #     Line2D([0], [0], color="m", linestyle="dotted",
-        #            label="FLARES (All)"))
+
         uni_legend_elements.append(
             Line2D([0], [0], color="r", linestyle="-",
                    label="FLARES"))
-        # uni_legend_elements.append(
-        #     Line2D([0], [0], color="m", linestyle="--",
-        #            label="FLARES ($M_{\star}/M_\odot<10^{9}$)"))
+
+        uni_legend_elements.append(
+            Line2D([0], [0], color=colors["Hu13"], linestyle="--",
+                   label=labels["Hu13"]))
+        uni_legend_elements.append(
+            Line2D([0], [0], color=colors["H15"], linestyle="--",
+                   label=labels["H15"]))
         uni_legend_elements.append(
             Line2D([0], [0], color=colors["K18"], linestyle="--",
                    label=labels["K18"]))
         uni_legend_elements.append(
-            Line2D([0], [0], color="b", linestyle="--",
+            Line2D([0], [0], color=colors["B21"], linestyle="--",
+                   label=labels["B21"]))
+        uni_legend_elements.append(
+            Line2D([0], [0], color=colors["Y22"], linestyle="--",
+                   label=labels["Y22"]))
+
+        uni_legend_elements.append(
+            Line2D([0], [0], color="b", linestyle="dotted",
                    label="Marshall+2021"))
         uni_legend_elements.append(
-            Line2D([0], [0], color="g", linestyle="--",
-                   label="Liu+2017"))
+            Line2D([0], [0], color="g", linestyle="dotted",
+                   label="Marshall+2019"))
         included = []
         for l in legend_elements:
             if (l.get_label(), l.get_marker()) not in included:

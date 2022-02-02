@@ -127,25 +127,24 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
 cmap = mpl.cm.get_cmap("plasma")
 norm = plt.Normalize(vmin=0, vmax=1)
 
-labels = {"C16": "Calvi+2016",
+labels = {"H07": "Hathi+2008",
+          "G11": "Grazian+2011",
+          "G12": "Grazian+2012",
+          "Hu13": "Huang+2013",
+          "H15": "Holwerda+2015",
+          "C16": "Calvi+2016",
           "K18": "Kawamata+2018",
           "MO18": "Morishita+2018",
           "B19": "Bridge+2019",
-          "G11": "Grazian+2011",
-          "G12": "Grazian+2012",
-          # "O16": "Oesch+2016",
-          # "S18": "Salmon+2018",
-          # "H20": "Holwerda+2020",
-          "H07": "Hathi+2008"}
+          "B21": "Bouwens+2021",
+          "Y22": "Yang+2022"}
 markers = {"G11": "s", "G12": "v", "C16": "D",
-           "K18": "o", "M18": "X", "MO18": "p",
+           "K18": "o", "M18": "X", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*",
-           "H07": "P"}
+           "H07": "P", }
 colors = {}
-colors_in_order = []
 for key, col in zip(labels.keys(), np.linspace(0, 1, len(labels.keys()))):
     colors[key] = cmap(norm(col))
-    colors_in_order.append(key)
 
 csoft = 0.001802390 / (0.6777) * 1e3
 

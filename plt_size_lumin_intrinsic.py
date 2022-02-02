@@ -87,13 +87,13 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
         #                  norm=weight_norm, linewidths=0.2,
         #                  cmap='viridis',
         #                  extent=(26.8, 31.2, -1.5, 1.5), alpha=0.2)
-        cbar = ax.hexbin(lumins[diff_comp], hlrs[diff_comp],
+        im1 = ax.hexbin(lumins[diff_comp], hlrs[diff_comp],
                          C=w[diff_comp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys',
                          extent=(26.8, 31.2, -1.5, 1.5))
-        cbar = ax.hexbin(lumins[com_comp], hlrs[com_comp],
+        im2 = ax.hexbin(lumins[com_comp], hlrs[com_comp],
                          C=w[com_comp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
@@ -128,11 +128,13 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     ax.set_ylabel('$R_{1/2}/ [pkpc]$')
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
-    ax1.set_xlim(10 ** 26.5, 10 ** 31.2)
-    ax.set_xlim(10 ** 26.5, 10 ** 31.2)
+    ax1.set_xlim(10 ** 28., 10 ** 30.8)
+    ax.set_xlim(10 ** 28., 10 ** 30.8)
     ax.set_ylim(10 ** -1.5, 10 ** 1.5)
     ax1.set_ylim(10 ** -1.5 * cosmo.arcsec_per_kpc_proper(z).value,
                  10 ** 1.5 * cosmo.arcsec_per_kpc_proper(z).value)
+
+    fig.colorbar(im1)
 
     fig.savefig(
         'plots/' + str(z) + '/HalfLightRadius_' + mtype + "_" + f + '_' + str(

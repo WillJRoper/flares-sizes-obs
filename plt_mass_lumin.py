@@ -96,18 +96,18 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     # Remove axis labels and ticks
     axtop.tick_params(axis='x', top=False, bottom=False,
                       labeltop=False, labelbottom=False)
-    axtop.tick_params(axis='y', left=False, right=False,
-                      labelleft=False, labelright=False)
+    # axtop.tick_params(axis='y', left=False, right=False,
+    #                   labelleft=False, labelright=False)
     axright.tick_params(axis='x', top=False, bottom=False,
                         labeltop=False, labelbottom=False)
-    axright.tick_params(axis='y', left=False, right=False,
-                        labelleft=False, labelright=False)
+    # axright.tick_params(axis='y', left=False, right=False,
+    #                     labelleft=False, labelright=False)
 
     axtop.spines['top'].set_visible(False)
     axtop.spines['right'].set_visible(False)
-    axtop.spines['left'].set_visible(False)
+    # axtop.spines['left'].set_visible(False)
 
-    axright.spines['bottom'].set_visible(False)
+    # axright.spines['bottom'].set_visible(False)
     axright.spines['top'].set_visible(False)
     axright.spines['right'].set_visible(False)
 
@@ -120,6 +120,9 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     # Label axes
     ax.set_ylabel(r"$L_{" + f.split(".")[-1] + "}/$ [erg $/$ s $/$ Hz]")
     ax.set_xlabel('$M_\star/ M_\odot$')
+
+    axtop.set_ylabel("$N$")
+    axright.set_xlabel("$N$")
 
     ax.tick_params(axis='both', which='both', bottom=True, left=True)
 
