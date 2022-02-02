@@ -337,6 +337,9 @@ for f in filters:
                 axes[i + 1, j] = fig.add_subplot(gs[i + 1, j])
                 axes_log[i + 1, j] = fig_log.add_subplot(gs[i + 1, j])
 
+                axes[i + 1, j].grid(True)
+                axes_log[i + 1, j].grid(True)
+
                 # Remove axis labels and ticks
                 axes[i, j].tick_params(axis='x', top=False, bottom=False,
                                        labeltop=False, labelbottom=False)
@@ -455,10 +458,10 @@ for f in filters:
             'plots/Image_grids/StackImgRow_' + f + '_' + reg
             + '_' + snap + '_' + orientation + '_' + Type
             + "_" + extinction + "".replace(".", "p") + ".pdf",
-            bbox_inches='tight', dpi=fig.dpi, pad_inches=0.0)
+            bbox_inches='tight', dpi=fig.dpi)
         fig_log.savefig(
             'plots/Image_grids/StackLogImgRow_' + f + '_' + reg
             + '_' + snap + '_' + orientation + '_' + Type
             + "_" + extinction + "".replace(".", "p") + ".pdf",
-            bbox_inches='tight', dpi=fig_log.dpi, pad_inches=0.0)
+            bbox_inches='tight', dpi=fig_log.dpi)
         plt.close(fig)
