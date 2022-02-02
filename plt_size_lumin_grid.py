@@ -280,6 +280,10 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                       xscale='log', yscale='log',
                                       norm=weight_norm, linewidths=0.2,
                                       cmap='Greys', extent=extent)
+                print(np.log10(np.min(lumins[diffuse_com])),
+                      np.log10(np.max(lumins[diffuse_com])),
+                      np.log10(np.min(lumins[compact_com])),
+                      np.log10(np.max(lumins[compact_com])))
             except ValueError as e:
                 print(e, "Diffuse complete", snap, f)
             try:

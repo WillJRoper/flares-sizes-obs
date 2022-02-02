@@ -249,7 +249,7 @@ for reg in regions:
                         axes_log[i, j].imshow(np.zeros_like(imgs[0, :, :]),
                                               cmap=cmr.neutral,
                                               norm=norm_log)
-            left_coord = (0.65, 0.05)
+            left_coord = (0.7, 0.05)
             right_coord = (0.95, 0.05)
             cent_coord = ((left_coord[0] + right_coord[0]) / 2, 0.12)
             axes[3, 3].plot([left_coord[0], right_coord[0]],

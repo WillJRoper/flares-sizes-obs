@@ -294,6 +294,8 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                                          np.log10(np.max(lumins[complete])),
                                          1000)
 
+                print(np.log10(fit_lumins[0]), np.log10(fit_lumins[-1]))
+
                 fit = r_fit(fit_lumins, popt[0], popt[1])
 
                 axes[i].plot(fit_lumins, fit,
