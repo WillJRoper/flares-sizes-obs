@@ -49,7 +49,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     z = float(z_str[0] + '.' + z_str[1])
 
     fig = plt.figure()
-    gs = gridspec.GridSpec(2, 2, height_ratios=(3, 10), width_ratios=(10, 3))
+    gs = gridspec.GridSpec(2, 2, height_ratios=(2, 10), width_ratios=(10, 2))
     gs.update(wspace=0.0, hspace=0.0)
     ax = fig.add_subplot(gs[1, 0])
     axtop = fig.add_subplot(gs[0, 0])
@@ -152,7 +152,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     ax.tick_params(axis='both', which='both', bottom=True, left=True)
 
     axtop.tick_params(axis='y', which='both', left=True)
-    axright.tick_params(axis='x', which='both', bottom=True)
+    axright.tick_params(axis='x', which='both', top=True, bottom=True)
 
     ax.set_xlim(10 ** extent[0], 10 ** extent[1])
     axtop.set_xlim(10 ** extent[0], 10 ** extent[1])
