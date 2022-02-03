@@ -141,7 +141,7 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                          Type, extinction, mtype, weight_norm, xlims, ylims,
-                         sample):
+                         sample, extent):
     trans = {}
     plt_lams = []
     cents = []
@@ -298,7 +298,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                 print("Ratio", popt)
                 fit = st_line_fit(fit_lumins, popt[0], popt[1])
 
-                axes_ratio[i].plot(fit_lumins, fit,
+                axes_ratio[i].loglog(fit_lumins, fit,
                                    linestyle='-',
                                    color=cmap(norm(trans[f][1])),
                                    alpha=0.9, zorder=1,
@@ -340,9 +340,12 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes_ratio[i].set_xlabel(r"$L/$ [erg $/$ s $/$ Hz]")
 
     for i, snap in enumerate(snaps):
+            axes[i].set_ylim(10 ** extent[0], 10 ** extent[1])
 
-        axes[i].set_xlim(10**27.8, 10**31.)
-        axes_ratio[i].set_xlim(10**27.8, 10**31.)
+    for i in range(len(axes)):
+        axes[i].set_ylim(10 ** extent[0], 10 ** extent[1])
+        axes[i].set_xlim(10 ** extent[2], 10 ** extent[3])
+        axes_ratio[i].set_xlim(10 ** extent[2], 10 ** extent[3])
         axes_ratio[i].tick_params(axis='x', which='both', bottom=True)
 
     for i in range(len(axes)):
