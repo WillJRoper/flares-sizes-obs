@@ -152,12 +152,15 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     ax.tick_params(axis='both', which='both', bottom=True, left=True)
 
     axtop.tick_params(axis='y', which='both', left=True)
-    axright.tick_params(axis='x', which='both', top=True, bottom=True)
+    axright.tick_params(axis='x', which='both', bottom=True)
 
     ax.set_xlim(10 ** extent[0], 10 ** extent[1])
     axtop.set_xlim(10 ** extent[0], 10 ** extent[1])
     ax.set_ylim(10 ** extent[2], 10 ** extent[3])
     axright.set_ylim(10 ** extent[2], 10 ** extent[3])
+
+    axright.set_xlim(5, 10 ** 3.9)
+    axtop.set_ylim(5, 10 ** 3.9)
 
     fig.savefig(
         'plots/' + str(z) + '/MassLumin_' + f + '_' + str(
