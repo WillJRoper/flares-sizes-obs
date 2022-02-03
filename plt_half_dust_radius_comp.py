@@ -113,29 +113,6 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
 
     ax.plot([min, max], [min, max], color='k', linestyle="--")
 
-    try:
-
-        diff_popt, diff_pcov = curve_fit(fit, hdrs[diff_comp], hlrs[diff_comp],
-                               p0=(1, 10),
-                               sigma=w[diff_comp])
-        
-        xs = np.linspace(hdrs[diff_comp].min(), hdrs[diff_comp].max(), 100)
-        diff_fit = fit(xs, diff_popt[0], diff_popt[1])
-        ax.plot(xs, diff_fit, color="r")
-    except ValueError as e:
-        print(e)
-
-    try:
-
-        com_popt, com_pcov = curve_fit(fit, hdrs[com_comp], hlrs[com_comp],
-                               p0=(1, 10),
-                               sigma=w[com_comp])
-        xs = np.linspace(hdrs[com_comp].min(), hdrs[com_comp].max(), 100)
-        com_fit = fit(xs, com_popt[0], com_popt[1])
-        ax.plot(xs, com_fit, color="b")
-    except ValueError as e:
-        print(e)
-
     ax.text(0.95, 0.05, f'$z={z}$',
             bbox=dict(boxstyle="round,pad=0.3", fc='w',
                       ec="k", lw=1, alpha=0.8),
