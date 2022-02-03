@@ -29,7 +29,7 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
 def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
-              diff_ncomp, weight_norm, orientation, Type, extinction):
+              diff_ncomp, weight_norm, orientation, Type, extinction, extent):
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
@@ -40,24 +40,24 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
         #                  C=w[diff_ncomp], gridsize=50, mincnt=1,
         #                  xscale='log', yscale='log',
         #                  norm=weight_norm, linewidths=0.2,
-        #                  cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3),
+        #                  cmap='Greys', extent=extent,
         #                  alpha=0.2)
         # cbar = ax.hexbin(hlrs[com_ncomp], hlrs_pix[com_ncomp],
         #                  C=w[com_ncomp], gridsize=50, mincnt=1,
         #                  xscale='log', yscale='log',
         #                  norm=weight_norm, linewidths=0.2,
-        #                  cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3),
+        #                  cmap='viridis', extent=extent,
         #                  alpha=0.2)
         cbar = ax.hexbin(hlrs[diff_comp], hlrs_pix[diff_comp],
                          C=w[diff_comp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
-                         cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3))
+                         cmap='Greys', extent=extent)
         cbar = ax.hexbin(hlrs[com_comp], hlrs_pix[com_comp],
                          C=w[com_comp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
-                         cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3))
+                         cmap='viridis', extent=extent)
         # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
         #                   norm=weight_norm, cmap=cmr.bubblegum_r,
         #                   linewidth=2)
@@ -65,7 +65,8 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
         print(e)
         return
 
-    ax.plot([10 ** -1.1, 10 ** 1.3], [10 ** -1.1, 10 ** 1.3],
+    ax.plot([10 ** extent[0], 10 ** extent[1]],
+            [10 ** extent[2], 10 ** extent[3]],
             color='k', linestyle="--")
 
     # Label axes
@@ -76,8 +77,8 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
 
     plt.axis('scaled')
 
-    ax.set_xlim(10 ** -1.1, 10 ** 1.3)
-    ax.set_ylim(10 ** -1.1, 10 ** 1.3)
+    ax.set_xlim(10 ** extent[0], 10 ** extent[1])
+    ax.set_ylim(10 ** extent[2], 10 ** extent[3])
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(

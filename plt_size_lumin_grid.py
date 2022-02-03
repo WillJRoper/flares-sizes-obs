@@ -447,6 +447,16 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                        bbox_to_anchor=(0.5, -0.15), fancybox=True,
                        ncol=len(uni_legend_elements))
 
+        ax2 = fig.add_axes([0.9, 0.1, 0.03, 0.8])
+        cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"),
+                                        norm=weight_norm)
+        cb1.set_label("$\sum w_{i}$")
+
+        ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
+        cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"),
+                                        norm=weight_norm)
+        cb1.set_label("$\sum w_{i}$")
+
         fig.savefig(
             'plots/HalfLightRadius_' + mtype + "_" + f + '_'
             + orientation + '_' + Type + "_" + extinction + ".pdf",

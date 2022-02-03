@@ -4,7 +4,7 @@ import warnings
 
 import cmasher as cmr
 import h5py
-import matplotlib
+import matplotlib as mpl
 import matplotlib.colors as cm
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
@@ -13,10 +13,24 @@ import pandas as pd
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
-matplotlib.use('Agg')
+mpl.use('Agg')
 warnings.filterwarnings('ignore')
 from flare import plt as flareplt
+
+# Set plotting fontsizes
 plt.rcParams['axes.grid'] = True
+
+SMALL_SIZE = 10
+MEDIUM_SIZE = 12
+BIGGER_SIZE = 14
+
+plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
 def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
@@ -213,6 +227,18 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     ax.set_ylim(10 ** -1.1, 10 ** 1.3)
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
+    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"),
+                                    norm=weight_norm)
+    cb1.set_label("$\sum w_{i}$")
+
+    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"),
+                                    norm=weight_norm, orientation="horizontal")
+    cb1.set_label("$\sum w_{i}$")
+    ax2.xaxis.set_label_position('top')
+    ax2.xaxis.set_ticks_position('top')
+
     fig.savefig(
         'plots/' + str(z) + '/ComparisonImageCreation_HLR_' + f + '_' + str(
             z) + '_'
@@ -244,6 +270,18 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     ax.set_xlim(10 ** 27., 10 ** 31.)
     ax.set_ylim(10 ** 27., 10 ** 31.)
+
+    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"),
+                                    norm=weight_norm)
+    cb1.set_label("$\sum w_{i}$")
+
+    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"),
+                                    norm=weight_norm, orientation="horizontal")
+    cb1.set_label("$\sum w_{i}$")
+    ax2.xaxis.set_label_position('top')
+    ax2.xaxis.set_ticks_position('top')
 
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 

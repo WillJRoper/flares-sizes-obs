@@ -2,20 +2,34 @@
 import os
 import warnings
 
-import matplotlib
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
-matplotlib.use('Agg')
+mpl.use('Agg')
 warnings.filterwarnings('ignore')
 from matplotlib.colors import LogNorm
 from astropy.cosmology import Planck13 as cosmo
 import flare.photom as photconv
 from flare import plt as flareplt
+
+
+# Set plotting fontsizes
 plt.rcParams['axes.grid'] = True
 
+SMALL_SIZE = 10
+MEDIUM_SIZE = 12
+BIGGER_SIZE = 14
+
+plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 def m_to_M(m, cosmo, z):
     flux = photconv.m_to_flux(m)
@@ -32,7 +46,7 @@ def M_to_m(M, cosmo, z):
 
 
 def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_ncomp, f, snap,
-                         mtype, orientation, Type, extinction, weight_norm):
+                         mtype, orientation, Type, extinction, weight_norm, extent):
     print("Plotting for:")
     print("Orientation =", orientation)
     print("Type =", Type)
@@ -72,8 +86,6 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax1 = ax.twinx()
-    ax1.grid(False)
     try:
         # cbar = ax.hexbin(lumins[diff_ncomp], hlrs[diff_ncomp],
         #                  C=w[diff_ncomp], gridsize=50, mincnt=1,
@@ -92,35 +104,18 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys',
-                         extent=(26.8, 31.2, -1.5, 1.5))
+                         extent=extent)
         im2 = ax.hexbin(lumins[com_comp], hlrs[com_comp],
                          C=w[com_comp], gridsize=50, mincnt=1,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis',
-                         extent=(26.8, 31.2, -1.5, 1.5))
+                         extent=extent)
         # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
         #                   norm=weight_norm, cmap=cmr.bubblegum_r,
         #                   linewidth=2)
     except ValueError as e:
         print(e)
-
-    try:
-        ax1.hexbin(lumins,
-                   hlrs * cosmo.arcsec_per_kpc_proper(z).value,
-                   gridsize=50, mincnt=1, C=w,
-                   reduce_C_function=np.sum, xscale='log',
-                   yscale='log', norm=weight_norm, linewidths=0.2,
-                   cmap='viridis', alpha=0,
-                   extent=(26.8, 31.2,
-                           np.log10(10 ** -1.5
-                                    * cosmo.arcsec_per_kpc_proper(z).value),
-                           np.log10(10 ** 1.5
-                                    * cosmo.arcsec_per_kpc_proper(z).value)))
-    except ValueError as e:
-        print(e)
-
-    ax1.set_ylabel('$R_{1/2}/ [arcsecond]$')
 
     # Label axes
     ax.set_xlabel(r"$L_{" + f.split(".")[-1]
@@ -128,13 +123,20 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     ax.set_ylabel('$R_{1/2}/ [pkpc]$')
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
-    ax1.set_xlim(10 ** 28., 10 ** 30.8)
-    ax.set_xlim(10 ** 28., 10 ** 30.8)
-    ax.set_ylim(10 ** -1.5, 10 ** 1.5)
-    ax1.set_ylim(10 ** -1.5 * cosmo.arcsec_per_kpc_proper(z).value,
-                 10 ** 1.5 * cosmo.arcsec_per_kpc_proper(z).value)
+    ax.set_xlim(10 ** extent[2], 10 ** extent[3])
+    ax.set_ylim(10 ** extent[0], 10 ** extent[1])
 
-    fig.colorbar(im1)
+    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"),
+                                    norm=weight_norm)
+    cb1.set_label("$\sum w_{i}$")
+
+    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"),
+                                    norm=weight_norm, orientation="horizontal")
+    cb1.set_label("$\sum w_{i}$")
+    ax2.xaxis.set_label_position('top')
+    ax2.xaxis.set_ticks_position('top')
 
     fig.savefig(
         'plots/' + str(z) + '/HalfLightRadius_' + mtype + "_" + f + '_' + str(

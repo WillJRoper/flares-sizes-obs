@@ -70,6 +70,14 @@ for reg in reversed(regions):
 # Define dictionary for image size
 img_shapes = {}
 
+# Define plotting extents
+mass_tot_extent = [7.7, 11.1, 26.2, 30.5]
+mass_int_extent = [7.7, 11.1, 28., 30.8]
+size_tot_extent = [-1.1, 1.3, 26.2, 30.5]
+size_int_extent = [-1.1, 1.3, 28., 30.8]
+size_extent = [-1.1, 1.3, -1.1, 1.3]
+tot_int_extent = [26.2, 30.5, 28., 30.8]
+
 for reg, snap in reg_snaps:
 
     for f in all_filters:
@@ -411,7 +419,8 @@ for f in filters:
                   intr_data[snap][f]["Diffuse_Population_Complete"],
                   intr_data[snap][f]["Compact_Population_NotComplete"],
                   intr_data[snap][f]["Diffuse_Population_NotComplete"],
-                  weight_norm, orientation, "Intrinsic", "default")
+                  weight_norm, orientation, "Intrinsic", "default",
+                  extent=size_extent)
         size_comp(f, snap, data[snap][f]["HLR_0.5"],
                   data[snap][f]["HLR_Pixel_0.5"], data[snap][f]["Weight"],
                   data[snap][f]["Compact_Population_Complete"],

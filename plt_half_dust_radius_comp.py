@@ -2,17 +2,31 @@
 import os
 import warnings
 
-import matplotlib
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
-matplotlib.use('Agg')
+mpl.use('Agg')
 warnings.filterwarnings('ignore')
 
 from flare import plt as flareplt
+
+# Set plotting fontsizes
 plt.rcParams['axes.grid'] = True
+
+SMALL_SIZE = 10
+MEDIUM_SIZE = 12
+BIGGER_SIZE = 14
+
+plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
 def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
@@ -265,11 +279,14 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                          mincnt=1,
                          C=w[diff_comp], reduce_C_function=np.sum,
                          xscale='log', yscale='log',
-                         norm=weight_norm, linewidths=0.2, cmap='Greys')
+                         norm=weight_norm, linewidths=0.2, cmap='Greys',
+                         extent=[-1.1, 1.3, np.log10(0.2), np.log10(50)])
         ax.hexbin(hdrs[com_comp], ratio[com_comp], gridsize=50, mincnt=1,
                   C=w[com_comp], reduce_C_function=np.sum,
                   xscale='log', yscale='log', norm=weight_norm,
-                  linewidths=0.2, cmap='viridis')
+                  linewidths=0.2, cmap='viridis', extent=[-1.1, 1.3,
+                                                          np.log10(0.2),
+                                                          np.log10(50)])
         # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
         #                   norm=weight_norm, cmap=cmr.bubblegum_r,
         #                   linewidth=2)
@@ -295,8 +312,18 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                   + f.split(".")[-1] + ", \mathrm{Intrinsic}}$")
     ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
-    ax.set_xlim(10 ** -1.1, 10 ** 1.7)
-    ax.set_ylim([0.15, 50])
+    ax.set_xlim(10 ** -1.1, 10 ** 1.3)
+    ax.set_ylim([0.2, 50])
+
+    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"), norm=weight_norm)
+    cb1.set_label("$\sum w_{i}$")
+
+    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
+    cb1.set_label("$\sum w_{i}$")
+    ax2.xaxis.set_label_position('top')
+    ax2.xaxis.set_ticks_position('top')
 
     fig.savefig('plots/' + str(z) + '/HalfDustRadius_hlrratio_' + f + '_'
                 + str(z) + '_' + Type + '_' + orientation + "_"

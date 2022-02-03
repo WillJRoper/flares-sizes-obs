@@ -34,14 +34,12 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
 def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds, w,
-               f, snap, orientation, Type, extinction, comp_l, comp_m, weight_norm):
+               f, snap, orientation, Type, extinction, comp_l, comp_m, weight_norm, extent):
     print("Plotting for:")
     print("Orientation =", orientation)
     print("Type =", Type)
     print("Snapshot =", snap)
     print("Filter =", f)
-    
-    extent = [7.7, 11.1, 26.2, 30.5]
 
     complete = np.logical_or(com_comp, diff_comp)
 
@@ -135,6 +133,8 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
     cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
+    ax2.xaxis.set_label_position('top')
+    ax2.xaxis.set_ticks_position('top')
 
     # ax.text(0.95, 0.05, f'$z={z}$',
     #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
