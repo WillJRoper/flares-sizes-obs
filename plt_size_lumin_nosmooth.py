@@ -305,7 +305,7 @@ for f in filters:
                 cbar = ax.hexbin(lumins, hlrs,
                                  C=w,
                                  reduce_C_function=np.sum, gridsize=50,
-                                 mincnt=1,
+                                 mincnt=np.min(w) - (0.1 * np.min(w)),
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
@@ -459,14 +459,14 @@ for f in filters:
             ax1.grid(False)
             try:
                 sden_lumins = np.logspace(27, 29.8)
-                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
                                  norm=LogNorm(), linewidths=0.2,
                                  cmap='viridis')
                 ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
-                           gridsize=50, mincnt=1, C=w,
+                           gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)), C=w,
                            reduce_C_function=np.sum, xscale='log',
                            yscale='log', norm=LogNorm(), linewidths=0.2,
                            cmap='viridis', alpha=0)
@@ -581,7 +581,7 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
-                cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  yscale='log',
@@ -715,7 +715,7 @@ for f in filters:
             hlrs = hlrs[okinds]
             w = np.array(weight_dict[snap][f])[okinds] * 1000
             try:
-                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
@@ -864,7 +864,7 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
-                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
@@ -965,7 +965,7 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
-                cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  yscale='log',
@@ -1098,7 +1098,7 @@ for f in filters:
             hlrs = hlrs[okinds]
             w = np.array(weight_dict[snap][f])[okinds] * 1000
             try:
-                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
@@ -1248,7 +1248,7 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
-                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
@@ -1349,7 +1349,7 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
-                cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lum_to_M(lumins), hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  yscale='log',
@@ -1467,7 +1467,7 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
-                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',
@@ -1534,7 +1534,7 @@ for f in filters:
             ax = fig.add_subplot(111)
 
             try:
-                cbar = ax.hexbin(mass, hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(mass, hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  yscale='log', xscale='log',
@@ -1579,7 +1579,7 @@ for f in filters:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             try:
-                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=1,
+                cbar = ax.hexbin(lumins, hlrs, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                                  C=w,
                                  reduce_C_function=np.sum,
                                  xscale='log', yscale='log',

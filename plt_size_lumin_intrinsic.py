@@ -88,25 +88,25 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     ax = fig.add_subplot(111)
     try:
         # cbar = ax.hexbin(lumins[diff_ncomp], hlrs[diff_ncomp],
-        #                  C=w[diff_ncomp], gridsize=50, mincnt=1,
+        #                  C=w[diff_ncomp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
         #                  xscale='log', yscale='log',
         #                  norm=weight_norm, linewidths=0.2,
         #                  cmap='Greys',
         #                  extent=(26.8, 31.2, -1.5, 1.5), alpha=0.2)
         # cbar = ax.hexbin(lumins[com_ncomp], hlrs[com_ncomp],
-        #                  C=w[com_ncomp], gridsize=50, mincnt=1,
+        #                  C=w[com_ncomp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
         #                  xscale='log', yscale='log',
         #                  norm=weight_norm, linewidths=0.2,
         #                  cmap='viridis',
         #                  extent=(26.8, 31.2, -1.5, 1.5), alpha=0.2)
         im1 = ax.hexbin(lumins[diff_comp], hlrs[diff_comp],
-                         C=w[diff_comp], gridsize=50, mincnt=1,
+                         C=w[diff_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys',
                          extent=extent)
         im2 = ax.hexbin(lumins[com_comp], hlrs[com_comp],
-                         C=w[com_comp], gridsize=50, mincnt=1,
+                         C=w[com_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis',

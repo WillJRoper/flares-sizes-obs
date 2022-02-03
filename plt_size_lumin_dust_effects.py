@@ -206,7 +206,7 @@ for f in filters:
         #     ax.scatter(intr_lumins, intr_hlrs, color="k", marker="D",
         #                alpha=0.6)
         #     ax1.hexbin(lumins, hlrs * cosmo.arcsec_per_kpc_proper(z).value,
-        #                gridsize=50, mincnt=1, xscale='log',
+        #                gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)), xscale='log',
         #                yscale='log', norm=LogNorm(), linewidths=0.2,
         #                cmap='viridis', alpha=0)
         #     sinds = np.argsort(lumins / intr_lumins)

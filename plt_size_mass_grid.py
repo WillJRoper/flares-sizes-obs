@@ -344,13 +344,13 @@ for f in filters:
         try:
             sden_lumins = np.logspace(27, 29.8)
             cbar = axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
-                                  mincnt=1, C=w[okinds2],
+                                  mincnt=np.min(w) - (0.1 * np.min(w)), C=w[okinds2],
                                   reduce_C_function=np.sum,
                                   xscale='log', yscale='log',
                                   norm=LogNorm(), linewidths=0.2,
                                   cmap='Greys', alpha=0.7)
             axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50,
-                           mincnt=1,
+                           mincnt=np.min(w) - (0.1 * np.min(w)),
                            C=w[okinds1],
                            reduce_C_function=np.sum,
                            xscale='log', yscale='log',
@@ -358,7 +358,7 @@ for f in filters:
                            cmap='plasma')
             axes_twin[i].hexbin(lumins, hlrs
                                 * cosmo.arcsec_per_kpc_proper(z).value,
-                                gridsize=50, mincnt=1, C=w,
+                                gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)), C=w,
                                 reduce_C_function=np.sum, xscale='log',
                                 yscale='log', norm=LogNorm(), linewidths=0.2,
                                 cmap='plasma', alpha=0)
@@ -614,13 +614,13 @@ for f in filters:
         try:
             sden_lumins = np.logspace(27, 29.8)
             cbar = axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
-                                  mincnt=1, C=w[okinds2],
+                                  mincnt=np.min(w) - (0.1 * np.min(w)), C=w[okinds2],
                                   reduce_C_function=np.sum,
                                   xscale='log', yscale='log',
                                   norm=LogNorm(), linewidths=0.2,
                                   cmap='Greys', alpha=0.7)
             axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50,
-                           mincnt=1,
+                           mincnt=np.min(w) - (0.1 * np.min(w)),
                            C=w[okinds1],
                            reduce_C_function=np.sum,
                            xscale='log', yscale='log',
@@ -628,7 +628,7 @@ for f in filters:
                            cmap='plasma')
             axes_twin[i].hexbin(lumins,
                                 hlrs * cosmo.arcsec_per_kpc_proper(z).value,
-                                gridsize=50, mincnt=1, C=w,
+                                gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)), C=w,
                                 reduce_C_function=np.sum, xscale='log',
                                 yscale='log', norm=LogNorm(), linewidths=0.2,
                                 cmap='plasma', alpha=0)
@@ -885,13 +885,13 @@ for f in filters:
         try:
             sden_lumins = np.logspace(28, 29.8)
             cbar = axes[i].hexbin(lumins[okinds2], hlrs[okinds2], gridsize=50,
-                                  mincnt=1, C=w[okinds2],
+                                  mincnt=np.min(w) - (0.1 * np.min(w)), C=w[okinds2],
                                   reduce_C_function=np.sum,
                                   xscale='log', yscale='log',
                                   norm=LogNorm(), linewidths=0.2,
                                   cmap='Greys', alpha=0.7)
             axes[i].hexbin(lumins[okinds1], hlrs[okinds1], gridsize=50,
-                           mincnt=1,
+                           mincnt=np.min(w) - (0.1 * np.min(w)),
                            C=w[okinds1],
                            reduce_C_function=np.sum,
                            xscale='log', yscale='log',
@@ -899,7 +899,7 @@ for f in filters:
                            cmap='plasma')
             axes_twin[i].hexbin(lumins,
                                 hlrs * cosmo.arcsec_per_kpc_proper(z).value,
-                                gridsize=50, mincnt=1, C=w,
+                                gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)), C=w,
                                 reduce_C_function=np.sum, xscale='log',
                                 yscale='log', norm=LogNorm(), linewidths=0.2,
                                 cmap='plasma', alpha=0)

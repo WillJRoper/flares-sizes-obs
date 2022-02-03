@@ -177,15 +177,15 @@ for f in filters:
         ax2 = fig.add_subplot(gs[1, 0])
         ax3 = fig.add_subplot(gs[1, 1])
         try:
-            cbar = ax1.hexbin(hlrs, hlrs_app, gridsize=50, mincnt=1,
+            cbar = ax1.hexbin(hlrs, hlrs_app, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                               xscale='log', yscale='log',
                               norm=LogNorm(), linewidths=0.2,
                               cmap='viridis')
-            cbar = ax2.hexbin(hlrs, hlrs_pix, gridsize=50, mincnt=1,
+            cbar = ax2.hexbin(hlrs, hlrs_pix, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                               xscale='log', yscale='log',
                               norm=LogNorm(), linewidths=0.2,
                               cmap='viridis')
-            cbar = ax3.hexbin(hlrs_app, hlrs_pix, gridsize=50, mincnt=1,
+            cbar = ax3.hexbin(hlrs_app, hlrs_pix, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                               xscale='log', yscale='log',
                               norm=LogNorm(), linewidths=0.2,
                               cmap='viridis')

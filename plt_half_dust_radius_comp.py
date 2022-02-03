@@ -75,24 +75,24 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax.loglog()
     try:
         # cbar = ax.hexbin(hdrs[diff_ncomp], hlrs[diff_ncomp], gridsize=50,
-        #                  mincnt=1,
+        #                  mincnt=np.min(w) - (0.1 * np.min(w)),
         #                  C=w[diff_ncomp], reduce_C_function=np.sum,
         #                  xscale='log', yscale='log',
         #                  norm=weight_norm, linewidths=0.2, cmap='Greys',
         #                  alpha=0.2)
         # ax.hexbin(hdrs[com_ncomp], hlrs[com_ncomp], gridsize=50,
-        #           mincnt=1,
+        #           mincnt=np.min(w) - (0.1 * np.min(w)),
         #           C=w[com_ncomp],
         #           reduce_C_function=np.sum, xscale='log', yscale='log',
         #           norm=weight_norm, linewidths=0.2, cmap='viridis', alpha=0.2)
 
         cbar = ax.hexbin(hdrs[diff_comp], hlrs[diff_comp], gridsize=50,
-                         mincnt=1,
+                         mincnt=np.min(w) - (0.1 * np.min(w)),
                          C=w[diff_comp], reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2, cmap='Greys')
         ax.hexbin(hdrs[com_comp], hlrs[com_comp], gridsize=50,
-                  mincnt=1,
+                  mincnt=np.min(w) - (0.1 * np.min(w)),
                   C=w[com_comp],
                   reduce_C_function=np.sum, xscale='log', yscale='log',
                   norm=weight_norm, linewidths=0.2, cmap='viridis')
@@ -171,23 +171,23 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax.loglog()
     try:
         # cbar = ax.hexbin(hdrs[diff_ncomp], ratio[diff_ncomp], gridsize=50,
-        #                  mincnt=1,
+        #                  mincnt=np.min(w) - (0.1 * np.min(w)),
         #                  C=w[diff_ncomp], reduce_C_function=np.sum,
         #                  xscale='log', yscale='log',
         #                  norm=weight_norm, linewidths=0.2, cmap='Greys',
         #                  alpha=0.2)
         # ax.hexbin(hdrs[com_ncomp], ratio[com_ncomp], gridsize=50,
-        #           mincnt=1,
+        #           mincnt=np.min(w) - (0.1 * np.min(w)),
         #           C=w[com_ncomp], reduce_C_function=np.sum,
         #           xscale='log', yscale='log', norm=weight_norm,
         #           linewidths=0.2, cmap='viridis', alpha=0.2)
         cbar = ax.hexbin(hdrs[diff_comp], ratio[diff_comp], gridsize=50,
-                         mincnt=1,
+                         mincnt=np.min(w) - (0.1 * np.min(w)),
                          C=w[diff_comp], reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2, cmap='Greys')
         ax.hexbin(hdrs[com_comp], ratio[com_comp], gridsize=50,
-                  mincnt=1,
+                  mincnt=np.min(w) - (0.1 * np.min(w)),
                   C=w[com_comp], reduce_C_function=np.sum,
                   xscale='log', yscale='log', norm=weight_norm,
                   linewidths=0.2, cmap='viridis')
@@ -265,23 +265,23 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax.loglog()
     try:
         # cbar = ax.hexbin(hdrs[diff_ncomp], ratio[diff_ncomp], gridsize=50,
-        #                  mincnt=1,
+        #                  mincnt=np.min(w) - (0.1 * np.min(w)),
         #                  C=w[diff_ncomp], reduce_C_function=np.sum,
         #                  xscale='log', yscale='log',
         #                  norm=weight_norm, linewidths=0.2, cmap='Greys',
         #                  alpha=0.2)
         # ax.hexbin(hdrs[com_ncomp], ratio[com_ncomp], gridsize=50,
-        #           mincnt=1,
+        #           mincnt=np.min(w) - (0.1 * np.min(w)),
         #           C=w[com_ncomp], reduce_C_function=np.sum,
         #           xscale='log', yscale='log', norm=weight_norm,
         #           linewidths=0.2, cmap='viridis', alpha=0.2)
         cbar = ax.hexbin(hdrs[diff_comp], ratio[diff_comp], gridsize=50,
-                         mincnt=1,
+                         mincnt=np.min(w) - (0.1 * np.min(w)),
                          C=w[diff_comp], reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2, cmap='Greys',
                          extent=[-1.1, 1.3, np.log10(0.2), np.log10(50)])
-        ax.hexbin(hdrs[com_comp], ratio[com_comp], gridsize=50, mincnt=1,
+        ax.hexbin(hdrs[com_comp], ratio[com_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                   C=w[com_comp], reduce_C_function=np.sum,
                   xscale='log', yscale='log', norm=weight_norm,
                   linewidths=0.2, cmap='viridis', extent=[-1.1, 1.3,

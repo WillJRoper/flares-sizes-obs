@@ -206,7 +206,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     ax = fig.add_subplot(111)
     try:
         cbar = ax.hexbin(gauss_hlrs, sph_hlrs,
-                         C=w, gridsize=50, mincnt=1,
+                         C=w, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3))
@@ -251,7 +251,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     ax = fig.add_subplot(111)
     try:
         cbar = ax.hexbin(gauss_lumins, sph_lumins,
-                         C=w, gridsize=50, mincnt=1,
+                         C=w, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis')

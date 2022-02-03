@@ -36,24 +36,24 @@ def lum_comp(f, snap, lums, lums_pix, w, com_comp, diff_comp, com_ncomp,
     ax = fig.add_subplot(111)
     try:
         # cbar = ax.hexbin(lums[diff_ncomp], lums_pix[diff_ncomp],
-        #                  C=w[diff_ncomp], gridsize=50, mincnt=1,
+        #                  C=w[diff_ncomp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
         #                  xscale='log', yscale='log',
         #                  norm=weight_norm, linewidths=0.2,
         #                  cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3),
         #                  alpha=0.2)
         # cbar = ax.hexbin(lums[com_ncomp], lums_pix[com_ncomp],
-        #                  C=w[com_ncomp], gridsize=50, mincnt=1,
+        #                  C=w[com_ncomp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
         #                  xscale='log', yscale='log',
         #                  norm=weight_norm, linewidths=0.2,
         #                  cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3),
         #                  alpha=0.2)
         cbar = ax.hexbin(lums[diff_comp], lums_pix[diff_comp],
-                         C=w[diff_comp], gridsize=50, mincnt=1,
+                         C=w[diff_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3))
         cbar = ax.hexbin(lums[com_comp], lums_pix[com_comp],
-                         C=w[com_comp], gridsize=50, mincnt=1,
+                         C=w[com_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3))
