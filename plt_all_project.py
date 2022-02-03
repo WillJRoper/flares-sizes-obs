@@ -303,7 +303,7 @@ size_lumin_grid(data, snaps, filters, orientation, "Total",
 print("--------------------------- Fits ---------------------------")
 fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, "Total",
                     "default",
-                    "pix", "Complete", xlims, ylims)
+                    "pix", "Complete", xlims, ylims, size_tot_extent)
 print("--------------------------- Fits No Smooth ---------------------------")
 fit_size_lumin_grid_nosmooth(data, snaps, filters, orientation, "Total",
                              "default",
@@ -312,19 +312,19 @@ print(
     "--------------------------- Fits Incomplete ---------------------------")
 fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, "Total",
                     "default",
-                    "pix", "All", xlims, ylims)
+                    "pix", "All", xlims, ylims, size_tot_extent)
 # fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, "Total",
 #                     "default",
 #                     "app")
 print("--------------------------- All filters ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
-                     "pix", weight_norm, list(xlims), list(ylims), "Complete")
+                     "pix", weight_norm, list(xlims), list(ylims), "Complete", size_tot_extent)
 print(
     "--------------------------- All filters Incomplete ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
-                     "pix", weight_norm, list(xlims), list(ylims), "All")
+                     "pix", weight_norm, list(xlims), list(ylims), "All", size_tot_extent)
 
 for f in filters:
     print(f)
