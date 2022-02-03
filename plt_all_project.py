@@ -365,7 +365,8 @@ for f in filters:
                    data[snap][f]["Weight"],
                    f, snap, orientation, "Intrinsic", "default",
                    intr_data[snap][f]["Complete_Luminosity"],
-                   intr_data[snap][f]["Complete_Mass"], weight_norm)
+                   intr_data[snap][f]["Complete_Mass"], weight_norm,
+                   mass_int_extent)
         mass_lumin(data[snap][f]["Mass"],
                    data[snap][f]["Image_Luminosity"],
                    data[snap][f]["Compact_Population_Complete"],
@@ -376,7 +377,8 @@ for f in filters:
                    data[snap][f]["Weight"],
                    f, snap, orientation, "Total", "default",
                    data[snap][f]["Complete_Luminosity"],
-                   data[snap][f]["Complete_Mass"], weight_norm)
+                   data[snap][f]["Complete_Mass"], weight_norm,
+                   mass_tot_extent)
         print("--------------------------- HDR", snap,
               "---------------------------")
         hdr_comp(data[snap][f]["HDR"], data[snap][f]["HLR_0.5"],
@@ -399,7 +401,7 @@ for f in filters:
                              intr_data[snap][f][
                                  "Diffuse_Population_NotComplete"],
                              f, snap, "pix", orientation, "Intrinsic",
-                             "default", weight_norm)
+                             "default", weight_norm, size_int_extent)
         size_lumin_intrinsic(intr_data[snap][f]["HLR_0.5"],
                              intr_data[snap][f]["Luminosity"],
                              data[snap][f]["Weight"],
@@ -410,7 +412,7 @@ for f in filters:
                              intr_data[snap][f][
                                  "Diffuse_Population_NotComplete"],
                              f, snap, "part", orientation, "Intrinsic",
-                             "default", weight_norm)
+                             "default", weight_norm, size_int_extent)
         print("--------------------------- Comp", snap,
               "---------------------------")
         size_comp(f, snap, intr_data[snap][f]["HLR_0.5"],
