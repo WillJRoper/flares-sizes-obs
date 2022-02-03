@@ -72,7 +72,7 @@ img_shapes = {}
 
 # Define plotting extents
 mass_tot_extent = [7.7, 11.1, 26.2, 30.8]
-mass_int_extent = [7.7, 11.1, 28., 30.8]
+mass_int_extent = [7.7, 11.1, 26.2, 30.8]
 size_tot_extent = [-1.1, 1.3, 27.7, 30.8]
 size_int_extent = [-1.1, 1.3, 28., 30.8]
 size_extent = [-1.1, 1.3, -1.1, 1.3]

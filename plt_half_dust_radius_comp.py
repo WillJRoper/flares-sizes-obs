@@ -4,6 +4,7 @@ import warnings
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
 import numpy as np
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
@@ -27,6 +28,10 @@ plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
 plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+
+
+def fit(x, m, c):
+    return 10**(m * np.log10(x) + c)
 
 
 def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
@@ -107,6 +112,29 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     max = np.max((ax.get_xlim(), ax.get_ylim()))
 
     ax.plot([min, max], [min, max], color='k', linestyle="--")
+
+    try:
+
+        diff_popt, diff_pcov = curve_fit(fit, hdrs[diff_comp], hlrs[diff_comp],
+                               p0=(1, 10),
+                               sigma=w[diff_comp])
+        
+        xs = np.linspace(hdrs[diff_comp].min(), hdrs[diff_comp].max(), 100)
+        diff_fit = fit(xs, diff_popt[0], diff_popt[1])
+        ax.plot(xs, diff_fit, color="r")
+    except ValueError as e:
+        print(e)
+
+    try:
+
+        com_popt, com_pcov = curve_fit(fit, hdrs[com_comp], hlrs[com_comp],
+                               p0=(1, 10),
+                               sigma=w[com_comp])
+        xs = np.linspace(hdrs[com_comp].min(), hdrs[com_comp].max(), 100)
+        com_fit = fit(xs, com_popt[0], com_popt[1])
+        ax.plot(xs, com_fit, color="b")
+    except ValueError as e:
+        print(e)
 
     ax.text(0.95, 0.05, f'$z={z}$',
             bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -286,7 +314,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                   xscale='log', yscale='log', norm=weight_norm,
                   linewidths=0.2, cmap='viridis', extent=[-1.1, 1.3,
                                                           np.log10(0.2),
-                                                          np.log10(50)])
+                                                          np.log10(80)])
         # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
         #                   norm=weight_norm, cmap=cmr.bubblegum_r,
         #                   linewidth=2)
@@ -313,7 +341,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
     ax.set_xlim(10 ** -1.1, 10 ** 1.3)
-    ax.set_ylim([0.2, 50])
+    ax.set_ylim([0.2, 80])
 
     ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
     cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"), norm=weight_norm)
