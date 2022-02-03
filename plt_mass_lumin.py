@@ -40,6 +40,8 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     print("Type =", Type)
     print("Snapshot =", snap)
     print("Filter =", f)
+    
+    extent = [7.5, 11.1, 26.2, 30.5]
 
     complete = np.logical_or(com_comp, diff_comp)
 
@@ -63,32 +65,32 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys', alpha=0.2,
-                         extent=(7.5, 11.5, 26.3, 31.5))
+                         extent=extent)
         cbar = ax.hexbin(mass[com_ncomp], lumins[com_ncomp],
                          gridsize=50, mincnt=1, C=w[com_ncomp],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis', alpha=0.2,
-                         extent=(7.5, 11.5, 26.3, 31.5))
+                         extent=extent)
         cbar = ax.hexbin(mass[diff_comp], lumins[diff_comp],
                          gridsize=50, mincnt=1, C=w[diff_comp],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys',
-                         extent=(7.5, 11.5, 26.3, 31.5))
+                         extent=extent)
         cbar = ax.hexbin(mass[com_comp], lumins[com_comp],
                          gridsize=50, mincnt=1, C=w[com_comp],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis',
-                         extent=(7.5, 11.5, 26.3, 31.5))
+                         extent=extent)
     except ValueError as e:
         print(e)
 
-    lumin_bins = np.logspace(26.3, 31.5, 50)
+    lumin_bins = np.logspace(extent[2], extent[3], 50)
     Hbot2_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
     Hbot2, bin_edges = np.histogram(lumins[okinds], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
@@ -98,7 +100,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     axright.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
     ax.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
 
-    mass_bins = np.logspace(7.5, 11.5, 50)
+    mass_bins = np.logspace(extent[0], extent[1], 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
     Htop2, bin_edges = np.histogram(mass[okinds], bins=mass_bins)
     mbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
@@ -149,10 +151,10 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
 
     ax.tick_params(axis='both', which='both', bottom=True, left=True)
 
-    ax.set_xlim(10 ** 7.5, 10 ** 11.5)
-    axtop.set_xlim(10 ** 7.5, 10 ** 11.5)
-    ax.set_ylim(10 ** 26.3, 10 ** 31.5)
-    axright.set_ylim(10 ** 26.3, 10 ** 31.5)
+    ax.set_xlim(10 ** extent[0], 10 ** extent[1])
+    axtop.set_xlim(10 ** extent[0], 10 ** extent[1])
+    ax.set_ylim(10 ** extent[2], 10 ** extent[3])
+    axright.set_ylim(10 ** extent[2], 10 ** extent[3])
 
     fig.savefig(
         'plots/' + str(z) + '/MassLumin_' + f + '_' + str(
