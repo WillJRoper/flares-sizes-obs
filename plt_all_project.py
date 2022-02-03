@@ -297,7 +297,7 @@ ylims = (10 ** -1.1, 10 ** 1.1)
 
 print("--------------------------- Size-Lumin ---------------------------")
 size_lumin_grid(data, snaps, filters, orientation, "Total",
-                "default", "pix", weight_norm, xlims, ylims)
+                "default", "pix", weight_norm, xlims, ylims, size_tot_extent)
 # size_lumin_grid(data, snaps, filters, orientation, "Total",
 #                 "default", "app", weight_norm)
 print("--------------------------- Fits ---------------------------")

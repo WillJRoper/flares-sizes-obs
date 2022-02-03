@@ -161,10 +161,7 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 
 def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
-                    mtype, weight_norm, xlims, ylims):
-
-    extent = (np.log10(xlims[0]), np.log10(xlims[1]),
-              np.log10(ylims[0]), np.log10(ylims[1]))
+                    mtype, weight_norm, xlims, ylims, extent):
 
     for f in filters:
 
@@ -299,60 +296,6 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             except ValueError as e:
                 print(e, "Compact complete", snap, f)
 
-                # popt, pcov = curve_fit(kawa_fit, lumins, hlrs,
-                #                        p0=(kawa_params['r_0'][7],
-                #                            kawa_params['beta'][7]),
-                #                        sigma=w)
-                #
-                # popt1, pcov1 = curve_fit(kawa_fit, lumins[okinds1],
-                #                          hlrs[okinds1],
-                #                          p0=(kawa_params['r_0'][7],
-                #                              kawa_params['beta'][7]),
-                #                          sigma=w[okinds1])
-                #
-                # popt2, pcov2 = curve_fit(kawa_fit, lumins[okinds2],
-                #                          hlrs[okinds2],
-                #                          p0=(kawa_params['r_0'][7],
-                #                              kawa_params['beta'][7]),
-                #                          sigma=w[okinds2])
-                #
-                # print("Total")
-                # print(popt)
-                # print(pcov)
-                # print("Low")
-                # print(popt2)
-                # print(pcov2)
-                # print("High")
-                # print(popt1)
-                # print(pcov1)
-                #
-                # fit_lumins = np.logspace(np.log10(lumins.min()),
-                #                          np.log10(lumins.max()),
-                #                          1000)
-                # fit_lumins_low = np.logspace(np.log10(lumins[okinds2].min()),
-                #                              np.log10(lumins[okinds2].max()),
-                #                              1000)
-                # fit_lumins_high = np.logspace(np.log10(lumins[okinds1].min()),
-                #                               np.log10(lumins[okinds1].max()),
-                #                               1000)
-
-                # fit = kawa_fit(fit_lumins, popt[0], popt[1])
-                # fit_low = kawa_fit(fit_lumins_low, popt2[0], popt2[1])
-                # fit_high = kawa_fit(fit_lumins_high, popt1[0], popt1[1])
-                #
-                # axes[i].plot(fit_lumins_high, fit_high,
-                #              linestyle='-', color="m",
-                #              alpha=0.9, zorder=5,
-                #              linewidth=2)
-                # axes[i].plot(fit_lumins_low, fit_low,
-                #              linestyle='--', color="m",
-                #              alpha=0.9, zorder=4,
-                #              linewidth=2)
-                # axes[i].plot(fit_lumins, fit,
-                #              linestyle='dotted', color="m",
-                #              alpha=0.9, zorder=3,
-                #              linewidth=2)
-
             if Type != "Intrinsic":
 
                 for p in colors_in_order:
@@ -447,12 +390,12 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                        bbox_to_anchor=(0.5, -0.15), fancybox=True,
                        ncol=len(uni_legend_elements))
 
-        ax2 = fig.add_axes([0.9, 0.1, 0.03, 0.8])
+        ax2 = fig.add_axes([0.93, 0.1, 0.01, 0.8])
         cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"),
                                         norm=weight_norm)
         cb1.set_label("$\sum w_{i}$")
 
-        ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
+        ax2 = fig.add_axes([0.96, 0.1, 0.01, 0.8])
         cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"),
                                         norm=weight_norm)
         cb1.set_label("$\sum w_{i}$")
