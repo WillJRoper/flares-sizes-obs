@@ -277,7 +277,10 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                       reduce_C_function=np.sum,
                                       xscale='log', yscale='log',
                                       norm=weight_norm, linewidths=0.2,
-                                      cmap='Greys', extent=extent)
+                                      cmap='Greys', extent=[extent[2],
+                                                            extent[3],
+                                                            extent[0],
+                                                            extent[1]])
                 print(np.log10(np.min(lumins[diffuse_com])),
                       np.log10(np.max(lumins[diffuse_com])),
                       np.log10(np.min(lumins[compact_com])),
@@ -292,7 +295,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                reduce_C_function=np.sum,
                                xscale='log', yscale='log',
                                norm=weight_norm, linewidths=0.2,
-                               cmap='viridis', extent=extent)
+                               cmap='viridis', extent=[extent[2], extent[3],
+                                                       extent[0], extent[1]])
             except ValueError as e:
                 print(e, "Compact complete", snap, f)
 
@@ -390,7 +394,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                        bbox_to_anchor=(0.5, -0.15), fancybox=True,
                        ncol=len(uni_legend_elements))
 
-        ax2 = fig.add_axes([0.93, 0.1, 0.01, 0.8])
+        ax2 = fig.add_axes([0.91, 0.1, 0.01, 0.8])
         cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"),
                                         norm=weight_norm)
         cb1.set_label("$\sum w_{i}$")
