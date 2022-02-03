@@ -423,28 +423,42 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     bar_ax.fill_between([-2, 30], y1=[1, 1], y2=[2, 2],
                         facecolor="k", alpha=0.2)
 
-    bar_ax.errorbar([0, 6, 9, 15],
-                    [slopes[0], oesch_low_m[0], hol_low_m[0], ono_low_m[0]],
-                    yerr=np.array([(slope_errors[0], slope_errors[0]),
-                                   (oesch_low_m[1], oesch_low_m[1]),
-                                   (hol_low_m[1], hol_low_m[1]),
-                                   (ono_low_m[2], ono_low_m[1])]).T,
+    bar_ax.errorbar([0, ],
+                    [slopes[0], ],
+                    yerr=np.array([(slope_errors[0], slope_errors[0])]).T,
                     color="b", fmt="s", capsize=5, markersize=3)
 
-    bar_ax.errorbar([1, 4, 7, 13, 16],
-                    [slopes[1], bt_up_m[0], oesch_up_m[0], kawa_up_norm[0],
-                     ono_up_m[0]],
+    bar_ax.errorbar([1, 4, ],
+                    [slopes[1], bt_up_m[0], ],
                     yerr=np.array([(slope_errors[1], slope_errors[1]),
-                                   (bt_up_m[1], bt_up_m[1]),
-                                   (oesch_up_m[1], oesch_up_m[1]),
-                                   (kawa_up_norm[1], kawa_up_norm[1]),
-                                   (ono_up_m[2], ono_up_m[1])]).T,
+                                   (bt_up_m[1], bt_up_m[1])]).T,
                     color="g", fmt="s", capsize=5, markersize=3)
 
-    bar_ax.errorbar([2, 11], [slopes[2], hol_up_m[0]],
-                    yerr=np.array([(slope_errors[2], slope_errors[2]),
-                                   (hol_up_m[1], hol_up_m[1])]).T,
+    bar_ax.errorbar([2, ], [slopes[2], ],
+                    yerr=np.array([(slope_errors[2], slope_errors[2])]).T,
                     color="r", fmt="s", capsize=5, markersize=3)
+
+    bar_ax.errorbar([6, 9, 15],
+                    [oesch_low_m[0], hol_low_m[0], ono_low_m[0]],
+                    yerr=np.array([(oesch_low_m[1], oesch_low_m[1]),
+                                   (hol_low_m[1], hol_low_m[1]),
+                                   (ono_low_m[2], ono_low_m[1])]).T,
+                    color="b", fmt="*", capsize=5, markersize=3)
+
+    bar_ax.errorbar([7, 13, 16],
+                    [oesch_up_m[0], kawa_up_norm[0],
+                     ono_up_m[0]],
+                    yerr=np.array([(oesch_up_m[1], oesch_up_m[1]),
+                                   (kawa_up_norm[1], kawa_up_norm[1]),
+                                   (ono_up_m[2], ono_up_m[1])]).T,
+                    color="g", fmt="*", capsize=5, markersize=3)
+
+    bar_ax.errorbar([11, ], [hol_up_m[0], ],
+                    yerr=np.array([(hol_up_m[1], hol_up_m[1])]).T,
+                    color="r", fmt="*", capsize=5, markersize=3)
+
+    comp_val_works = ["FLARES", "Marshall+", "Oesch+",
+                      "Holwerda+", "Kawamata+", "Ono+"]
 
     bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
     bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
@@ -461,14 +475,17 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     bar_ax.tick_params(reset=True, bottom=True, left=True,
                        top=False, right=False)
 
-    bar_ax.set_ylabel("$m$", fontsize=7)
+    for pos in [-0.5, 2.5, 5.5, 8.5, 11.5, 14.5, 17.5]:
+        bar_ax.axvline(pos, linestyle="-", color="k", alpha=0.8)
+
+    bar_ax.set_ylabel("$m$")
     bar_ax.set_xticks([1, 4, 7, 10, 13, 16])
-    bar_ax.set_xticklabels(["FLARES", "Marshall+", "Oesch+",
-                            "Holwerda+", "Kawamata+", "Ono+"], fontsize=7)
+    bar_ax.set_xticklabels(["(1)", "(2)", "(3)",
+                            "(4)", "(5)", "(6)"])
     bar_ax.tick_params(axis='x', which='minor', bottom=True)
 
     bar_ax.set_yticks([0.5, 1, 1.5])
-    bar_ax.set_yticklabels([0.5, 1, 1.5], fontsize=6)
+    bar_ax.set_yticklabels([0.5, 1, 1.5])
 
     bar_ax.grid(False)
     bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
