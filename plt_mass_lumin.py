@@ -126,11 +126,11 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     axright.spines['top'].set_visible(False)
     axright.spines['right'].set_visible(False)
 
-    ax2 = fig.add_axes([0.95, 0.1, 0.05, 0.8])
+    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
     cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"), norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
 
-    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.05])
+    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
     cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
 
