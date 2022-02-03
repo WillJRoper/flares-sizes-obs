@@ -340,10 +340,10 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes_ratio[i].set_xlabel(r"$L/$ [erg $/$ s $/$ Hz]")
 
     for i, snap in enumerate(snaps):
-            axes[i].set_ylim(10 ** extent[0], 10 ** extent[1])
+            axes[i].set_ylim(10 ** -0.7, 10 ** 0.8)
 
     for i in range(len(axes)):
-        axes[i].set_ylim(10 ** extent[0], 10 ** extent[1])
+        axes[i].set_ylim(10 ** -0.7, 10 ** 0.8)
         axes[i].set_xlim(10 ** extent[2], 10 ** 31.)
         axes_ratio[i].set_xlim(10 ** extent[2], 10 ** 31.)
         axes_ratio[i].tick_params(axis='x', which='both', bottom=True)
