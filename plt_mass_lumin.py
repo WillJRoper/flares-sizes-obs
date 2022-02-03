@@ -2,13 +2,13 @@
 import os
 import warnings
 
-import matplotlib
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
-matplotlib.use('Agg')
+mpl.use('Agg')
 warnings.filterwarnings('ignore')
 import h5py
 import pandas as pd
@@ -98,10 +98,10 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
                       labeltop=False, labelbottom=False)
     # axtop.tick_params(axis='y', left=False, right=False,
     #                   labelleft=False, labelright=False)
-    axright.tick_params(axis='x', top=False, bottom=False,
-                        labeltop=False, labelbottom=False)
-    # axright.tick_params(axis='y', left=False, right=False,
-    #                     labelleft=False, labelright=False)
+    # axright.tick_params(axis='x', top=False, bottom=False,
+    #                     labeltop=False, labelbottom=False)
+    axright.tick_params(axis='y', left=False, right=False,
+                        labelleft=False, labelright=False)
 
     axtop.spines['top'].set_visible(False)
     axtop.spines['right'].set_visible(False)
@@ -110,6 +110,14 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     # axright.spines['bottom'].set_visible(False)
     axright.spines['top'].set_visible(False)
     axright.spines['right'].set_visible(False)
+
+    ax2 = fig.add_axes([0.95, 0.1, 0.015, 0.9])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap='Greys', norm=weight_norm)
+    cb1.set_label("$\sum w_{i}$")
+
+    ax2 = fig.add_axes([0.1, 0.95, 0.9, 0.015])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap='Greys', norm=weight_norm, orientation="horizontal")
+    cb1.set_label("$\sum w_{i}$")
 
     # ax.text(0.95, 0.05, f'$z={z}$',
     #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
