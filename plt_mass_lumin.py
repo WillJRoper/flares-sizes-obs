@@ -41,7 +41,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     print("Snapshot =", snap)
     print("Filter =", f)
     
-    extent = [7.5, 11.1, 26.2, 30.5]
+    extent = [7.7, 11.1, 26.2, 30.5]
 
     complete = np.logical_or(com_comp, diff_comp)
 
@@ -159,8 +159,8 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     ax.set_ylim(10 ** extent[2], 10 ** extent[3])
     axright.set_ylim(10 ** extent[2], 10 ** extent[3])
 
-    axright.set_xlim(5, 10 ** 3.9)
-    axtop.set_ylim(5, 10 ** 3.9)
+    axright.set_xlim(5, 10 ** 4)
+    axtop.set_ylim(5, 10 ** 4)
 
     fig.savefig(
         'plots/' + str(z) + '/MassLumin_' + f + '_' + str(
