@@ -135,8 +135,8 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"),
                                     norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
-    ax2.xaxis.set_label_position('top')
-    ax2.xaxis.set_ticks_position('top')
+    cb1.ax.xaxis.set_label_position('top')
+    cb1.ax.xaxis.set_ticks_position('top')
 
     fig.savefig(
         'plots/' + str(z) + '/HalfLightRadius_' + mtype + "_" + f + '_' + str(

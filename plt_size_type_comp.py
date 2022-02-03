@@ -2,12 +2,12 @@
 import os
 import warnings
 
-import matplotlib
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 
-matplotlib.use('Agg')
+mpl.use('Agg')
 warnings.filterwarnings('ignore')
 from flare import plt as flareplt
 
@@ -79,6 +79,16 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
 
     ax.set_xlim(10 ** extent[0], 10 ** extent[1])
     ax.set_ylim(10 ** extent[2], 10 ** extent[3])
+
+    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"), norm=weight_norm)
+    cb1.set_label("$\sum w_{i}$")
+
+    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
+    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
+    cb1.set_label("$\sum w_{i}$")
+    cb1.ax.xaxis.set_label_position('top')
+    cb1.ax.xaxis.set_ticks_position('top')
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(

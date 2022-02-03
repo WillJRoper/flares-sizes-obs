@@ -88,8 +88,8 @@ def size_comp_smooth_part(f, snap, hlrs_part, hlrs_pix_nosmooth, w, com_comp,
     ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
     cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
-    ax2.xaxis.set_label_position('top')
-    ax2.xaxis.set_ticks_position('top')
+    cb1.ax.xaxis.set_label_position('top')
+    cb1.ax.xaxis.set_ticks_position('top')
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonHalfLightRadiusSmoothingPart_' + f + '_' + str(
