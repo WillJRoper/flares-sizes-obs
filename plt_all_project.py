@@ -429,7 +429,8 @@ for f in filters:
                   data[snap][f]["Diffuse_Population_Complete"],
                   data[snap][f]["Compact_Population_NotComplete"],
                   data[snap][f]["Diffuse_Population_NotComplete"],
-                  weight_norm, orientation, "Total", "default")
+                  weight_norm, orientation, "Total", "default",
+                  extent=size_extent)
         lum_comp(f, snap, intr_data[snap][f]["Luminosity"],
                  intr_data[snap][f]["Image_Luminosity"],
                  intr_data[snap][f]["Weight"],
