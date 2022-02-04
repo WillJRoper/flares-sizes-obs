@@ -4,6 +4,7 @@ import warnings
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 import cmasher as cmr
 import scipy
 import numpy as np
@@ -237,8 +238,12 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ratio = hlrs / hlrints
 
     fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.loglog()
+    gs = gridspec.GridSpec(1, 2)
+    gs.update(wspace=0.0, hspace=0.0)
+    ax1 = fig.add_subplot(gs[0, 0])
+    ax2 = fig.add_subplot(gs[0, 1])
+    ax1.loglog()
+    ax2.loglog()
     try:
         # cbar = ax.hexbin(hdrs[diff_ncomp], ratio[diff_ncomp], gridsize=50,
         #                  mincnt=np.min(w) - (0.1 * np.min(w)),
@@ -251,49 +256,52 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
         #           C=w[com_ncomp], reduce_C_function=np.sum,
         #           xscale='log', yscale='log', norm=weight_norm,
         #           linewidths=0.2, cmap='viridis', alpha=0.2)
-        cbar = ax.hexbin(hdrs[diff_comp], ratio[diff_comp], gridsize=50,
+        ax1.hexbin(hdrs[diff_comp], ratio[diff_comp], gridsize=50,
                          mincnt=np.min(w) - (0.1 * np.min(w)),
                          C=w[diff_comp], reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2, cmap='Greys',
                          extent=[-1.1, 1.3, np.log10(0.2), np.log10(50)])
-        ax.hexbin(hdrs[com_comp], ratio[com_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
-                  C=w[com_comp], reduce_C_function=np.sum,
-                  xscale='log', yscale='log', norm=weight_norm,
-                  linewidths=0.2, cmap='viridis', extent=[-1.1, 1.3,
-                                                          np.log10(0.2),
-                                                          np.log10(80)])
+        ax2.hexbin(hdrs[com_comp], ratio[com_comp], gridsize=50,
+                   mincnt=np.min(w) - (0.1 * np.min(w)),
+                   C=w[com_comp], reduce_C_function=np.sum,
+                   xscale='log', yscale='log', norm=weight_norm,
+                   linewidths=0.2, cmap='viridis', extent=[-1.1, 1.3,
+                                                           np.log10(0.2),
+                                                           np.log10(80)])
     except ValueError as e:
         print(e)
 
-    min = np.min((ax.get_xlim(), ax.get_ylim()))
-    max = np.max((ax.get_xlim(), ax.get_ylim()))
+    for ax in [ax1, ax2]:
+        ax.plot([-1.1, 1.3], [1, 1], color='k', linestyle="--")
+        ax.set_xlim(10 ** -1.1, 10 ** 1.3)
+        ax.set_ylim([0.2, 80])
+        
+    ax1.tick_params(axis='both', which='both', bottom=True, left=True)
+    ax2.tick_params(axis='x', which='both', bottom=True, left=True)
 
-    ax.plot([min, max], [1, 1], color='k', linestyle="--")
-    ax.tick_params(axis='both', which='both', bottom=True, left=True)
-
-    ax.text(0.95, 0.05, f'$z={z}$',
-            bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                      ec="k", lw=1, alpha=0.8),
-            transform=ax.transAxes, horizontalalignment='right',
-            fontsize=8)
+    # ax.text(0.95, 0.05, f'$z={z}$',
+    #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
+    #                   ec="k", lw=1, alpha=0.8),
+    #         transform=ax.transAxes, horizontalalignment='right',
+    #         fontsize=8)
 
     # Label axes
-    ax.set_ylabel("$R_{1/2,"
+    ax1.set_ylabel("$R_{1/2,"
                   + f.split(".")[-1]
                   + ", \mathrm{Attenuated}}/ R_{1/2,"
                   + f.split(".")[-1] + ", \mathrm{Intrinsic}}$")
-    ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
+    ax2.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
+    ax2.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
-    ax.set_xlim(10 ** -1.1, 10 ** 1.3)
-    ax.set_ylim([0.2, 80])
-
-    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"), norm=weight_norm)
+    cax = fig.add_axes([0.05, 0.95, 0.4, 0.03])
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
+    cb1.ax.xaxis.set_label_position('top')
+    cb1.ax.xaxis.set_ticks_position('top')
 
-    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
+    cax = fig.add_axes([0.55, 0.95, 0.4, 0.03])
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
