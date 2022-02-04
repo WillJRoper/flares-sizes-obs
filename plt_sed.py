@@ -66,7 +66,7 @@ filters = ['FAKE.TH.' + f
            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 
-cmap = mpl.cm.get_cmap('viridis', len(filters))
+cmap = mpl.cm.get_cmap('coolwarm', len(filters))
 
 reddest_NIRCam = 4.408
 reddest_NIRCam_low = 3.880
