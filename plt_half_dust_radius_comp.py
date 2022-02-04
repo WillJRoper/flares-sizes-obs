@@ -302,7 +302,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
 
-    cax = fig.add_axes([0.535, 0.95, 0.355, 0.03])
+    cax = fig.add_axes([0.545, 0.95, 0.355, 0.03])
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
