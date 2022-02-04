@@ -20,6 +20,7 @@ import flare.photom as photconv
 import pandas as pd
 from scipy.optimize import curve_fit
 import matplotlib.colors as cm
+import cmasher as cmr
 from flare import plt as flareplt
 
 # Set plotting fontsizes
@@ -107,7 +108,7 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
     if mags[ind] < 0:
         mags[ind] = M_to_m(mags[ind], cosmo, z)
 
-cmap = mpl.cm.get_cmap("winter")
+cmap = cmr.bubblegum
 norm = plt.Normalize(vmin=0, vmax=1)
 
 labels = {"G11": "Grazian+2011",

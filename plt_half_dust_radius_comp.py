@@ -236,36 +236,6 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
 
     ratio = hlrs / hlrints
 
-    bins = np.logspace(np.log10(0.08), np.log10(40), 40)
-
-    H, xbins, ybins = np.histogram2d(hdrs[diff_comp], ratio[diff_comp],
-                                     bins=bins,
-                                     weights=w[diff_comp])
-
-    # Resample your data grid by a factor of 3 using cubic spline interpolation.
-    H = scipy.ndimage.zoom(H, 3)
-
-    # percentiles = [np.min(w),
-    #                10**-3,
-    #                10**-1,
-    #                1, 2, 5]
-
-    # try:
-    #     percentiles = [np.percentile(H[H > 0], 50),
-    #                    np.percentile(H[H > 0], 80),
-    #                    np.percentile(H[H > 0], 90),
-    #                    np.percentile(H[H > 0], 95),
-    #                    np.percentile(H[H > 0], 99)]
-    # except IndexError:
-    #     return
-
-    bins = np.logspace(np.log10(0.08), np.log10(40), H.shape[0] + 1)
-
-    xbin_cents = (bins[1:] + bins[:-1]) / 2
-    ybin_cents = (bins[1:] + bins[:-1]) / 2
-
-    XX, YY = np.meshgrid(xbin_cents, ybin_cents)
-
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.loglog()
@@ -293,9 +263,6 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                   linewidths=0.2, cmap='viridis', extent=[-1.1, 1.3,
                                                           np.log10(0.2),
                                                           np.log10(80)])
-        cbar = ax.contour(XX, YY, H.T, levels=4,
-                          norm=weight_norm, cmap='Greys',
-                          linewidth=2)
     except ValueError as e:
         print(e)
 
