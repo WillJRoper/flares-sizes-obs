@@ -108,7 +108,7 @@ for (ind, r), z in zip(enumerate(r_es_arcs), zs):
     if mags[ind] < 0:
         mags[ind] = M_to_m(mags[ind], cosmo, z)
 
-cmap = cmr.bubblegum
+cmap = cmr.redshift
 norm = plt.Normalize(vmin=0, vmax=1)
 
 labels = {"G11": "Grazian+2011",
