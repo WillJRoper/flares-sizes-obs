@@ -296,13 +296,13 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax1.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
     ax2.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
-    cax = fig.add_axes([0.12, 0.95, 0.38, 0.03])
+    cax = fig.add_axes([0.13, 0.95, 0.36, 0.03])
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
 
-    cax = fig.add_axes([0.52, 0.95, 0.38, 0.03])
+    cax = fig.add_axes([0.54, 0.95, 0.36, 0.03])
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
