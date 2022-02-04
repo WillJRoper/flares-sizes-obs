@@ -273,12 +273,13 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
         print(e)
 
     for ax in [ax1, ax2]:
-        ax.plot([-1.1, 1.3], [1, 1], color='k', linestyle="--")
+        ax.plot([10**-1.1, 10**1.3], [1, 1], color='k', linestyle="--")
         ax.set_xlim(10 ** -1.1, 10 ** 1.3)
         ax.set_ylim([0.2, 80])
         
     ax1.tick_params(axis='both', which='both', bottom=True, left=True)
-    ax2.tick_params(axis='x', which='both', bottom=True, left=True)
+    ax2.tick_params(axis='y', which='both', left=False)
+    ax2.tick_params(axis='x', which='both', bottom=True)
 
     # ax.text(0.95, 0.05, f'$z={z}$',
     #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -291,17 +292,17 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                   + f.split(".")[-1]
                   + ", \mathrm{Attenuated}}/ R_{1/2,"
                   + f.split(".")[-1] + ", \mathrm{Intrinsic}}$")
-    ax2.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
+    ax1.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
     ax2.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
-    cax = fig.add_axes([0.05, 0.95, 0.4, 0.03])
+    cax = fig.add_axes([0.15, 0.95, 0.35, 0.03])
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
 
-    cax = fig.add_axes([0.55, 0.95, 0.4, 0.03])
-    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
+    cax = fig.add_axes([0.55, 0.95, 0.35, 0.03])
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
