@@ -282,13 +282,13 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
 
             try:
 
-                print("--------------", "Intrinsic", mtype, f, snap,
+                print("--------------", "Compact", mtype, f, snap,
                       "--------------")
-                print("R_0=%.3f+/-%.3f" % (intr_popt[0],
-                                           np.sqrt(intr_pcov[0, 0])))
-                print("beta=%.3f+/-%.3f" % (intr_popt[1],
-                                            np.sqrt(intr_pcov[1, 1])))
-                print("N=", intr_lumins[intr_complete].size)
+                print("R_0=%.3f+/-%.3f" % (popt1[0],
+                                           np.sqrt(pcov1[0, 0])))
+                print("beta=%.3f+/-%.3f" % (popt1[1],
+                                            np.sqrt(pcov1[1, 1])))
+                print("N=", lumins[compact_com].size)
                 print(
                     "------------------------------------------"
                     "----------------")
@@ -314,6 +314,12 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
 
                 axes[i].plot(fit_lumins, fit,
                              linestyle='-', color="r",
+                             zorder=3)
+
+                fit = r_fit(fit_lumins, popt1[0], popt1[1])
+
+                axes[i].plot(fit_lumins, fit,
+                             linestyle='dotted', color="r",
                              zorder=3)
 
                 # fit = r_fit(fit_lumins, popt1[0], popt1[1])
@@ -449,7 +455,10 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
 
         uni_legend_elements.append(
             Line2D([0], [0], color="r", linestyle="-",
-                   label="FLARES"))
+                   label="FLARES (Complete)"))
+        uni_legend_elements.append(
+            Line2D([0], [0], color="r", linestyle="dotted",
+                   label="FLARES (Compact)"))
 
         uni_legend_elements.append(
             Line2D([0], [0], color=colors["Hu13"], linestyle="--",
