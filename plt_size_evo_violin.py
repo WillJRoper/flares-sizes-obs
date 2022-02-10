@@ -552,7 +552,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     bar_ax.axhline(1.5, linestyle="dotted", color="grey", alpha=0.7)
 
     bar_ax.set_xlim(-0.5, 23.5)
-    bar_ax.set_ylim(0.49, 2)
+    bar_ax.set_ylim(0.49, 3)
 
     bar_ax.tick_params(reset=True, bottom=True, left=True,
                        top=False, right=False)
