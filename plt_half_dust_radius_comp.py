@@ -303,6 +303,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
+    cb1.ax.xaxis.set_ticks([10 ** -3, 10 ** -2, 10 ** -1, 10 ** 0])
 
     divider = make_axes_locatable(ax2)
     cax = divider.append_axes('top', size='5%', pad=0.1)
@@ -310,6 +311,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
+    cb1.ax.xaxis.set_ticks([10**-3, 10**-2, 10**-1, 10**0])
 
     fig.savefig('plots/' + str(z) + '/HalfDustRadius_hlrratio_' + f + '_'
                 + str(z) + '_' + Type + '_' + orientation + "_"

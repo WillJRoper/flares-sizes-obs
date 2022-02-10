@@ -4,6 +4,8 @@ import warnings
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
@@ -35,7 +37,12 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
     z = float(z_str[0] + '.' + z_str[1])
 
     fig = plt.figure()
-    ax = fig.add_subplot(111)
+    gs = gridspec.GridSpec(1, 2)
+    gs.update(wspace=0.0, hspace=0.0)
+    ax1 = fig.add_subplot(gs[0, 0])
+    ax2 = fig.add_subplot(gs[0, 1])
+    ax1.loglog()
+    ax2.loglog()
     try:
         # cbar = ax.hexbin(hlrs[diff_ncomp], hlrs_pix[diff_ncomp],
         #                  C=w[diff_ncomp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
@@ -49,12 +56,12 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
         #                  norm=weight_norm, linewidths=0.2,
         #                  cmap='viridis', extent=extent,
         #                  alpha=0.2)
-        cbar = ax.hexbin(hlrs[diff_comp], hlrs_pix[diff_comp],
+        cbar = ax1.hexbin(hlrs[diff_comp], hlrs_pix[diff_comp],
                          C=w[diff_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys', extent=extent)
-        cbar = ax.hexbin(hlrs[com_comp], hlrs_pix[com_comp],
+        cbar = ax2.hexbin(hlrs[com_comp], hlrs_pix[com_comp],
                          C=w[com_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
@@ -66,30 +73,43 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
         print(e)
         return
 
-    ax.plot([10 ** extent[0], 10 ** extent[1]],
+    ax1.plot([10 ** extent[0], 10 ** extent[1]],
+            [10 ** extent[2], 10 ** extent[3]],
+            color='k', linestyle="--")
+    ax2.plot([10 ** extent[0], 10 ** extent[1]],
             [10 ** extent[2], 10 ** extent[3]],
             color='k', linestyle="--")
 
     # Label axes
-    ax.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
-    ax.set_ylabel('$R_{1/2, \mathrm{pix}}/ [pkpc]$')
+    ax2.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+    ax1.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
+    ax1.set_ylabel('$R_{1/2, \mathrm{pix}}/ [pkpc]$')
 
-    ax.tick_params(axis='both', which='both', left=True, bottom=True)
+    ax1.tick_params(axis='both', which='both', left=True, bottom=True)
+    ax2.tick_params(axis='both', which='both', left=True, bottom=True)
 
     plt.axis('scaled')
 
-    ax.set_xlim(10 ** extent[0], 10 ** extent[1])
-    ax.set_ylim(10 ** extent[2], 10 ** extent[3])
+    ax1.set_xlim(10 ** extent[0], 10 ** extent[1])
+    ax1.set_ylim(10 ** extent[2], 10 ** extent[3])
+    ax2.set_xlim(10 ** extent[0], 10 ** extent[1])
+    ax2.set_ylim(10 ** extent[2], 10 ** extent[3])
 
-    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"), norm=weight_norm)
-    cb1.set_label("$\sum w_{i}$")
-
-    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
+    divider = make_axes_locatable(ax1)
+    cax = divider.append_axes('top', size='5%', pad=0.1)
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
+    cb1.ax.xaxis.set_ticks([10 ** -3, 10 ** -2, 10 ** -1, 10 ** 0])
+
+    divider = make_axes_locatable(ax2)
+    cax = divider.append_axes('top', size='5%', pad=0.1)
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
+    cb1.set_label("$\sum w_{i}$")
+    cb1.ax.xaxis.set_label_position('top')
+    cb1.ax.xaxis.set_ticks_position('top')
+    cb1.ax.xaxis.set_ticks([10**-3, 10**-2, 10**-1, 10**0])
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonHalfLightRadius_' + f + '_' + str(

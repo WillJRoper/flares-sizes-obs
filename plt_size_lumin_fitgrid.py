@@ -316,11 +316,11 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                              linestyle='-', color="r",
                              zorder=3)
 
-                fit = r_fit(fit_lumins, popt1[0], popt1[1])
-
-                axes[i].plot(fit_lumins, fit,
-                             linestyle='-.', color="r",
-                             zorder=3)
+                # fit = r_fit(fit_lumins, popt1[0], popt1[1])
+                #
+                # axes[i].plot(fit_lumins, fit,
+                #              linestyle='-.', color="r",
+                #              zorder=3)
 
                 # fit = r_fit(fit_lumins, popt1[0], popt1[1])
                 #

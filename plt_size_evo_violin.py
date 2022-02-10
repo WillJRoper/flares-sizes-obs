@@ -522,8 +522,6 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     for (i, w), v_lst in zip(enumerate(comp_val_works), comp_vals):
         for c, j in zip(["b", "g", "r"], range(3)):
             x += 1
-            if len(v_lst[j]) == 0:
-                continue
 
             if w[0] == "F":
                 bar_ax.errorbar([x, ],
@@ -531,6 +529,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                 yerr=np.array([(v_lst[1][j], v_lst[1][j])]).T,
                                 color=c, fmt="s", capsize=5)
             else:
+                if len(v_lst[j]) == 0:
+                    continue
+
                 bar_ax.errorbar([x, ],
                                 [v_lst[j][0], ],
                                 yerr=np.array([(v_lst[j][2], v_lst[j][1])]).T,
