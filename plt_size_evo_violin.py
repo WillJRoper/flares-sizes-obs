@@ -445,7 +445,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         plt_z = np.array(plt_z)
 
         cnt_okinds = cnts > 10
-        ax.errorbar(plt_z, med[cnt_okinds],
+        ax.errorbar(plt_z[cnt_okinds], med[cnt_okinds],
                     yerr=(hlr_16[cnt_okinds], hlr_84[cnt_okinds]),
                     capsize=5, color=col,
                     marker="s", linestyle="none")
