@@ -61,11 +61,13 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys', extent=extent)
+        plt.axis('scaled')
         cbar = ax2.hexbin(hlrs[com_comp], hlrs_pix[com_comp],
                          C=w[com_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis', extent=extent)
+        plt.axis('scaled')
         # cbar = ax.contour(XX, YY, H.T, levels=percentiles,
         #                   norm=weight_norm, cmap=cmr.bubblegum_r,
         #                   linewidth=2)
@@ -87,8 +89,6 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
 
     ax1.tick_params(axis='both', which='both', left=True, bottom=True)
     ax2.tick_params(axis='both', which='both', left=True, bottom=True)
-
-    plt.axis('scaled')
 
     ax1.set_xlim(10 ** extent[0], 10 ** extent[1])
     ax1.set_ylim(10 ** extent[2], 10 ** extent[3])
