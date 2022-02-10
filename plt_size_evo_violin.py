@@ -328,7 +328,11 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     ax.semilogy()
 
     slopes = []
+    slopes_low = []
+    slopes_high = []
     slope_errors = []
+    slope_errors_low = []
+    slope_errors_high = []
 
     for ls, bin, col in zip(["-", "-", "-"], ["low", "mid", "high"],
                             ["b", "g", "r"]):
@@ -369,9 +373,48 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         print("m=%.3f +/- %.3f " % (popt[1], np.sqrt(pcov[1, 1])))
         print("Points fit on:", fitting_zs[okinds].size)
         print("----------------------------------------------------------")
+        
+        popt, pcov = curve_fit(fit, fitting_zs[okinds][lowz_okinds], 
+                               fitting_hlrs[okinds][lowz_okinds],
+                               p0=(1, 0.5), 
+                               sigma=fitting_ws[okinds][lowz_okinds])
+
+        slopes_low.append(popt[1])
+        slope_errors_low.append(np.sqrt(pcov[1, 1]))
+
+        print("--------------", "Total-Low", Type, bin,
+              mtype, f, "--------------")
+        print("C=%.3f +/- %.3f " % (popt[0], np.sqrt(pcov[0, 0])))
+        print("m=%.3f +/- %.3f " % (popt[1], np.sqrt(pcov[1, 1])))
+        print("Points fit on:", fitting_zs[okinds].size)
+        print("----------------------------------------------------------")
+
+        fit_plt_zs = np.linspace(np.max(fitting_zs[okinds][lowz_okinds]), 
+                                 np.min(fitting_zs[okinds][lowz_okinds]), 1000)
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
-                linestyle=ls, color=col)
+                linestyle="-.", color=col)
+        
+        popt, pcov = curve_fit(fit, fitting_zs[okinds][highz_okinds], 
+                               fitting_hlrs[okinds][highz_okinds],
+                               p0=(1, 0.5), 
+                               sigma=fitting_ws[okinds][highz_okinds])
+
+        slopes_high.append(popt[1])
+        slope_errors_high.append(np.sqrt(pcov[1, 1]))
+
+        print("--------------", "Total-High", Type, bin,
+              mtype, f, "--------------")
+        print("C=%.3f +/- %.3f " % (popt[0], np.sqrt(pcov[0, 0])))
+        print("m=%.3f +/- %.3f " % (popt[1], np.sqrt(pcov[1, 1])))
+        print("Points fit on:", fitting_zs[okinds].size)
+        print("----------------------------------------------------------")
+
+        fit_plt_zs = np.linspace(np.max(fitting_zs[okinds][highz_okinds]), 
+                                 np.min(fitting_zs[okinds][highz_okinds]), 1000)
+
+        ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
+                linestyle="dotted", color=col)
 
         hlr_16 = []
         hlr_84 = []
@@ -408,111 +451,35 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                     capsize=5, color=col,
                     marker="^", linestyle="none", alpha=0.6)
 
-    # bt_rs = [0.6333, 0.58632, 0.5292567, 0.51400117, 0.475394]
-    # bt_zs = [7, 8, 9, 10, 11]
-    #
-    # ax.scatter(bt_zs, bt_rs, marker="*", zorder=5, s=10)
-
-    # fit_plt_zs = np.linspace(12, 4.5, 1000)
-
-    # ax.plot(fit_plt_zs, ono_fit(fit_plt_zs, ono_low_norm[0], -ono_low_m[0]),
-    #         linestyle="--", color="b")
-    # ax.plot(fit_plt_zs, ono_fit(fit_plt_zs, ono_up_norm[0], -ono_up_m[0]),
-    #         linestyle="--", color="g")
-
-    bar_ax = ax.inset_axes([0.5, 0.65, 0.5, 0.35])
-
-    # Plot FIRE region
-    bar_ax.fill_between([-2, 30], y1=[1, 1], y2=[2, 2],
-                        facecolor="k", alpha=0.2)
-
-    bar_ax.errorbar([0, ],
-                    [slopes[0], ],
-                    yerr=np.array([(slope_errors[0], slope_errors[0])]).T,
-                    color="b", fmt="s", capsize=5, markersize=3)
-
-    bar_ax.errorbar([1, 4, ],
-                    [slopes[1], bt_up_m[0], ],
-                    yerr=np.array([(slope_errors[1], slope_errors[1]),
-                                   (bt_up_m[1], bt_up_m[1])]).T,
-                    color="g", fmt="s", capsize=5, markersize=3)
-
-    bar_ax.errorbar([2, ], [slopes[2], ],
-                    yerr=np.array([(slope_errors[2], slope_errors[2])]).T,
-                    color="r", fmt="s", capsize=5, markersize=3)
-
-    bar_ax.errorbar([6, 9, 15],
-                    [oesch_low_m[0], hol_low_m[0], ono_low_m[0]],
-                    yerr=np.array([(oesch_low_m[1], oesch_low_m[1]),
-                                   (hol_low_m[1], hol_low_m[1]),
-                                   (ono_low_m[2], ono_low_m[1])]).T,
-                    color="b", fmt="*", capsize=5, markersize=6)
-
-    bar_ax.errorbar([7, 13, 16],
-                    [oesch_up_m[0], kawa_up_norm[0],
-                     ono_up_m[0]],
-                    yerr=np.array([(oesch_up_m[1], oesch_up_m[1]),
-                                   (kawa_up_norm[1], kawa_up_norm[1]),
-                                   (ono_up_m[2], ono_up_m[1])]).T,
-                    color="g", fmt="*", capsize=5, markersize=6)
-
-    bar_ax.errorbar([11, ], [hol_up_m[0], ],
-                    yerr=np.array([(hol_up_m[1], hol_up_m[1])]).T,
-                    color="r", fmt="*", capsize=5, markersize=6)
-
-    comp_val_works = ["FLARES", "Marshall+", "Oesch+",
-                      "Holwerda+", "Kawamata+", "Ono+"]
-
-    bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
-    bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
-    bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
-    bar_ax.axvline(11.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
-    bar_ax.axvline(14.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
-
-    bar_ax.axhline(1, linestyle="--", color="grey", alpha=0.7)
-    bar_ax.axhline(1.5, linestyle="dotted", color="grey", alpha=0.7)
-
-    bar_ax.set_xlim(-0.5, 17.5)
-    bar_ax.set_ylim(0.49, 2)
-
-    bar_ax.tick_params(reset=True, bottom=True, left=True,
-                       top=False, right=False)
-
-    for pos in [-0.5, 2.5, 5.5, 8.5, 11.5, 14.5, 17.5]:
-        bar_ax.axvline(pos, linestyle="-", color="k", alpha=0.8)
-
-    bar_ax.set_ylabel("$m$")
-    bar_ax.set_xticks([1, 4, 7, 10, 13, 16])
-    bar_ax.set_xticklabels(["(1)", "(2)", "(3)",
-                            "(4)", "(5)", "(6)"])
-    bar_ax.tick_params(axis='x', which='minor', bottom=True)
-
-    bar_ax.set_yticks([0.5, 1, 1.5])
-    bar_ax.set_yticklabels([0.5, 1, 1.5])
-
-    bar_ax.grid(False)
-    bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
-
     legend_elements.append(Line2D([0], [0], color='b',
-                                  label="$L < 0.3 L^{*}_{z=3}$",
+                                  label="$L < 0.3 L^{\star}_{z=3}$",
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='g',
-                                  label="$0.3L^{*}_{z=3}\leq L "
-                                        "\leq L^{*}_{z=3}$",
+                                  label="$0.3L^{\star}_{z=3}\leq L "
+                                        "\leq L^{\star}_{z=3}$",
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='r',
-                                  label="$0.3 L^{*}_{z=3} \leq L$",
+                                  label="$0.3 L^{\star}_{z=3} \leq L$",
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='k',
                                   label="FLARES",
-                                  linestyle="-"))
+                                  linestyle="-", marker="s"))
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="FLARES (low-$z$)",
+                                  linestyle="-.", marker="s"))
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="FLARES (high-$z$)",
+                                  linestyle="dotted", marker="s"))
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="Observations",
+                                  linestyle="none", marker="*"))
 
     # Label axes
     ax.set_xlabel(r'$z$')
-    ax.set_ylabel('$R_{1/2}/ [\mathrm{pkpc}]$')
+    ax.set_ylabel('$R/ [\mathrm{pkpc}]$')
 
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
@@ -529,329 +496,77 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
     plt.close(fig)
 
-    # legend_elements = []
-    #
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111)
-    # ax.semilogy()
-    # # ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
-    # for i in range(len(ws)):
-    #
-    #     vpstats1 = custom_violin_stats(hlr[i], ws[i])
-    #     vplot = ax.violin(vpstats1, positions=[plt_z[i]],
-    #                       vert=True,
-    #                       showmeans=True,
-    #                       showextrema=True,
-    #                       showmedians=True)
-    #
-    #     # Make all the violin statistics marks red:
-    #     for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
-    #         vp = vplot[partname]
-    #         vp.set_edgecolor("k")
-    #         vp.set_linewidth(1)
-    #
-    #     # Make the violin body blue with a red border:
-    #     for vp in vplot['bodies']:
-    #         vp.set_facecolor("r")
-    #         vp.set_edgecolor("r")
-    #         vp.set_linewidth(1)
-    #         vp.set_alpha(0.5)
-    #
-    # popt, pcov = curve_fit(fit, fitting_zs, fitting_hlrs,
-    #                        p0=(1, 0.5), sigma=fitting_ws)
-    #
-    # # popt1, pcov1 = curve_fit(fit, fitting_zs[okinds2],
-    # #                          fitting_hlrs[okinds2],
-    # #                          p0=(1, 0.5), sigma=fitting_ws[okinds2])
-    #
-    # int_popt, int_pcov = curve_fit(fit, fitting_zs, fitting_intr_hlrs,
-    #                        p0=(1, 0.5), sigma=fitting_ws)
-    #
-    # # int_popt1, int_pcov1 = curve_fit(fit, fitting_zs[okinds2],
-    # #                          fitting_intr_hlrs[okinds2],
-    # #                          p0=(1, 0.5), sigma=fitting_ws[okinds2])
-    #
-    # popt2, pcov2 = curve_fit(fit, fitting_zs, fitting_hdrs,
-    #                        p0=(1, 0.5), sigma=fitting_ws)
-    #
-    # fit_plt_zs = np.linspace(12, 4.5, 1000)
-    #
-    # print("--------------", "Total", "Complete", mtype, f, "--------------")
-    # print("C=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
-    # print("m=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
-    # print(pcov)
-    # # print("--------------", "Total", "Massive", mtype, f, "--------------")
-    # # print("C=", popt1[0], "+/-", np.sqrt(pcov1[0, 0]))
-    # # print("m=", popt1[1], "+/-", np.sqrt(pcov1[1, 1]))
-    # # print(pcov1)
-    # print("--------------", "Intrinsc", "Complete", mtype, f, "--------------")
-    # print("C=", int_popt[0], "+/-", np.sqrt(int_pcov[0, 0]))
-    # print("m=", int_popt[1], "+/-", np.sqrt(int_pcov[1, 1]))
-    # print(int_pcov)
-    # # print("--------------", "Intrinsic", "Massive", mtype, f, "--------------")
-    # # print("C=", int_popt1[0], "+/-", np.sqrt(int_pcov1[0, 0]))
-    # # print("m=", int_popt1[1], "+/-", np.sqrt(int_pcov1[1, 1]))
-    # # print(int_pcov1)
-    # print("--------------", "Dust", mtype, f, "--------------")
-    # print("C=", popt2[0], "+/-", np.sqrt(pcov2[0, 0]))
-    # print("m=", popt2[1], "+/-", np.sqrt(pcov2[1, 1]))
-    # print(pcov2)
-    # print("----------------------------------------------------------")
-    #
-    # ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
-    #         linestyle="--", color="k")
-    #
-    # legend_elements.append(Line2D([0], [0], color='k',
-    #                               label="Attenuated",
-    #                               linestyle="--"))
-    #
-    # # ax.plot(fit_plt_zs, fit(fit_plt_zs, popt1[0], popt1[1]),
-    # #         linestyle="dotted", color="k")
-    # #
-    # # legend_elements.append(Line2D([0], [0], color='k',
-    # #                               label="$M_\star/M_\odot > 10^9$ "
-    # #                                     "(Attenuated)",
-    # #                               linestyle="dotted"))
-    #
-    # ax.plot(fit_plt_zs, fit(fit_plt_zs, popt2[0], popt2[1]),
-    #         linestyle="--", color="m")
-    #
-    # legend_elements.append(Line2D([0], [0], color='m',
-    #                               label="Dust",
-    #                               linestyle="--"))
-    #
-    # ax.plot(fit_plt_zs, fit(fit_plt_zs, int_popt[0], int_popt[1]),
-    #         linestyle="--", color="b")
-    #
-    # legend_elements.append(Line2D([0], [0], color='b',
-    #                               label="Intrinsic",
-    #                               linestyle="--"))
-    #
-    # # ax.plot(fit_plt_zs, fit(fit_plt_zs, int_popt1[0], int_popt1[1]),
-    # #         linestyle="dotted", color="b")
-    # #
-    # # legend_elements.append(Line2D([0], [0], color='b',
-    # #                               label="$M_\star/M_\odot > 10^9$ "
-    # #                                     "(Intrinsic)",
-    # #                               linestyle="dotted"))
-    #
-    # # Label axes
-    # ax.set_xlabel(r'$z$')
-    # ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-    #
-    # ax.tick_params(axis='x', which='minor', bottom=True)
-    #
-    # ax.set_xlim(4.5, 11.5)
-    # ax.set_ylim(10 ** -1.5, 10 ** 1.5)
-    #
-    # ax.legend(handles=legend_elements, loc='upper center',
-    #           bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
-    #
-    # fig.savefig(
-    #     'plots/Violin_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
-    #     + orientation + "_" + extinction + ".pdf",
-    #     bbox_inches='tight')
-    #
-    # plt.close(fig)
-    #
-    # legend_elements = []
-    #
-    # fig = plt.figure(figsize=(5, 9))
-    # gs = gridspec.GridSpec(3, 1)
-    # gs.update(wspace=0.0, hspace=0.0)
-    # ax1 = fig.add_subplot(gs[0, 0])
-    # ax2 = fig.add_subplot(gs[1, 0])
-    # ax3 = fig.add_subplot(gs[2, 0])
-    #
-    # for ax in [ax1, ax2, ax3]:
-    #
-    #     if ax != ax3:
-    #         ax.tick_params(axis='x', top=False, bottom=False,
-    #                        labeltop=False, labelbottom=False)
-    #     ax.semilogy()
-    #
-    # med_hlr = []
-    # med_inthlr = []
-    # med_hdr = []
-    # hlr_16 = []
-    # inthlr_16 = []
-    # hdr_16 = []
-    # hlr_84 = []
-    # inthlr_84 = []
-    # hdr_84 = []
-    # for i in range(len(ws)):
-    #
-    #     vpstats1 = custom_violin_stats(hlr[i], ws[i])
-    #     med_hlr.append(vpstats1[0]["median"])
-    #     hlr_16.append(vpstats1[0]["pcent_16"])
-    #     hlr_84.append(vpstats1[0]["pcent_84"])
-    #     vplot = ax1.violin(vpstats1, positions=[plt_z[i]],
-    #                        vert=True,
-    #                        showmeans=True,
-    #                        showextrema=True,
-    #                        showmedians=True)
-    #
-    #     # Make all the violin statistics marks red:
-    #     for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
-    #         vp = vplot[partname]
-    #         vp.set_edgecolor("k")
-    #         vp.set_linewidth(1)
-    #
-    #     # Make the violin body blue with a red border:
-    #     for vp in vplot['bodies']:
-    #         vp.set_facecolor("r")
-    #         vp.set_edgecolor("r")
-    #         vp.set_linewidth(1)
-    #         vp.set_alpha(0.5)
-    #
-    # for i in range(len(ws)):
-    #
-    #     vpstats1 = custom_violin_stats(intr_hlr[i], ws[i])
-    #     med_inthlr.append(vpstats1[0]["median"])
-    #     inthlr_16.append(vpstats1[0]["pcent_16"])
-    #     inthlr_84.append(vpstats1[0]["pcent_84"])
-    #     vplot = ax2.violin(vpstats1, positions=[plt_z[i]],
-    #                        vert=True,
-    #                        showmeans=True,
-    #                        showextrema=True,
-    #                        showmedians=True)
-    #
-    #     # Make all the violin statistics marks red:
-    #     for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
-    #         vp = vplot[partname]
-    #         vp.set_edgecolor("k")
-    #         vp.set_linewidth(1)
-    #
-    #     # Make the violin body blue with a red border:
-    #     for vp in vplot['bodies']:
-    #         vp.set_facecolor("g")
-    #         vp.set_edgecolor("g")
-    #         vp.set_linewidth(1)
-    #         vp.set_alpha(0.5)
-    #
-    # for i in range(len(ws)):
-    #
-    #     vpstats1 = custom_violin_stats(hdr[i], ws[i])
-    #     med_hdr.append(vpstats1[0]["median"])
-    #     hdr_16.append(vpstats1[0]["pcent_16"])
-    #     hdr_84.append(vpstats1[0]["pcent_84"])
-    #     vplot = ax3.violin(vpstats1, positions=[plt_z[i]],
-    #                        vert=True,
-    #                        showmeans=True,
-    #                        showextrema=True,
-    #                        showmedians=True)
-    #
-    #     # Make all the violin statistics marks red:
-    #     for partname in ('cbars', 'cmins', 'cmaxes', 'cmeans', 'cmedians'):
-    #         vp = vplot[partname]
-    #         vp.set_edgecolor("k")
-    #         vp.set_linewidth(1)
-    #
-    #     # Make the violin body blue with a red border:
-    #     for vp in vplot['bodies']:
-    #         vp.set_facecolor("m")
-    #         vp.set_edgecolor("m")
-    #         vp.set_linewidth(1)
-    #         vp.set_alpha(0.5)
-    #
-    # for ax in [ax1, ax2, ax3]:
-    #     ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
-    #     ax.plot(plt_z, med_inthlr, color="g", marker="s", linestyle="-")
-    #     ax.plot(plt_z, med_hlr, color="r", marker="^", linestyle="-")
-    #     ax.plot(plt_z, med_hdr, color="m", marker="D", linestyle="-")
-    #
-    # legend_elements.append(
-    #     Line2D([0], [0], color="g", linestyle="-", marker="s",
-    #            label="Median Intrinsic"))
-    # legend_elements.append(
-    #     Line2D([0], [0], color="r", linestyle="-", marker="^",
-    #            label="Median Attenuated"))
-    # legend_elements.append(
-    #     Line2D([0], [0], color="m", linestyle="-", marker="D",
-    #            label="Median Dust"))
-    # legend_elements.append(
-    #     Line2D([0], [0], color="k", linestyle="--",
-    #            label="Softening"))
-    #
-    # # Label axes
-    # ax3.set_xlabel(r'$z$')
-    # for ax in [ax1, ax2, ax3]:
-    #     ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-    #     ax.set_xlim(4.5, 11.5)
-    #     ax.set_ylim(10 ** -1.5, 10 ** 1.5)
-    #
-    # ax3.tick_params(axis='x', which='minor', bottom=True)
-    #
-    # ax3.legend(handles=legend_elements, loc='upper center',
-    #            bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=2)
-    #
-    # fig.savefig(
-    #     'plots/ViolinComp_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
-    #     + orientation + "_" + extinction + ".pdf",
-    #     bbox_inches='tight')
-    #
-    # plt.close(fig)
-    #
-    # legend_elements = []
-    #
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111)
-    # ax.semilogy()
-    #
-    # ax.plot(plt_z, soft, color="k", linestyle="--", label="Softening")
-    # ax.fill_between(plt_z, hdr_16, hdr_84, facecolor="none", hatch="X",
-    #                 edgecolor="m")
-    # ax.fill_between(plt_z, inthlr_16, inthlr_84, color="g", alpha=0.4)
-    # ax.fill_between(plt_z, hlr_16, hlr_84, color="r", alpha=0.4)
-    # ax.plot(plt_z, med_hdr, color="m", marker="D", linestyle="-")
-    # ax.plot(plt_z, med_inthlr, color="g", marker="s", linestyle="-")
-    # ax.plot(plt_z, med_hlr, color="r", marker="^", linestyle="-")
-    #
-    # legend_elements.append(
-    #     Line2D([0], [0], color="g", linestyle="-", marker="s",
-    #            label="Median Intrinsic"))
-    # legend_elements.append(
-    #     Line2D([0], [0], color="r", linestyle="-", marker="^",
-    #            label="Median Attenuated"))
-    # legend_elements.append(
-    #     Line2D([0], [0], color="m", linestyle="-", marker="D",
-    #            label="Median Dust"))
-    # legend_elements.append(
-    #     Line2D([0], [0], color="k", linestyle="--",
-    #            label="Softening"))
-    #
-    # for p in labels.keys():
-    #
-    #     okinds = papers == p
-    #     plt_r_es = r_es[okinds]
-    #     plt_zs = zs[okinds]
-    #
-    #     if plt_zs.size == 0:
-    #         continue
-    #
-    #     legend_elements.append(
-    #         Line2D([0], [0], marker=markers[p], color='w',
-    #                label=labels[p], markerfacecolor=colors[p],
-    #                markersize=8, alpha=0.7))
-    #
-    #     ax.scatter(plt_zs, plt_r_es,
-    #                marker=markers[p], label=labels[p], s=17,
-    #                color=colors[p], alpha=0.7)
-    #
-    # # Label axes
-    # ax.set_xlabel(r'$z$')
-    # ax.set_ylabel('$R_{1/2}/ [pkpc]$')
-    # ax.set_xlim(4.5, 11.5)
-    # ax.set_ylim(10 ** -1.5, 10 ** 1.5)
-    #
-    # ax.tick_params(axis='x', which='minor', bottom=True)
-    #
-    # ax.legend(handles=legend_elements, loc='upper center',
-    #           bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=4)
-    #
-    # fig.savefig(
-    #     'plots/HalfLightRadius_evolution_' + mtype + '_' + f + '_'
-    #     + orientation + "_" + extinction + ".pdf",
-    #     bbox_inches='tight')
-    #
-    # plt.close(fig)
+    fig = plt.figure()
+    bar_ax = fig.add_subplot(111)
+
+    # Plot FIRE region
+    bar_ax.fill_between([-2, 30], y1=[1, 1], y2=[2, 2],
+                        facecolor="k", alpha=0.2)
+
+    comp_val_works = ["FLARES", "FLARES (low-z)", "FLARES (high-z)",
+                      "Marshall+", "Oesch+",
+                      "Holwerda+", "Kawamata+", "Ono+"]
+    comp_vals = [(slopes, slope_errors),
+                 (slopes_low, slope_errors_low),
+                 (slopes_high, slope_errors_high),
+                 ([], bt_up_m, []), 
+                 (oesch_low_m, oesch_up_m, []), 
+                 (hol_low_m, [], hol_up_m), 
+                 ([], kawa_up_norm, []), 
+                 (ono_low_m, ono_up_m, [])]
+
+    for (i, w), v_lst in zip(enumerate(comp_val_works), comp_vals):
+        for c, j in zip(["b", "g", "r"], range(3)):
+            x = i + j
+
+            if len(v_lst[j]) == 0:
+                continue
+
+            if w[0] == "F":
+                bar_ax.errorbar([x, ],
+                                [v_lst[0][j], ],
+                                yerr=np.array([(v_lst[1][j], v_lst[1][j])]).T,
+                                color=c, fmt="s", capsize=5)
+            else:
+                bar_ax.errorbar([x, ],
+                                [v_lst[j][0], ],
+                                yerr=np.array([(v_lst[j][2], v_lst[j][1])]).T,
+                                color=c, fmt="s", capsize=5)
+
+
+    # bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
+    # bar_ax.axvline(5.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
+    # bar_ax.axvline(8.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
+    # bar_ax.axvline(11.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
+    # bar_ax.axvline(14.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
+
+    bar_ax.axhline(1, linestyle="--", color="grey", alpha=0.7)
+    bar_ax.axhline(1.5, linestyle="dotted", color="grey", alpha=0.7)
+
+    bar_ax.set_xlim(-0.5, 23.5)
+    bar_ax.set_ylim(0.49, 2)
+
+    bar_ax.tick_params(reset=True, bottom=True, left=True,
+                       top=False, right=False)
+
+    for pos in [-0.5, 2.5, 5.5, 8.5, 11.5, 14.5, 17.5, 20.5, 23.5]:
+        bar_ax.axvline(pos, linestyle="-", color="k", alpha=0.7)
+
+    bar_ax.set_ylabel("$m$")
+    bar_ax.set_xticks([1, 4, 7, 10, 13, 16, 19, 22, 23])
+    bar_ax.set_xticklabels(comp_val_works)
+    bar_ax.tick_params(axis='x', which='minor', bottom=True)
+
+    bar_ax.set_yticks([0.5, 1, 1.5])
+    bar_ax.set_yticklabels([0.5, 1, 1.5])
+
+    bar_ax.grid(False)
+    bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
+
+    fig.savefig(
+        'plots/SlopeComp_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
+        + orientation + "_" + extinction + "_" + Type + ".pdf",
+        bbox_inches='tight')
+
+    plt.close(fig)
+
