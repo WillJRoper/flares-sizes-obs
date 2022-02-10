@@ -5,6 +5,7 @@ import warnings
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import cmasher as cmr
 import scipy
 import numpy as np
@@ -296,13 +297,15 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax1.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
     ax2.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
 
-    cax = fig.add_axes([0.125, 0.95, 0.355, 0.03])
+    divider = make_axes_locatable(ax1)
+    cax = divider.append_axes('top', size='5%', pad=0.1)
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
 
-    cax = fig.add_axes([0.545, 0.95, 0.355, 0.03])
+    divider = make_axes_locatable(ax2)
+    cax = divider.append_axes('top', size='5%', pad=0.1)
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
