@@ -445,7 +445,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         plt_z = np.array(plt_z)
 
         cnt_okinds = cnts > 10
-        ax.errorbar(plt_z[cnt_okinds], med[cnt_okinds],
+        ax.errorbar(plt_z, med[cnt_okinds],
                     yerr=(hlr_16[cnt_okinds], hlr_84[cnt_okinds]),
                     capsize=5, color=col,
                     marker="s", linestyle="none")
@@ -468,18 +468,21 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="FLARES ($5\geq z \geq 12$)",
+                                  label="FLARES ($5\leq z \leq 12$)",
                                   linestyle="-"))
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="FLARES ($5\geq z \geq 10$)",
+                                  label="FLARES ($5\leq z \leq 10$)",
                                   linestyle="--"))
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="FLARES ($7\geq z \geq 12$)",
+                                  label="FLARES ($7\leq z \leq 12$)",
                                   linestyle="dotted"))
 
     legend_elements.append(Line2D([0], [0], color='k',
                                   label="Simulations",
                                   linestyle="none", marker="s"))
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="Simulations ($N<10$)",
+                                  linestyle="none", marker="^"))
     legend_elements.append(Line2D([0], [0], color='k',
                                   label="Observations",
                                   linestyle="none", marker="*"))
