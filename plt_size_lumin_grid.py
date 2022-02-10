@@ -314,7 +314,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             axes_diff[i].axhline(csoft, linestyle="--", color="k")
             axes_com[i].axhline(csoft, linestyle="--", color="k")
 
-        for i in range(len(axes)):
+        for i in range(len(axes_diff)):
             axes_diff[i].set_ylim(10 ** extent[0], 10 ** extent[1])
             axes_com[i].set_ylim(10 ** extent[0], 10 ** extent[1])
 
