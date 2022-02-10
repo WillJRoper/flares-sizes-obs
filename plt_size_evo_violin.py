@@ -527,6 +527,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
             x += 1
 
             if w[0] == "F":
+                print(v_lst, v_lst[0], v_lst[0][j])
                 bar_ax.errorbar([x, ],
                                 [v_lst[0][j], ],
                                 yerr=np.array([(v_lst[1][j], v_lst[1][j])]).T,
