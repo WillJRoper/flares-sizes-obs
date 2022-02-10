@@ -455,10 +455,10 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
 
         uni_legend_elements.append(
             Line2D([0], [0], color="r", linestyle="-",
-                   label="FLARES (Complete)"))
-        uni_legend_elements.append(
-            Line2D([0], [0], color="r", linestyle="-.",
-                   label="FLARES (Compact)"))
+                   label="FLARES"))
+        # uni_legend_elements.append(
+        #     Line2D([0], [0], color="r", linestyle="-.",
+        #            label="FLARES (Compact)"))
 
         uni_legend_elements.append(
             Line2D([0], [0], color=colors["Hu13"], linestyle="--",

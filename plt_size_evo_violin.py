@@ -396,7 +396,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                  np.min(fitting_zs[okinds][lowz_okinds]), 1000)
 
         ax.plot(fit_plt_zs, fit(fit_plt_zs, popt[0], popt[1]),
-                linestyle="-.", color=col)
+                linestyle="--", color=col, zorder=3)
         
         popt, pcov = curve_fit(fit, fitting_zs[okinds][highz_okinds], 
                                fitting_hlrs[okinds][highz_okinds],
@@ -468,15 +468,18 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="FLARES",
-                                  linestyle="-", marker="s"))
+                                  label="FLARES ($5\geq z \geq 12$)",
+                                  linestyle="-"))
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="FLARES (low-$z$)",
-                                  linestyle="-.", marker="s"))
+                                  label="FLARES ($5\geq z \geq 10$)",
+                                  linestyle="--"))
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="FLARES (high-$z$)",
-                                  linestyle="dotted", marker="s"))
+                                  label="FLARES ($7\geq z \geq 12$)",
+                                  linestyle="dotted"))
 
+    legend_elements.append(Line2D([0], [0], color='k',
+                                  label="Simulations",
+                                  linestyle="none", marker="s"))
     legend_elements.append(Line2D([0], [0], color='k',
                                   label="Observations",
                                   linestyle="none", marker="*"))
@@ -564,8 +567,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     bar_ax.set_yticks([0.5, 1, 1.5])
     bar_ax.set_yticklabels([0.5, 1, 1.5])
 
-    bar_ax.grid(False)
-    bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
+    # bar_ax.grid(False)
+    # bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
 
     fig.savefig(
         'plots/SlopeComp_HalfLightRadius_evolution_' + mtype + '_' + f + '_'
