@@ -319,7 +319,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                 fit = r_fit(fit_lumins, popt1[0], popt1[1])
 
                 axes[i].plot(fit_lumins, fit,
-                             linestyle='dotted', color="r",
+                             linestyle='-.', color="r",
                              zorder=3)
 
                 # fit = r_fit(fit_lumins, popt1[0], popt1[1])
@@ -457,7 +457,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
             Line2D([0], [0], color="r", linestyle="-",
                    label="FLARES (Complete)"))
         uni_legend_elements.append(
-            Line2D([0], [0], color="r", linestyle="dotted",
+            Line2D([0], [0], color="r", linestyle="-.",
                    label="FLARES (Compact)"))
 
         uni_legend_elements.append(

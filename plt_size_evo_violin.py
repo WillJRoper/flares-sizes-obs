@@ -354,6 +354,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
         fit_plt_zs = np.linspace(np.max(uni_z), np.min(uni_z), 1000)
 
+        lowz_okinds = fitting_zs[okinds] <= 10
+        highz_okinds = fitting_zs[okinds] >= 7
+
         popt, pcov = curve_fit(fit, fitting_zs[okinds], fitting_hlrs[okinds],
                                p0=(1, 0.5), sigma=fitting_ws[okinds])
 
@@ -443,7 +446,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                     yerr=np.array([(oesch_low_m[1], oesch_low_m[1]),
                                    (hol_low_m[1], hol_low_m[1]),
                                    (ono_low_m[2], ono_low_m[1])]).T,
-                    color="b", fmt="*", capsize=5, markersize=3)
+                    color="b", fmt="*", capsize=5, markersize=6)
 
     bar_ax.errorbar([7, 13, 16],
                     [oesch_up_m[0], kawa_up_norm[0],
@@ -451,11 +454,11 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                     yerr=np.array([(oesch_up_m[1], oesch_up_m[1]),
                                    (kawa_up_norm[1], kawa_up_norm[1]),
                                    (ono_up_m[2], ono_up_m[1])]).T,
-                    color="g", fmt="*", capsize=5, markersize=3)
+                    color="g", fmt="*", capsize=5, markersize=6)
 
     bar_ax.errorbar([11, ], [hol_up_m[0], ],
                     yerr=np.array([(hol_up_m[1], hol_up_m[1])]).T,
-                    color="r", fmt="*", capsize=5, markersize=3)
+                    color="r", fmt="*", capsize=5, markersize=6)
 
     comp_val_works = ["FLARES", "Marshall+", "Oesch+",
                       "Holwerda+", "Kawamata+", "Ono+"]

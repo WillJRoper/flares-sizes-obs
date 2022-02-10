@@ -170,16 +170,26 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         print("Type =", Type)
         print("Filter =", f)
 
-        fig = plt.figure(figsize=(18, 5))
-        gs = gridspec.GridSpec(1, len(snaps))
+        fig = plt.figure(figsize=(18, 8))
+        gs = gridspec.GridSpec(2, len(snaps))
         gs.update(wspace=0.0, hspace=0.0)
-        axes = []
+        axes_diff = []
+        axes_com = []
         i = 0
         while i < len(snaps):
-            axes.append(fig.add_subplot(gs[0, i]))
+            axes_com.append(fig.add_subplot(gs[0, i]))
+            axes_diff.append(fig.add_subplot(gs[1, i]))
             if i > 0:
-                axes[-1].tick_params(axis='y', left=False, right=False,
-                                     labelleft=False, labelright=False)
+                axes_com[-1].tick_params(axis='both', left=False, right=False,
+                                         top=False, bottom=False,
+                                         labelleft=False, labelright=False,
+                                         labeltop=False, labelbottom=False)
+                axes_diff[-1].tick_params(axis='y', left=False, right=False,
+                                         labelleft=False, labelright=False)
+            else:
+                axes_com[-1].tick_params(axis='x',
+                                         top=False, bottom=False,
+                                         labeltop=False, labelbottom=False)
             i += 1
 
         legend_elements = []
@@ -188,6 +198,11 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
 
             z_str = snap.split('z')[1].split('p')
             z = float(z_str[0] + '.' + z_str[1])
+
+            if z <= 2.8:
+                csoft = 0.000474390 / 0.6777 * 1e3
+            else:
+                csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
 
             if mtype == "part":
                 hlrs = np.array(data[snap][f]["HLR_0.5"])
@@ -209,69 +224,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             compact_com = data[snap][f]["Compact_Population_Complete"]
             diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
 
-            # bins = np.logspace(np.log10(0.08), np.log10(20), 40)
-            # lumin_bins = np.logspace(np.log10(10 ** 27.),
-            #                          np.log10(10 ** 30.5),
-            #                          40)
-            # H, xbins, ybins = np.histogram2d(lumins[okinds2], hlrs[okinds2],
-            #                                  bins=(lumin_bins, bins),
-            #                                  weights=w[okinds2])
-            #
-            # # Resample your data grid by a factor of 3 using cubic spline interpolation.
-            # H = scipy.ndimage.zoom(H, 3)
-            #
-            # # percentiles = [np.min(w),
-            # #                10**-3,
-            # #                10**-1,
-            # #                1, 2, 5]
-            #
-            # try:
-            #     percentiles = [np.percentile(H[H > 0], 50),
-            #                    np.percentile(H[H > 0], 80),
-            #                    np.percentile(H[H > 0], 90),
-            #                    np.percentile(H[H > 0], 95),
-            #                    np.percentile(H[H > 0], 99)]
-            # except IndexError:
-            #     continue
-            #
-            # print(percentiles)
-            #
-            # bins = np.logspace(np.log10(0.08), np.log10(20), H.shape[0] + 1)
-            # lumin_bins = np.logspace(np.log10(10 ** 27.), np.log10(10 ** 30.5),
-            #                          H.shape[0] + 1)
-            #
-            # xbin_cents = (bins[1:] + bins[:-1]) / 2
-            # ybin_cents = (bins[1:] + bins[:-1]) / 2
-            #
-            # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
-
-            # try:
-            #     cbar = axes[i].hexbin(lumins[diffuse_ncom], hlrs[diffuse_ncom],
-            #                           gridsize=50,
-            #                           mincnt=np.min(w) - (0.1 * np.min(w)), C=w[diffuse_ncom],
-            #                           reduce_C_function=np.sum,
-            #                           xscale='log', yscale='log',
-            #                           norm=weight_norm, linewidths=0.2,
-            #                           cmap='Greys', alpha=0.2, extent=extent)
-            # except ValueError as e:
-            #     print(e, "Diffuse incomplete", snap, f)
-            #     print(lumins[diffuse_ncom][lumins[diffuse_ncom] <= 0],
-            #           lumins[diffuse_ncom][lumins[diffuse_ncom] <= 0].size)
-            # try:
-            #     axes[i].hexbin(lumins[compact_ncom], hlrs[compact_ncom],
-            #                    gridsize=50,
-            #                    mincnt=np.min(w) - (0.1 * np.min(w)),
-            #                    C=w[compact_ncom],
-            #                    reduce_C_function=np.sum,
-            #                    xscale='log', yscale='log',
-            #                    norm=weight_norm, linewidths=0.2,
-            #                    cmap='viridis', alpha=0.2, extent=extent)
-            # except ValueError as e:
-            #     print(e, "Compact incomplete", snap, f)
-            #     print(lumins[compact_ncom][lumins[compact_ncom] <= 0],
-            #           lumins[compact_ncom][lumins[compact_ncom] <= 0].size)
             try:
-                cbar = axes[i].hexbin(lumins[diffuse_com], hlrs[diffuse_com],
+                cbar = axes_diff[i].hexbin(lumins[diffuse_com], hlrs[diffuse_com],
                                       gridsize=50,
                                       mincnt=np.min(w) - (0.1 * np.min(w)),
                                       C=w[diffuse_com],
@@ -289,7 +243,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             except ValueError as e:
                 print(e, "Diffuse complete", snap, f)
             try:
-                axes[i].hexbin(lumins[compact_com],
+                axes_com[i].hexbin(lumins[compact_com],
                                hlrs[compact_com], gridsize=50,
                                mincnt=np.min(w) - (0.1 * np.min(w)),
                                C=w[compact_com],
@@ -330,60 +284,47 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                label=labels[p], markerfacecolor=colors[p],
                                markersize=8, alpha=0.9))
 
-                    axes[i].scatter(plt_lumins, plt_r_es,
-                                    marker=markers[p], label=labels[p], s=20,
-                                    color=colors[p], alpha=0.9)
+                    axes_com[i].scatter(plt_lumins, plt_r_es,
+                                        marker=markers[p], label=labels[p], s=20,
+                                        color=colors[p], alpha=0.9)
+                    axes_diff[i].scatter(plt_lumins, plt_r_es,
+                                        marker=markers[p], label=labels[p],
+                                        s=20,
+                                        color=colors[p], alpha=0.9)
 
-                # if int(z) in [6, 7, 8, 9]:
-                #
-                #     if z == 7 or z == 6:
-                #         low_lim = -16
-                #     elif z == 8:
-                #         low_lim = -16.8
-                #     else:
-                #         low_lim = -15.4
-                #     fit_lumins = np.logspace(np.log10(M_to_lum(-21.6)),
-                #                              np.log10(M_to_lum(low_lim)),
-                #                              1000)
-                #
-                #     fit = kawa_fit(fit_lumins, kawa_params['r_0'][int(z)],
-                #                    kawa_params['beta'][int(z)])
-                #     axes[i].plot(fit_lumins, fit,
-                #                  linestyle='dashed', color="g",
-                #                  alpha=0.9, zorder=2,
-                #                  label="Kawamata+18", linewidth=4)
-
-            axes[i].text(0.95, 0.05, f'$z={z}$',
+            axes_diff[i].text(0.95, 0.05, f'$z={z}$',
                          bbox=dict(boxstyle="round,pad=0.3", fc='w',
                                    ec="k", lw=1, alpha=0.8),
-                         transform=axes[i].transAxes,
+                         transform=axes_diff[i].transAxes,
                          horizontalalignment='right',
                          fontsize=8)
 
-            axes[i].tick_params(axis='both', which='minor',
-                                bottom=True, left=True)
+            axes_diff[i].tick_params(axis='both', which='minor',
+                                     bottom=True, left=True)
+            axes_com[i].tick_params(axis='both', which='minor',
+                                     bottom=True, left=True)
 
             # Label axes
-            axes[i].set_xlabel(r"$L_{" + f.split(".")[-1]
+            axes_diff[i].set_xlabel(r"$L_{" + f.split(".")[-1]
                                + "}/$ [erg $/$ s $/$ Hz]")
 
-            axes[i].tick_params(axis='x', which='both', bottom=True)
+            axes_diff[i].set_xlim(10 ** extent[2], 10 ** extent[3])
+            axes_com[i].set_xlim(10 ** extent[2], 10 ** extent[3])
 
-            axes[i].set_xlim(10 ** extent[2], 10 ** extent[3])
+            axes_diff[i].axhline(csoft, linestyle="--", color="k")
+            axes_com[i].axhline(csoft, linestyle="--", color="k")
 
         for i in range(len(axes)):
-            axes[i].set_ylim(10 ** extent[0], 10 ** extent[1])
+            axes_diff[i].set_ylim(10 ** extent[0], 10 ** extent[1])
+            axes_com[i].set_ylim(10 ** extent[0], 10 ** extent[1])
 
-        axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
-        axes[0].tick_params(axis='y', which='both', left=True)
+        axes_diff[0].set_ylabel('$R / [pkpc]$')
+        axes_com[0].set_ylabel('$R / [pkpc]$')
 
         uni_legend_elements = []
         uni_legend_elements.append(
             Line2D([0], [0], color="k", linestyle="none", marker="h",
                    label="FLARES"))
-        # uni_legend_elements.append(
-        #     Line2D([0], [0], color="g", linestyle="--",
-        #            label=labels["K18"]))
         included = []
         for l in legend_elements:
             if (l.get_label(), l.get_marker()) not in included:
@@ -391,7 +332,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 uni_legend_elements.append(l)
                 included.append((l.get_label(), l.get_marker()))
 
-        axes[2].legend(handles=uni_legend_elements, loc='upper center',
+        axes_diff[2].legend(handles=uni_legend_elements, loc='upper center',
                        bbox_to_anchor=(0.5, -0.15), fancybox=True,
                        ncol=len(uni_legend_elements))
 
