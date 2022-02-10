@@ -553,7 +553,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         bar_ax.axvline(pos, linestyle="-", color="k", alpha=0.7)
 
     bar_ax.set_ylabel("$m$")
-    bar_ax.set_xticks([1, 4, 7, 10, 13, 16, 19, 22, 23])
+    bar_ax.set_xticks([1, 4, 7, 10, 13, 16, 19, 22])
     bar_ax.set_xticklabels(comp_val_works)
     bar_ax.tick_params(axis='x', which='minor', bottom=True)
 
