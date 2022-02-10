@@ -473,6 +473,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     legend_elements.append(Line2D([0], [0], color='k',
                                   label="FLARES (high-$z$)",
                                   linestyle="dotted", marker="s"))
+
     legend_elements.append(Line2D([0], [0], color='k',
                                   label="Observations",
                                   linestyle="none", marker="*"))
@@ -487,7 +488,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     ax.set_ylim(10 ** -1.6, 10 ** 1.)
 
     ax.legend(handles=legend_elements, loc='upper center',
-              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=5)
+              bbox_to_anchor=(0.5, -0.15), fancybox=True, ncol=3)
 
     fig.savefig(
         'plots/Violin_ObsCompHalfLightRadius_evolution_' + mtype + '_' + f + '_'
@@ -514,11 +515,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                  (hol_low_m, [], hol_up_m), 
                  ([], kawa_up_norm, []), 
                  (ono_low_m, ono_up_m, [])]
-
+    x = -1
     for (i, w), v_lst in zip(enumerate(comp_val_works), comp_vals):
         for c, j in zip(["b", "g", "r"], range(3)):
-            x = i + j
-
+            x += 1
             if len(v_lst[j]) == 0:
                 continue
 
@@ -550,7 +550,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                        top=False, right=False)
 
     for pos in [-0.5, 2.5, 5.5, 8.5, 11.5, 14.5, 17.5, 20.5, 23.5]:
-        bar_ax.axvline(pos, linestyle="-", color="k", alpha=0.7)
+        bar_ax.axvline(pos, linestyle="-", color="k", alpha=0.5)
 
     bar_ax.set_ylabel("$m$")
     bar_ax.set_xticks([1, 4, 7, 10, 13, 16, 19, 22])
