@@ -47,7 +47,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(8, 3))
     gs = gridspec.GridSpec(3, 5, height_ratios=(2, 10, 10),
                            width_ratios=(20, 1, 1, 1, 1))
     gs.update(wspace=0.0, hspace=0.0)
