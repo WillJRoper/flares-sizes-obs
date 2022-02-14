@@ -534,7 +534,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                 bar_ax.errorbar([x, ],
                                 [v_lst[0][j], ],
                                 yerr=np.array([(v_lst[1][j], v_lst[1][j])]).T,
-                                color=c, fmt="s", capsize=5)
+                                color=c, fmt="s", capsize=5, markersize=5)
 
             elif w[0] == "M":
 
@@ -544,7 +544,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                 bar_ax.errorbar([x, ],
                                 [v_lst[j][0], ],
                                 yerr=np.array([(v_lst[j][2], v_lst[j][1])]).T,
-                                color=c, fmt="s", capsize=5)
+                                color=c, fmt="s", capsize=5, markersize=5)
             else:
                 if len(v_lst[j]) == 0:
                     continue
@@ -552,7 +552,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                 bar_ax.errorbar([x, ],
                                 [v_lst[j][0], ],
                                 yerr=np.array([(v_lst[j][2], v_lst[j][1])]).T,
-                                color=c, fmt="*", capsize=5, markersize=7)
+                                color=c, fmt="*", capsize=5, markersize=10)
 
 
     # bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
@@ -565,7 +565,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     bar_ax.axhline(1.5, linestyle="dotted", color="grey", alpha=0.7)
 
     bar_ax.set_xlim(-0.5, 23.5)
-    bar_ax.set_ylim(0.49, 3)
+    bar_ax.set_ylim(0.49, 3.1)
 
     bar_ax.tick_params(reset=True, bottom=True, left=True,
                        top=False, right=False)
