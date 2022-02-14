@@ -48,8 +48,8 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     z = float(z_str[0] + '.' + z_str[1])
 
     fig = plt.figure()
-    gs = gridspec.GridSpec(3, 3, height_ratios=(2, 10, 10),
-                           width_ratios=(10, 1, 1))
+    gs = gridspec.GridSpec(3, 5, height_ratios=(2, 10, 10),
+                           width_ratios=(20, 1, 1, 1, 1))
     gs.update(wspace=0.0, hspace=0.0)
     ax = fig.add_subplot(gs[1, 0])
     ax1 = fig.add_subplot(gs[2, 0])
@@ -142,8 +142,8 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     axright.spines['top'].set_visible(False)
     axright.spines['right'].set_visible(False)
 
-
     cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"), norm=weight_norm)
+    cb1.ax.yaxis.set_ticks([])
     cb1 = mpl.colorbar.ColorbarBase(cax2, cmap=plt.get_cmap("viridis"), norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.yaxis.set_ticks([10**-3, 10**-2, 10**-1, 10**0])
