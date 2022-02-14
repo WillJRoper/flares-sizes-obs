@@ -53,6 +53,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     gs.update(wspace=0.0, hspace=0.0)
     ax = fig.add_subplot(gs[1, 0])
     ax1 = fig.add_subplot(gs[2, 0])
+    ax2 = fig.add_subplot(gs[2, 1])
     axtop = fig.add_subplot(gs[0, 0])
     axright = fig.add_subplot(gs[1, 1])
     axtop.loglog()
@@ -60,7 +61,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     axtop.grid(False)
     axright.grid(False)
     try:
-        cbar = ax.hexbin(mass[diff_ncomp], lumins[diff_ncomp],
+        cbar = ax1.hexbin(mass[diff_ncomp], lumins[diff_ncomp],
                          gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)), C=w[diff_ncomp],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
@@ -81,7 +82,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys',
                          extent=extent)
-        cbar = ax1.hexbin(mass[com_comp], lumins[com_comp],
+        cbar = ax.hexbin(mass[com_comp], lumins[com_comp],
                          gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)), C=w[com_comp],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
@@ -131,16 +132,15 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     axright.spines['top'].set_visible(False)
     axright.spines['right'].set_visible(False)
 
-    divider = make_axes_locatable(ax1)
-    cax = divider.append_axes('right', size='5%', pad=0.1)
+    divider = make_axes_locatable(ax2)
+    cax = divider.append_axes('right', size='5%', pad=-0.5)
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
-    cb1.ax.xaxis.set_ticks([10 ** -3, 10 ** -2, 10 ** -1, 10 ** 0])
 
-    divider = make_axes_locatable(ax1)
-    cax = divider.append_axes('right', size='5%', pad=0.2)
+    divider = make_axes_locatable(ax2)
+    cax = divider.append_axes('right', size='5%', pad=0.5)
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
-    cb1.ax.xaxis.set_ticks([10**-3, 10**-2, 10**-1, 10**0])
+    cb1.ax.yaxis.set_ticks([10**-3, 10**-2, 10**-1, 10**0])
 
     # ax.text(0.95, 0.05, f'$z={z}$',
     #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
