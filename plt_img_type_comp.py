@@ -8,6 +8,7 @@ import matplotlib as mpl
 import matplotlib.colors as cm
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
 import pandas as pd
 
@@ -271,12 +272,9 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     ax.set_xlim(10 ** 27., 10 ** 31.)
     ax.set_ylim(10 ** 27., 10 ** 31.)
 
-    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"), norm=weight_norm)
-    cb1.set_label("$\sum w_{i}$")
-
-    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes('top', size='5%', pad=0.1)
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')

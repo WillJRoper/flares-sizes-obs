@@ -4,6 +4,7 @@ import warnings
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
@@ -51,13 +52,8 @@ def size_comp_smooth(f, snap, hlrs_pix, hlrs_pix_nosmooth, w, com_comp,
         #                  norm=weight_norm, linewidths=0.2,
         #                  cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3),
         #                  alpha=0.2)
-        cbar = ax.hexbin(hlrs_pix[diff_comp], hlrs_pix_nosmooth[diff_comp],
-                         C=w[diff_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
-                         xscale='log', yscale='log',
-                         norm=weight_norm, linewidths=0.2,
-                         cmap='Greys', extent=(-1.1, 1.3, -1.1, 1.3))
-        cbar = ax.hexbin(hlrs_pix[com_comp], hlrs_pix_nosmooth[com_comp],
-                         C=w[com_comp], gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
+        cbar = ax.hexbin(hlrs_pix, hlrs_pix_nosmooth,
+                         C=w, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis', extent=(-1.1, 1.3, -1.1, 1.3))
@@ -82,12 +78,9 @@ def size_comp_smooth(f, snap, hlrs_pix, hlrs_pix_nosmooth, w, com_comp,
     ax.set_xlim(10 ** -1.1, 10 ** 1.3)
     ax.set_ylim(10 ** -1.1, 10 ** 1.3)
 
-    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"), norm=weight_norm)
-    cb1.set_label("$\sum w_{i}$")
-
-    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes('top', size='5%', pad=0.1)
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
