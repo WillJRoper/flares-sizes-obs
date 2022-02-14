@@ -228,17 +228,12 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     ax.set_ylim(10 ** -1.1, 10 ** 1.3)
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
-    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"),
-                                    norm=weight_norm)
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes('top', size='5%', pad=0.1)
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
-
-    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"),
-                                    norm=weight_norm, orientation="horizontal")
-    cb1.set_label("$\sum w_{i}$")
-    ax2.xaxis.set_label_position('top')
-    ax2.xaxis.set_ticks_position('top')
+    cb1.ax.xaxis.set_label_position('top')
+    cb1.ax.xaxis.set_ticks_position('top')
 
     fig.savefig(
         'plots/' + str(z) + '/ComparisonImageCreation_HLR_' + f + '_' + str(
@@ -274,7 +269,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     divider = make_axes_locatable(ax)
     cax = divider.append_axes('top', size='5%', pad=0.1)
-    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')
     cb1.ax.xaxis.set_ticks_position('top')
