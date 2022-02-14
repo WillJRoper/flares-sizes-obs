@@ -529,7 +529,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
         for c, j in zip(["b", "g", "r"], range(3)):
             x += 1
 
-            if w[0] == "F":
+            if w[0] == "F" or w[0] == "M":
                 print(w, v_lst, v_lst[0], v_lst[0][j])
                 bar_ax.errorbar([x, ],
                                 [v_lst[0][j], ],
@@ -542,7 +542,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                 bar_ax.errorbar([x, ],
                                 [v_lst[j][0], ],
                                 yerr=np.array([(v_lst[j][2], v_lst[j][1])]).T,
-                                color=c, fmt="*", capsize=5)
+                                color=c, fmt="*", capsize=5, markersize=7)
 
 
     # bar_ax.axvline(2.5, linestyle="-", linewidth=1, color="grey", alpha=0.3)
@@ -565,11 +565,8 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
     bar_ax.set_ylabel("$m$")
     bar_ax.set_xticks([1, 4, 7, 10, 13, 16, 19, 22])
-    bar_ax.set_xticklabels(comp_val_works)
+    bar_ax.set_xticklabels(comp_val_works, rotation=90)
     bar_ax.tick_params(axis='x', which='minor', bottom=True)
-
-    bar_ax.set_yticks([0.5, 1, 1.5])
-    bar_ax.set_yticklabels([0.5, 1, 1.5])
 
     # bar_ax.grid(False)
     # bar_ax.grid(axis="y", linestyle="-", linewidth=1, color="grey", alpha=0.3)
