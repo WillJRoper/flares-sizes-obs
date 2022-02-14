@@ -48,9 +48,11 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     z = float(z_str[0] + '.' + z_str[1])
 
     fig = plt.figure()
-    gs = gridspec.GridSpec(2, 2, height_ratios=(2, 10), width_ratios=(10, 2))
+    gs = gridspec.GridSpec(3, 2, height_ratios=(2, 10, 10),
+                           width_ratios=(10, 2))
     gs.update(wspace=0.0, hspace=0.0)
     ax = fig.add_subplot(gs[1, 0])
+    ax1 = fig.add_subplot(gs[2, 0])
     axtop = fig.add_subplot(gs[0, 0])
     axright = fig.add_subplot(gs[1, 1])
     axtop.loglog()
@@ -72,14 +74,14 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
                          norm=weight_norm, linewidths=0.2,
                          cmap='viridis', alpha=0.2,
                          extent=extent)
-        cbar = ax.hexbin(mass[diff_comp], lumins[diff_comp],
+        cbar = ax1.hexbin(mass[diff_comp], lumins[diff_comp],
                          gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)), C=w[diff_comp],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
                          cmap='Greys',
                          extent=extent)
-        cbar = ax.hexbin(mass[com_comp], lumins[com_comp],
+        cbar = ax1.hexbin(mass[com_comp], lumins[com_comp],
                          gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)), C=w[com_comp],
                          reduce_C_function=np.sum,
                          xscale='log', yscale='log',
@@ -98,6 +100,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     axright.plot(Hbot2, lbin_cents, color="k")
     axright.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
     ax.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
+    ax1.axhline(comp_l, linestyle="--", alpha=0.6, color="k")
 
     mass_bins = np.logspace(extent[0], extent[1], 50)
     Htop2_all, bin_edges = np.histogram(mass, bins=mass_bins)
@@ -108,6 +111,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     axtop.plot(mbin_cents, Htop2, color="k")
     axtop.axvline(comp_m, linestyle="--", alpha=0.6, color="k")
     ax.axvline(comp_m, linestyle="--", alpha=0.6, color="k")
+    ax1.axvline(comp_m, linestyle="--", alpha=0.6, color="k")
 
     # Remove axis labels and ticks
     axtop.tick_params(axis='x', top=False, bottom=False,
@@ -127,15 +131,16 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     axright.spines['top'].set_visible(False)
     axright.spines['right'].set_visible(False)
 
-    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"), norm=weight_norm)
-    cb1.set_label("$\sum w_{i}$")
+    divider = make_axes_locatable(ax1)
+    cax = divider.append_axes('right', size='5%', pad=0.1)
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
+    cb1.ax.xaxis.set_ticks([10 ** -3, 10 ** -2, 10 ** -1, 10 ** 0])
 
-    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
+    divider = make_axes_locatable(ax1)
+    cax = divider.append_axes('right', size='5%', pad=0.2)
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
-    cb1.ax.xaxis.set_label_position('top')
-    cb1.ax.xaxis.set_ticks_position('top')
+    cb1.ax.xaxis.set_ticks([10**-3, 10**-2, 10**-1, 10**0])
 
     # ax.text(0.95, 0.05, f'$z={z}$',
     #         bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -145,19 +150,24 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
 
     # Label axes
     ax.set_ylabel(r"$L_{" + f.split(".")[-1] + "}/$ [erg $/$ s $/$ Hz]")
-    ax.set_xlabel('$M_\star/ M_\odot$')
+    ax1.set_ylabel(r"$L_{" + f.split(".")[-1] + "}/$ [erg $/$ s $/$ Hz]")
+    ax1.set_xlabel('$M_\star/ M_\odot$')
 
     axtop.set_ylabel("$N$")
     axright.set_xlabel("$N$")
 
     ax.tick_params(axis='both', which='both', bottom=True, left=True)
+    ax.tick_params(axis='x', which='both', labelbottom=False, labeltop=False)
+    ax1.tick_params(axis='both', which='both', bottom=True, left=True)
 
     axtop.tick_params(axis='y', which='both', left=True)
     axright.tick_params(axis='x', which='both', bottom=True)
 
     ax.set_xlim(10 ** extent[0], 10 ** extent[1])
+    ax1.set_xlim(10 ** extent[0], 10 ** extent[1])
     axtop.set_xlim(10 ** extent[0], 10 ** extent[1])
     ax.set_ylim(10 ** extent[2], 10 ** extent[3])
+    ax1.set_ylim(10 ** extent[2], 10 ** extent[3])
     axright.set_ylim(10 ** extent[2], 10 ** extent[3])
 
     axright.set_xlim(1, 10 ** 4)
