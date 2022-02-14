@@ -400,20 +400,14 @@ for f in filters:
                                       norm=cm.LogNorm(vmin=np.percentile(plt_img, 16)),
                                       extent=extent)
 
-                ylims = axes[i + 1, j].get_ylim()
-                if ylims[0] < profile_lims[0]:
-                    profile_lims[0] = ylims[0]
-                if ylims[1] > profile_lims[1]:
-                    profile_lims[1] = ylims[1]
-
                 for j1, b1 in enumerate(bins[:-1]):
                     if b1 == b:
                         alpha = 1
                     else:
                         alpha = 0.3
 
-                    plt_img = stacks[f][b][int(0.3 * size):-int(0.3 * size),
-                              int(0.3 * size):-int(0.3 * size)]
+                    plt_img = stacks[f][b1][int(0.3 * size):-int(0.3 * size),
+                                            int(0.3 * size):-int(0.3 * size)]
 
                     # Calculate a plot 1D profiles
                     xs = np.linspace(-(plt_img.shape[0] / 2) * csoft,
@@ -422,6 +416,12 @@ for f in filters:
                     ys = np.sum(plt_img, axis=0) / np.sum(plt_img)
                     axes[i + 1, j].semilogy(xs, ys, alpha=alpha)
                     axes_log[i + 1, j].semilogy(xs, ys, alpha=alpha)
+
+                    ylims = axes[i + 1, j].get_ylim()
+                    if ylims[0] < profile_lims[0]:
+                        profile_lims[0] = ylims[0]
+                    if ylims[1] > profile_lims[1]:
+                        profile_lims[1] = ylims[1]
 
                 axes[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
                 axes_log[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
