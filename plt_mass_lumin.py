@@ -177,7 +177,7 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     axright.set_ylim(10 ** extent[2], 10 ** extent[3])
 
     axright.set_xlim(1, 10 ** 4)
-    axright.set_xticks(10, 10 ** 4)
+    axright.set_xticks((10, 10 ** 4))
     axtop.set_ylim(1, 10 ** 4)
     axtop.set_xticks((10, 10 ** 4))
 
