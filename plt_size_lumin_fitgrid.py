@@ -25,9 +25,9 @@ from flare import plt as flareplt
 # Set plotting fontsizes
 plt.rcParams['axes.grid'] = True
 
-SMALL_SIZE = 14
-MEDIUM_SIZE = 16
-BIGGER_SIZE = 18
+SMALL_SIZE = 18
+MEDIUM_SIZE = 20
+BIGGER_SIZE = 22
 
 plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
 plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
