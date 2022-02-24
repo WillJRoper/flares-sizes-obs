@@ -282,7 +282,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
         ax.set_xlim(10 ** -1.1, 10 ** 1.3)
         ax.set_ylim([0.2, 80])
 
-    ax1.tick_params(axis='x', labelbotom=False)
+    ax1.tick_params(axis='x', labelbottom=False)
     ax1.tick_params(axis='both', which='both', bottom=True, left=True)
     ax2.tick_params(axis='x', which='both', bottom=True)
 
