@@ -281,7 +281,7 @@ for ind, s in enumerate(nc_zs):
 ax.set_xlim(0.01, 2.1)
 ax1.set_xlim(0.01, 2.1)
 ax.set_ylim(10 ** 22., 10 ** 33.)
-ax1.set_ylim(0.01, 1.09)
+ax1.set_ylim(0.01, 1.15)
 
 ax1.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
 ax.set_ylabel("$L / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
