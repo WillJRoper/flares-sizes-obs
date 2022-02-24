@@ -276,7 +276,7 @@ ax.errorbar(nc_piv, nc_ys, xerr=np.array([nc_piv - nc_down, nc_up - nc_piv]),
             capsize=4, color="k", linestyle="none", marker="s", markersize=0)
 for ind, s in enumerate(nc_zs):
     ax.annotate(str(int(s)), (nc_piv[ind], nc_y_labels[ind]),
-                horizontalalignment="center", fontsize=8)
+                horizontalalignment="center", fontsize=12)
 
 ax.set_xlim(0.01, 2.1)
 ax1.set_xlim(0.01, 2.1)
