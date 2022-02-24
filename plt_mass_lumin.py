@@ -146,7 +146,6 @@ def mass_lumin(mass, lumins, com_comp, diff_comp, com_ncomp, diff_ncomp, okinds,
     cb1.ax.yaxis.set_ticks([])
     cb1 = mpl.colorbar.ColorbarBase(cax2, cmap=plt.get_cmap("viridis"), norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
-    cb1.ax.yaxis.set_ticks([10**-3, 10**-2, 10**-1, 10**0])
 
     # ax.text(0.95, 0.05, f'$z={z}$',
     #         bbox=dict(boxstyle="round,pad=0.3", fc='w',

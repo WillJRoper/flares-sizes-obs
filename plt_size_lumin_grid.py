@@ -171,10 +171,12 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         print("Filter =", f)
 
         fig = plt.figure(figsize=(18, 8))
-        gs = gridspec.GridSpec(2, len(snaps))
+        gs = gridspec.GridSpec(2, len(snaps) + 2, width_ratios=[20, ] * len(snaps) + [1, 1])
         gs.update(wspace=0.0, hspace=0.0)
         axes_diff = []
         axes_com = []
+        cax1 = fig.add_subplot(gs[:, -2])
+        cax2 = fig.add_subplot(gs[:, -1])
         i = 0
         while i < len(snaps):
             axes_com.append(fig.add_subplot(gs[0, i]))
@@ -336,13 +338,10 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                        bbox_to_anchor=(0.5, -0.15), fancybox=True,
                        ncol=len(uni_legend_elements))
 
-        ax2 = fig.add_axes([0.91, 0.1, 0.01, 0.8])
-        cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"),
+        cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
                                         norm=weight_norm)
-        cb1.set_label("$\sum w_{i}$")
-
-        ax2 = fig.add_axes([0.96, 0.1, 0.01, 0.8])
-        cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"),
+        cb1.ax.yaxis.set_ticks([])
+        cb1 = mpl.colorbar.ColorbarBase(cax2, cmap=plt.get_cmap("viridis"),
                                         norm=weight_norm)
         cb1.set_label("$\sum w_{i}$")
 

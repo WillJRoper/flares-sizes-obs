@@ -124,7 +124,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
 
     # Label axes
     ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ [pkpc]$")
-    ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
+    ax.set_xlabel('$R_{1/2, metal}/ [pkpc]$')
 
     plt.axis('scaled')
 
@@ -217,8 +217,8 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
             fontsize=8)
 
     # Label axes
-    ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ R_{1/2, dust}$")
-    ax.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
+    ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ R_{1/2, metal}$")
+    ax.set_xlabel('$R_{1/2, metal}/ [pkpc]$')
 
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
@@ -239,10 +239,12 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ratio = hlrs / hlrints
 
     fig = plt.figure()
-    gs = gridspec.GridSpec(1, 2)
+    gs = gridspec.GridSpec(2, 2, width_ratios=[20, 1])
     gs.update(wspace=0.0, hspace=0.0)
     ax1 = fig.add_subplot(gs[0, 0])
-    ax2 = fig.add_subplot(gs[0, 1])
+    ax2 = fig.add_subplot(gs[1, 0])
+    cax1 = fig.add_subplot(gs[0, 1])
+    cax2 = fig.add_subplot(gs[1, 1])
     ax1.loglog()
     ax2.loglog()
     try:
@@ -294,24 +296,18 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                   + f.split(".")[-1]
                   + ", \mathrm{Attenuated}}/ R_{1/2,"
                   + f.split(".")[-1] + ", \mathrm{Intrinsic}}$")
-    ax1.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
-    ax2.set_xlabel('$R_{1/2, dust}/ [pkpc]$')
+    ax2.set_ylabel("$R_{1/2,"
+                  + f.split(".")[-1]
+                  + ", \mathrm{Attenuated}}/ R_{1/2,"
+                  + f.split(".")[-1] + ", \mathrm{Intrinsic}}$")
+    ax2.set_xlabel('$R_{1/2, metal}/ [pkpc]$')
 
-    divider = make_axes_locatable(ax1)
-    cax = divider.append_axes('top', size='5%', pad=0.1)
-    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"), norm=weight_norm, orientation="horizontal")
+    cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
+                                    norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
-    cb1.ax.xaxis.set_label_position('top')
-    cb1.ax.xaxis.set_ticks_position('top')
-    cb1.ax.xaxis.set_ticks([10 ** -3, 10 ** -2, 10 ** -1, 10 ** 0])
-
-    divider = make_axes_locatable(ax2)
-    cax = divider.append_axes('top', size='5%', pad=0.1)
-    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"), norm=weight_norm, orientation="horizontal")
+    cb1 = mpl.colorbar.ColorbarBase(cax2, cmap=plt.get_cmap("viridis"),
+                                    norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
-    cb1.ax.xaxis.set_label_position('top')
-    cb1.ax.xaxis.set_ticks_position('top')
-    cb1.ax.xaxis.set_ticks([10**-3, 10**-2, 10**-1, 10**0])
 
     fig.savefig('plots/' + str(z) + '/HalfDustRadius_hlrratio_' + f + '_'
                 + str(z) + '_' + Type + '_' + orientation + "_"
