@@ -265,6 +265,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2, cmap='Greys',
                          extent=[-1.1, 1.3, np.log10(0.2), np.log10(50)])
+        ax1.axis('scaled')
         ax2.hexbin(hdrs[com_comp], ratio[com_comp], gridsize=50,
                    mincnt=np.min(w) - (0.1 * np.min(w)),
                    C=w[com_comp], reduce_C_function=np.sum,
@@ -272,6 +273,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                    linewidths=0.2, cmap='viridis', extent=[-1.1, 1.3,
                                                            np.log10(0.2),
                                                            np.log10(80)])
+        ax2.axis('scaled')
     except ValueError as e:
         print(e)
 
@@ -279,10 +281,9 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
         ax.plot([10**-1.1, 10**1.3], [1, 1], color='k', linestyle="--")
         ax.set_xlim(10 ** -1.1, 10 ** 1.3)
         ax.set_ylim([0.2, 80])
-        
+
+    ax1.tick_params(axis='x', labelbotom=False)
     ax1.tick_params(axis='both', which='both', bottom=True, left=True)
-    ax2.tick_params(axis='y', which='both', left=False, right=False,
-                    labelleft=False, labelright=False)
     ax2.tick_params(axis='x', which='both', bottom=True)
 
     # ax.text(0.95, 0.05, f'$z={z}$',
@@ -305,6 +306,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
                                     norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
+    cb1.set_ticks([10**-3, 10**-2, 10**-1, 10])
     cb1 = mpl.colorbar.ColorbarBase(cax2, cmap=plt.get_cmap("viridis"),
                                     norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")

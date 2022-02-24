@@ -89,6 +89,7 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
     ax1.set_ylabel('$R_{1/2, \mathrm{pix}}/ [pkpc]$')
     ax2.set_ylabel('$R_{1/2, \mathrm{pix}}/ [pkpc]$')
 
+    ax1.tick_params(axis='x', labelbotom=False)
     ax1.tick_params(axis='both', which='both', left=True, bottom=True)
     ax2.tick_params(axis='both', which='both', left=True, bottom=True)
 
@@ -100,6 +101,7 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
     cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
                                     norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
+    cb1.set_ticks([10**-3, 10**-2, 10**-1, 10])
     cb1 = mpl.colorbar.ColorbarBase(cax2, cmap=plt.get_cmap("viridis"),
                                     norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
