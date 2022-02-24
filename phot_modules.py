@@ -215,12 +215,14 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
             if np.sum(Masses) < masslim:
                 for f in filters:
                     Lums[f][begin[jj]: end[jj]] = np.nan
+                DTMs[jj] = np.nan
                 continue
 
         if nlim != None:
             if (end[jj] - begin[jj]) < nlim:
                 for f in filters:
                     Lums[f][begin[jj]: end[jj]] = np.nan
+                DTMs[jj] = np.nan
                 continue
 
         if orientation == "sim":
@@ -280,8 +282,8 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
 
         Mage = np.nansum(Masses * Ages) / np.nansum(Masses)
         Z = np.nanmean(gasMetallicities)
-
-        MetSurfaceDensities = DTM_fit(Z, Mage) * MetSurfaceDensities
+        DTMs[jj] = DTM_fit(Z, Mage)
+        MetSurfaceDensities = DTMs[jj] * MetSurfaceDensities
 
         if Type == 'Total':
             # --- calculate V-band (550nm) optical depth for each star particle
@@ -344,6 +346,7 @@ def lum(sim, kappa, tag, BC_fac, inp='FLARES', IMF='Chabrier_300', LF=True,
     Lums["gend"] = gend
     Lums["S_bool"] = S_bool
     Lums["G_bool"] = G_bool
+    Lums["DTM"] = DTMs
 
     return Lums  # , S_len + G_len
 

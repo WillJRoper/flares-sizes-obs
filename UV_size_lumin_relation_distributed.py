@@ -260,6 +260,7 @@ if run:
 
             b, e = begin[ind], end[ind]
             gb, ge = gbegin[ind], gend[ind]
+            this_dtm = reg_dict["DTM"][ind]
 
             sbool = reg_dict["S_bool"][b: e]
             gbool = reg_dict["G_bool"][gb: ge]
@@ -270,8 +271,8 @@ if run:
             this_smls = smls[b: e][sbool]
             this_mass = np.nansum(masses[b: e][sbool])
             this_gmass = np.nansum(gas_masses[gb: ge][gbool])
-            this_met = star_Z[b: e][sbool] * masses[b: e][sbool]
-            this_metals = gas_Z[gb: ge][gbool] * gas_masses[gb: ge][gbool]
+            this_sdust = this_dtm * star_Z[b: e][sbool] * masses[b: e][sbool]
+            this_gdust = this_dtm * gas_Z[gb: ge][gbool] * gas_masses[gb: ge][gbool]
             this_nstar = this_smls.size
             this_age = reg_dict["S_age"][b: e][sbool]
             this_Sz = reg_dict["S_Z"][b: e][sbool]
@@ -331,7 +332,7 @@ if run:
             surf_dens[tag][f].append(surf_den)
 
             hdr_dict[tag][f].append(util.calc_light_mass_rad(this_gradii,
-                                                             this_metals))
+                                                             this_gdust))
 
             for r in radii_fracs:
                 hlr_app_dict[tag][f][r].append(util.get_img_hlr(img,
@@ -376,8 +377,8 @@ if run:
             nosmooth_img_lumin_dict[tag][f].append(np.sum(img))
             mass_dict[tag][f].append(this_mass)
             gmass_dict[tag][f].append(this_gmass)
-            met_dict[tag][f].append(np.sum(this_met))
-            gmet_dict[tag][f].append(np.sum(this_metals))
+            met_dict[tag][f].append(np.sum(this_sdust))
+            gmet_dict[tag][f].append(np.sum(this_gdust))
             nstar_dict[tag][f].append(this_nstar)
             img_dict[tag][f].append(img)
             nosmooth_img_dict[tag][f].append(img)

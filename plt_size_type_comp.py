@@ -37,7 +37,7 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
     z = float(z_str[0] + '.' + z_str[1])
 
     fig = plt.figure()
-    gs = gridspec.GridSpec(2, 2, width_ratios=[20, 1])
+    gs = gridspec.GridSpec(2, 2, width_ratios=[10, 1])
     gs.update(wspace=0.0, hspace=0.0)
     ax1 = fig.add_subplot(gs[0, 0])
     ax2 = fig.add_subplot(gs[1, 0])
@@ -101,7 +101,7 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
     cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
                                     norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
-    cb1.set_ticks([10**-3, 10**-2, 10**-1, 10])
+    cb1.set_ticks([10**-3, 10**-2, 10**-1, 1])
     cb1 = mpl.colorbar.ColorbarBase(cax2, cmap=plt.get_cmap("viridis"),
                                     norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
