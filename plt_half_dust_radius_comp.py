@@ -304,11 +304,11 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ax2.set_xlabel('$R_{1/2, metal}/ [pkpc]$')
 
     cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
-                                    norm=weight_norm)
+                                    norm=weight_norm, pad=-2)
     cb1.set_label("$\sum w_{i}$")
     cb1.set_ticks([10**-3, 10**-2, 10**-1, 1])
     cb1 = mpl.colorbar.ColorbarBase(cax2, cmap=plt.get_cmap("viridis"),
-                                    norm=weight_norm)
+                                    norm=weight_norm, pad=-4)
     cb1.set_label("$\sum w_{i}$")
 
     fig.savefig('plots/' + str(z) + '/HalfDustRadius_hlrratio_' + f + '_'
