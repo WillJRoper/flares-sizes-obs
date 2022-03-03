@@ -239,8 +239,8 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ratio = hlrs / hlrints
 
     fig = plt.figure()
-    gs = gridspec.GridSpec(2, 2, width_ratios=[20, 1])
-    gs.update(wspace=0.0, hspace=0.0)
+    gs = gridspec.GridSpec(2, 2, width_ratios=[30, 1])
+    gs.update(wspace=-1., hspace=0.0)
     ax1 = fig.add_subplot(gs[0, 0])
     ax2 = fig.add_subplot(gs[1, 0])
     cax1 = fig.add_subplot(gs[0, 1])
