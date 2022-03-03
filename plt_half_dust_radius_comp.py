@@ -124,7 +124,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
 
     # Label axes
     ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ [pkpc]$")
-    ax.set_xlabel('$R_{1/2, metal}/ [pkpc]$')
+    ax.set_xlabel('$R_{1/2, \mathrm{dust}}/ [pkpc]$')
 
     plt.axis('scaled')
 
@@ -217,8 +217,8 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
             fontsize=8)
 
     # Label axes
-    ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ R_{1/2, metal}$")
-    ax.set_xlabel('$R_{1/2, metal}/ [pkpc]$')
+    ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ R_{1/2, \mathrm{dust}}$")
+    ax.set_xlabel('$R_{1/2, \mathrm{dust}}/ [pkpc]$')
 
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
@@ -239,8 +239,8 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     ratio = hlrs / hlrints
 
     fig = plt.figure()
-    gs = gridspec.GridSpec(2, 2, width_ratios=[30, 1])
-    gs.update(wspace=-1., hspace=0.0)
+    gs = gridspec.GridSpec(2, 2, width_ratios=[40, 1])
+    gs.update(wspace=-0.5, hspace=0.0)
     ax1 = fig.add_subplot(gs[0, 0])
     ax2 = fig.add_subplot(gs[1, 0])
     cax1 = fig.add_subplot(gs[0, 1])
@@ -301,7 +301,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                   + f.split(".")[-1]
                   + ", \mathrm{Att}}/ R_{1/2,"
                   + f.split(".")[-1] + ", \mathrm{Int}}$")
-    ax2.set_xlabel('$R_{1/2, metal}/ [pkpc]$')
+    ax2.set_xlabel('$R_{1/2, \mathrm{dust}}/ [pkpc]$')
 
     cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
                                     norm=weight_norm)
