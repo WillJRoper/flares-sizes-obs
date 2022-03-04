@@ -4,6 +4,7 @@ import warnings
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
 
 os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
@@ -30,6 +31,9 @@ plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
 plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+plt.rcParams['axes.labelsize'] = MEDIUM_SIZE
+plt.rcParams['xtick.labelsize'] = SMALL_SIZE
+plt.rcParams['ytick.labelsize'] = SMALL_SIZE
 
 def m_to_M(m, cosmo, z):
     flux = photconv.m_to_flux(m)
@@ -126,13 +130,15 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     ax.set_xlim(10 ** extent[2], 10 ** extent[3])
     ax.set_ylim(10 ** extent[0], 10 ** extent[1])
 
-    ax2 = fig.add_axes([0.95, 0.1, 0.03, 0.8])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("Greys"),
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes('right', size='5%', pad=0.1)
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"),
                                     norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
 
-    ax2 = fig.add_axes([0.1, 0.95, 0.8, 0.03])
-    cb1 = mpl.colorbar.ColorbarBase(ax2, cmap=plt.get_cmap("viridis"),
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes('top', size='5%', pad=0.1)
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"),
                                     norm=weight_norm, orientation="horizontal")
     cb1.set_label("$\sum w_{i}$")
     cb1.ax.xaxis.set_label_position('top')

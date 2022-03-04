@@ -187,10 +187,12 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     print("Type =", Type)
 
     fig = plt.figure(figsize=(18, 6))
-    gs = gridspec.GridSpec(2, len(snaps), height_ratios=(5, 2))
+    gs = gridspec.GridSpec(2, len(snaps) + 1, height_ratios=(5, 2),
+                           width_ratios=[20, ] * len(snaps) + [1])
     gs.update(wspace=0.0, hspace=0.0)
     axes = []
     axes_ratio = []
+    cax = fig.add_subplot(gs[:, -1])
     ylims_ratio = []
     i = 0
     while i < len(snaps):
@@ -379,6 +381,10 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     axes_ratio[2].legend(handles=uni_legend_elements, loc='upper center',
                          bbox_to_anchor=(0.5, -0.35), fancybox=True,
                          ncol=len(uni_legend_elements))
+
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=cmap,
+                                    norm=norm)
+    cb1.set_label("$\lambda / [\mu\mathrm{m}]$")
 
     fig.savefig(
         'plots/FilterCompHalfLightRadius_' + mtype + "_" + sample + '_'
