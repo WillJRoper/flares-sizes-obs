@@ -25,9 +25,9 @@ from flare import plt as flareplt
 # Set plotting fontsizes
 plt.rcParams['axes.grid'] = True
 
-SMALL_SIZE = 18
-MEDIUM_SIZE = 20
-BIGGER_SIZE = 22
+SMALL_SIZE = 14
+MEDIUM_SIZE = 16
+BIGGER_SIZE = 18
 
 plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
 plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
@@ -36,6 +36,11 @@ plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
 plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+plt.rcParams['axes.labelsize'] = MEDIUM_SIZE
+plt.rcParams['xtick.labelsize'] = SMALL_SIZE
+plt.rcParams['ytick.labelsize'] = SMALL_SIZE
+
+
 
 # Lstar = M_to_lum(-21)
 Lstar = 10**28.51
