@@ -178,8 +178,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
     bounds = list(sorted(bounds))
 
-    norm = cm.Normalize(vmin=min(bounds),
-                        vmax=max(bounds),
+    norm = cm.Normalize(vmin=min(plt_lams),
+                        vmax=max(plt_lams),
                         clip=True)
 
     print("Plotting for:")
