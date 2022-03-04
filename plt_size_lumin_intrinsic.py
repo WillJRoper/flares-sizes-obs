@@ -135,14 +135,13 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"),
                                     norm=weight_norm)
     cb1.ax.yaxis.set_ticks([])
+    cb1.ax.xaxis.set_ticks([])
 
     divider = make_axes_locatable(ax)
-    cax = divider.append_axes('right', size='5%', pad=0.5)
+    cax = divider.append_axes('right', size='5%', pad=0.15)
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"),
-                                    norm=weight_norm, orientation="horizontal")
+                                    norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
-    cb1.ax.xaxis.set_label_position('top')
-    cb1.ax.xaxis.set_ticks_position('top')
 
     fig.savefig(
         'plots/' + str(z) + '/HalfLightRadius_' + mtype + "_" + f + '_' + str(
