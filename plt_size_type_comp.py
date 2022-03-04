@@ -37,7 +37,7 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
     z = float(z_str[0] + '.' + z_str[1])
 
     fig = plt.figure(figsize=(3.5, 2 * 3.5))
-    gs = gridspec.GridSpec(2, 2, width_ratios=[60, 1])
+    gs = gridspec.GridSpec(2, 2, width_ratios=[30, 1])
     gs.update(wspace=0.0, hspace=0.0)
     ax1 = fig.add_subplot(gs[0, 0])
     ax2 = fig.add_subplot(gs[1, 0])
