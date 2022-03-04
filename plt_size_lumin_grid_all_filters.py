@@ -353,8 +353,8 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         axes[i].set_ylim(ylims[0], ylims[1])
         axes_ratio[i].set_ylim(np.min(ylims_ratio), np.max(ylims_ratio))
 
-    axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
-    axes_ratio[0].set_ylabel('$R_{1/2, Att}/ R_{1/2, Int}$')
+    axes[0].set_ylabel('$R/ [pkpc]$')
+    axes_ratio[0].set_ylabel('$R_{\mathrm{Att}}/ R_{\mathrm{Int}}$')
     axes[0].tick_params(axis='y', which='both', left=True)
     axes_ratio[0].tick_params(axis='y', which='both', left=True)
 

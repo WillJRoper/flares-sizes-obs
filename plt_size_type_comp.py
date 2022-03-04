@@ -85,9 +85,9 @@ def size_comp(f, snap, hlrs, hlrs_pix, w, com_comp, diff_comp, com_ncomp,
             color='k', linestyle="--")
 
     # Label axes
-    ax2.set_xlabel('$R_{1/2, \mathrm{part}}/ [pkpc]$')
-    ax1.set_ylabel('$R_{1/2, \mathrm{pix}}/ [pkpc]$')
-    ax2.set_ylabel('$R_{1/2, \mathrm{pix}}/ [pkpc]$')
+    ax2.set_xlabel('$R_{\mathrm{part}}/ [pkpc]$')
+    ax1.set_ylabel('$R_{\mathrm{pix}}/ [pkpc]$')
+    ax2.set_ylabel('$R_{\mathrm{pix}}/ [pkpc]$')
 
     ax1.tick_params(axis='x', labelbottom=False)
     ax1.tick_params(axis='both', which='both', left=True, bottom=True)

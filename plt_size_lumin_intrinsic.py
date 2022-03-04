@@ -118,9 +118,9 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
         print(e)
 
     # Label axes
-    ax.set_xlabel(r"$L_{" + f.split(".")[-1]
-                  + "}/$ [erg $/$ s $/$ Hz]")
-    ax.set_ylabel('$R_{1/2}/ [pkpc]$')
+    ax.set_xlabel(r"$L_{\mathrm{" + f.split(".")[-1]
+                  + "}}/$ [erg $/$ s $/$ Hz]")
+    ax.set_ylabel('$R/ [pkpc]$')
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
     ax.set_xlim(10 ** extent[2], 10 ** extent[3])

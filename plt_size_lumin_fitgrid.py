@@ -448,7 +448,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
         for i in range(len(axes)):
             axes[i].set_ylim(10 ** extent[0], 10 ** extent[1])
 
-        axes[0].set_ylabel('$R_{1/2}/ [pkpc]$')
+        axes[0].set_ylabel('$R/ [pkpc]$')
         axes[0].tick_params(axis='y', which='both', left=True)
 
         uni_legend_elements = []

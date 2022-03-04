@@ -219,8 +219,8 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
             color='k', linestyle="--")
 
     # Label axes
-    ax.set_xlabel('$R_{1/2, \mathrm{gauss}}/ [pkpc]$')
-    ax.set_ylabel('$R_{1/2, \mathrm{spline}}/ [pkpc]$')
+    ax.set_xlabel('$R_{\mathrm{gauss}}/ [pkpc]$')
+    ax.set_ylabel('$R_{\mathrm{spline}}/ [pkpc]$')
 
     plt.axis('scaled')
 

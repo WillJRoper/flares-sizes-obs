@@ -312,8 +312,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                      bottom=True, left=True)
 
             # Label axes
-            axes_diff[i].set_xlabel(r"$L_{" + f.split(".")[-1]
-                               + "}/$ [erg $/$ s $/$ Hz]")
+            axes_diff[i].set_xlabel(r"$L_{\mathrm{" + f.split(".")[-1]
+                               + "}}/$ [erg $/$ s $/$ Hz]")
 
             axes_diff[i].set_xlim(10 ** extent[2], 10 ** extent[3])
             axes_com[i].set_xlim(10 ** extent[2], 10 ** extent[3])

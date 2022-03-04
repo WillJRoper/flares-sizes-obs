@@ -123,8 +123,8 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
             fontsize=8)
 
     # Label axes
-    ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ [pkpc]$")
-    ax.set_xlabel('$R_{1/2, \mathrm{dust}}/ [pkpc]$')
+    ax.set_ylabel("$R_{\mathrm{" + f.split(".")[-1] + "}}/ [pkpc]$")
+    ax.set_xlabel('$R_{\mathrm{dust}}/ [pkpc]$')
 
     plt.axis('scaled')
 
@@ -217,8 +217,8 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
             fontsize=8)
 
     # Label axes
-    ax.set_ylabel("$R_{1/2," + f.split(".")[-1] + "}/ R_{1/2, \mathrm{dust}}$")
-    ax.set_xlabel('$R_{1/2, \mathrm{dust}}/ [pkpc]$')
+    ax.set_ylabel("$R_{\mathrm{" + f.split(".")[-1] + "}}/ R_{\mathrm{dust}}$")
+    ax.set_xlabel('$R_{\mathrm{dust}}/ [pkpc]$')
 
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
 
@@ -293,15 +293,15 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     #         fontsize=8)
 
     # Label axes
-    ax1.set_ylabel("$R_{1/2,"
+    ax1.set_ylabel("$R_{\mathrm{"
                   + f.split(".")[-1]
-                  + ", \mathrm{Att}}/ R_{1/2,"
-                  + f.split(".")[-1] + ", \mathrm{Int}}$")
-    ax2.set_ylabel("$R_{1/2,"
+                  + "}, \mathrm{Att}}/ R_{\mathrm{"
+                  + f.split(".")[-1] + "}, \mathrm{Int}}$")
+    ax2.set_ylabel("$R_{\mathrm{"
                   + f.split(".")[-1]
-                  + ", \mathrm{Att}}/ R_{1/2,"
-                  + f.split(".")[-1] + ", \mathrm{Int}}$")
-    ax2.set_xlabel('$R_{1/2, \mathrm{dust}}/ [pkpc]$')
+                  + "}, \mathrm{Att}}/ R_{\mathrm{"
+                  + f.split(".")[-1] + "}, \mathrm{Int}}$")
+    ax2.set_xlabel('$R_{\mathrm{dust}}/ [pkpc]$')
 
     cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
                                     norm=weight_norm)
