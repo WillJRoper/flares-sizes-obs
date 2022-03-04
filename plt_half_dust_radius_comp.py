@@ -174,7 +174,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     # 
     # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
-    fig = plt.figure(figsize=(3.5, 3.5)figsize=(3.5, 3.5))
+    fig = plt.figure(figsize=(3.5, 3.5))
     ax = fig.add_subplot(111)
     ax.loglog()
     try:
