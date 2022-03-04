@@ -36,7 +36,7 @@ def size_comp_smooth_part(f, snap, hlrs_part, hlrs_pix_nosmooth, w, com_comp,
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(3.5, 3.5))
     ax = fig.add_subplot(111)
     try:
         # cbar = ax.hexbin(hlrs_part[diff_ncomp], hlrs_pix_nosmooth[diff_ncomp],

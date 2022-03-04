@@ -136,7 +136,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
     resi = (np.log10(gimg) - np.log10(simg))
 
     dpi = gimg.shape[0] * 2
-    fig = plt.figure(figsize=(6, 2), dpi=dpi)
+    fig = plt.figure(figsize=(3 * 3.5, 3.5), dpi=dpi)
     gs = gridspec.GridSpec(ncols=4, nrows=1, width_ratios=[10, 10, 10, 1])
     gs.update(wspace=0.0, hspace=0.0)
     ax1 = fig.add_subplot(gs[0, 0])
@@ -203,7 +203,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     plt.close(fig)
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(3.5, 3.5))
     ax = fig.add_subplot(111)
     try:
         cbar = ax.hexbin(gauss_hlrs, sph_hlrs,
@@ -243,7 +243,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
 
     plt.close(fig)
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(3.5, 3.5))
     ax = fig.add_subplot(111)
     try:
         cbar = ax.hexbin(gauss_lumins, sph_lumins,

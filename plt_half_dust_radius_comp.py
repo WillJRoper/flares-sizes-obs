@@ -78,7 +78,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     # 
     # print(percentiles)
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(3.5, 3.5))
     ax = fig.add_subplot(111)
     ax.loglog()
     try:
@@ -174,7 +174,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
     # 
     # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(3.5, 3.5)figsize=(3.5, 3.5))
     ax = fig.add_subplot(111)
     ax.loglog()
     try:
@@ -238,7 +238,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
 
     ratio = hlrs / hlrints
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(3.5, 2 * 3.5))
     gs = gridspec.GridSpec(2, 2, width_ratios=[60, 1])
     gs.update(wspace=-0.775, hspace=0.0)
     ax1 = fig.add_subplot(gs[0, 0])

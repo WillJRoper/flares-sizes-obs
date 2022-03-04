@@ -33,7 +33,7 @@ def lum_comp(f, snap, lums, lums_pix, w, com_comp, diff_comp, com_ncomp,
     z_str = snap.split('z')[1].split('p')
     z = float(z_str[0] + '.' + z_str[1])
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(3.5, 3.5))
     ax = fig.add_subplot(111)
     try:
         # cbar = ax.hexbin(lums[diff_ncomp], lums_pix[diff_ncomp],

@@ -88,7 +88,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     #
     # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(3.5, 3.5))
     ax = fig.add_subplot(111)
     try:
         # cbar = ax.hexbin(lumins[diff_ncomp], hlrs[diff_ncomp],
