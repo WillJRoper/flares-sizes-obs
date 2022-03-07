@@ -507,7 +507,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(3.5, 3.5))
+    fig = plt.figure(figsize=(3.5 * 1.1, 3.5))
     bar_ax = fig.add_subplot(111)
 
     # Plot FIRE region
