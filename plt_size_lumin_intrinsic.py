@@ -138,7 +138,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     cb1.ax.xaxis.set_ticks([])
 
     divider = make_axes_locatable(ax)
-    cax = divider.append_axes('right', size='5%', pad=0.15)
+    cax = divider.append_axes('right', size='5%', pad=0.3)
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("viridis"),
                                     norm=weight_norm)
     cb1.set_label("$\sum w_{i}$")
