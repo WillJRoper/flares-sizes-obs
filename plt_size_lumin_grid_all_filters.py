@@ -155,7 +155,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         wid = np.max(l[t > 0]) - np.min(l[t > 0])
         trans[f] = []
         trans[f].append(np.min(l[t > 0]))
-        trans[f].append(i)
+        trans[f].append(np.max(l[t > 0]) - (wid / 2))
         trans[f].append(np.max(l[t > 0]))
         plt_lams.append(np.max(l[t > 0]) - (wid / 2))
         cents.append(i)
@@ -172,14 +172,14 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     bounds.append(i + 0.5)
 
     sinds = np.argsort(plt_lams)
-    filters = np.array(filters)[sinds]
+    filters = np.array(plt_lams)[sinds]
 
     filter_labels = [f.split(".")[-1] for f in filters]
 
     bounds = list(sorted(bounds))
 
-    norm = cm.Normalize(vmin=min(bounds),
-                        vmax=max(bounds),
+    norm = cm.Normalize(vmin=min(plt_lams),
+                        vmax=max(plt_lams),
                         clip=True)
 
     print("Plotting for:")
