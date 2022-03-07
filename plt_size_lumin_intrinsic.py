@@ -89,7 +89,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     #
     # XX, YY = np.meshgrid(xbin_cents, ybin_cents)
 
-    fig = plt.figure(figsize=(3.5, 4))
+    fig = plt.figure(figsize=(3.5*1.1, 3.5))
     gs = gridspec.GridSpec(1, 3, width_ratios=[20, 1, 1])
     gs.update(wspace=0.0, hspace=0.0)
     ax = fig.add_subplot(gs[0, 0])
