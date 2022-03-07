@@ -166,7 +166,7 @@ int_cmap = mpl.cm.get_cmap('plasma', len(filters))
 tot_cmap = mpl.cm.get_cmap('plasma', len(filters))
 znorm = cm.Normalize(vmin=5, vmax=10)
 
-fig = plt.figure(figsize=(3.5, 5))
+fig = plt.figure(figsize=(3.5, 4))
 gs = gridspec.GridSpec(2, 1, height_ratios=[10, 7])
 gs.update(wspace=0.0, hspace=0.0)
 ax = fig.add_subplot(gs[0, 0])
@@ -298,6 +298,7 @@ cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
                                spacing='uniform', ticks=cents,
                                boundaries=bounds, format='%1i')
 cb.set_ticklabels(filter_labels)
+cb.ax.tick_params(axis='both', which="minor", left=False, right=False)
 
 string = 'plots/SED/SED' + "_" + orientation + "_" + extinction
 fig.savefig(string.replace(".", "p") + ".pdf",
