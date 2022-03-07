@@ -166,7 +166,7 @@ int_cmap = mpl.cm.get_cmap('plasma', len(filters))
 tot_cmap = mpl.cm.get_cmap('plasma', len(filters))
 znorm = cm.Normalize(vmin=5, vmax=10)
 
-fig = plt.figure(figsize=(3.5, 4))
+fig = plt.figure(figsize=(3.5, 3.5 * 1.5))
 gs = gridspec.GridSpec(2, 1, height_ratios=[10, 7])
 gs.update(wspace=0.0, hspace=0.0)
 ax = fig.add_subplot(gs[0, 0])
