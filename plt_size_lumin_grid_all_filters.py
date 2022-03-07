@@ -175,10 +175,6 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     sinds = np.argsort(plt_lams)
     filters = np.array(plt_lams)[sinds]
 
-    filter_labels = [f.split(".")[-1] for f in filters]
-
-    bounds = list(sorted(bounds))
-
     norm = cm.Normalize(vmin=min(plt_lams),
                         vmax=max(plt_lams),
                         clip=True)
