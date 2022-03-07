@@ -131,7 +131,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp, diff_n
     ax.set_ylim(10 ** extent[0], 10 ** extent[1])
 
     divider = make_axes_locatable(ax)
-    cax = divider.append_axes('right', size='5%', pad=0.1)
+    cax = divider.append_axes('right', size='5%', pad=0.)
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"),
                                     norm=weight_norm)
     cb1.ax.yaxis.set_ticks([])
