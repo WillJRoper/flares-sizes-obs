@@ -152,6 +152,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     for f in filters:
         l, t = np.loadtxt(filter_path + '/' + '/'.join(f.split('.')) + '.txt',
                           skiprows=1).T
+        l /= 10000  # Angstrom to microns
         wid = np.max(l[t > 0]) - np.min(l[t > 0])
         trans[f] = []
         trans[f].append(np.min(l[t > 0]))
