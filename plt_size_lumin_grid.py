@@ -175,7 +175,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         print("Type =", Type)
         print("Filter =", f)
 
-        fig = plt.figure(figsize=(2 * len(snaps), 3 * 2))
+        fig = plt.figure(figsize=(2.5 * len(snaps), 3 * 2.5))
         gs = gridspec.GridSpec(3, len(snaps) + 2, width_ratios=[20, ] * len(snaps) + [1, 1])
         gs.update(wspace=0.0, hspace=0.0)
         axes_diff = []
