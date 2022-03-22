@@ -317,7 +317,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             #                    norm=weight_norm, linewidths=0.2,
             #                    cmap=cmaps[f], alpha=0.5)
 
-        axes[i].text(0.95, 0.1, f'$z={z}$',
+        axes[i].text(0.95, 0.9, f'$z={z}$',
                      bbox=dict(boxstyle="round,pad=0.3", fc='w',
                                ec="k", lw=1, alpha=0.8),
                      transform=axes[i].transAxes,
@@ -342,7 +342,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     for i in range(len(axes)):
         axes[i].set_ylim(10 ** -0.7, 10 ** 0.8)
         axes[i].set_xlim(10 ** extent[2], 10 ** 31.3)
-        axes_ratio[i].set_xlim(10 ** extent[2], 10 ** 31.)
+        axes_ratio[i].set_xlim(10 ** extent[2], 10 ** 31.3)
         axes_ratio[i].tick_params(axis='x', which='both', bottom=True)
 
     for i in range(len(axes)):
@@ -374,7 +374,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
     axes_ratio[2].legend(handles=uni_legend_elements, loc='upper center',
                          bbox_to_anchor=(0.5, -0.4), fancybox=True,
-                         ncol=5)
+                         ncol=7)
 
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=cmap,
                                     norm=norm)

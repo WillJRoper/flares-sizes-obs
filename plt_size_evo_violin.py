@@ -497,8 +497,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     ax.set_ylim(10 ** -1.6, 10 ** 0.8)
 
     ax.legend(handles=legend_elements,
-              loc='center left', bbox_to_anchor=(1, 0.5),
-              fancybox=True, ncol=1)
+              loc='upper center',
+              bbox_to_anchor=(0.5, -0.3),
+              fancybox=True, ncol=2)
 
     fig.savefig(
         'plots/Violin_ObsCompHalfLightRadius_evolution_' + mtype + '_' + f + '_'
