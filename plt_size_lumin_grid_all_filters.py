@@ -317,7 +317,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             #                    norm=weight_norm, linewidths=0.2,
             #                    cmap=cmaps[f], alpha=0.5)
 
-        axes[i].text(0.95, 0.95, f'$z={z}$',
+        axes[i].text(0.95, 0.1, f'$z={z}$',
                      bbox=dict(boxstyle="round,pad=0.3", fc='w',
                                ec="k", lw=1, alpha=0.8),
                      transform=axes[i].transAxes,
@@ -339,17 +339,14 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
         # Label axes
         axes_ratio[i].set_xlabel(r"$L/$ [erg $/$ s $/$ Hz]")
 
-    for i, snap in enumerate(snaps):
-            axes[i].set_ylim(10 ** -0.7, 10 ** 0.8)
-
     for i in range(len(axes)):
         axes[i].set_ylim(10 ** -0.7, 10 ** 0.8)
-        axes[i].set_xlim(10 ** extent[2], 10 ** 31.)
+        axes[i].set_xlim(10 ** extent[2], 10 ** 31.3)
         axes_ratio[i].set_xlim(10 ** extent[2], 10 ** 31.)
         axes_ratio[i].tick_params(axis='x', which='both', bottom=True)
 
     for i in range(len(axes)):
-        axes[i].set_ylim(ylims[0], ylims[1])
+        axes[i].set_ylim(10 ** -0.8, 10**0.8)
         axes_ratio[i].set_ylim(np.min(ylims_ratio), np.max(ylims_ratio))
 
     axes[0].set_ylabel('$R/ [pkpc]$')
@@ -358,12 +355,6 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     axes_ratio[0].tick_params(axis='y', which='both', left=True)
 
     uni_legend_elements = []
-    uni_legend_elements.append(
-        Line2D([0], [0], color="k", linestyle="-",
-               label="FLARES"))
-    uni_legend_elements.append(
-        Line2D([0], [0], color="k", linestyle="--",
-               label="BlueTides"))
     for f in filters:
         uni_legend_elements.append(
             Line2D([0], [0], color=cmap(norm(trans[f][1])), linestyle="-",
@@ -374,10 +365,16 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
             print((l.get_label(), l.get_marker()))
             uni_legend_elements.append(l)
             included.append((l.get_label(), l.get_marker()))
+    uni_legend_elements.append(
+        Line2D([0], [0], color="k", linestyle="-",
+               label="FLARES"))
+    uni_legend_elements.append(
+        Line2D([0], [0], color="k", linestyle="--",
+               label="BlueTides"))
 
     axes_ratio[2].legend(handles=uni_legend_elements, loc='upper center',
                          bbox_to_anchor=(0.5, -0.35), fancybox=True,
-                         ncol=len(uni_legend_elements))
+                         nrow=2)
 
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=cmap,
                                     norm=norm)
