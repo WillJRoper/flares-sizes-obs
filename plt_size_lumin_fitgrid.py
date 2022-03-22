@@ -490,7 +490,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
                 included.append((l.get_label(), l.get_marker()))
 
         axes[2].legend(handles=uni_legend_elements, loc='upper center',
-                       bbox_to_anchor=(0.5, -0.15), fancybox=True,
+                       bbox_to_anchor=(0.5, -0.3), fancybox=True,
                        ncol=5)
 
         fig.savefig(

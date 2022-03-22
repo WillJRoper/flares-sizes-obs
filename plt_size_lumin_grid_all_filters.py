@@ -373,7 +373,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
                label="BlueTides"))
 
     axes_ratio[2].legend(handles=uni_legend_elements, loc='upper center',
-                         bbox_to_anchor=(0.5, -0.35), fancybox=True,
+                         bbox_to_anchor=(0.5, -0.4), fancybox=True,
                          ncol=5)
 
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=cmap,
