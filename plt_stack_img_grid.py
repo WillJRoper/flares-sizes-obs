@@ -419,8 +419,8 @@ for f in filters:
                                      (plt_img.shape[0] / 2) * csoft,
                                      plt_img.shape[0])
                     ys = np.sum(plt_img, axis=0) / np.sum(plt_img)
-                    axes[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder)
-                    axes_log[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder)
+                    axes[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder, color=c)
+                    axes_log[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder, color=c)
 
                     ylims = axes[i + 1, j].get_ylim()
                     if ylims[0] < profile_lims[0]:
