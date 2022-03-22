@@ -483,9 +483,9 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     legend_elements.append(Line2D([0], [0], color='k',
                                   label="Simulations ($N<10$)",
                                   linestyle="none", marker="^"))
-    legend_elements.append(Line2D([0], [0], color='k',
-                                  label="Observations",
-                                  linestyle="none", marker="*"))
+    # legend_elements.append(Line2D([0], [0], color='k',
+    #                               label="Observations",
+    #                               linestyle="none", marker="*"))
 
     # Label axes
     ax.set_xlabel(r'$z$')

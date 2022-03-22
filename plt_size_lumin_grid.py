@@ -333,11 +333,12 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                      bottom=True, left=True)
 
             # Label axes
-            axes_diff[i].set_xlabel(r"$L_{\mathrm{" + f.split(".")[-1]
-                               + "}}/$ [erg $/$ s $/$ Hz]")
+            axes_comb[i].set_xlabel(r"$L_{\mathrm{" + f.split(".")[-1]
+                                    + "}}/$ [erg $/$ s $/$ Hz]")
 
             axes_diff[i].set_xlim(10 ** extent[2], 10 ** extent[3])
             axes_com[i].set_xlim(10 ** extent[2], 10 ** extent[3])
+            axes_comb[i].set_xlim(10 ** extent[2], 10 ** extent[3])
 
             axes_diff[i].axhline(csoft, linestyle="--", color="k")
             axes_com[i].axhline(csoft, linestyle="--", color="k")
@@ -345,9 +346,11 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         for i in range(len(axes_diff)):
             axes_diff[i].set_ylim(10 ** extent[0], 10 ** extent[1])
             axes_com[i].set_ylim(10 ** extent[0], 10 ** extent[1])
+            axes_comb[i].set_ylim(10 ** extent[0], 10 ** extent[1])
 
-        axes_diff[0].set_ylabel('$R / [pkpc]$')
-        axes_com[0].set_ylabel('$R / [pkpc]$')
+        axes_diff[0].set_ylabel('$R / $[pkpc]')
+        axes_com[0].set_ylabel('$R / $[pkpc]')
+        axes_comb[0].set_ylabel('$R / $[pkpc]')
 
         uni_legend_elements = []
         uni_legend_elements.append(
