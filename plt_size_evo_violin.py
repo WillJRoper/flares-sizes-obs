@@ -323,7 +323,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
     legend_elements = []
 
-    fig = plt.figure(figsize=(3, 2.25))
+    fig = plt.figure(figsize=(3.5, 2.5))
     ax = fig.add_subplot(111)
     ax.semilogy()
 
@@ -478,10 +478,10 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                   linestyle="dotted"))
 
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="Simulations",
+                                  label="Median",
                                   linestyle="none", marker="s"))
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="Simulations ($N<10$)",
+                                  label="Median ($N<10$)",
                                   linestyle="none", marker="^"))
     # legend_elements.append(Line2D([0], [0], color='k',
     #                               label="Observations",
