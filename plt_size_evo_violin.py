@@ -323,7 +323,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
     legend_elements = []
 
-    fig = plt.figure(figsize=(4, 3.5))
+    fig = plt.figure(figsize=(3, 2.25))
     ax = fig.add_subplot(111)
     ax.semilogy()
 
@@ -507,7 +507,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(3.5 * 1.4, 3.5))
+    fig = plt.figure(figsize=(2.25 * 1.4, 2.25))
     bar_ax = fig.add_subplot(111)
 
     # Plot FIRE region

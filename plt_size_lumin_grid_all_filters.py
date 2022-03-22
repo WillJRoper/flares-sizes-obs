@@ -183,7 +183,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
     print("Orientation =", orientation)
     print("Type =", Type)
 
-    fig = plt.figure(figsize=(3.5 * len(snaps), 2 * 3.5))
+    fig = plt.figure(figsize=(2.25 * len(snaps), 2 * 2.25))
     gs = gridspec.GridSpec(2, len(snaps) + 1, height_ratios=(5, 2),
                            width_ratios=[20, ] * len(snaps) + [1])
     gs.update(wspace=0.0, hspace=0.0)

@@ -171,8 +171,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
                        fc='grey',
                        ec="w", lw=1, alpha=0.7),
              transform=ax1.transAxes,
-             horizontalalignment='left', color="w",
-             fontsize=6)
+             horizontalalignment='left', color="w")
 
     ax2.text(0.05, 0.875,
              "Spline",
@@ -180,8 +179,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
                        fc='grey',
                        ec="w", lw=1, alpha=0.7),
              transform=ax2.transAxes,
-             horizontalalignment='left', color="w",
-             fontsize=6)
+             horizontalalignment='left', color="w")
 
     ax3.text(0.05, 0.875,
              "Gaussian - Spline",
@@ -189,8 +187,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
                        fc='grey',
                        ec="w", lw=1, alpha=0.7),
              transform=ax3.transAxes,
-             horizontalalignment='left', color="w",
-             fontsize=6)
+             horizontalalignment='left', color="w")
 
     cbar = fig.colorbar(im, cax=cax)
     cbar.set_label("$\Delta \log_{10}(L /$ [erg $/$ s $/$ Hz])")
