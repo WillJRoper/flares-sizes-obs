@@ -319,12 +319,14 @@ fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, "Total",
 print("--------------------------- All filters ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
-                     "pix", weight_norm, list(xlims), list(ylims), "Complete", size_tot_extent)
+                     "pix", weight_norm, list(xlims), list(ylims), "Complete",
+                     size_tot_extent)
 print(
     "--------------------------- All filters Incomplete ---------------------------")
 size_lumin_grid_allf(data, intr_data, snaps, all_filters, orientation,
                      "Total", "default",
-                     "pix", weight_norm, list(xlims), list(ylims), "All", size_tot_extent)
+                     "pix", weight_norm, list(xlims), list(ylims), "All",
+                     size_tot_extent)
 
 for f in filters:
     print(f)
@@ -487,3 +489,34 @@ for f in filters:
 
 img_size_comp(filters[0], regions, snaps[-1], weight_norm,
               orientation, "Total", "default")
+
+# Initialise file to save outputs
+hdf_out = h5py.File("flares-sizes-results.hdf5", "r")
+
+for snap in all_snaps:
+
+    # Create snapshot group
+    snap_grp = hdf_out.create_group(snap)
+
+    for f in all_filters:
+
+        # Create filter group
+        f_grp = snap_grp.create_group(f)
+
+        # Create observation type group
+        type_grp = f_grp.create_group("Observed")
+
+        for key in data[snap][f].keys():
+            arr = data[snap][f][key]
+            type_grp.create_dataset(key, data=arr, shape=arr.shape,
+                                    dtype=arr.dtype, compression="gzip")
+
+        # Create observation type group
+        type_grp = f_grp.create_group("Intrinsic")
+
+        for key in data[snap][f].keys():
+            arr = intr_data[snap][f][key]
+            type_grp.create_dataset(key, data=arr, shape=arr.shape,
+                                    dtype=arr.dtype, compression="gzip")
+
+hdf_out.close()

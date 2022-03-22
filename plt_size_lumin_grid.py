@@ -175,26 +175,35 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         print("Type =", Type)
         print("Filter =", f)
 
-        fig = plt.figure(figsize=(3.5 * len(snaps), 2 * 3.5))
-        gs = gridspec.GridSpec(2, len(snaps) + 2, width_ratios=[20, ] * len(snaps) + [1, 1])
+        fig = plt.figure(figsize=(2 * len(snaps), 3 * 2))
+        gs = gridspec.GridSpec(3, len(snaps) + 2, width_ratios=[20, ] * len(snaps) + [1, 1])
         gs.update(wspace=0.0, hspace=0.0)
         axes_diff = []
         axes_com = []
+        axes_comb = []
         cax1 = fig.add_subplot(gs[:, -2])
         cax2 = fig.add_subplot(gs[:, -1])
         i = 0
         while i < len(snaps):
             axes_com.append(fig.add_subplot(gs[0, i]))
             axes_diff.append(fig.add_subplot(gs[1, i]))
+            axes_comb.append(fig.add_subplot(gs[2, i]))
             if i > 0:
                 axes_com[-1].tick_params(axis='both', left=False, right=False,
                                          top=False, bottom=False,
                                          labelleft=False, labelright=False,
                                          labeltop=False, labelbottom=False)
-                axes_diff[-1].tick_params(axis='y', left=False, right=False,
+                axes_diff[-1].tick_params(axis='both', left=False, right=False,
+                                         top=False, bottom=False,
+                                         labelleft=False, labelright=False,
+                                         labeltop=False, labelbottom=False)
+                axes_comb[-1].tick_params(axis='y', left=False, right=False,
                                          labelleft=False, labelright=False)
             else:
                 axes_com[-1].tick_params(axis='x',
+                                         top=False, bottom=False,
+                                         labeltop=False, labelbottom=False)
+                axes_diff[-1].tick_params(axis='x',
                                          top=False, bottom=False,
                                          labeltop=False, labelbottom=False)
             i += 1
@@ -243,14 +252,30 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                                             extent[3],
                                                             extent[0],
                                                             extent[1]])
-                print(np.log10(np.min(lumins[diffuse_com])),
-                      np.log10(np.max(lumins[diffuse_com])),
-                      np.log10(np.min(lumins[compact_com])),
-                      np.log10(np.max(lumins[compact_com])))
+                cbar = axes_comb[i].hexbin(lumins[diffuse_com], hlrs[diffuse_com],
+                                      gridsize=50,
+                                      mincnt=np.min(w) - (0.1 * np.min(w)),
+                                      C=w[diffuse_com],
+                                      reduce_C_function=np.sum,
+                                      xscale='log', yscale='log',
+                                      norm=weight_norm, linewidths=0.2,
+                                      cmap='Greys', extent=[extent[2],
+                                                            extent[3],
+                                                            extent[0],
+                                                            extent[1]])
             except ValueError as e:
                 print(e, "Diffuse complete", snap, f)
             try:
                 axes_com[i].hexbin(lumins[compact_com],
+                               hlrs[compact_com], gridsize=50,
+                               mincnt=np.min(w) - (0.1 * np.min(w)),
+                               C=w[compact_com],
+                               reduce_C_function=np.sum,
+                               xscale='log', yscale='log',
+                               norm=weight_norm, linewidths=0.2,
+                               cmap='viridis', extent=[extent[2], extent[3],
+                                                       extent[0], extent[1]])
+                axes_comb[i].hexbin(lumins[compact_com],
                                hlrs[compact_com], gridsize=50,
                                mincnt=np.min(w) - (0.1 * np.min(w)),
                                C=w[compact_com],
@@ -291,15 +316,11 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                label=labels[p], markerfacecolor=colors[p],
                                markersize=8, alpha=0.9))
 
-                    axes_com[i].scatter(plt_lumins, plt_r_es,
+                    axes_comb[i].scatter(plt_lumins, plt_r_es,
                                         marker=markers[p], label=labels[p], s=20,
                                         color=colors[p], alpha=0.9)
-                    axes_diff[i].scatter(plt_lumins, plt_r_es,
-                                        marker=markers[p], label=labels[p],
-                                        s=20,
-                                        color=colors[p], alpha=0.9)
 
-            axes_diff[i].text(0.95, 0.05, f'$z={z}$',
+            axes_comb[i].text(0.95, 0.05, f'$z={z}$',
                          bbox=dict(boxstyle="round,pad=0.3", fc='w',
                                    ec="k", lw=1, alpha=0.8),
                          transform=axes_diff[i].transAxes,
