@@ -144,7 +144,7 @@ labels = {"H07": "Hathi+2008",
           "B21": "Bouwens+2021",
           "Y22": "Yang+2022"}
 markers = {"G11": "s", "G12": "v", "C16": "D",
-           "K18": "o", "M18": "X", "MO18": "o",
+           "K18": "d", "M18": "X", "MO18": "o",
            "B19": "^", "O16": "P", "S18": "<", "H20": "*",
            "H07": "P", }
 colors = {}
@@ -317,7 +317,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                markersize=8, alpha=0.9))
 
                     axes_comb[i].scatter(plt_lumins, plt_r_es,
-                                        marker=markers[p], label=labels[p], s=20,
+                                        marker=markers[p], edgecolor="k",
+                                         label=labels[p], s=20,
                                         color=colors[p], alpha=0.9)
 
             axes_comb[i].text(0.95, 0.05, f'$z={z}$',

@@ -375,13 +375,13 @@ for f in filters:
                 if i == 0:
                     if bins[j + 1] == np.inf:
 
-                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])))
+                        axes[i, j].set_title("$%.1f \leq \log_{10}(M_\star/M_\odot)$" % (np.log10(bins[j])))
 
-                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot)$" % (np.log10(bins[j])))
+                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M_\star/M_\odot)$" % (np.log10(bins[j])))
                     else:
-                        axes[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])))
+                        axes[i, j].set_title("$%.1f \leq \log_{10}(M_\star/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])))
 
-                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])))
+                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M_\star/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])))
 
                 # Get softening length
                 if z <= 2.8:
