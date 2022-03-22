@@ -315,7 +315,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                     legend_elements.append(
                         Line2D([0], [0], marker=markers[p], color='w',
                                label=labels[p], markerfacecolor=colors[p],
-                               edgecolor="k", markersize=8, alpha=0.9,
+                               markeredgecolor="k", markersize=8, alpha=0.9,
                                linewidth=1))
 
                     axes_comb[i].scatter(plt_lumins, plt_r_es,
