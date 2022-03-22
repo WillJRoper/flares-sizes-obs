@@ -364,7 +364,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 included.append((l.get_label(), l.get_marker()))
 
         axes_comb[2].legend(handles=uni_legend_elements, loc='upper center',
-                       bbox_to_anchor=(0.5, -0.175), fancybox=True,
+                       bbox_to_anchor=(0.5, -0.2), fancybox=True,
                        ncol=len(uni_legend_elements))
 
         cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
