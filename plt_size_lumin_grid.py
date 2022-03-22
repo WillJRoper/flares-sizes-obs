@@ -11,7 +11,6 @@ os.environ['FLARE'] = '/cosma7/data/dp004/dc-wilk2/flare'
 matplotlib.use('Agg')
 warnings.filterwarnings('ignore')
 import matplotlib as mpl
-from matplotlib.colors import LogNorm
 import matplotlib.gridspec as gridspec
 from scipy.stats import binned_statistic
 from matplotlib.lines import Line2D
@@ -19,8 +18,6 @@ from astropy.cosmology import Planck13 as cosmo
 from flare.photom import M_to_lum
 import flare.photom as photconv
 import pandas as pd
-from flare import plt as flareplt
-
 
 # Set plotting fontsizes
 plt.rcParams['axes.grid'] = True
@@ -29,21 +26,19 @@ SMALL_SIZE = 14
 MEDIUM_SIZE = 16
 BIGGER_SIZE = 18
 
-plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
-plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
-plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+plt.rc('font', size=SMALL_SIZE)  # controls default text sizes
+plt.rc('axes', titlesize=SMALL_SIZE)  # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)  # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)  # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)  # fontsize of the tick labels
+plt.rc('legend', fontsize=SMALL_SIZE)  # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 plt.rcParams['axes.labelsize'] = MEDIUM_SIZE
 plt.rcParams['xtick.labelsize'] = SMALL_SIZE
 plt.rcParams['ytick.labelsize'] = SMALL_SIZE
 
-
-
 # Lstar = M_to_lum(-21)
-Lstar = 10**28.51
+Lstar = 10 ** 28.51
 
 # Define Kawamata17 fit and parameters
 kawa_params = {'beta': {6: 0.46, 7: 0.46, 8: 0.38, 9: 0.56},
@@ -167,7 +162,6 @@ M_bin_cents = M_bins[1:] - (M_bin_wid / 2)
 
 def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                     mtype, weight_norm, xlims, ylims, extent):
-
     for f in filters:
 
         print("Plotting for:")
@@ -176,7 +170,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         print("Filter =", f)
 
         fig = plt.figure(figsize=(2.25 * len(snaps), 3 * 2.25))
-        gs = gridspec.GridSpec(3, len(snaps) + 2, width_ratios=[20, ] * len(snaps) + [1, 1])
+        gs = gridspec.GridSpec(3, len(snaps) + 2,
+                               width_ratios=[20, ] * len(snaps) + [1, 1])
         gs.update(wspace=0.0, hspace=0.0)
         axes_diff = []
         axes_com = []
@@ -194,18 +189,18 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                          labelleft=False, labelright=False,
                                          labeltop=False, labelbottom=False)
                 axes_diff[-1].tick_params(axis='both', left=False, right=False,
-                                         top=False, bottom=False,
-                                         labelleft=False, labelright=False,
-                                         labeltop=False, labelbottom=False)
+                                          top=False, bottom=False,
+                                          labelleft=False, labelright=False,
+                                          labeltop=False, labelbottom=False)
                 axes_comb[-1].tick_params(axis='y', left=False, right=False,
-                                         labelleft=False, labelright=False)
+                                          labelleft=False, labelright=False)
             else:
                 axes_com[-1].tick_params(axis='x',
                                          top=False, bottom=False,
                                          labeltop=False, labelbottom=False)
                 axes_diff[-1].tick_params(axis='x',
-                                         top=False, bottom=False,
-                                         labeltop=False, labelbottom=False)
+                                          top=False, bottom=False,
+                                          labeltop=False, labelbottom=False)
             i += 1
 
         legend_elements = []
@@ -241,49 +236,55 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
             diffuse_com = data[snap][f]["Diffuse_Population_Complete"]
 
             try:
-                cbar = axes_diff[i].hexbin(lumins[diffuse_com], hlrs[diffuse_com],
-                                      gridsize=50,
-                                      mincnt=np.min(w) - (0.1 * np.min(w)),
-                                      C=w[diffuse_com],
-                                      reduce_C_function=np.sum,
-                                      xscale='log', yscale='log',
-                                      norm=weight_norm, linewidths=0.2,
-                                      cmap='Greys', extent=[extent[2],
-                                                            extent[3],
-                                                            extent[0],
-                                                            extent[1]])
-                cbar = axes_comb[i].hexbin(lumins[diffuse_com], hlrs[diffuse_com],
-                                      gridsize=50,
-                                      mincnt=np.min(w) - (0.1 * np.min(w)),
-                                      C=w[diffuse_com],
-                                      reduce_C_function=np.sum,
-                                      xscale='log', yscale='log',
-                                      norm=weight_norm, linewidths=0.2,
-                                      cmap='Greys', extent=[extent[2],
-                                                            extent[3],
-                                                            extent[0],
-                                                            extent[1]])
+                cbar = axes_diff[i].hexbin(lumins[diffuse_com],
+                                           hlrs[diffuse_com],
+                                           gridsize=50,
+                                           mincnt=np.min(w) - (
+                                                       0.1 * np.min(w)),
+                                           C=w[diffuse_com],
+                                           reduce_C_function=np.sum,
+                                           xscale='log', yscale='log',
+                                           norm=weight_norm, linewidths=0.2,
+                                           cmap='Greys', extent=[extent[2],
+                                                                 extent[3],
+                                                                 extent[0],
+                                                                 extent[1]])
+                cbar = axes_comb[i].hexbin(lumins[diffuse_com],
+                                           hlrs[diffuse_com],
+                                           gridsize=50,
+                                           mincnt=np.min(w) - (
+                                                       0.1 * np.min(w)),
+                                           C=w[diffuse_com],
+                                           reduce_C_function=np.sum,
+                                           xscale='log', yscale='log',
+                                           norm=weight_norm, linewidths=0.2,
+                                           cmap='Greys', extent=[extent[2],
+                                                                 extent[3],
+                                                                 extent[0],
+                                                                 extent[1]])
             except ValueError as e:
                 print(e, "Diffuse complete", snap, f)
             try:
                 axes_com[i].hexbin(lumins[compact_com],
-                               hlrs[compact_com], gridsize=50,
-                               mincnt=np.min(w) - (0.1 * np.min(w)),
-                               C=w[compact_com],
-                               reduce_C_function=np.sum,
-                               xscale='log', yscale='log',
-                               norm=weight_norm, linewidths=0.2,
-                               cmap='viridis', extent=[extent[2], extent[3],
-                                                       extent[0], extent[1]])
+                                   hlrs[compact_com], gridsize=50,
+                                   mincnt=np.min(w) - (0.1 * np.min(w)),
+                                   C=w[compact_com],
+                                   reduce_C_function=np.sum,
+                                   xscale='log', yscale='log',
+                                   norm=weight_norm, linewidths=0.2,
+                                   cmap='viridis',
+                                   extent=[extent[2], extent[3],
+                                           extent[0], extent[1]])
                 axes_comb[i].hexbin(lumins[compact_com],
-                               hlrs[compact_com], gridsize=50,
-                               mincnt=np.min(w) - (0.1 * np.min(w)),
-                               C=w[compact_com],
-                               reduce_C_function=np.sum,
-                               xscale='log', yscale='log',
-                               norm=weight_norm, linewidths=0.2,
-                               cmap='viridis', extent=[extent[2], extent[3],
-                                                       extent[0], extent[1]])
+                                    hlrs[compact_com], gridsize=50,
+                                    mincnt=np.min(w) - (0.1 * np.min(w)),
+                                    C=w[compact_com],
+                                    reduce_C_function=np.sum,
+                                    xscale='log', yscale='log',
+                                    norm=weight_norm, linewidths=0.2,
+                                    cmap='viridis',
+                                    extent=[extent[2], extent[3],
+                                            extent[0], extent[1]])
             except ValueError as e:
                 print(e, "Compact complete", snap, f)
 
@@ -318,22 +319,22 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                                linewidth=1))
 
                     axes_comb[i].scatter(plt_lumins, plt_r_es,
-                                        marker=markers[p], edgecolor="k",
+                                         marker=markers[p], edgecolor="k",
                                          label=labels[p], s=20,
-                                        color=colors[p], alpha=0.9,
+                                         color=colors[p], alpha=0.9,
                                          linewidth=1)
 
             axes_comb[i].text(0.95, 0.05, f'$z={z}$',
-                         bbox=dict(boxstyle="round,pad=0.3", fc='w',
-                                   ec="k", lw=1, alpha=0.8),
-                         transform=axes_diff[i].transAxes,
-                         horizontalalignment='right',
-                         fontsize=8)
+                              bbox=dict(boxstyle="round,pad=0.3", fc='w',
+                                        ec="k", lw=1, alpha=0.8),
+                              transform=axes_diff[i].transAxes,
+                              horizontalalignment='right',
+                              fontsize=8)
 
             axes_diff[i].tick_params(axis='both', which='minor',
                                      bottom=True, left=True)
             axes_com[i].tick_params(axis='both', which='minor',
-                                     bottom=True, left=True)
+                                    bottom=True, left=True)
 
             # Label axes
             axes_comb[i].set_xlabel(r"$L_{\mathrm{" + f.split(".")[-1]
@@ -367,8 +368,8 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 included.append((l.get_label(), l.get_marker()))
 
         axes_comb[2].legend(handles=uni_legend_elements, loc='upper center',
-                       bbox_to_anchor=(0.5, -0.3), fancybox=True,
-                       ncol=3)
+                            bbox_to_anchor=(0.5, -0.3), fancybox=True,
+                            ncol=3)
 
         cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
                                         norm=weight_norm)
