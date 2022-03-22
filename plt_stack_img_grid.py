@@ -402,11 +402,14 @@ for f in filters:
                                       norm=cm.LogNorm(vmin=np.percentile(plt_img, 16)),
                                       extent=extent)
 
-                for j1, b1 in enumerate(bins[:-1]):
+                for c, (j1, b1) in zip(["blue", "green", "orange", "red"],
+                                       enumerate(bins[:-1])):
                     if b1 == b:
                         alpha = 1
+                        zorder = 1
                     else:
-                        alpha = 0.3
+                        alpha = 0.4
+                        zorder = 0
 
                     plt_img = stacks[f][b1][int(0.3 * size):-int(0.3 * size),
                                             int(0.3 * size):-int(0.3 * size)]
@@ -416,8 +419,8 @@ for f in filters:
                                      (plt_img.shape[0] / 2) * csoft,
                                      plt_img.shape[0])
                     ys = np.sum(plt_img, axis=0) / np.sum(plt_img)
-                    axes[i + 1, j].plot(xs, ys, alpha=alpha)
-                    axes_log[i + 1, j].plot(xs, ys, alpha=alpha)
+                    axes[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder)
+                    axes_log[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder)
 
                     ylims = axes[i + 1, j].get_ylim()
                     if ylims[0] < profile_lims[0]:
