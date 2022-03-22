@@ -408,7 +408,7 @@ for f in filters:
                         alpha = 1
                         zorder = 1
                     else:
-                        alpha = 0.4
+                        alpha = 0.3
                         zorder = 0
 
                     plt_img = stacks[f][b1][int(0.3 * size):-int(0.3 * size),
