@@ -360,7 +360,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 uni_legend_elements.append(l)
                 included.append((l.get_label(), l.get_marker()))
 
-        axes_diff[2].legend(handles=uni_legend_elements, loc='upper center',
+        axes_comb[2].legend(handles=uni_legend_elements, loc='upper center',
                        bbox_to_anchor=(0.5, -0.15), fancybox=True,
                        ncol=len(uni_legend_elements))
 
