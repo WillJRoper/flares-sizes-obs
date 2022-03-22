@@ -468,13 +468,13 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
                                   linestyle="-"))
 
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="FLARES ($5\leq z \leq 12$)",
+                                  label="$5\leq z \leq 12$",
                                   linestyle="-"))
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="FLARES ($5\leq z \leq 10$)",
+                                  label="$5\leq z \leq 10$",
                                   linestyle="--"))
     legend_elements.append(Line2D([0], [0], color='k',
-                                  label="FLARES ($7\leq z \leq 12$)",
+                                  label="$7\leq z \leq 12$",
                                   linestyle="dotted"))
 
     legend_elements.append(Line2D([0], [0], color='k',
@@ -499,7 +499,7 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
     ax.legend(handles=legend_elements,
               loc='upper center',
               bbox_to_anchor=(0.5, -0.3),
-              fancybox=True, ncol=2, fontsize=10)
+              fancybox=True, ncol=2)
 
     fig.savefig(
         'plots/Violin_ObsCompHalfLightRadius_evolution_' + mtype + '_' + f + '_'
@@ -508,14 +508,16 @@ def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
 
     plt.close(fig)
 
-    fig = plt.figure(figsize=(2.25 * 1.4, 2.25))
+    fig = plt.figure(figsize=(2.75 * 1.4, 2.75))
     bar_ax = fig.add_subplot(111)
 
     # Plot FIRE region
     bar_ax.fill_between([-2, 30], y1=[1, 1], y2=[2, 2],
                         facecolor="k", alpha=0.2)
 
-    comp_val_works = ["FLARES", "FLARES (low-z)", "FLARES (high-z)",
+    comp_val_works = ["FLARES ($5\leq z \leq 12$)",
+                      "FLARES ($5\leq z \leq 10$)",
+                      "FLARES ($7\leq z \leq 12$)",
                       "Marshall+", "Oesch+",
                       "Holwerda+", "Kawamata+", "Ono+"]
     comp_vals = [(slopes, slope_errors, []),
