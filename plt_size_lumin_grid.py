@@ -175,7 +175,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
         print("Type =", Type)
         print("Filter =", f)
 
-        fig = plt.figure(figsize=(2.5 * len(snaps), 3 * 2.5))
+        fig = plt.figure(figsize=(2.25 * len(snaps), 3 * 2.25))
         gs = gridspec.GridSpec(3, len(snaps) + 2, width_ratios=[20, ] * len(snaps) + [1, 1])
         gs.update(wspace=0.0, hspace=0.0)
         axes_diff = []
@@ -364,7 +364,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 included.append((l.get_label(), l.get_marker()))
 
         axes_comb[2].legend(handles=uni_legend_elements, loc='upper center',
-                       bbox_to_anchor=(0.5, -0.15), fancybox=True,
+                       bbox_to_anchor=(0.5, -0.175), fancybox=True,
                        ncol=len(uni_legend_elements))
 
         cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
