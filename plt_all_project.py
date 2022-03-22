@@ -491,7 +491,7 @@ img_size_comp(filters[0], regions, snaps[-1], weight_norm,
               orientation, "Total", "default")
 
 # Initialise file to save outputs
-hdf_out = h5py.File("plots/flares-sizes-results.hdf5", "r")
+hdf_out = h5py.File("plots/flares-sizes-results.hdf5", "w")
 
 for snap in all_snaps:
 

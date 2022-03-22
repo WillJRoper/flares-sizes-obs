@@ -316,13 +316,13 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                         Line2D([0], [0], marker=markers[p], color='w',
                                label=labels[p], markerfacecolor=colors[p],
                                markeredgecolor="k", markersize=8, alpha=0.9,
-                               linewidth=1))
+                               linewidth=0.5))
 
                     axes_comb[i].scatter(plt_lumins, plt_r_es,
                                          marker=markers[p], edgecolor="k",
                                          label=labels[p], s=20,
                                          color=colors[p], alpha=0.9,
-                                         linewidth=1)
+                                         linewidth=0.5)
 
             axes_comb[i].text(0.95, 0.05, f'$z={z}$',
                               bbox=dict(boxstyle="round,pad=0.3", fc='w',
