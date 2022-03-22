@@ -491,7 +491,7 @@ def fit_size_lumin_grid(data, intr_data, snaps, filters, orientation, Type,
 
         axes[2].legend(handles=uni_legend_elements, loc='upper center',
                        bbox_to_anchor=(0.5, -0.15), fancybox=True,
-                       ncol=2)
+                       ncol=5)
 
         fig.savefig(
             'plots/FitHalfLightRadius_' + mtype + "_" + f + '_'

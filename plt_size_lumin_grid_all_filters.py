@@ -374,7 +374,7 @@ def size_lumin_grid_allf(data, intr_data, snaps, filters, orientation,
 
     axes_ratio[2].legend(handles=uni_legend_elements, loc='upper center',
                          bbox_to_anchor=(0.5, -0.35), fancybox=True,
-                         nrow=2)
+                         ncol=5)
 
     cb1 = mpl.colorbar.ColorbarBase(cax, cmap=cmap,
                                     norm=norm)
