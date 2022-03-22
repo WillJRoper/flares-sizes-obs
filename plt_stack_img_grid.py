@@ -54,11 +54,11 @@ orientation = sys.argv[1]
 Type = sys.argv[2]
 extinction = 'default'
 
-filters = ['FAKE.TH.' + f
-           for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
-                     'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
 # filters = ['FAKE.TH.' + f
-#            for f in ['FUV', 'MUV', 'NUV']]
+#            for f in ['FUV', 'MUV', 'NUV', 'U', 'B',
+#                      'V', 'R', 'I', 'Z', 'Y', 'J', 'H']]
+filters = ['FAKE.TH.' + f
+           for f in ['FUV', ]]
 
 csoft = 0.001802390 / (0.6777) * 1e3
 
@@ -270,9 +270,9 @@ for f in filters:
 
             dpi = 300
             fig = plt.figure(dpi=dpi, figsize=(4 * 2.25,
-                                               (len(row_filters) + 1) * 2.5))
+                                               (len(row_filters) + 1) * 3))
             fig_log = plt.figure(dpi=dpi, figsize=(4 * 2.25,
-                                               (len(row_filters) + 1) * 2.5))
+                                               (len(row_filters) + 1) * 3))
             gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1, height_ratios=[10, 4])
             gs.update(wspace=0.0, hspace=-0.45)
             axes = np.empty((len(row_filters) + 1, 4), dtype=object)
