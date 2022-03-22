@@ -314,12 +314,14 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                     legend_elements.append(
                         Line2D([0], [0], marker=markers[p], color='w',
                                label=labels[p], markerfacecolor=colors[p],
-                               markersize=8, alpha=0.9))
+                               edgecolor="k", markersize=8, alpha=0.9,
+                               linewidth=1))
 
                     axes_comb[i].scatter(plt_lumins, plt_r_es,
                                         marker=markers[p], edgecolor="k",
                                          label=labels[p], s=20,
-                                        color=colors[p], alpha=0.9)
+                                        color=colors[p], alpha=0.9,
+                                         linewidth=1)
 
             axes_comb[i].text(0.95, 0.05, f'$z={z}$',
                          bbox=dict(boxstyle="round,pad=0.3", fc='w',
@@ -365,7 +367,7 @@ def size_lumin_grid(data, snaps, filters, orientation, Type, extinction,
                 included.append((l.get_label(), l.get_marker()))
 
         axes_comb[2].legend(handles=uni_legend_elements, loc='upper center',
-                       bbox_to_anchor=(0.5, -0.35), fancybox=True,
+                       bbox_to_anchor=(0.5, -0.3), fancybox=True,
                        ncol=3)
 
         cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
