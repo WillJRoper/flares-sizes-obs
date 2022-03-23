@@ -126,7 +126,7 @@ for f in filters:
         lam_max = np.max(l[t > 0])
     i += 1
 
-bounds.append(i + 0.5)
+bounds.append(i - 0.5)
 
 sinds = np.argsort(plt_lams)
 plt_lams = np.array(plt_lams)[sinds]
