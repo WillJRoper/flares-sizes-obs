@@ -296,6 +296,7 @@ ax1.tick_params(axis='both', which='both', left=True, bottom=True)
 ax.legend()
 
 # create a second axes for the colorbar
+print(cents, bounds)
 ax2 = fig.add_axes([0.95, 0.1, 0.015, 0.8])
 cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,
                                spacing='uniform', ticks=cents,
