@@ -176,9 +176,12 @@ ax.semilogy()
 # ax1.semilogx()
 
 for i, f in enumerate(filters):
-    h = [1, 0.75, 0.5, 0.25][i % 4]
+    h = [1, 0.8, 0.6][i % 3]
     ts[f][ts[f] == 1] = h
     ax1.plot(ls[f], ts[f], color=cmap(norm(trans[f][1])))
+
+ax1.tick_params("y", left=False, right=False,
+                labelleft=False, labelright=False)
 
 for snap in snaps:
     for reg in regions:
