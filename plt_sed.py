@@ -180,7 +180,7 @@ for i, f in enumerate(filters):
     ts[f][ts[f] == 1] = h
     ax1.plot(ls[f], ts[f], color=cmap(norm(trans[f][1])))
 
-ax1.tick_params("y", left=False, right=False,
+ax1.tick_params("y", which="both", left=False, right=False,
                 labelleft=False, labelright=False)
 
 for snap in snaps:
@@ -288,7 +288,7 @@ ax1.set_ylim(0.01, 1.15)
 
 ax1.set_xlabel("$\lambda / [\mu\mathrm{m}]$")
 ax.set_ylabel("$L / [\mathrm{erg} / \mathrm{s} / \mathrm{Hz}]$")
-ax1.set_ylabel("$T$")
+# ax1.set_ylabel("$T$")
 
 ax.tick_params(axis='y', which='both', left=True)
 ax1.tick_params(axis='both', which='both', left=True, bottom=True)
