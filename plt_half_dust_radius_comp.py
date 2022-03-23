@@ -273,6 +273,7 @@ def hdr_comp(hdrs, hlrs, hlrints, w, com_comp, diff_comp, com_ncomp,
                    linewidths=0.2, cmap='viridis', extent=[-1.1, 1.3,
                                                            np.log10(0.2),
                                                            np.log10(80)])
+        print("Max increase:", np.max(ratio[com_comp]))
         ax2.axis('scaled')
     except ValueError as e:
         print(e)

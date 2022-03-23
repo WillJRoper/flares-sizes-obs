@@ -508,15 +508,17 @@ for snap in all_snaps:
 
         for key in data[snap][f].keys():
             arr = data[snap][f][key]
-            type_grp.create_dataset(key, data=arr, shape=arr.shape,
-                                    dtype=arr.dtype, compression="gzip")
+            if type(arr) != int:
+                type_grp.create_dataset(key, data=arr, shape=arr.shape,
+                                        dtype=arr.dtype, compression="gzip")
 
         # Create observation type group
         type_grp = f_grp.create_group("Intrinsic")
 
         for key in data[snap][f].keys():
             arr = intr_data[snap][f][key]
-            type_grp.create_dataset(key, data=arr, shape=arr.shape,
-                                    dtype=arr.dtype, compression="gzip")
+            if type(arr) != int:
+                type_grp.create_dataset(key, data=arr, shape=arr.shape,
+                                        dtype=arr.dtype, compression="gzip")
 
 hdf_out.close()
