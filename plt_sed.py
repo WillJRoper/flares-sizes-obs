@@ -175,10 +175,10 @@ ax.semilogy()
 # ax.loglog()
 # ax1.semilogx()
 
-for f in filters:
+for i, f in enumerate(filters):
+    h = [1, 0.75, 0.5, 0.25][i % 4]
+    ts[f][ts[f] == 1] = h
     ax1.plot(ls[f], ts[f], color=cmap(norm(trans[f][1])))
-    # ax.axvspan(trans[f][0], trans[f][2],
-    #            color=cmap(norm(trans[f][1])))
 
 for snap in snaps:
     for reg in regions:
