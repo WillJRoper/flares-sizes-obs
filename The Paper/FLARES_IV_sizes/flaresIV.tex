@@ -1,0 +1,244 @@
+% mnras_template.tex 
+%
+% LaTeX template for creating an MNRAS paper
+%
+% v3.0 released 14 May 2015
+% (version numbers match those of mnras.cls)
+%
+% Copyright (C) Royal Astronomical Society 2015
+% Authors:
+% Keith T. Smith (Royal Astronomical Society)
+
+% Change log
+%
+% v3.0 May 2015
+%    Renamed to match the new package name
+%    Version number matches mnras.cls
+%    A few minor tweaks to wording
+% v1.0 September 2013
+%    Beta testing only - never publicly released
+%    First version: a simple (ish) template for creating an MNRAS paper
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[fleqn,usenatbib]{mnras}
+
+% MNRAS is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+\usepackage{newtxtext,newtxmath}
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+%\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+
+% Allow "Thomas van Noord" and "Simon de Laguarde" and alike to be sorted by "N" and "L" etc. in the bibliography.
+% Write the name in the bibliography as "\VAN{Noord}{Van}{van} Noord, Thomas"
+\DeclareRobustCommand{\VAN}[3]{#2}
+\let\VANthebibliography\thebibliography
+\def\thebibliography{\DeclareRobustCommand{\VAN}[3]{##3}\VANthebibliography}
+
+
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+
+% Only include extra packages if you really need them. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+% \usepackage{amssymb}	% Extra maths symbols
+\usepackage{xcolor}
+\usepackage{ulem} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+
+% Abbreviated referencing macros
+\newcommand{\app}[1]{Appendix~\ref{sec:#1}}
+\newcommand{\eq}[1]{Equation~\ref{eq:#1}}
+\newcommand{\fig}[1]{Figure~\ref{fig:#1}}
+\renewcommand{\sec}[1]{Section~\ref{sec:#1}}
+\newcommand{\tab}[1]{Table~\ref{tab:#1}}
+\newcommand{\App}[1]{Appendix~\ref{sec:#1}}
+\newcommand{\Eq}[1]{Equation~\ref{eq:#1}}
+\newcommand{\Fig}[1]{Figure~\ref{fig:#1}}
+\newcommand{\Sec}[1]{Section~\ref{sec:#1}}
+\newcommand{\Tab}[1]{Table~\ref{tab:#1}}
+\newcommand{\ndd}{in prep.}
+% Names of things
+\newcommand{\bluetides}{{\sc BlueTides}}
+\newcommand{\webb}{{\em Webb}}
+\newcommand{\webbtelescope}{{\em Webb Telescope}}
+\newcommand{\HST}{{\em HST}}
+\newcommand{\hubble}{{\em Hubble}}
+\newcommand{\spitzer}{{\em Spitzer}}
+
+\newcommand{\ceagle}{\mbox{\sc{C-Eagle}}}
+\newcommand{\eagle}{\mbox{\sc{Eagle}}}
+\newcommand{\lgals}{\mbox{\sc{L-Galaxies}}}
+\newcommand{\euclid}{\mbox{\it Euclid}}
+\newcommand{\flares}{\mbox{\sc Flares}}
+\newcommand{\flare}{\mbox{\sc Flare}}
+\newcommand{\wfirst}{\mbox{\it WFIRST}}
+% \newcommand{\jwst}{\mbox{\it JWST}}
+% Other abbreviations
+%\newcommand{\SFR}{\mathrm{SFR}}
+\newcommand{\SFR}{\psi}
+\newcommand{\zoom}{\mbox{zoom}}
+%\newcommand{\C}{[C {\sc iii}], C {\sc iii}]}
+\newcommand{\cloudy}{{\sc cloudy}}
+%\newcommand{\zoom}{\mbox{'zoom'}}
+% Units
+\newcommand{\Lsun}{\mbox{L$_\odot$}}
+\newcommand{\Msun}{\mbox{M$_\odot$}}
+\newcommand{\cMpch}{h$^{-1}$ cMpc}
+
+\def\MN{MNRAS}
+\def\mn{MNRAS}
+\def\mnras{MNRAS}
+\def\nat{Nature}
+\def\ApJ{ApJ}
+\def\apj{ApJ}
+\def\apjs{ApJS}
+\def\apjl{ApJL}
+\def\aa{AA}
+\def\jcap{JCAP}
+\def\prl{Phys. Rev. Lett.}
+\def\prd{Phys. Rev. D.}
+\def\P3M{P$^3$M}
+
+\newcommand{\todo}[1]{{\color{green}***#1***}}
+\newcommand{\will}[1]{{\color{red}***#1***}}
+\newcommand{\chris}[1]{{\color{orange}***#1***}}
+\newcommand{\peter}[1]{{\color{green}***#1***}}
+\newcommand{\steve}[1]{{\color{magenta}***#1***}}
+\newcommand{\aswin}[1]{{\color{teal}***#1***}}
+\newcommand{\jussi}[1]{{\color{purple}***#1***}}
+\newcommand{\dimi}[1]{{\color{cyan}***#1***}}
+\newcommand{\maddie}[1]{{\color{blue}***#1***}}
+\newcommand{\changed}[2]{{\color{red}\sout{#1}}{\color{blue}#2}}
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+%\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+% Title of the paper, and the short title which is used in the headers.
+% Keep the title short and informative.
+\title[FLARES IV]{First Light And Reionisation Epoch Simulations (FLARES) IV: The size evolution of galaxies at $z\geq5$}
+
+% The list of authors, and the short list which is used in the headers.
+% If you need two or more lines of authors, add an extra line using \newauthor
+\author[William J. Roper et al.]{William J. Roper$^{1}$\thanks{E-mail: w.roper@sussex.ac.uk},
+Christopher C. Lovell$^{2,1}$,
+Aswin P. Vijayan$^{3,4,1}$,
+Madeline A. Marshall$^{5, 6}$,
+\newauthor 
+Dimitrios Irodotou$^{7,1}$, 
+Jussi K. Kuusisto$^{1}$,
+Peter A. Thomas$^{1}$,
+Stephen M. Wilkins$^{1}$
+\newauthor 
+\\
+% List of institutions
+$^{1}$Astronomy Centre, University of Sussex, Falmer, Brighton BN1 9QH, UK\\
+$^{2}$Centre for Astrophysics Research, School of Physics, Astronomy $\&$ Mathematics, University of Hertfordshire, Hatfield AL10 9AB, UK\\
+$^{3}$ Cosmic Dawn Center (DAWN) \\
+$^{4}$DTU-Space, Technical University of Denmark, Elektrovej 327, DK-2800 Kgs. Lyngby, Denmark \\
+$^{5}$National Research Council of Canada, Herzberg Astronomy \& Astrophysics Research Centre, 5071 West Saanich Road, \\ Victoria, BC V9E 2E7, Canada \\
+$^{6}$ARC Centre of Excellence for All Sky Astrophysics in 3 Dimensions (ASTRO 3D), Australia \\
+$^{7}$Department of Physics, University of Helsinki, Gustaf Hällströmin katu 2, FI-00014, Helsinki, Finland \\
+}
+
+% These dates will be filled out by the publisher
+\date{Accepted XXX. Received YYY; in original form ZZZ}
+
+% Enter the current year, for the copyright statements etc.
+\pubyear{2022}
+
+% Don't change these lines
+\begin{document}
+\label{firstpage}
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\maketitle
+
+% Abstract of the paper
+\begin{abstract}
+We present the intrinsic and observed sizes of galaxies at $z\geq5$ in the First Light And Reionisation Epoch Simulations (FLARES). 
+We employ the large effective volume of FLARES to produce a sizeable sample of high redshift galaxies with intrinsic and observed luminosities and half light radii in a range of rest frame UV and visual photometric bands. This sample contains a significant number of intrinsically ultra-compact galaxies in the far-UV (1500 \AA), leading to a negative intrinsic far-UV size-luminosity relation. However, after the inclusion of the effects of dust these same compact galaxies exhibit observed sizes that are as much as 50 times larger than those measured from the intrinsic emission, and broadly agree with a range of observational samples. This increase in size is driven by the concentration of dust in the core of galaxies, heavily attenuating the intrinsically brightest regions. At fixed luminosity we find a galaxy size redshift evolution with a slope of $m=1.21-1.87$ depending on the luminosity sample in question, and we demonstrate the wavelength dependence of the size-luminosity relation which will soon be probed by the Webb Space Telescope.
+\end{abstract}
+
+% Select between one and six entries from the list of approved keywords.
+% Don't make up new ones.
+\begin{keywords}
+galaxies: evolution -- galaxies: high-redshift -- galaxies: photometry
+\end{keywords}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
+
+\input{Sections/introduction}
+
+\input{Sections/flares}
+
+\input{Sections/syntheticimages}
+
+\input{Sections/observations}
+
+\input{Sections/conclusions}
+
+\section*{Acknowledgements}
+
+We thank the \eagle\ team for their efforts in developing the \eagle\ simulation code.
+
+We acknowledge the indispensable contribution from the publicly available programming language \texttt{python} \citep{Python}, including the \texttt{numpy} \citep{numpy}, \texttt{astropy} \citep{Astropy}, \texttt{matplotlib} \citep{Matplotlib}, \texttt{scipy} \citep{2020SciPy-NMeth}, and \texttt{h5py} \citep{h5py} packages. 
+
+This work used the DiRAC@Durham facility managed by the Institute for Computational Cosmology on behalf of the STFC DiRAC HPC Facility (www.dirac.ac.uk). The equipment was funded by BEIS capital funding via STFC capital grants ST/K00042X/1, ST/P002293/1, ST/R002371/1 and ST/S002502/1, Durham University and STFC operations grant ST/R000832/1. DiRAC is part of the National e-Infrastructure.
+
+CCL acknowledges support from the Royal Society under grant RGF/EA/181016. DI acknowledges support by the European Research Council via ERC Consolidator Grant KETJU (no. 818930). The Cosmic Dawn Center (DAWN) is funded by the Danish National Research Foundation under grant No. 140. MAM acknowledges the support of a National Research Council of Canada Plaskett Fellowship, and the Australian Research Council Centre of Excellence for All Sky Astrophysics in 3 Dimensions (ASTRO 3D), through project number CE170100013.
+
+\section*{Data Availability}
+The integrated galaxy properties used to generate the plots in this article is available at \href{https://flaresimulations.github.io/data.html}{flaresimulations.github.io/data}. More detailed data, including particle data, can be provided upon request. All the code used to produce the analysis in this article is public and available at \href{https://github.com/WillJRoper/flares-sizes-obs}{github.com/WillJRoper/flares-sizes-obs}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
+
+% The best way to enter references is to use BibTeX:
+
+\bibliographystyle{mnras}
+\bibliography{flaresIV} % if your bibtex file is called example.bib
+
+
+% Alternatively you could enter them by hand, like this:
+% This method is tedious and prone to error if you have lots of references
+%\begin{thebibliography}{99}
+%\bibitem[\protect\citeauthoryear{Author}{2012}]{Author2012}
+%Author A.~N., 2013, Journal of Improbable Astronomy, 1, 1
+%\bibitem[\protect\citeauthoryear{Others}{2013}]{Others2013}
+%Others S., 2012, Journal of Interesting Stuff, 17, 198
+%\end{thebibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+\input{Sections/app}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Don't change these lines
+\bsp	% typesetting comment
+\label{lastpage}
+\end{document}
+
+% End of mnras_template.tex

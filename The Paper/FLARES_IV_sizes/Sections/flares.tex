@@ -1,0 +1,43 @@
+\section{First Light And Reionisation Epoch Simulations (\flares)}
+\label{sec:flares}
+
+\flares\ is a simulation programme targeting the Epoch of Reionisation (EoR).
+It consists of 40 zoom simulations, targeting regions with a range of overdensities drawn from an enormous $(3.2\; \mathrm{cGpc})^{3}$ dark matter only simulation  \citep{barnes_redshift_2017}, which we will refer to as the `parent'.
+The regions are selected at $z = 4.67$, which ensures that extreme overdensities are only mildly non-linear, and thus the rank ordering of overdensities at higher redshifts is approximately preserved.  
+Regions are defined as spheres with radius 14 cMpc/h, and their overdensities are selected to span a wide range ($\delta=-0.479\to0.970$; see Table A1 of \citealt{Lovell2021}) in order to sample the most under- and over-dense environments at this cosmic time, the latter containing a large sample of the most massive galaxies, thought to be biased to such regions  \citep{chiang_ancient_2013,lovell_characterising_2018}.
+These regions are then re-simulated with full hydrodynamics using the \eagle\ model \citep{schaye_eagle_2015,crain_eagle_2015}.
+
+The \eagle\ project consists of a series of hydrodynamic cosmological simulations, with varying resolutions and box sizes.
+The code is based on a heavily modified version of \textsc{P-Gadget-3}, a smooth particle hydrodynamics (SPH) code last described in \cite{springel_simulations_2005}.
+The hydrodynamic solver is collectively known as \textsc{Anarchy} \citep[described in][]{schaye_eagle_2015,Schaller2015}, and adopts the pressure-entropy formulation described by \cite{Hopkins2013}, an artificial viscosity switch \citep{cullen_inviscid_2010}, and an artificial conduction switch \citep[e.g.][]{price_modelling_2008}. 
+The model includes prescriptions for radiative cooling and photo-heating \citep{Wiersma2009a}, star formation \citep{Schaye2008}, stellar evolution and mass loss \citep{Wiersma2009b}, feedback from star formation \citep{DallaVecchia2012}, black hole growth and AGN feedback \citep{springel_blackhole_2005,B_and_S2009,Rosas-Guevara2015}. 
+The $z=0$ galaxy mass function, the mass-size relation for discs, and the gas mass-halo mass relation were used to calibrate the free parameters of the subgrid model. 
+The model is in good agreement with a number of observables at low-redshift not considered in the calibration \citep[e.g.][]{furlong_evolution_2015,Trayford2015,Lagos2015}. 
+
+\flares\ uses the AGNdT9 configuration of the model, which produces similar mass functions to the fiducial Reference model, but better reproduces the hot gas properties of groups and clusters \citep{barnes_cluster-eagle_2017}. 
+It uses a higher value for C$_{\text{visc}}$, a parameter for the effective viscosity of the subgrid accretion, and a higher gas temperature increase from AGN feedback, $\Delta$T. 
+These modifications give less frequent, more energetic AGN outbursts. 
+
+The \flares\ simulations have an identical resolution to the 100 cMpc Eagle Reference simulation box, with a dark matter and an initial gas particle mass of $m_{\mathrm{dm}} = 9.7 \times 10^6\, \mathrm{M}_{\odot}$ and $m_{\mathrm{g}} = 1.8 \times 10^6\, \mathrm{M}_{\odot}$ respectively, and has a gravitational softening length of $2.66\, \mathrm{ckpc}$ at $z\geq2.8$. 
+
+In order to obtain a representative sample of the Universe, by combining these regions using appropriate weightings corresponding to their relative overdensity, we are able to create composite distribution functions that represent much larger volumes than those explicitly simulated.
+For a more detailed description of the simulation and weighting method we refer the reader to \cite{Lovell2021}.
+
+
+% \begin{itemize}
+%     \item Suite of 40 resimulations from (3.2 cGpc)$^{3}$ Volume. C-EAGLE \citep{barnes_cluster-eagle_2017}.
+%     \item AGNdT9 subgrid model - table of model parameter differences.
+%     \item At EAGLE resolution - particle masses, softening etc.
+%     \item Describe EAGLE
+%     \item Region selection - range of overdensities, selection motivation.
+%     \item Weighting scheme.
+% \end{itemize}
+
+\subsection{Galaxy Extraction}
+\label{sec:extract}
+
+We follow the same structure extraction method as the EAGLE project: this is explained in detail in \cite{Mcalpine_data}. In brief, dark matter overdensities are identified using a Friends-Of-Friends (FOF) approach \citep{davis_evolution_1985} with the usual linking length of $\ell=0.2\bar{x}$, where $\bar{x}$ is the mean inter-particle separation. All other particle types are then assigned to the halo containing their nearest dark matter neighbour. These FOF-halos are then refined to produced self-bound "subgroups" (galaxies) containing both dark matter and baryonic particles using the \textsc{Subfind} algorithm \citep{springel_populating_2001, Dolag2009}. 
+
+The \textsc{Subfind} method involves finding saddle points in the density field in a FOF-halo to identify self-bound substructures. This can lead to spurious oversplitting of extremely dense galaxies where saddle points are misidentified near density peaks. These objects often contain mainly a single particle type and have anomalous integrated properties. Although they make up $<0.1\%$ of all galaxies $>10^8$ M$_\odot$ at $z=5$, we identify and recombine them into their parent structure in post processing. To do this we label a `galaxy' as spurious if it has any zero mass contributions in the stellar, gas or dark matter components. We remove the spurious galaxies from the \textsc{Subfind} catalogue and add their particle properties to the parent `central' subhalo, including the reassigned particles in any integrated quantities. 
+
+In a minority of pathological cases tidal stripping can cause galaxies to exhibit diffuse populations of particles at large radii. Although identified by \textsc{Subfind} as belonging to a galaxy, these distributions can have a large effect on integrated quantities such as the total luminosity and the half light radius. For this reason we adopt a 30 pkpc aperture inline with all \eagle\ and \flares\ papers and calculate all integrated properties within this aperture. This aperture ensures the majority of galaxies have mass distributions which are wholly within this aperture and any erroneous distributions at large radii are omitted.
