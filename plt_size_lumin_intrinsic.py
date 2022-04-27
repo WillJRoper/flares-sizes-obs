@@ -107,7 +107,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
 
     axtop.plot(lbin_cents, Hbot_com, color="g")
     axtop.plot(lbin_cents, Hbot_diff, color="k")
-    axtop.plot(lbin_cents, Hbot_all, color="r", alpha=0.4)
+    axtop.plot(lbin_cents, Hbot_all, color="r", linestyle="--")
 
     hmr_bins = np.logspace(extent[0], extent[1], 50)
     Htop_all, bin_edges = np.histogram(hlrs, bins=hmr_bins, weights=w)
@@ -117,9 +117,10 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
                                         weights=w[diff_comp])
     hmrbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    axright.plot(Htop_com, hmrbin_cents, color="g", label="Compact")
-    axright.plot(Htop_diff, hmrbin_cents, color="k", label="Diffuse")
-    axright.plot(Htop_all, hmrbin_cents, color="r", alpha=0.4, label="All")
+    axright.plot(Htop_all, hmrbin_cents, color="r", linestyle="--",
+                 label="All", zorder=2)
+    axright.plot(Htop_com, hmrbin_cents, color="g", label="Compact", zorder=1)
+    axright.plot(Htop_diff, hmrbin_cents, color="k", label="Diffuse", zorder=0)
 
     # Remove axis labels and ticks
     axtop.tick_params(axis='x', top=False, bottom=False,
