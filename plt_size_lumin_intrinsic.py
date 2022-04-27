@@ -79,7 +79,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
     axtop.grid(False)
     axright.grid(False)
     try:
-        cbar = ax1.hexbin(lumins[diff_comp], hlrs[diff_comp],
+        cbar = ax.hexbin(lumins[diff_comp], hlrs[diff_comp],
                           C=w[diff_comp], gridsize=50,
                           mincnt=np.min(w) - (0.1 * np.min(w)),
                           xscale='log', yscale='log',
@@ -87,7 +87,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
                           cmap='Greys',
                           extent=[extent[2], extent[3], extent[0],
                                   extent[1]])
-        cbar = ax.hexbin(lumins[com_comp], hlrs[com_comp],
+        cbar = ax1.hexbin(lumins[com_comp], hlrs[com_comp],
                          C=w[com_comp], gridsize=50,
                          mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
@@ -117,7 +117,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
                                         weights=w[diff_comp])
     hmrbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
-    axright.plot(Htop_com, hmrbin_cents, color="k", label="Compact")
+    axright.plot(Htop_com, hmrbin_cents, color="g", label="Compact")
     axright.plot(Htop_diff, hmrbin_cents, color="k", label="Diffuse")
     axright.plot(Htop_all, hmrbin_cents, color="r", alpha=0.4, label="All")
 
@@ -148,8 +148,8 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
     cb1.set_label("$\sum w_{i}$")
 
     # Label axes
-    ax.set_xlabel(r"$L_{\mathrm{" + f.split(".")[-1]
-                  + "}}/$ [erg $/$ s $/$ Hz]")
+    ax1.set_xlabel(r"$L_{\mathrm{" + f.split(".")[-1]
+                   + "}}/$ [erg $/$ s $/$ Hz]")
     ax1.set_ylabel('$R/ [pkpc]$')
     ax.set_ylabel('$R/ [pkpc]$')
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
@@ -165,9 +165,13 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
 
     ax.set_xlim(10 ** extent[2], 10 ** extent[3])
     ax.set_ylim(10 ** extent[0], 10 ** extent[1])
+    ax1.set_xlim(10 ** extent[2], 10 ** extent[3])
+    ax1.set_ylim(10 ** extent[0], 10 ** extent[1])
+    axtop.set_xlim(10 ** extent[2], 10 ** extent[3])
+    axright.set_ylim(10 ** extent[0], 10 ** extent[1])
 
     handles, labels = axright.get_legend_handles_labels()
-    ax1.legend(handles, labels, loc="best")
+    ax.legend(handles, labels, loc="best")
 
     fig.savefig(
         'plots/' + str(z) + '/HalfLightRadius_' + mtype + "_" + f + '_' + str(
