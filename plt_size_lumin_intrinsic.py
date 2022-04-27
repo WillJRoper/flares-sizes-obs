@@ -65,14 +65,14 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
         return
 
     fig = plt.figure(figsize=(1.2 * 3.5, 1.2 * 3.5))
-    gs = gridspec.GridSpec(2, 4, height_ratios=(3, 10),
-                           width_ratios=(10, 3, 1, 1))
+    gs = gridspec.GridSpec(2, 4, height_ratios=(6, 20),
+                           width_ratios=(20, 6, 1, 1))
     gs.update(wspace=0.0, hspace=0.0)
     ax = fig.add_subplot(gs[1, 0])
     cax = fig.add_subplot(gs[1, 2])
     cax2 = fig.add_subplot(gs[1, 3])
     axtop = fig.add_subplot(gs[0, 0])
-    axright = fig.add_subplot(gs[1, 1:])
+    axright = fig.add_subplot(gs[1, 1])
     axtop.loglog()
     axright.loglog()
     axtop.grid(False)
