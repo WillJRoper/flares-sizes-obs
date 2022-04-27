@@ -64,9 +64,9 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
     if w.size <= 1:
         return
 
-    fig = plt.figure(figsize=(1.2 * 3.5, 2.2 * 3.5))
+    fig = plt.figure(figsize=(1.2 * 3.5, 1.2 * 3.5))
     gs = gridspec.GridSpec(2, 4, height_ratios=(3, 10),
-                           width_ratios=(20, 3, 1, 1))
+                           width_ratios=(10, 3, 1, 1))
     gs.update(wspace=0.0, hspace=0.0)
     ax = fig.add_subplot(gs[1, 0])
     cax = fig.add_subplot(gs[1, 2])
@@ -96,7 +96,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
     except ValueError as e:
         print(e)
 
-    lumin_bins = np.logspace(extent[2], extent[3], 50)
+    lumin_bins = np.logspace(extent[2], extent[3], 30)
     Hbot_all, bin_edges = np.histogram(lumins, bins=lumin_bins, weights=w)
     Hbot_com, bin_edges = np.histogram(lumins[com_comp], bins=lumin_bins,
                                        weights=w[com_comp])
@@ -108,7 +108,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
     axtop.plot(lbin_cents, Hbot_diff, color="k")
     axtop.plot(lbin_cents, Hbot_all, color="r", linestyle="--")
 
-    hmr_bins = np.logspace(extent[0], extent[1], 50)
+    hmr_bins = np.logspace(extent[0], extent[1], 30)
     Htop_all, bin_edges = np.histogram(hlrs, bins=hmr_bins, weights=w)
     Htop_com, bin_edges = np.histogram(hlrs[com_comp], bins=hmr_bins,
                                        weights=w[com_comp])
