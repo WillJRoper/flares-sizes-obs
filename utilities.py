@@ -496,7 +496,6 @@ def get_pixel_hlr(img, single_pix_area, radii_frac=0.5):
     return hlr
 
 
-
 def calc_rad(poss, i, j):
     # Get galaxy particle indices
     rs = np.sqrt(poss[:, i] ** 2 + poss[:, j] ** 2)
