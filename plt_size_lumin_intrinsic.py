@@ -97,11 +97,9 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
         print(e)
 
     lumin_bins = np.logspace(extent[2], extent[3], 30)
-    Hbot_all, bin_edges = np.histogram(lumins, bins=lumin_bins, weights=w)
-    Hbot_com, bin_edges = np.histogram(lumins[com_comp], bins=lumin_bins,
-                                       weights=w[com_comp])
-    Hbot_diff, bin_edges = np.histogram(lumins[diff_comp], bins=lumin_bins,
-                                        weights=w[diff_comp])
+    Hbot_all, bin_edges = np.histogram(lumins, bins=lumin_bins)
+    Hbot_com, bin_edges = np.histogram(lumins[com_comp], bins=lumin_bins)
+    Hbot_diff, bin_edges = np.histogram(lumins[diff_comp], bins=lumin_bins)
     lbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     axtop.plot(lbin_cents, Hbot_com, color="g")
@@ -109,11 +107,9 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
     axtop.plot(lbin_cents, Hbot_all, color="r", linestyle="--")
 
     hmr_bins = np.logspace(extent[0], extent[1], 30)
-    Htop_all, bin_edges = np.histogram(hlrs, bins=hmr_bins, weights=w)
-    Htop_com, bin_edges = np.histogram(hlrs[com_comp], bins=hmr_bins,
-                                       weights=w[com_comp])
-    Htop_diff, bin_edges = np.histogram(hlrs[diff_comp], bins=hmr_bins,
-                                        weights=w[diff_comp])
+    Htop_all, bin_edges = np.histogram(hlrs, bins=hmr_bins)
+    Htop_com, bin_edges = np.histogram(hlrs[com_comp], bins=hmr_bins)
+    Htop_diff, bin_edges = np.histogram(hlrs[diff_comp], bins=hmr_bins)
     hmrbin_cents = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     axright.plot(Htop_all, hmrbin_cents, color="r", linestyle="--",
