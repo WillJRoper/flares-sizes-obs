@@ -65,15 +65,14 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
         return
 
     fig = plt.figure(figsize=(1.2 * 3.5, 2.2 * 3.5))
-    gs = gridspec.GridSpec(3, 5, height_ratios=(2, 10, 10),
-                           width_ratios=(20, 1, 1, 1, 1))
+    gs = gridspec.GridSpec(2, 4, height_ratios=(3, 10),
+                           width_ratios=(20, 3, 1, 1, 1))
     gs.update(wspace=0.0, hspace=0.0)
     ax = fig.add_subplot(gs[1, 0])
-    ax1 = fig.add_subplot(gs[2, 0])
-    cax1 = fig.add_subplot(gs[1, 1])
-    cax2 = fig.add_subplot(gs[1, 2])
+    cax = fig.add_subplot(gs[1, 2])
+    cax2 = fig.add_subplot(gs[1, 3])
     axtop = fig.add_subplot(gs[0, 0])
-    axright = fig.add_subplot(gs[2, 1:])
+    axright = fig.add_subplot(gs[1, 1:])
     axtop.loglog()
     axright.loglog()
     axtop.grid(False)
@@ -87,7 +86,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
                           cmap='Greys',
                           extent=[extent[2], extent[3], extent[0],
                                   extent[1]])
-        cbar = ax1.hexbin(lumins[com_comp], hlrs[com_comp],
+        cbar = ax.hexbin(lumins[com_comp], hlrs[com_comp],
                          C=w[com_comp], gridsize=50,
                          mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
@@ -127,9 +126,9 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
                       labeltop=False, labelbottom=False)
     axright.tick_params(axis='y', left=False, right=False,
                         labelleft=False, labelright=False)
-    cax1.tick_params(axis='x', top=False, bottom=False,
+    cax.tick_params(axis='x', top=False, bottom=False,
                      labeltop=False, labelbottom=False)
-    cax1.tick_params(axis='y', left=False, right=False,
+    cax.tick_params(axis='y', left=False, right=False,
                      labelleft=False, labelright=False)
     cax2.tick_params(axis='x', top=False, bottom=False,
                      labeltop=False, labelbottom=False)
@@ -141,7 +140,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
     axright.spines['top'].set_visible(False)
     axright.spines['right'].set_visible(False)
 
-    cb1 = mpl.colorbar.ColorbarBase(cax1, cmap=plt.get_cmap("Greys"),
+    cb1 = mpl.colorbar.ColorbarBase(cax, cmap=plt.get_cmap("Greys"),
                                     norm=weight_norm)
     cb1.ax.yaxis.set_ticks([])
     cb1 = mpl.colorbar.ColorbarBase(cax2, cmap=plt.get_cmap("viridis"),
@@ -149,25 +148,18 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
     cb1.set_label("$\sum w_{i}$")
 
     # Label axes
-    ax1.set_xlabel(r"$L_{\mathrm{" + f.split(".")[-1]
+    ax.set_xlabel(r"$L_{\mathrm{" + f.split(".")[-1]
                    + "}}/$ [erg $/$ s $/$ Hz]")
-    ax1.set_ylabel('$R/ [pkpc]$')
     ax.set_ylabel('$R/ [pkpc]$')
     ax.tick_params(axis='both', which='both', left=True, bottom=True)
     axtop.set_ylabel("$N$")
     axright.set_xlabel("$N$")
-
-    ax.tick_params(axis='both', which='both', bottom=True, left=True)
-    ax.tick_params(axis='x', which='both', labelbottom=False, labeltop=False)
-    ax1.tick_params(axis='both', which='both', bottom=True, left=True)
 
     axtop.tick_params(axis='y', which='both', left=True)
     axright.tick_params(axis='x', which='both', bottom=True)
 
     ax.set_xlim(10 ** extent[2], 10 ** extent[3])
     ax.set_ylim(10 ** extent[0], 10 ** extent[1])
-    ax1.set_xlim(10 ** extent[2], 10 ** extent[3])
-    ax1.set_ylim(10 ** extent[0], 10 ** extent[1])
     axtop.set_xlim(10 ** extent[2], 10 ** extent[3])
     axright.set_ylim(10 ** extent[0], 10 ** extent[1])
 
