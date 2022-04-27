@@ -67,7 +67,7 @@ def size_lumin_intrinsic(hlrs, lumins, w, com_comp, diff_comp, com_ncomp,
     if w.size <= 1:
         return
 
-    fig = plt.figure(figsize=(1.2 * 3.5, 1.2 * 3.5))
+    fig = plt.figure(figsize=(1.2 * 3.5, 1.7 * 3.5))
     gs = gridspec.GridSpec(2, 4, height_ratios=(6, 20),
                            width_ratios=(20, 6, 1, 1))
     gs.update(wspace=0.0, hspace=0.0)
