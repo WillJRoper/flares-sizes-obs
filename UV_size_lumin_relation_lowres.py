@@ -407,7 +407,7 @@ if run:
     f = filters[0]
 
     hdf = h5py.File(
-        "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg, tag,
+        "data/flares_sizes_lowres_{}_{}_{}_{}_{}.hdf5".format(reg, tag,
                                                                      Type,
                                                                      orientation,
                                                                      f.split(".")[-1]),
