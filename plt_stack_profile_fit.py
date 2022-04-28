@@ -156,6 +156,9 @@ for f in filters:
 
         for f in row_filters:
 
+            stacks[f] = {}
+            num_stacked[f] = {}
+
             for reg in regions:
 
                 print(snap, f, reg)
@@ -174,13 +177,20 @@ for f in filters:
                     "r")
 
                 for i, b in enumerate(bins[:-1]):
+
                     hlrs = hdf[f]["HLR_0.5"][...]
                     okinds = hlrs > 0
                     hlrs = hlrs[okinds]
                     masses = hdf[f]["Mass"][...]
                     masses = masses[okinds]
+                    imgs = hdf[f]["Images"][...]
+                    imgs = imgs[okinds, :, :]
                     okinds = np.logical_and(masses >= b,
                                             masses < bins[i + 1])
+                    img_shape = imgs[0, :, :].shape
+                    stacks[f].setdefault(b, np.zeros(img_shape))
+                    num_stacked[f].setdefault(b, 0)
+                    stacks[f][b] += np.sum(imgs[okinds, :, :], axis=0)
 
                     num_stacked[f][b] += masses[okinds].size
 
