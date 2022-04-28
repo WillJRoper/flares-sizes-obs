@@ -490,8 +490,8 @@ for f in filters:
                         #                         color=c, linestyle="--")
 
                         axes_log[i + 1, j].plot(fit_xs,
-                                                exp_fit(fit_xs, 1,
-                                                        1),
+                                                exp_fit(fit_xs, 0.2,
+                                                        0.2),
                                                 alpha=alpha,
                                                 zorder=zorder,
                                                 color=c, linestyle="--")
