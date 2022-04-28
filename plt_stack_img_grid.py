@@ -525,6 +525,7 @@ for f in filters:
             + "_" + extinction + "".replace(".", "p") + ".pdf",
             bbox_inches='tight', dpi=fig_log.dpi)
         plt.close(fig)
+        plt.close(fig_log)
 
         fig = plt.figure(figsize=(3.5, 3.5))
         ax = fig.add_subplot(111)
@@ -536,7 +537,7 @@ for f in filters:
         ax.set_ylabel("$R_{1/2} / [\mathrm{pkpc}]$")
         ax.set_xlabel("$M_\star / M_\odot$")
 
-        fig_log.savefig(
+        fig.savefig(
             'plots/' + str(z) + '/ScaleLengthComp_' + f + '_' + snap
             + '_' + orientation + '_' + Type
             + "_" + extinction + "".replace(".", "p") + ".pdf",
