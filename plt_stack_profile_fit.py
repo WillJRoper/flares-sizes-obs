@@ -271,7 +271,7 @@ for f in filters:
         ax.semilogx()
 
         # Plot effective half light radii and scale length
-        cbar = ax.hexbin(mass[diff_comp], hlrs[diff_comp],
+        cbar = ax.hexbin(mass[diff_comp], hlr[diff_comp],
                          C=w[diff_comp], gridsize=50,
                          mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
@@ -279,7 +279,7 @@ for f in filters:
                          cmap='Greys',
                          extent=[extent[2], extent[3], extent[0],
                                  extent[1]])
-        cbar = ax.hexbin(mass[com_comp], hlrs[com_comp],
+        cbar = ax.hexbin(mass[com_comp], hlr[com_comp],
                          C=w[com_comp], gridsize=50,
                          mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
