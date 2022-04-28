@@ -514,7 +514,7 @@ for snap in all_snaps:
 
         for key in data[snap][f].keys():
             arr = data[snap][f][key]
-            print(key, arr)
+            # print(key, arr)
             try:
                 type_grp.create_dataset(key, data=arr, shape=arr.shape,
                                         dtype=arr.dtype, compression="gzip")
@@ -527,7 +527,7 @@ for snap in all_snaps:
 
         for key in data[snap][f].keys():
             arr = intr_data[snap][f][key]
-            print(key, arr)
+            # print(key, arr)
             try:
                 type_grp.create_dataset(key, data=arr, shape=arr.shape,
                                         dtype=arr.dtype, compression="gzip")
