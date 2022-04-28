@@ -270,6 +270,9 @@ for f in filters:
 
         profile_lims = [1, 0]
 
+        bins = [10 ** 8, 10 ** 9, 10 ** 9.5, 10 ** 10, np.inf]
+        bin_cents = [10 ** 8.5, 10 ** 9.25, 10 ** 9.75, 10 ** 10.5]
+
         for f in row_filters:
 
             reg = regions[0]
@@ -300,8 +303,6 @@ for f in filters:
             gs.update(wspace=0.0, hspace=-0.45)
             axes = np.empty((len(row_filters) + 1, 4), dtype=object)
             axes_log = np.empty((len(row_filters) + 1, 4), dtype=object)
-            bins = [10 ** 8, 10 ** 9, 10 ** 9.5, 10 ** 10, np.inf]
-            bin_cents = [10**8.5, 10**9.25, 10**9.75, 10**10.5]
 
             stacks = {}
             num_stacked = {}
@@ -535,7 +536,7 @@ for f in filters:
 
         # Plot effective half light radii and scale length
         ax.plot(bin_cents, stack_hlrs, color="k", linestyle="-")
-        ax.errobar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs)
+        ax.errorbar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs)
 
         ax.set_ylabel("$R_{1/2} / [\mathrm{pkpc}]$")
         ax.set_xlabel("$M_\star / M_\odot$")
