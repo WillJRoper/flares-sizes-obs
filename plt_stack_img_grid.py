@@ -471,11 +471,6 @@ for f in filters:
                                             color=c)
 
                     if b1 == b:
-                        axes_log[i + 1, j].fill_between(xs, ys - y_err,
-                                                        ys + y_err,
-                                                        alpha=alpha,
-                                                        zorder=zorder,
-                                                        color=c)
 
                         tot_lum = np.sum(stacks[f][b])
                         popt, pcov = curve_fit(exp_fit, xs, ys,
