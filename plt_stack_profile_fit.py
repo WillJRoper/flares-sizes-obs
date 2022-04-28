@@ -266,7 +266,7 @@ for f in filters:
         # Plot effective half light radii and scale length
         ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs,
                     capsize=5, marker=".", color="k", linestyle="-",
-                    label=r"$R_{\mathrm{pix}}$")
+                    label=r"$R_{1/2}$")
         # ax.plot(bin_cents, stack_hlrs,
         #         color="k", linestyle="-",
         #         label=r"$R_{\mathrm{pix}}$")
