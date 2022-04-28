@@ -98,7 +98,7 @@ weights = np.array(df['weights'])
 weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
 
 # Define extent
-size_tot_extent = [-1.1, 1.3, 7.7, 11.3]
+extent = [-1.1, 1.3, 7.7, 11.3]
 
 for f in filters:
 
@@ -223,6 +223,9 @@ for f in filters:
 
                 # if not len(hlr_dict[b]) > 0:
                 #     continue
+
+                if np.sum(stacks[f][b]) == 0:
+                    continue
 
                 # Extract image
                 plt_img = stacks[f][b]
