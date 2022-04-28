@@ -133,7 +133,7 @@ for f in filters:
         profile_lims = [1, 0]
 
         # Define mass bins
-        bin_wid = 10**0.5
+        bin_wid = 10**0.3
         bins = np.arange(8, 12.5, np.log10(bin_wid))
         bins = np.array([10**b for b in bins])
         bin_cents = (bins[1:] + bins[:-1]) / 2
@@ -254,12 +254,13 @@ for f in filters:
         ax.loglog()
 
         # Plot effective half light radii and scale length
+        print(bin_cents, mean_hlrs, serr_hlrs, bin_wid)
         ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs, xerr=bin_wid,
-                    marker=".", capsize=5, color="k", linestyle="-",
+                    capsize=5, marker=".", color="k", linestyle="-",
                     label="$R_{\mathrm{pix}}$")
         ax.errorbar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs,
                     xerr=bin_wid, capsize=5, marker="s", linestyle="--",
-                    label="$R_{\mathrm{exp}}$")
+                    markersize=5, label="$R_{\mathrm{exp}}$")
 
         ax.set_ylabel("$R / [\mathrm{pkpc}]$")
         ax.set_xlabel("$M_\star / M_\odot$")
