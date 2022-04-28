@@ -132,7 +132,7 @@ def noBC_comp(f, regions, snap, weight_norm, orientation,
 
     # Label axes
     ax.set_xlabel(r'$R_{\mathrm{withBC}}/ [pkpc]$')
-    ax.set_ylabel('$R_{noBC}/ [pkpc]$')
+    ax.set_ylabel('$R_{\mathrm{noBC}}/ [pkpc]$')
 
     plt.axis('scaled')
 
