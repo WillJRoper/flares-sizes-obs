@@ -481,6 +481,10 @@ for f in filters:
                                      (plt_img.shape[0] / 2) * csoft,
                                      1000)
 
+                        print(b, "I_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
+                        print(b, "r_0=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
+                        print(b, "R_1/2=", hlr)
+
                         axes_log[i + 1, j].plot(fit_xs,
                                                 exp_fit(fit_xs, popt[0],
                                                         popt[1]),
