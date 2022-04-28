@@ -133,7 +133,7 @@ for f in filters:
         profile_lims = [1, 0]
 
         # Define mass bins
-        bin_wid = 10**0.2
+        bin_wid = 10**0.4
         bins = np.arange(8, 12.5, np.log10(bin_wid))
         bins = np.array([10**b for b in bins])
         bin_cents = (bins[1:] + bins[:-1]) / 2
@@ -260,11 +260,11 @@ for f in filters:
             print(mean_hlrs[ind], type(mean_hlrs[ind]))
             print(serr_hlrs[ind], type(serr_hlrs[ind]))
         print(type(bin_wid))
-        ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs, xerr=bin_wid,
+        ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs,
                     capsize=5, marker=".", color="k", linestyle="-",
                     label=r"$R_{\mathrm{pix}}$")
         ax.errorbar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs,
-                    xerr=bin_wid, capsize=5, marker="s", linestyle="--",
+                    capsize=5, marker="s", linestyle="--",
                     markersize=5, label=r"$R_{\mathrm{exp}}$")
 
         ax.set_ylabel(r"$R / [\mathrm{pkpc}]$")
