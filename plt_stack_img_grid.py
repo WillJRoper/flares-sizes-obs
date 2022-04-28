@@ -470,6 +470,32 @@ for f in filters:
                     axes_log[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder,
                                             color=c)
 
+                    if b1 == b:
+
+                        tot_lum = np.sum(stacks[f][b])
+                        popt, pcov = curve_fit(exp_fit, xs, ys,
+                                                         p0=(
+                                                         tot_lum * 0.2,
+                                                         0.2))
+                        fit_xs = np.linspace(-(plt_img.shape[0] / 2) * csoft,
+                                     (plt_img.shape[0] / 2) * csoft,
+                                     1000)
+
+                        print(b, "I_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
+                        print(b, "r_0=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
+                        print(b, "R_1/2=", hlr)
+
+                        axes_log[i + 1, j].plot(fit_xs,
+                                                exp_fit(fit_xs, popt[0],
+                                                        popt[1]),
+                                                alpha=alpha,
+                                                zorder=zorder,
+                                                color=c, linestyle="--")
+
+                        # Store scale lengths
+                        stack_scale_lengths[j] = popt[1]
+                        stack_sl_errs[j] = np.sqrt(pcov[1, 1])
+
                     ylims = axes[i + 1, j].get_ylim()
                     if ylims[0] < profile_lims[0]:
                         profile_lims[0] = ylims[0]

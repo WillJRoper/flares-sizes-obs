@@ -328,13 +328,11 @@ for f in filters:
                     okinds = np.logical_and(masses >= b,
                                             masses < bins[i + 1])
                     imgs = hdf[f]["Images"][...]
-                    stacks[f][b] += np.sum(imgs[okinds, :, :],
-                                           axis=0)
+                    stacks[f][b] += np.sum(imgs[okinds, :, :], axis=0)
 
                     num_stacked[f][b] += masses[okinds].size
 
-                    hlr_dict = {}
-                    hlr_err_dict = {}
+                    hlr_dict.setdefault(b, []).extend(hlrs[okinds])
 
                 hdf.close()
 
@@ -345,6 +343,13 @@ for f in filters:
                 all_imgs.append(stacks[f][b])
         all_imgs = np.array(all_imgs)
         print(all_imgs.shape)
+
+        # Compute mean and standard error for half light radii
+        mean_hlrs = np.zeros(len(bins[:-1]))
+        serr_hlrs = np.zeros(len(bins[:-1]))
+        for ind, b in enumerate(bins[:-1]):
+            mean_hlrs[ind] = np.mean(hlr_dict[b])
+            serr_hlrs[ind] = np.std(hlr_dict[b])
 
         # Define list to store profiles
         stack_hlrs = np.zeros(len(bins[:-1]))
