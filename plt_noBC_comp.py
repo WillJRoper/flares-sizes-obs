@@ -130,6 +130,8 @@ def noBC_comp(f, regions, snap, weight_norm, orientation,
     ax.plot([10 ** -1.1, 10 ** 1.3], [10 ** -1.1, 10 ** 1.3],
             color='k', linestyle="--")
 
+    print(np.max(withBC_hlrs/noBC_hlrs))
+
     # Label axes
     ax.set_xlabel(r'$R_{\mathrm{withBC}}/ [pkpc]$')
     ax.set_ylabel('$R_{\mathrm{noBC}}/ [pkpc]$')
