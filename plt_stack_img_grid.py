@@ -49,7 +49,7 @@ def M_to_m(M, cosmo, z):
 
 
 def exp_fit(r, I0, r0):
-    return I0 * np.exp(-(r / r0))
+    return I0 * np.exp(-(np.abs(r) / r0))
 
 
 # Set orientation
