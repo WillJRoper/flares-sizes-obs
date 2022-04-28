@@ -274,7 +274,8 @@ for f in filters:
 
         # Define mass bins
         bin_wid = 10**0.2
-        bins = np.arange(10**8, 10**11.8, bin_wid)
+        bins = np.arange(8, 11.8, np.log10(bin_wid))
+        bins = [10**b for b in bins]
         bin_cents = (bins[1:] + bins[:-1]) / 2
 
         stacks = {}
