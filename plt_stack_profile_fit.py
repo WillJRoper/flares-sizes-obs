@@ -244,7 +244,7 @@ for f in filters:
                                  plt_img.shape[0])
                 ys = np.nansum(plt_img, axis=0)
 
-                mean_hlrs[j] = np.average(hlr_dict[b], weight=w_dict[b])
+                mean_hlrs[j] = np.average(hlr_dict[b], weights=w_dict[b])
                 serr_hlrs[j] = np.std(hlr_dict[b]) / np.sqrt(len(hlr_dict[b]))
 
                 tot_lum = np.nansum(plt_img)
