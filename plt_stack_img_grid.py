@@ -482,19 +482,19 @@ for f in filters:
                         print(b, "r_0=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
                         print(b, "R_1/2=", hlr)
 
-                        # axes_log[i + 1, j].plot(fit_xs,
-                        #                         exp_fit(fit_xs, popt[0],
-                        #                                 popt[1]),
-                        #                         alpha=alpha,
-                        #                         zorder=zorder,
-                        #                         color=c, linestyle="--")
-
                         axes_log[i + 1, j].plot(fit_xs,
-                                                exp_fit(fit_xs, 0.2,
-                                                        0.2),
+                                                exp_fit(fit_xs, popt[0],
+                                                        popt[1]),
                                                 alpha=alpha,
                                                 zorder=zorder,
                                                 color=c, linestyle="--")
+
+                        # axes_log[i + 1, j].plot(fit_xs,
+                        #                         exp_fit(fit_xs, 0.2,
+                        #                                 0.2),
+                        #                         alpha=alpha,
+                        #                         zorder=zorder,
+                        #                         color=c, linestyle="--")
 
                         # Store scale lengths
                         stack_scale_lengths[j] = popt[1]
