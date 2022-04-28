@@ -4,6 +4,8 @@ import pandas as pd
 from matplotlib.colors import LogNorm
 from plt_half_dust_radius_comp import hdr_comp
 from plt_img_type_comp import img_size_comp
+from plt_lowres_comp import lowres_comp
+from plt_noBC_comp import noBC_comp
 from plt_lum_type_comp import lum_comp
 from plt_mass_lumin import mass_lumin
 from plt_no_smooth_size_lumin_fitgrid import fit_size_lumin_grid_nosmooth
@@ -488,7 +490,11 @@ for f in filters:
                               weight_norm, orientation, "Intrinsic", "default")
 
 img_size_comp(filters[0], regions, snaps[-1], weight_norm,
-              orientation, "Total", "default")
+              orientation, "default")
+lowres_comp(filters[0], regions, snaps[-1], weight_norm,
+              orientation, "default")
+noBC_comp(filters[0], regions, snaps[-1], weight_norm,
+          orientation, "default")
 
 # Initialise file to save outputs
 hdf_out = h5py.File("plots/flares-sizes-results.hdf5", "w")

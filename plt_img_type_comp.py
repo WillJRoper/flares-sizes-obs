@@ -70,7 +70,7 @@ def img_size_comp(f, regions, snap, weight_norm, orientation, Type,
         hdf_gauss.close()
 
         hdf_sph = h5py.File(
-            "data/flares_sizes_all_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
+            "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
                                                                Type,
                                                                orientation,
                                                                f.split(

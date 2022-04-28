@@ -80,8 +80,8 @@ for reg in range(0, 40):
     else:
         regions.append(str(reg))
 
-# snaps = ['010_z005p000', ]
-snaps = ['007_z008p000', '010_z005p000']
+snaps = ['010_z005p000', ]
+# snaps = ['007_z008p000', '010_z005p000']
 
 np.random.seed(100)
 
@@ -235,9 +235,7 @@ for f in filters:
 
                 tot_lum = np.nansum(plt_img)
                 popt, pcov = curve_fit(exp_fit, xs, ys,
-                                       p0=(
-                                           tot_lum * 0.2,
-                                           1))
+                                       p0=(tot_lum * 0.2, 1))
 
                 print(b, "I_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
                 print(b, "r_0=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
@@ -253,7 +251,7 @@ for f in filters:
 
         # Plot effective half light radii and scale length
         ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs,
-                    marker="^", capsize=5, color="k", linestyle="-",
+                    marker=".", capsize=5, color="k", linestyle="-",
                     label="$R_{\mathrm{pix}}$")
         ax.errorbar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs,
                     xerr=bin_wid, capsize=5, marker="s", linestyle="--",
@@ -261,6 +259,8 @@ for f in filters:
 
         ax.set_ylabel("$R / [\mathrm{pkpc}]$")
         ax.set_xlabel("$M_\star / M_\odot$")
+
+        ax.legend(loc="best")
 
         fig.savefig(
             'plots/' + str(z) + '/ScaleLengthComp_' + f + '_' + snap
