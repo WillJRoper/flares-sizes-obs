@@ -18,7 +18,6 @@ import h5py
 import sys
 import pandas as pd
 import utilities as util
-from matplotlib.colors import LogNorm
 from flare import plt as flareplt
 
 
@@ -94,12 +93,6 @@ np.random.seed(100)
 df = pd.read_csv('../weight_files/weights_grid.txt')
 weights = np.array(df['weights'])
 
-# Define the norm
-weight_norm = LogNorm(vmin=10 ** -4, vmax=1)
-
-# Define extent
-extent = [-1.1, 1.3, 7.7, 11.3]
-
 for f in filters:
 
     row_filters = [f, ]
@@ -109,8 +102,7 @@ for f in filters:
     lumin_dict = {}
     mass_dict = {}
     sd_dict = {}
-    all_hlrs = []
-    all_mass = []
+    hlr_dict = {}
     hlr_err_dict = {}
     w_dict = {}
 
@@ -156,8 +148,28 @@ for f in filters:
 
         for f in row_filters:
 
+            reg = regions[0]
+
+            hdf = h5py.File(
+                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(
+                    reg, snap,
+                    Type,
+                    orientation,
+                    f.split(
+                        ".")[
+                        -1]),
+                "r")
+
+            f = row_filters[0]
+            img_shape = hdf[f]["Images"].shape[-1]
+
+            hdf.close()
+
             stacks[f] = {}
             num_stacked[f] = {}
+            for b in bins[:-1]:
+                stacks[f][b] = np.zeros((img_shape, img_shape))
+                num_stacked[f][b] = 0
 
             for reg in regions:
 
@@ -177,25 +189,19 @@ for f in filters:
                     "r")
 
                 for i, b in enumerate(bins[:-1]):
-
                     hlrs = hdf[f]["HLR_0.5"][...]
                     okinds = hlrs > 0
                     hlrs = hlrs[okinds]
                     masses = hdf[f]["Mass"][...]
                     masses = masses[okinds]
-                    imgs = hdf[f]["Images"][...]
-                    imgs = imgs[okinds, :, :]
                     okinds = np.logical_and(masses >= b,
                                             masses < bins[i + 1])
-                    img_shape = imgs[0, :, :].shape
-                    stacks[f].setdefault(b, np.zeros(img_shape))
-                    num_stacked[f].setdefault(b, 0)
+                    imgs = hdf[f]["Images"][...]
                     stacks[f][b] += np.sum(imgs[okinds, :, :], axis=0)
 
                     num_stacked[f][b] += masses[okinds].size
 
-                    all_mass.extend(masses[okinds])
-                    all_hlrs.extend(hlrs[okinds])
+                    hlr_dict.setdefault(b, []).extend(hlrs[okinds])
                     w_dict.setdefault(b, []).extend(np.full(hlrs[okinds].size,
                                                             weights[int(reg)]))
 
@@ -221,10 +227,7 @@ for f in filters:
         for f in filters:
             for j, b in enumerate(bins[:-1]):
 
-                # if not len(hlr_dict[b]) > 0:
-                #     continue
-
-                if np.sum(stacks[f][b]) == 0:
+                if not len(hlr_dict[b]) > 0:
                     continue
 
                 # Extract image
@@ -241,8 +244,8 @@ for f in filters:
                                  plt_img.shape[0])
                 ys = np.nansum(plt_img, axis=0)
 
-                # mean_hlrs[j] = np.average(hlr_dict[b], weights=w_dict[b])
-                # serr_hlrs[j] = np.std(hlr_dict[b]) / np.sqrt(len(hlr_dict[b]))
+                mean_hlrs[j] = np.average(hlr_dict[b], weights=w_dict[b])
+                serr_hlrs[j] = np.std(hlr_dict[b]) / np.sqrt(len(hlr_dict[b]))
 
                 tot_lum = np.nansum(plt_img)
                 popt, pcov = curve_fit(exp_fit, xs, ys,
@@ -256,43 +259,20 @@ for f in filters:
                 stack_scale_lengths[j] = popt[1]
                 stack_sl_errs[j] = np.sqrt(pcov[1, 1])
 
-        # Initialise file to save outputs
-        hdf_out = h5py.File("plots/flares-sizes-results.hdf5", "r")
-
-        com_comp = hdf_out[snap][f]["Intrinsic"]["Compact_Population_Complete"][...]
-        diff_comp = hdf_out[snap][f]["Intrinsic"]["Diffuse_Population_Complete"][...]
-        mass = hdf_out[snap][f]["Intrinsic"]["Mass"][...]
-        hlr = hdf_out[snap][f]["Intrinsic"]["HLR_0.5"][...]
-        w = hdf_out[snap][f]["Intrinsic"]["Weight"][...]
-
-        fig = plt.figure(figsize=(1.4 * 3.5, 1.2 * 3.5))
-        gs = gridspec.GridSpec(1, 3, width_ratios=(10, 1, 1))
-        gs.update(wspace=0.0, hspace=0.0)
-        ax = fig.add_subplot(gs[0, 0])
-        cax = fig.add_subplot(gs[0, 1])
-        cax2 = fig.add_subplot(gs[0, 2])
+        fig = plt.figure(figsize=(3.5, 3.5))
+        ax = fig.add_subplot(111)
         ax.semilogx()
 
         # Plot effective half light radii and scale length
-        cbar = ax.hexbin(mass[diff_comp], hlr[diff_comp],
-                         C=w[diff_comp], gridsize=50,
-                         mincnt=np.min(w) - (0.1 * np.min(w)),
-                         xscale='log', yscale='log',
-                         norm=weight_norm, linewidths=0.2,
-                         cmap='Greys',
-                         extent=[extent[2], extent[3], extent[0],
-                                 extent[1]])
-        cbar = ax.hexbin(mass[com_comp], hlr[com_comp],
-                         C=w[com_comp], gridsize=50,
-                         mincnt=np.min(w) - (0.1 * np.min(w)),
-                         xscale='log', yscale='log',
-                         norm=weight_norm, linewidths=0.2,
-                         cmap='viridis', extent=[extent[2], extent[3],
-                                                 extent[0], extent[1]])
+        okinds = mean_hlrs > 0
+        ax.errorbar(bin_cents[okinds], mean_hlrs[okinds],
+                    yerr=serr_hlrs[okinds],
+                    capsize=5, marker=".", color="k", linestyle="-",
+                    label=r"$R_{1/2}$")
         okinds = stack_scale_lengths > 0
         ax.errorbar(bin_cents[okinds], stack_scale_lengths[okinds],
                     yerr=stack_sl_errs[okinds],
-                    capsize=5, color="k", marker="s", linestyle="--",
+                    capsize=5, marker="s", linestyle="--",
                     markersize=3, label=r"$R_{\mathrm{exp}}$")
 
         ax.set_ylabel(r"$R / [\mathrm{pkpc}]$")
@@ -306,4 +286,3 @@ for f in filters:
             + "_" + extinction + "".replace(".", "p") + ".pdf",
             bbox_inches='tight')
         plt.close(fig)
-
