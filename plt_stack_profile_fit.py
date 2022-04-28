@@ -251,7 +251,7 @@ for f in filters:
 
         fig = plt.figure(figsize=(3.5, 3.5))
         ax = fig.add_subplot(111)
-        ax.loglog()
+        ax.semilogx()
 
         # Plot effective half light radii and scale length
         ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs,
