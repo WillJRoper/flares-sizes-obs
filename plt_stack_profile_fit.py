@@ -272,7 +272,7 @@ for f in filters:
                 label=r"$R_{\mathrm{pix}}$")
         ax.errorbar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs,
                     capsize=5, marker="s", linestyle="--",
-                    markersize=5, label=r"$R_{\mathrm{exp}}$")
+                    markersize=3, label=r"$R_{\mathrm{exp}}$")
 
         ax.set_ylabel(r"$R / [\mathrm{pkpc}]$")
         ax.set_xlabel(r"$M_\star / M_\odot$")
