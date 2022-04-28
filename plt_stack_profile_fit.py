@@ -258,7 +258,7 @@ for f in filters:
         for ind in range(len(bin_cents)):
             print(bin_cents[ind], type(bin_cents[ind]))
             print(mean_hlrs[ind], type(mean_hlrs[ind]))
-            print(serr_hlrs[ind], serr_hlrs[ind]])
+            print(serr_hlrs[ind], serr_hlrs[ind])
         # ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs, xerr=bin_wid,
         #             capsize=5, marker=".", color="k", linestyle="-",
         #             label=r"$R_{\mathrm{pix}}$")
