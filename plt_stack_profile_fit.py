@@ -129,8 +129,8 @@ for f in filters:
         profile_lims = [1, 0]
 
         # Define mass bins
-        bin_wid = 10**0.2
-        bins = np.arange(8, 11.8, np.log10(bin_wid))
+        bin_wid = 10**0.4
+        bins = np.arange(8, 12, np.log10(bin_wid))
         bins = np.array([10**b for b in bins])
         bin_cents = (bins[1:] + bins[:-1]) / 2
 
