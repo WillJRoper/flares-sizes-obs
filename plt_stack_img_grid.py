@@ -13,23 +13,24 @@ warnings.filterwarnings('ignore')
 import matplotlib.colors as cm
 import matplotlib.gridspec as gridspec
 import flare.photom as photconv
+from scipy.optimize import curve_fit
 import h5py
 import sys
 import cmasher as cmr
+import utilities as util
 from flare import plt as flareplt
-
 
 # Set plotting fontsizes
 SMALL_SIZE = 10
 MEDIUM_SIZE = 12
 BIGGER_SIZE = 14
 
-plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
-plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
-plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+plt.rc('font', size=SMALL_SIZE)  # controls default text sizes
+plt.rc('axes', titlesize=SMALL_SIZE)  # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)  # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)  # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)  # fontsize of the tick labels
+plt.rc('legend', fontsize=SMALL_SIZE)  # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
@@ -45,6 +46,10 @@ def M_to_m(M, cosmo, z):
     flux = photconv.lum_to_flux(lum, cosmo, z)
     m = photconv.flux_to_m(flux)
     return m
+
+
+def exp_fit(r, I0, r0):
+    return I0 * np.exp(-(r / r0))
 
 
 # Set orientation
@@ -75,7 +80,8 @@ for reg in range(0, 40):
     else:
         regions.append(str(reg))
 
-snaps = ['007_z008p000', '010_z005p000']
+snaps = ['010_z005p000', ]
+# snaps = ['007_z008p000', '010_z005p000']
 
 # reg, snap = regions[0], '010_z005p000'
 
@@ -223,6 +229,31 @@ np.random.seed(100)
 #         bbox_inches='tight', dpi=fig_log.dpi)
 #     plt.close(fig)
 
+# Get redshift
+z_str = tag.split('z')[1].split('p')
+z = float(z_str[0] + '.' + z_str[1])
+
+# Getting softening length
+if z <= 2.8:
+    csoft = 0.000474390 / 0.6777 * 1e3
+else:
+    csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
+
+# Define width
+ini_width = 60
+
+# Compute the resolution
+ini_res = ini_width / (csoft)
+res = int(np.ceil(ini_res))
+
+# Compute the new width
+width = csoft * res
+
+print("Image width and resolution", width, res)
+
+# Compute pixel area
+single_pixel_area = csoft * csoft
+
 for f in filters:
 
     row_filters = [f, ]
@@ -255,12 +286,13 @@ for f in filters:
             reg = regions[0]
 
             hdf = h5py.File(
-                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg, snap,
-                                                                   Type,
-                                                                   orientation,
-                                                                   f.split(
-                                                                       ".")[
-                                                                       -1]),
+                "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(
+                    reg, snap,
+                    Type,
+                    orientation,
+                    f.split(
+                        ".")[
+                        -1]),
                 "r")
 
             f = row_filters[0]
@@ -272,12 +304,15 @@ for f in filters:
             fig = plt.figure(dpi=dpi, figsize=(4 * 2.25,
                                                (len(row_filters) + 1) * 3.2))
             fig_log = plt.figure(dpi=dpi, figsize=(4 * 2.25,
-                                               (len(row_filters) + 1) * 3.2))
-            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1, height_ratios=[10, 4])
+                                                   (len(
+                                                       row_filters) + 1) * 3.2))
+            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1,
+                                   height_ratios=[10, 4])
             gs.update(wspace=0.0, hspace=-0.45)
             axes = np.empty((len(row_filters) + 1, 4), dtype=object)
             axes_log = np.empty((len(row_filters) + 1, 4), dtype=object)
             bins = [10 ** 8, 10 ** 9, 10 ** 9.5, 10 ** 10, np.inf]
+            bin_cents = [10**8.5, 10**9.25, 10**9.75, 10**10.5]
 
             stacks = {}
             num_stacked = {}
@@ -295,13 +330,14 @@ for f in filters:
                 reg = regions[0]
 
                 hdf = h5py.File(
-                    "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(reg,
-                                                                       snap,
-                                                                       Type,
-                                                                       orientation,
-                                                                       f.split(
-                                                                           ".")[
-                                                                           -1]),
+                    "data/flares_sizes_kernelproject_{}_{}_{}_{}_{}.hdf5".format(
+                        reg,
+                        snap,
+                        Type,
+                        orientation,
+                        f.split(
+                            ".")[
+                            -1]),
                     "r")
 
                 for i, b in enumerate(bins[:-1]):
@@ -330,7 +366,8 @@ for f in filters:
                             vmax=np.percentile(all_imgs[all_imgs > 0], 99.99),
                             clip=True)
         norm_log = cm.LogNorm(vmin=np.percentile(all_imgs[all_imgs > 0], 24),
-                              vmax=np.percentile(all_imgs[all_imgs > 0], 99.999),
+                              vmax=np.percentile(all_imgs[all_imgs > 0],
+                                                 99.999),
                               clip=True)
 
         for i in range(len(row_filters)):
@@ -359,12 +396,19 @@ for f in filters:
 
                 if j > 0:
                     # Remove axis labels and ticks
-                    axes[i + 1, j].tick_params(axis='y', left=False, right=False,
-                                           labelleft=False, labelright=False)
-                    axes_log[i + 1, j].tick_params(axis='y', left=False,
+                    axes[i + 1, j].tick_params(axis='y', left=False,
                                                right=False,
                                                labelleft=False,
                                                labelright=False)
+                    axes_log[i + 1, j].tick_params(axis='y', left=False,
+                                                   right=False,
+                                                   labelleft=False,
+                                                   labelright=False)
+
+        # Define list to store profiles
+        stack_hlrs = np.zeros(len(bins[:-1]))
+        stack_scale_lengths = np.zeros(len(bins[:-1]))
+        stack_sl_errs = np.zeros(len(bins[:-1]))
 
         for j, b in enumerate(bins[:-1]):
             for i, f in enumerate(row_filters):
@@ -375,13 +419,21 @@ for f in filters:
                 if i == 0:
                     if bins[j + 1] == np.inf:
 
-                        axes[i, j].set_title("$%.1f \leq \log_{10}(M_\star/M_\odot)$" % (np.log10(bins[j])))
+                        axes[i, j].set_title(
+                            "$%.1f \leq \log_{10}(M_\star/M_\odot)$" % (
+                                np.log10(bins[j])))
 
-                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M_\star/M_\odot)$" % (np.log10(bins[j])))
+                        axes_log[i, j].set_title(
+                            "$%.1f \leq \log_{10}(M_\star/M_\odot)$" % (
+                                np.log10(bins[j])))
                     else:
-                        axes[i, j].set_title("$%.1f \leq \log_{10}(M_\star/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])))
+                        axes[i, j].set_title(
+                            "$%.1f \leq \log_{10}(M_\star/M_\odot) < %.1f$" % (
+                            np.log10(bins[j]), np.log10(bins[j + 1])))
 
-                        axes_log[i, j].set_title("$%.1f \leq \log_{10}(M_\star/M_\odot) < %.1f$" % (np.log10(bins[j]), np.log10(bins[j + 1])))
+                        axes_log[i, j].set_title(
+                            "$%.1f \leq \log_{10}(M_\star/M_\odot) < %.1f$" % (
+                            np.log10(bins[j]), np.log10(bins[j + 1])))
 
                 # Get softening length
                 if z <= 2.8:
@@ -396,10 +448,16 @@ for f in filters:
                 extent = [0, plt_img.shape[0] * csoft,
                           0, plt_img.shape[1] * csoft]
 
+                # Calculate image half light radius
+                hlr = util.get_pixel_hlr(stacks[f][b], single_pixel_area,
+                                         r=0.5)
+                stack_hlrs[j] = hlr
+
                 # Plot images
                 axes[i, j].imshow(plt_img, cmap=cmr.neutral_r, extent=extent)
                 axes_log[i, j].imshow(plt_img, cmap=cmr.neutral,
-                                      norm=cm.LogNorm(vmin=np.percentile(plt_img, 16)),
+                                      norm=cm.LogNorm(
+                                          vmin=np.percentile(plt_img, 16)),
                                       extent=extent)
 
                 for c, (j1, b1) in zip(["blue", "green", "orange", "red"],
@@ -412,15 +470,45 @@ for f in filters:
                         zorder = 0
 
                     plt_img = stacks[f][b1][int(0.3 * size):-int(0.3 * size),
-                                            int(0.3 * size):-int(0.3 * size)]
+                              int(0.3 * size):-int(0.3 * size)]
 
                     # Calculate a plot 1D profiles
                     xs = np.linspace(-(plt_img.shape[0] / 2) * csoft,
                                      (plt_img.shape[0] / 2) * csoft,
                                      plt_img.shape[0])
                     ys = np.sum(plt_img, axis=0) / np.sum(plt_img)
-                    axes[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder, color=c)
-                    axes_log[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder, color=c)
+                    y_err = np.std(plt_img, axis=0)
+                    axes[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder,
+                                        color=c)
+                    axes_log[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder,
+                                            color=c)
+
+                    if b1 == b:
+                        axes_log[i + 1, j].fill_between(xs, ys - y_err,
+                                                        ys + y_err,
+                                                        alpha=alpha,
+                                                        zorder=zorder,
+                                                        color=c)
+
+                        tot_lum = np.sum(stacks[f][b])
+                        popt, pcov = curve_fit(exp_fit, xs, ys,
+                                                         p0=(
+                                                         tot_lum,
+                                                         hlr))
+                        fit_xs = np.linspace(-(plt_img.shape[0] / 2) * csoft,
+                                     (plt_img.shape[0] / 2) * csoft,
+                                     1000)
+
+                        axes_log[i + 1, j].plot(fit_xs,
+                                                exp_fit(fit_xs, popt[0],
+                                                        popt[1]),
+                                                alpha=alpha,
+                                                zorder=zorder,
+                                                color=c, linestyle="--")
+
+                        # Store scale lengths
+                        stack_scale_lengths[j] = popt[1]
+                        stack_sl_errs[j] = np.sqrt(pcov[1, 1])
 
                     ylims = axes[i + 1, j].get_ylim()
                     if ylims[0] < profile_lims[0]:
@@ -441,7 +529,8 @@ for f in filters:
             axes_log[1, j].set_ylim(profile_lims[0], profile_lims[1])
 
         axes[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
-        axes_log[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
+        axes_log[1, 0].set_ylabel(
+            r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
 
         fig.savefig(
             'plots/Image_grids/StackImgRow_' + f + '_' + reg
@@ -451,6 +540,23 @@ for f in filters:
         fig_log.savefig(
             'plots/Image_grids/StackLogImgRow_' + f + '_' + reg
             + '_' + snap + '_' + orientation + '_' + Type
+            + "_" + extinction + "".replace(".", "p") + ".pdf",
+            bbox_inches='tight', dpi=fig_log.dpi)
+        plt.close(fig)
+
+        fig = plt.figure(figsize=(3.5, 3.5))
+        ax = fig.add_subplot(111)
+
+        # Plot effective half light radii and scale length
+        ax.plot(bin_cents, stack_hlrs, color="k", linestyle="-")
+        ax.errobar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs)
+
+        ax.set_ylabel("$R_{1/2} / [\mathrm{pkpc}]$")
+        ax.set_xlabel("$M_\star / M_\odot$")
+
+        fig_log.savefig(
+            'plots/' + str(z) + '/StackLogImgRow_' + f + '_' + snap
+            + '_' + orientation + '_' + Type
             + "_" + extinction + "".replace(".", "p") + ".pdf",
             bbox_inches='tight', dpi=fig_log.dpi)
         plt.close(fig)
