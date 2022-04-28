@@ -229,31 +229,6 @@ np.random.seed(100)
 #         bbox_inches='tight', dpi=fig_log.dpi)
 #     plt.close(fig)
 
-# Get redshift
-z_str = tag.split('z')[1].split('p')
-z = float(z_str[0] + '.' + z_str[1])
-
-# Getting softening length
-if z <= 2.8:
-    csoft = 0.000474390 / 0.6777 * 1e3
-else:
-    csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
-
-# Define width
-ini_width = 60
-
-# Compute the resolution
-ini_res = ini_width / (csoft)
-res = int(np.ceil(ini_res))
-
-# Compute the new width
-width = csoft * res
-
-print("Image width and resolution", width, res)
-
-# Compute pixel area
-single_pixel_area = csoft * csoft
-
 for f in filters:
 
     row_filters = [f, ]
@@ -278,6 +253,31 @@ for f in filters:
     np.random.seed(100)
 
     for snap in snaps:
+
+        # Get redshift
+        z_str = snap.split('z')[1].split('p')
+        z = float(z_str[0] + '.' + z_str[1])
+
+        # Getting softening length
+        if z <= 2.8:
+            csoft = 0.000474390 / 0.6777 * 1e3
+        else:
+            csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
+
+        # Define width
+        ini_width = 60
+
+        # Compute the resolution
+        ini_res = ini_width / (csoft)
+        res = int(np.ceil(ini_res))
+
+        # Compute the new width
+        width = csoft * res
+
+        print("Image width and resolution", width, res)
+
+        # Compute pixel area
+        single_pixel_area = csoft * csoft
 
         profile_lims = [1, 0]
 
@@ -351,9 +351,6 @@ for f in filters:
                     num_stacked[f][b] += masses[okinds].size
 
                 hdf.close()
-
-        z_str = snap.split('z')[1].split('p')
-        z = float(z_str[0] + '.' + z_str[1])
 
         all_imgs = []
         for f in row_filters:
@@ -555,7 +552,7 @@ for f in filters:
         ax.set_xlabel("$M_\star / M_\odot$")
 
         fig_log.savefig(
-            'plots/' + str(z) + '/StackLogImgRow_' + f + '_' + snap
+            'plots/' + str(z) + '/ScaleLengthComp_' + f + '_' + snap
             + '_' + orientation + '_' + Type
             + "_" + extinction + "".replace(".", "p") + ".pdf",
             bbox_inches='tight', dpi=fig_log.dpi)
