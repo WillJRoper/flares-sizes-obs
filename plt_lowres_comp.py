@@ -115,7 +115,7 @@ def lowres_comp(f, regions, snap, weight_norm, orientation, extinction):
     fig = plt.figure(figsize=(3.5, 3.5))
     ax = fig.add_subplot(111)
     try:
-        cbar = ax.hexbin(lowres_hlrs, normres_hlrs,
+        cbar = ax.hexbin(normres_hlrs, lowres_hlrs,
                          C=w, gridsize=50, mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
                          norm=weight_norm, linewidths=0.2,
@@ -128,8 +128,8 @@ def lowres_comp(f, regions, snap, weight_norm, orientation, extinction):
             color='k', linestyle="--")
 
     # Label axes
-    ax.set_xlabel(r'$R_{s\times2}/ [pkpc]$')
-    ax.set_ylabel('$R_{s}/ [pkpc]$')
+    ax.set_ylabel(r'$R_{s\times2}/ [pkpc]$')
+    ax.set_xlabel('$R_{s}/ [pkpc]$')
 
     plt.axis('scaled')
 

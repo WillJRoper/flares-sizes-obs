@@ -117,7 +117,7 @@ def noBC_comp(f, regions, snap, weight_norm, orientation,
     fig = plt.figure(figsize=(3.5, 3.5))
     ax = fig.add_subplot(111)
     try:
-        cbar = ax.hexbin(noBC_hlrs, withBC_hlrs,
+        cbar = ax.hexbin(withBC_hlrs, noBC_hlrs,
                          C=w, gridsize=50,
                          mincnt=np.min(w) - (0.1 * np.min(w)),
                          xscale='log', yscale='log',
@@ -131,8 +131,8 @@ def noBC_comp(f, regions, snap, weight_norm, orientation,
             color='k', linestyle="--")
 
     # Label axes
-    ax.set_xlabel(r'$R_{s\times2}/ [pkpc]$')
-    ax.set_ylabel('$R_{s}/ [pkpc]$')
+    ax.set_xlabel(r'$R_{\mathrm{withBC}}/ [pkpc]$')
+    ax.set_ylabel('$R_{noBC}/ [pkpc]$')
 
     plt.axis('scaled')
 
