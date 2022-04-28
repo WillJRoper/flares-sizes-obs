@@ -107,10 +107,7 @@ def lowres_comp(f, regions, snap, weight_norm, orientation, extinction):
     normres_hlrs = np.array(normres_hlrs)
     w = np.array(w)
 
-    okinds = np.logical_and(lowres_hlrs > 0,
-                            np.logical_and(normres_hlrs > 0,
-                                           np.logical_and(sph_lumins > 0,
-                                                          gauss_lumins > 0)))
+    okinds = np.logical_and(lowres_hlrs > 0, normres_hlrs > 0)
     lowres_hlrs = lowres_hlrs[okinds]
     normres_hlrs = normres_hlrs[okinds]
     w = w[okinds]

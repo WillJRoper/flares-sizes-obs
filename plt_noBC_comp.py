@@ -109,10 +109,7 @@ def noBC_comp(f, regions, snap, weight_norm, orientation,
     withBC_hlrs = np.array(withBC_hlrs)
     w = np.array(w)
 
-    okinds = np.logical_and(noBC_hlrs > 0,
-                            np.logical_and(withBC_hlrs > 0,
-                                           np.logical_and(withBC_lumins > 0,
-                                                          noBC_lumins > 0)))
+    okinds = np.logical_and(noBC_hlrs > 0, withBC_hlrs > 0)
     noBC_hlrs = noBC_hlrs[okinds]
     withBC_hlrs = withBC_hlrs[okinds]
     w = w[okinds]
