@@ -490,7 +490,7 @@ for f in filters:
                               weight_norm, orientation, "Intrinsic", "default")
 
 img_size_comp(filters[0], regions, snaps[-1], weight_norm,
-              orientation, "default")
+              orientation, "Total", "default")
 lowres_comp(filters[0], regions, snaps[-1], weight_norm,
               orientation, "default")
 noBC_comp(filters[0], regions, snaps[-1], weight_norm,
