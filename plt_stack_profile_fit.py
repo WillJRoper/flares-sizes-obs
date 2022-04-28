@@ -20,6 +20,10 @@ import cmasher as cmr
 import utilities as util
 from flare import plt as flareplt
 
+
+# Set plotting fontsizes
+plt.rcParams['axes.grid'] = True
+
 # Set plotting fontsizes
 SMALL_SIZE = 10
 MEDIUM_SIZE = 12
