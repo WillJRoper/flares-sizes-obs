@@ -239,17 +239,6 @@ for f in filters:
     mass_dict = {}
     sd_dict = {}
 
-    regions = []
-    for reg in range(0, 40):
-        if reg < 10:
-            regions.append('0' + str(reg))
-        else:
-            regions.append(str(reg))
-
-    snaps = ['007_z008p000', '010_z005p000']
-
-    # reg, snap = regions[0], '010_z005p000'
-
     np.random.seed(100)
 
     for snap in snaps:
@@ -447,7 +436,7 @@ for f in filters:
 
                 # Calculate image half light radius
                 hlr = util.get_pixel_hlr(stacks[f][b], single_pixel_area,
-                                         r=0.5)
+                                         0.5)
                 stack_hlrs[j] = hlr
 
                 # Plot images
