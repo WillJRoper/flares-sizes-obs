@@ -260,9 +260,12 @@ for f in filters:
             print(mean_hlrs[ind], type(mean_hlrs[ind]))
             print(serr_hlrs[ind], type(serr_hlrs[ind]))
         print(type(bin_wid))
-        ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs,
-                    capsize=5, marker=".", color="k", linestyle="-",
-                    label=r"$R_{\mathrm{pix}}$")
+        # ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs,
+        #             capsize=5, marker=".", color="k", linestyle="-",
+        #             label=r"$R_{\mathrm{pix}}$")
+        ax.plot(bin_cents, stack_hlrs,
+                color="k", linestyle="-",
+                label=r"$R_{\mathrm{pix}}$")
         ax.errorbar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs,
                     capsize=5, marker="s", linestyle="--",
                     markersize=5, label=r"$R_{\mathrm{exp}}$")
