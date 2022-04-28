@@ -238,6 +238,8 @@ for f in filters:
     lumin_dict = {}
     mass_dict = {}
     sd_dict = {}
+    hlr_dict = {}
+    hlr_err_dict = {}
 
     np.random.seed(100)
 
@@ -270,8 +272,13 @@ for f in filters:
 
         profile_lims = [1, 0]
 
-        bins = [10 ** 8, 10 ** 9, 10 ** 9.5, 10 ** 10, np.inf]
-        bin_cents = [10 ** 8.5, 10 ** 9.25, 10 ** 9.75, 10 ** 10.5]
+        # Define mass bins
+        bin_wid = 10**0.2
+        bins = np.arange(10**8, 10**11.8, bin_wid)
+        bin_cents = (bins[1:] + bins[:-1]) / 2
+
+        stacks = {}
+        num_stacked = {}
 
         for f in row_filters:
 
@@ -291,21 +298,6 @@ for f in filters:
             img_shape = hdf[f]["Images"].shape[-1]
 
             hdf.close()
-
-            dpi = 300
-            fig = plt.figure(dpi=dpi, figsize=(4 * 2.25,
-                                               (len(row_filters) + 1) * 3.2))
-            fig_log = plt.figure(dpi=dpi, figsize=(4 * 2.25,
-                                                   (len(
-                                                       row_filters) + 1) * 3.2))
-            gs = gridspec.GridSpec(ncols=4, nrows=len(row_filters) + 1,
-                                   height_ratios=[10, 4])
-            gs.update(wspace=0.0, hspace=-0.45)
-            axes = np.empty((len(row_filters) + 1, 4), dtype=object)
-            axes_log = np.empty((len(row_filters) + 1, 4), dtype=object)
-
-            stacks = {}
-            num_stacked = {}
 
             stacks[f] = {}
             num_stacked[f] = {}
@@ -331,6 +323,7 @@ for f in filters:
                     "r")
 
                 for i, b in enumerate(bins[:-1]):
+                    hlrs = hdf[f]["HLR_0.5"][...]
                     masses = hdf[f]["Mass"][...]
                     okinds = np.logical_and(masses >= b,
                                             masses < bins[i + 1])
@@ -339,6 +332,9 @@ for f in filters:
                                            axis=0)
 
                     num_stacked[f][b] += masses[okinds].size
+
+                    hlr_dict = {}
+                    hlr_err_dict = {}
 
                 hdf.close()
 
@@ -349,159 +345,58 @@ for f in filters:
                 all_imgs.append(stacks[f][b])
         all_imgs = np.array(all_imgs)
         print(all_imgs.shape)
-        norm = cm.Normalize(vmin=0,
-                            vmax=np.percentile(all_imgs[all_imgs > 0], 99.99),
-                            clip=True)
-        norm_log = cm.LogNorm(vmin=np.percentile(all_imgs[all_imgs > 0], 24),
-                              vmax=np.percentile(all_imgs[all_imgs > 0],
-                                                 99.999),
-                              clip=True)
-
-        for i in range(len(row_filters)):
-            for j in range(4):
-                axes[i, j] = fig.add_subplot(gs[i, j])
-                axes_log[i, j] = fig_log.add_subplot(gs[i, j])
-                axes[i + 1, j] = fig.add_subplot(gs[i + 1, j])
-                axes_log[i + 1, j] = fig_log.add_subplot(gs[i + 1, j])
-
-                axes[i + 1, j].grid(True)
-                axes_log[i + 1, j].grid(True)
-
-                # Remove axis labels and ticks
-                axes[i, j].tick_params(axis='x', top=False, bottom=False,
-                                       labeltop=False, labelbottom=False)
-                axes[i, j].tick_params(axis='y', left=False, right=False,
-                                       labelleft=False, labelright=False)
-                axes_log[i, j].tick_params(axis='x', top=False,
-                                           bottom=False,
-                                           labeltop=False,
-                                           labelbottom=False)
-                axes_log[i, j].tick_params(axis='y', left=False,
-                                           right=False,
-                                           labelleft=False,
-                                           labelright=False)
-
-                if j > 0:
-                    # Remove axis labels and ticks
-                    axes[i + 1, j].tick_params(axis='y', left=False,
-                                               right=False,
-                                               labelleft=False,
-                                               labelright=False)
-                    axes_log[i + 1, j].tick_params(axis='y', left=False,
-                                                   right=False,
-                                                   labelleft=False,
-                                                   labelright=False)
 
         # Define list to store profiles
         stack_hlrs = np.zeros(len(bins[:-1]))
         stack_scale_lengths = np.zeros(len(bins[:-1]))
         stack_sl_errs = np.zeros(len(bins[:-1]))
 
-        for j, b in enumerate(bins[:-1]):
-            for i, f in enumerate(row_filters):
+        for f in filters:
+            for j, b in enumerate(bins[:-1]):
 
-                # if j == 0:
-                #     axes[i, j].set_ylabel(f.split(".")[-1], fontsize=6)
-                #     axes_log[i, j].set_ylabel(f.split(".")[-1], fontsize=6)
-                if i == 0:
-                    if bins[j + 1] == np.inf:
-
-                        axes[i, j].set_title(
-                            "$%.1f \leq \log_{10}(M_\star/M_\odot)$" % (
-                                np.log10(bins[j])))
-
-                        axes_log[i, j].set_title(
-                            "$%.1f \leq \log_{10}(M_\star/M_\odot)$" % (
-                                np.log10(bins[j])))
-                    else:
-                        axes[i, j].set_title(
-                            "$%.1f \leq \log_{10}(M_\star/M_\odot) < %.1f$" % (
-                            np.log10(bins[j]), np.log10(bins[j + 1])))
-
-                        axes_log[i, j].set_title(
-                            "$%.1f \leq \log_{10}(M_\star/M_\odot) < %.1f$" % (
-                            np.log10(bins[j]), np.log10(bins[j + 1])))
-
-                # Get softening length
-                if z <= 2.8:
-                    csoft = 0.000474390 / 0.6777 * 1e3
-                else:
-                    csoft = 0.001802390 / (0.6777 * (1 + z)) * 1e3
-
-                # Extract central region of image
-                size = stacks[f][b].shape[0]
-                plt_img = stacks[f][b][int(0.3 * size):-int(0.3 * size),
-                          int(0.3 * size):-int(0.3 * size)]
-                extent = [0, plt_img.shape[0] * csoft,
-                          0, plt_img.shape[1] * csoft]
+                # Extract image
+                plt_img = stacks[f][b]
 
                 # Calculate image half light radius
                 hlr = util.get_pixel_hlr(stacks[f][b], single_pixel_area,
                                          0.5)
                 stack_hlrs[j] = hlr
 
-                # Plot images
-                axes[i, j].imshow(plt_img, cmap=cmr.neutral_r, extent=extent)
-                axes_log[i, j].imshow(plt_img, cmap=cmr.neutral,
-                                      norm=cm.LogNorm(
-                                          vmin=np.percentile(plt_img, 16)),
-                                      extent=extent)
+                # Calculate a plot 1D profiles
+                xs = np.linspace(-(plt_img.shape[0] / 2) * csoft,
+                                 (plt_img.shape[0] / 2) * csoft,
+                                 plt_img.shape[0])
+                ys = np.sum(plt_img, axis=0) / np.sum(plt_img)
 
-                for c, (j1, b1) in zip(["blue", "green", "orange", "red"],
-                                       enumerate(bins[:-1])):
-                    if b1 == b:
-                        alpha = 1
-                        zorder = 1
-                    else:
-                        alpha = 0.3
-                        zorder = 0
+                tot_lum = np.sum(stacks[f][b])
+                popt, pcov = curve_fit(exp_fit, xs, ys,
+                                       p0=(
+                                           tot_lum * 0.2,
+                                           0.2))
 
-                    plt_img = stacks[f][b1][int(0.3 * size):-int(0.3 * size),
-                              int(0.3 * size):-int(0.3 * size)]
+                print(b, "I_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
+                print(b, "r_0=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
+                print(b, "R_1/2=", hlr)
 
-                    # Calculate a plot 1D profiles
-                    xs = np.linspace(-(plt_img.shape[0] / 2) * csoft,
-                                     (plt_img.shape[0] / 2) * csoft,
-                                     plt_img.shape[0])
-                    ys = np.sum(plt_img, axis=0) / np.sum(plt_img)
-                    y_err = np.std(plt_img, axis=0)
-                    axes[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder,
-                                        color=c)
-                    axes_log[i + 1, j].plot(xs, ys, alpha=alpha, zorder=zorder,
-                                            color=c)
+                # Store scale lengths
+                stack_scale_lengths[j] = popt[1]
+                stack_sl_errs[j] = np.sqrt(pcov[1, 1])
 
-                    ylims = axes[i + 1, j].get_ylim()
-                    if ylims[0] < profile_lims[0]:
-                        profile_lims[0] = ylims[0]
-                    if ylims[1] > profile_lims[1]:
-                        profile_lims[1] = ylims[1]
+        fig = plt.figure(figsize=(3.5, 3.5))
+        ax = fig.add_subplot(111)
+        ax.loglog()
 
-                axes[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
-                axes_log[i + 1, j].set_xlabel("$x / [\mathrm{pkpc}]$")
+        # Plot effective half light radii and scale length
+        ax.plot(bin_cents, stack_hlrs, color="k", linestyle="-")
+        ax.errorbar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs,
+                    xerr=bin_wid, capsize=5, marker="s", linestyle="none")
 
-                print("Image size:",
-                      csoft *
-                      stacks[f][b][int(0.3 * size):-int(0.3 * size),
-                      int(0.3 * size):-int(0.3 * size)].shape[0], "pkpc")
-
-        for j, b in enumerate(bins[:-1]):
-            axes[1, j].set_ylim(profile_lims[0], profile_lims[1])
-            axes_log[1, j].set_ylim(profile_lims[0], profile_lims[1])
-
-        axes[1, 0].set_ylabel(r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
-        axes_log[1, 0].set_ylabel(
-            r"$L_{\mathrm{FUV}}/\Sigma L_{\mathrm{FUV}}$")
+        ax.set_ylabel("$R_{1/2} / [\mathrm{pkpc}]$")
+        ax.set_xlabel("$M_\star / M_\odot$")
 
         fig.savefig(
-            'plots/Image_grids/StackImgRow_' + f + '_' + reg
-            + '_' + snap + '_' + orientation + '_' + Type
-            + "_" + extinction + "".replace(".", "p") + ".pdf",
-            bbox_inches='tight', dpi=fig.dpi)
-        fig_log.savefig(
-            'plots/Image_grids/StackLogImgRow_' + f + '_' + reg
-            + '_' + snap + '_' + orientation + '_' + Type
+            'plots/' + str(z) + '/ScaleLengthComp_' + f + '_' + snap
+            + '_' + orientation + '_' + Type
             + "_" + extinction + "".replace(".", "p") + ".pdf",
             bbox_inches='tight', dpi=fig_log.dpi)
         plt.close(fig)
-        plt.close(fig_log)
-
