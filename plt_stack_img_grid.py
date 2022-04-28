@@ -473,7 +473,7 @@ for f in filters:
                     if b1 == b:
 
                         tot_lum = np.sum(plt_img)
-                        popt, pcov = curve_fit(exp_fit, xs, ys, p0=( 1, 0.2))
+                        popt, pcov = curve_fit(exp_fit, xs, ys, p0=(0.2, 1))
                         fit_xs = np.linspace(-(plt_img.shape[0] / 2) * csoft,
                                      (plt_img.shape[0] / 2) * csoft,
                                      1000)
@@ -482,16 +482,16 @@ for f in filters:
                         print(b, "r_0=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
                         print(b, "R_1/2=", hlr)
 
-                        axes_log[i + 1, j].plot(fit_xs,
-                                                exp_fit(fit_xs, popt[0],
-                                                        popt[1]),
-                                                alpha=alpha,
-                                                zorder=zorder,
-                                                color=c, linestyle="--")
+                        # axes_log[i + 1, j].plot(fit_xs,
+                        #                         exp_fit(fit_xs, popt[0],
+                        #                                 popt[1]),
+                        #                         alpha=alpha,
+                        #                         zorder=zorder,
+                        #                         color=c, linestyle="--")
 
                         axes_log[i + 1, j].plot(fit_xs,
-                                                exp_fit(fit_xs, 0.2,
-                                                        0.1),
+                                                exp_fit(fit_xs, 1,
+                                                        1),
                                                 alpha=alpha,
                                                 zorder=zorder,
                                                 color=c, linestyle="--")
