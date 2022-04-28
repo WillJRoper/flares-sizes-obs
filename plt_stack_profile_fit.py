@@ -216,11 +216,14 @@ for f in filters:
         for f in filters:
             for j, b in enumerate(bins[:-1]):
 
+                if not len(hlr_dict[b]) > 0:
+                    continue
+
                 # Extract image
                 plt_img = stacks[f][b]
 
                 # Calculate image half light radius
-                hlr = util.get_pixel_hlr(stacks[f][b], single_pixel_area,
+                hlr = util.get_pixel_hlr(plt_img, single_pixel_area,
                                          0.5)
                 stack_hlrs[j] = hlr
 
@@ -263,5 +266,5 @@ for f in filters:
             'plots/' + str(z) + '/ScaleLengthComp_' + f + '_' + snap
             + '_' + orientation + '_' + Type
             + "_" + extinction + "".replace(".", "p") + ".pdf",
-            bbox_inches='tight', dpi=fig_log.dpi)
+            bbox_inches='tight')
         plt.close(fig)
