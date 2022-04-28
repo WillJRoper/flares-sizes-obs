@@ -16,7 +16,7 @@ import flare.photom as photconv
 from scipy.optimize import curve_fit
 import h5py
 import sys
-import cmasher as cmr
+import pandas as pd
 import utilities as util
 from flare import plt as flareplt
 
@@ -89,6 +89,10 @@ snaps = ['010_z005p000', ]
 
 np.random.seed(100)
 
+# Load weights
+df = pd.read_csv('../weight_files/weights_grid.txt')
+weights = np.array(df['weights'])
+
 for f in filters:
 
     row_filters = [f, ]
@@ -100,6 +104,7 @@ for f in filters:
     sd_dict = {}
     hlr_dict = {}
     hlr_err_dict = {}
+    w_dict = {}
 
     np.random.seed(100)
 
@@ -185,7 +190,10 @@ for f in filters:
 
                 for i, b in enumerate(bins[:-1]):
                     hlrs = hdf[f]["HLR_0.5"][...]
+                    okinds = hlrs > 0
+                    hlrs = hlrs[okinds]
                     masses = hdf[f]["Mass"][...]
+                    masses = masses[okinds]
                     okinds = np.logical_and(masses >= b,
                                             masses < bins[i + 1])
                     imgs = hdf[f]["Images"][...]
@@ -194,6 +202,8 @@ for f in filters:
                     num_stacked[f][b] += masses[okinds].size
 
                     hlr_dict.setdefault(b, []).extend(hlrs[okinds])
+                    w_dict.setdefault(b, []).extend(np.full(hlrs[okinds].size,
+                                                            weights[int(reg)]))
 
                 hdf.close()
 
@@ -205,12 +215,9 @@ for f in filters:
         all_imgs = np.array(all_imgs)
         print(all_imgs.shape)
 
-        # Compute mean and standard error for half light radii
+        # Initialise mean and standard error for half light radii
         mean_hlrs = np.zeros(len(bins[:-1]))
         serr_hlrs = np.zeros(len(bins[:-1]))
-        for ind, b in enumerate(bins[:-1]):
-            mean_hlrs[ind] = np.mean(hlr_dict[b])
-            serr_hlrs[ind] = np.std(hlr_dict[b]) / np.sqrt(len(hlr_dict[b]))
 
         # Define list to store profiles
         stack_hlrs = np.zeros(len(bins[:-1]))
@@ -236,6 +243,9 @@ for f in filters:
                                  (plt_img.shape[0] / 2) * csoft,
                                  plt_img.shape[0])
                 ys = np.nansum(plt_img, axis=0)
+
+                mean_hlrs[j] = np.average(hlr_dict[b], weight=w_dict[b])
+                serr_hlrs[j] = np.std(hlr_dict[b]) / np.sqrt(len(hlr_dict[b]))
 
                 tot_lum = np.nansum(plt_img)
                 popt, pcov = curve_fit(exp_fit, xs, ys,
