@@ -181,8 +181,6 @@ for f in filters:
                     masses = masses[okinds]
                     okinds = np.logical_and(masses >= b,
                                             masses < bins[i + 1])
-                    imgs = hdf[f]["Images"][...]
-                    stacks[f][b] += np.sum(imgs[okinds, :, :], axis=0)
 
                     num_stacked[f][b] += masses[okinds].size
 
