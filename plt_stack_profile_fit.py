@@ -49,7 +49,7 @@ def M_to_m(M, cosmo, z):
 
 
 def exp_fit(r, I0, r0):
-    return I0 * np.exp(-(r / r0))
+    return I0 * np.exp(-(np.abs(r) / r0))
 
 
 # Set orientation
@@ -234,7 +234,7 @@ for f in filters:
                 popt, pcov = curve_fit(exp_fit, xs, ys,
                                        p0=(
                                            tot_lum * 0.2,
-                                           0.2))
+                                           1))
 
                 print(b, "I_0=", popt[0], "+/-", np.sqrt(pcov[0, 0]))
                 print(b, "r_0=", popt[1], "+/-", np.sqrt(pcov[1, 1]))
@@ -249,11 +249,14 @@ for f in filters:
         ax.loglog()
 
         # Plot effective half light radii and scale length
-        ax.plot(bin_cents, stack_hlrs, color="k", linestyle="-")
+        ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs,
+                    marker="^", capsize=5, color="k", linestyle="-",
+                    label="$R_{\mathrm{pix}}$")
         ax.errorbar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs,
-                    xerr=bin_wid, capsize=5, marker="s", linestyle="none")
+                    xerr=bin_wid, capsize=5, marker="s", linestyle="--",
+                    label="$R_{\mathrm{exp}}$")
 
-        ax.set_ylabel("$R_{1/2} / [\mathrm{pkpc}]$")
+        ax.set_ylabel("$R / [\mathrm{pkpc}]$")
         ax.set_xlabel("$M_\star / M_\odot$")
 
         fig.savefig(
