@@ -264,12 +264,9 @@ for f in filters:
         ax.semilogx()
 
         # Plot effective half light radii and scale length
-        # ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs,
-        #             capsize=5, marker=".", color="k", linestyle="-",
-        #             label=r"$R_{1/2}$")
-        ax.plot(bin_cents, stack_hlrs,
-                color="k", linestyle="-",
-                label=r"$R_{\mathrm{pix}}$")
+        ax.errorbar(bin_cents, mean_hlrs, yerr=serr_hlrs,
+                    capsize=5, marker=".", color="k", linestyle="-",
+                    label=r"$R_{1/2}$")
         ax.errorbar(bin_cents, stack_scale_lengths, yerr=stack_sl_errs,
                     capsize=5, marker="s", linestyle="--",
                     markersize=3, label=r"$R_{\mathrm{exp}}$")
