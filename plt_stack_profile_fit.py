@@ -216,13 +216,11 @@ for f in filters:
         for f in filters:
             for j, b in enumerate(bins[:-1]):
 
-                # Extract central region of image
-                size = stacks[f][b].shape[0]
-                plt_img = stacks[f][b][int(0.3 * size):-int(0.3 * size),
-                          int(0.3 * size):-int(0.3 * size)]
+                # Extract image
+                plt_img = stacks[f][b]
 
                 # Calculate image half light radius
-                hlr = util.get_pixel_hlr(plt_img, single_pixel_area,
+                hlr = util.get_pixel_hlr(stacks[f][b], single_pixel_area,
                                          0.5)
                 stack_hlrs[j] = hlr
 
@@ -232,7 +230,7 @@ for f in filters:
                                  plt_img.shape[0])
                 ys = np.nansum(plt_img, axis=0)
 
-                tot_lum = np.sum(plt_img)
+                tot_lum = np.nansum(plt_img)
                 popt, pcov = curve_fit(exp_fit, xs, ys,
                                        p0=(
                                            tot_lum * 0.2,
