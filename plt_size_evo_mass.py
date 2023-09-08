@@ -237,7 +237,7 @@ def M_to_m(M, cosmo, z):
     return m
 
 
-def size_evo_violin(data, intr_data, snaps, f, mtype, orientation, Type,
+def size_evo_mass(data, intr_data, snaps, f, mtype, orientation, Type,
                     extinction):
     print("Plotting for:")
     print("Orientation =", orientation)

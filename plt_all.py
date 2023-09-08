@@ -14,6 +14,8 @@ from plt_size_part_smooth_comp import size_comp_smooth_part
 from plt_size_smooth_comp import size_comp_smooth
 from plt_size_type_comp import size_comp
 from plt_img_type_comp import img_size_comp
+from plt_size_evo_mass import size_evo_mass
+
 
 # Set orientation
 orientation = "sim"
@@ -319,6 +321,9 @@ for f in filters:
     print(f)
     print("--------------------------- Evolution ---------------------------")
     size_evo_violin(data, intr_data, all_snaps, f, "pix", "sim", "All",
+                    "default")
+    print("--------------------------- Evolution ---------------------------")
+    size_evo_mass(data, intr_data, all_snaps, f, "pix", "sim", "All",
                     "default")
     print(
         "--------------------------- Evolution Incomplete ---------------------------")
